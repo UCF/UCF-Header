@@ -1,0 +1,72 @@
+
+/* QuickLinks Customization UI */
+
+#quicklinks-panel
+{
+	width:510px;
+	height:280px;
+	background-color:#fff;
+	padding:15px;
+	border:solid 1px #ccc;
+	margin: auto;
+}
+
+.quicklinks-column
+{
+	float:left;
+	width:200px;
+	
+}
+
+#quicklinks-panel .quicklinks-column h1
+{
+	font-size:12px;
+	color:#333;
+	font-family: Helvetica, Arial, sans-serif;
+	font-weight: bold
+}
+
+.quicklinks-list
+{
+	float:left;
+	height:250px;
+	width:200px;
+	border:solid 1px #ccc;
+	font-size:12px;
+	color:#333;
+}
+
+#quicklinks-actions
+{
+	float:left;
+	width:70px;
+	height:220px;
+	padding:20px;
+}
+
+#quicklinks-actions ul
+{
+	padding:0px;
+	margin:0px;
+}
+
+#quicklinks-actions ul li
+{
+	list-style-type: none;
+}
+
+#quicklinks-actions ul li a
+{
+	width:56px;
+	height:20px;
+	text-decoration: none;
+	border:solid 1px #ccc;
+	display:block;
+	padding:3px;
+	text-align: center;
+	margin:0px;
+	margin-bottom:8px;
+	font-family: Helvetica, Arial, sans-serif;
+	background-color: #eee;
+	color:#666;
+}

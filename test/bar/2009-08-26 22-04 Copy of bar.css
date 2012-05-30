@@ -1,0 +1,227 @@
+*{
+margin:0px;
+padding:0px;
+}
+/*Header style*/
+#UCFHBHeader{
+	background-image: url("https://www.ucf.edu/img/header_border.png");
+	background-repeat: repeat-x;
+	background-position: bottom left;
+	background-color: black;
+	overflow:auto;
+	padding-bottom: 2px;
+}
+	#UCFHBHeader label {
+		color: #FFF;
+		text-indent: -10000px;
+		display:block;
+		float:left;
+	}
+#UCFHBHeader #UCFHBSearch_and_links{
+	padding-top: 5px;
+	margin-left: 520px;
+	width: 450px;
+	text-align: right;
+}
+	
+#UCFHBClearBoth{
+	clear: both;
+}
+	
+#UCFHBHeader #UCFtitle{
+	float:left;
+	margin: 0;
+	padding: 0;
+}
+#UCFHBHeader #UCFtitle a{
+	margin: 0;
+	padding: 0;
+	background-image: url("https://www.ucf.edu/imresources/sites/WWWUCFEDU/content/live/GLOBAL_PROPERTIES/0/GP1/en_US/ucflogo.png");
+	background-repeat: no-repeat;
+	background-position: top left;
+	background-color: black;
+	display: block;
+	height: 29px;
+	width: 318px;
+}
+#UCFHBHeader #UCFtitle a span.UCFHBText{
+	display: none;
+}
+#UCFHBHeader #UCFHBUni_links{
+	margin-left: 75px;
+	float: left;
+}
+#UCFHBHeader #UCFHBUni_links select{
+	width: 130px;
+	border: 1px solid #c0c0c0;
+}
+
+#UCFHBHeader #UCFHBMy_ucf{
+	display: block;
+	background-image: url("https://www.ucf.edu/img/myucf.png");
+	background-repeat: no-repeat;
+	background-position: top left;
+	margin-left: 25px;
+	margin-top: 3px;
+	height: 15px;
+	width: 58px;
+	float: left;
+}
+#UCFHBHeader #UCFHBMy_ucf span.text{
+	display: none;
+}
+
+#UCFHBHeader #UCFHBSearch_ucf{
+	font-family: Arial, sans-serif;
+	color: #333;
+}
+#UCFHBHeader #UCFHBSearch_ucf input.text{
+	border: 1px solid #c0c0c0;
+	width: 100px;
+	padding: 1px 10px;
+	color:#999;
+}
+#UCFHBHeader #UCFHBSearch_ucf input.submit{
+	vertical-align: top;
+	margin-top: 2px;
+}
+#UCFHBHeader #UCFHBSearch_ucf input.submit:hover{
+	cursor: pointer;
+}
+#UCFHBHeader form{
+	display: inline;
+	padding: 0; margin: 0;
+}
+#UCFHBHeader form fieldset{
+	padding: 0; 
+	margin: 0;
+	float:right;
+	border: none;
+	display: inline;
+}
+#UCFHBHeader p{
+	padding: 0; margin: 0;
+	border: none;
+	display: inline;
+}
+#UCFHBHeader div.UCFHBWrapper{
+	width: 974px;
+	margin: 0 auto;
+}
+#UCFHBHeader #expand #myucf{
+	clear:right;
+	color:black;
+	font-weight:bold;
+	font-family:Arial, Helvetica, sans-serif;
+	font-size:12px;
+	background-color:#FFFFFF;
+	border:1px solid #CCCCCC;
+	margin:auto;
+	padding:15px;
+	width:220px;
+}
+#UCFHBHeader #expand #myucf #myUCFsubmit{
+	margin-bottom:0px;
+	margin-left:152px;
+}
+#UCFHBHeader #expand img{
+	margin:auto;
+	padding-bottom:20px;
+	display:block;
+}
+#UCFHBHeader #expand input{
+	margin:0px 0px 5px 5px;	
+}
+#UCFHBHeader #myucfWrapper{
+display:none;
+	width:100%;
+	background-color:#f4f4f4;	
+}
+#UCFHBHeader #expand{
+	width:974px;
+	margin:auto;
+	background-color:#f4f4f4;
+	overflow:auto;
+	padding:10px;
+}
+#UCFHBHeader #mainWrapper{
+	clear:both;
+	width:974px;
+}
+#UCFHBHeader #customizeWrapper{
+	width:100%;
+	background-color:#f4f4f4;	
+	display:none;
+}
+
+/* QuickLinks Customization UI */
+
+#quicklinks-panel
+{
+	width:510px;
+	height:280px;
+	background-color:#fff;
+	padding:15px;
+	border:solid 1px #ccc;
+	margin: auto;
+}
+
+.quicklinks-column
+{
+	float:left;
+	width:200px;
+	
+}
+
+#quicklinks-panel .quicklinks-column h1
+{
+	font-size:12px;
+	color:#333;
+	font-family: Helvetica, Arial, sans-serif;
+	font-weight: bold
+}
+
+.quicklinks-list
+{
+	float:left;
+	height:250px;
+	width:200px;
+	border:solid 1px #ccc;
+	font-size:12px;
+	color:#333;
+}
+
+#quicklinks-actions
+{
+	float:left;
+	width:70px;
+	height:220px;
+	padding:20px;
+}
+
+#quicklinks-actions ul
+{
+	padding:0px;
+	margin:0px;
+}
+
+#quicklinks-actions ul li
+{
+	list-style-type: none;
+}
+
+#quicklinks-actions ul li a
+{
+	width:56px;
+	height:20px;
+	text-decoration: none;
+	border:solid 1px #ccc;
+	display:block;
+	padding:3px;
+	text-align: center;
+	margin:0px;
+	margin-bottom:8px;
+	font-family: Helvetica, Arial, sans-serif;
+	background-color: #eee;
+	color:#666;
+}

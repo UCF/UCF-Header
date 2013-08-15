@@ -1,11 +1,11 @@
 /* Main wrapper */
-#ucfhb { height: 50px; width: 100%; margin: auto; background: #222; }
+#ucfhb { height: 50px; width: 100%; margin: auto; background: #ffc904; position: relative; z-index: 999; }
 
 /* Inner wrap (fixed 940px width) */
 #ucfhb-inner { width: 940px; margin: auto; /*overflow: hidden;*/ height: 50px; position: relative; }
 
 /* The Logo */
-#ucfhb-logo { float: left; padding-top: 10px; width: 291px; }
+#ucfhb-logo { float: left; padding-top: 15px; width: 291px; }
 #ucfhb-logo img { vertical-align: middle; }
 
 /* The right-hand portion of the header */
@@ -26,15 +26,78 @@
 	font-size: 14px; 
 	color: #aa8912; 
 	text-decoration: none; 
-	width: 70px; 
+	width: 85px; 
 	height: 50px; 
 	position: absolute;
 	right: 193px;
 	top: 0;
+	transition: right 0.4s ease-in-out; /* 'move' left */
+	-webkit-transition: right 0.4s ease-in-out;
+	-ms-transition: right 0.4s ease-in-out;
 	z-index: 2;
 	outline: 0;
 }
+#ucfhb-myucf-logo.ucfhb-shiftleft {
+	right: 392px;
+}
 #ucfhb-myucf-logo img { float: left; padding-top: 13px; vertical-align: middle; }
+.ucfhb-icon { font-family: 'Helvetica-Neue', sans-serif; line-height: 14px; }
+#ucfhb-myucf-logo .ucfhb-icon { padding: 19px 0 0 8px; display: block; float: left; }
+#ucfhb-myucf-logo #ucfhb-icon-close { display: none; }
+#ucfhb-myucf-logo.ucfhb-shiftleft #ucfhb-icon-open { display: none; }
+#ucfhb-myucf-logo.ucfhb-shiftleft #ucfhb-icon-close { display: block; }
+
+/* MyUCF: login form */
+#ucfhb-myucf-login { position: absolute; top: 0; right: 5px; width: 380px; height: 50px; z-index: 1; }
+#ucfhb-myucf-login form { 
+	display: block;
+	opacity: 0;
+	visibility: hidden;
+	-webkit-transition: all 0s linear 0s; /* Force immediate hide of form fields */
+	-ms-transition: all 0s linear 0s;
+	transition: all 0s linear 0s;
+	height: 0;
+	width: 0;
+	position: absolute;
+	top: 7px;
+	right: 0;
+}
+#ucfhb-myucf-login form input[type="text"],
+#ucfhb-myucf-login form input[type="password"] { 
+	float: left; 
+	width: 140px; 
+	margin: 4px 2px; 
+	padding: 5px 4px; 
+	font-family: 'Helvetica-Neue', sans-serif;
+	font-size: 12px; 
+	height: 17px;
+}
+#ucfhb-myucf-login form input[type="submit"] { 
+	float: left; 
+	display: block;
+	width: 56px;
+	height: 33px;
+	background: url('../img/assets/myucf-login-gold.png') center center no-repeat;
+	cursor: pointer;
+	text-indent: -9999px;
+	border: 0;
+	padding: 0;
+	margin-left: 5px;
+	margin-top: 3px;
+}
+#ucfhb-myucf-login form input[type="submit"]:hover {
+	background: url('../img/assets/myucf-login-gold-lighter.png') center center no-repeat;
+}
+
+.ucfhb-shiftleft + #ucfhb-myucf-login form { 
+	opacity: 1;
+	visibility: visible;
+	height: auto;
+	width: 380px;
+	-webkit-transition: opacity 0.2s ease-in 0.4s; /* Show the form field after the button has 'moved' left */
+	-ms-transition: opacity 0.2s ease-in 0.4s;
+	transition: opacity 0.2s ease-in 0.4s;
+}
 
 /* Search */
 #ucfhb-search { 
@@ -43,10 +106,13 @@
 	right: 4px;
 	margin-top: 10px; 
 	padding-left: 10px; 
-	border-left: 1px solid #454545;
+	border-left: 1px solid #caa31b;
 	z-index: 2;
 	width: 220px;
 	height: 31px;
+	transition: width 0.4s ease-in-out; /* shrink to the right */
+	-webkit-transition: width 0.4s ease-in-out;
+	-ms-transition: width 0.4s ease-in-out;
 }
 #ucfhb-search form { 
 	width: 220px;
@@ -73,7 +139,46 @@
 	box-shadow: inset 0 2px 3px 0 rgba(0, 0, 0, 0.25), 0px 0px 5px 2px rgba(253, 240, 183, 0.6);
 }
 
-/* Search AutoSuggest */
+#ucfhb-search.ucfhb-shiftleft {
+	width: 32px;
+	overflow: hidden;
+}
+
+#ucfhb-search.ucfhb-shiftleft form { 
+	display: block;
+	width: 0;
+	opacity: 0;
+	height: 0;
+	overflow: hidden;
+	
+	transition: width 0.4s ease-in-out; /* grow back to the left */
+	-webkit-transition: width 0.4s ease-in-out;
+	-ms-transition: width 0.4s ease-in-out;
+}
+
+#ucfhb-search-minimal {
+	display: none;
+	width: 20px;
+	height: 25px;
+	padding: 5px 6px 1px 6px; 
+	border-radius: 5px; 
+	background: #DBAC04;
+	position: absolute;
+	top: 0;
+	-webkit-transition: all 0.2s ease-in 0.4s; /* Show the search button after myucf has 'moved' left */
+	-ms-transition: all 0.2s ease-in 0.4s;
+	transition: all 0.2s ease-in 0.4s;
+}
+#ucfhb-search-minimal img { width: 0; height: 0; vertical-align: top; }
+#ucfhb-search-minimal.ucfhb-shiftleft { 
+	display: block;
+	-webkit-transition: all 0s linear 0s; /* Force immediate hide when myUCF is shifted back right */
+	-ms-transition: all 0s linear 0s;
+	transition: all 0s linear 0s;
+}
+#ucfhb-search-minimal.ucfhb-shiftleft img { width: auto; height: auto; }
+
+
 #ucfhb-search-autocomplete { 
 	display: none;
 	list-style-type: none;

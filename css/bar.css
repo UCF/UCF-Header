@@ -1,11 +1,27 @@
+/**
+ * FULL-WIDTH STYLING
+ **
+
 /* Main wrapper */
 #ucfhb { height: 50px; width: 100%; margin: auto; background: #ffc904; position: relative; z-index: 999; }
 
 /* Inner wrap (fixed 940px width) */
 #ucfhb-inner { width: 940px; margin: auto; /*overflow: hidden;*/ height: 50px; position: relative; }
 
-/* The Logo */
-#ucfhb-logo { float: left; padding-top: 15px; width: 291px; }
+/* The left-hand portion of the header */
+#ucfhb-left { float: left; padding-top: 11px; width: 260px; }
+#ucfhb-mobile-toggle { 
+	display: none;
+	width: 30px;
+	height: 30px;
+	text-indent: -9999px;
+	float: left;
+	margin-left: 5px;
+	background: url('../img/assets/mobile-toggle.png') center center no-repeat;
+}
+#ucfhb-mobile-toggle.ucfhb-mobileslide { background-image: url('../img/assets/mobile-toggle-active.png'); }
+#ucfhb-mobile-toggle:focus { outline: 0; }
+#ucfhb-logo { float: left; padding-top: 4px; }
 #ucfhb-logo img { vertical-align: middle; }
 
 /* The right-hand portion of the header */
@@ -17,7 +33,7 @@
 	position: absolute;
 	top: 0;
 	right: 50px;
-	width: 500px;
+	width: 400px;
 	height: 50px;
 }
 
@@ -38,7 +54,7 @@
 	outline: 0;
 }
 #ucfhb-myucf-logo.ucfhb-shiftleft {
-	right: 392px;
+	right: 292px;
 }
 #ucfhb-myucf-logo img { float: left; padding-top: 13px; vertical-align: middle; }
 .ucfhb-icon { font-family: 'Helvetica-Neue', sans-serif; line-height: 14px; }
@@ -48,12 +64,12 @@
 #ucfhb-myucf-logo.ucfhb-shiftleft #ucfhb-icon-close { display: block; }
 
 /* MyUCF: login form */
-#ucfhb-myucf-login { position: absolute; top: 0; right: 5px; width: 380px; height: 50px; z-index: 1; }
-#ucfhb-myucf-login form { 
+#ucfhb-login { position: absolute; top: 0; right: 5px; width: 380px; height: 50px; z-index: 1; }
+#ucfhb-login > div {
 	display: block;
 	opacity: 0;
 	visibility: hidden;
-	-webkit-transition: all 0s linear 0s; /* Force immediate hide of form fields */
+	-webkit-transition: all 0s linear 0s; /* Force immediate hide of children */
 	-ms-transition: all 0s linear 0s;
 	transition: all 0s linear 0s;
 	height: 0;
@@ -62,42 +78,26 @@
 	top: 7px;
 	right: 0;
 }
-#ucfhb-myucf-login form input[type="text"],
-#ucfhb-myucf-login form input[type="password"] { 
-	float: left; 
-	width: 140px; 
-	margin: 4px 2px; 
-	padding: 5px 4px; 
-	font-family: 'Helvetica-Neue', sans-serif;
-	font-size: 12px; 
-	height: 17px;
-}
-#ucfhb-myucf-login form input[type="submit"] { 
-	float: left; 
-	display: block;
-	width: 56px;
-	height: 33px;
-	background: url('../img/assets/myucf-login-gold.png') center center no-repeat;
-	cursor: pointer;
-	text-indent: -9999px;
-	border: 0;
-	padding: 0;
-	margin-left: 5px;
-	margin-top: 3px;
-}
-#ucfhb-myucf-login form input[type="submit"]:hover {
-	background: url('../img/assets/myucf-login-gold-lighter.png') center center no-repeat;
-}
-
-.ucfhb-shiftleft + #ucfhb-myucf-login form { 
+.ucfhb-shiftleft + #ucfhb-login > div { 
 	opacity: 1;
 	visibility: visible;
 	height: auto;
-	width: 380px;
+	width: 280px;
 	-webkit-transition: opacity 0.2s ease-in 0.4s; /* Show the form field after the button has 'moved' left */
 	-ms-transition: opacity 0.2s ease-in 0.4s;
 	transition: opacity 0.2s ease-in 0.4s;
 }
+#ucfhb-login > div > a {
+	font-size: 12px;
+	font-weight: bold;
+	color: #333;
+	line-height: 36px;
+	padding: 4px 6px;
+	background: #fee485;
+	border-radius: 4px;
+	margin: 0 4px;
+}
+#ucfhb-login > div > a:hover { text-decoration: none; background: #FFFCAF; }
 
 /* Search */
 #ucfhb-search { 
@@ -116,7 +116,8 @@
 }
 #ucfhb-search form { 
 	width: 220px;
-	height: 29px; 	
+	height: 29px;
+	margin-bottom: 0;
 }
 #ucfhb-search form input { 
 	width: 160px; 
@@ -256,4 +257,106 @@
 	line-height: 15px;
 	margin-bottom: 0;
 	margin-top: 2px;
+}
+
+
+/**
+ * RESPONSIVE STYLING
+ * Designed to match Bootstrap 2.x breakpoints
+ **/
+
+/* Tablet size (768-979px) */ 
+@media (max-width: 979px) {
+	#ucfhb-inner { width: 768px; }
+	#ucfhb-right { width: 477px; }
+}
+
+/* Small tablet size (>=767px) */ 
+@media (max-width: 767px) {
+	#ucfhb {
+		height: 100px;
+		margin-top: -50px;
+		transition: margin 0.4s ease-in-out; /* expand down */
+		-webkit-transition: margin 0.4s ease-in-out;
+		-ms-transition: margin 0.4s ease-in-out;
+	}
+	#ucfhb.ucfhb-mobileslide {
+		margin-top: 0;
+	}
+	#ucfhb-inner { width: 100%; height: 150px; }
+	#ucfhb-left { width: 300px; height: 39px; position: absolute; top: 50px; float: none; } /* height accounts for padding-top */
+	#ucfhb-mobile-toggle { display: block; }
+	#ucfhb-logo { padding-left: 10px; }
+
+	/* Shift the right-hand portion to the top of ucfhb-inner */
+	#ucfhb-right {
+		position: absolute;
+		width: 100%;
+		visibility: visible;
+		height: 49px;
+		border-bottom: 1px solid #E5BA1D;
+		top: 0;
+		float: none;
+	}
+	#ucfhb-myucf,
+	#ucfhb-search {
+		width: 50%;
+		position: static;
+		float: left;
+		padding: 0;
+		margin: 10px 0 0 0;
+		right: 0;
+		left: 0;
+		border: 0;
+	}
+	#ucfhb-myucf { height: auto; overflow: auto; }
+	#ucfhb-myucf-logo { display: none; }
+	#ucfhb-login {
+		position: static;
+		padding: 0;
+		width: auto;
+		height: auto;
+		text-align: center;
+	}
+	#ucfhb-login > div {
+		position: static;
+		height: auto;
+		width: auto;
+		visibility: visible;
+		opacity: 1;
+		left: auto;
+		right: auto;
+		overflow: auto;
+	}
+	#ucfhb-login > div > a { line-height: 30px; margin: 0; }
+	#ucfhb-search { height: 29px; }
+	#ucfhb-search form { padding: 0 10px; margin: auto; }
+
+	/* Fixes for screen resizing */
+	.ucfhb-shiftleft + #ucfhb-login > div { width: auto; }
+	#ucfhb-search.ucfhb-shiftleft { overflow: visible; width: 50%; }
+	#ucfhb-search.ucfhb-shiftleft form {
+		overflow: visible;
+		opacity: 1;
+		width: 220px !important;
+		float: none;
+		left: auto;
+		right: auto;
+	}
+	#ucfhb-search-minimal.ucfhb-shiftleft { display: none; }
+}
+
+/* Phone size (>=480px) */
+@media (max-width: 480px) {
+	#ucfhb {
+		height: 150px;
+		margin-top: -100px;
+	}
+	#ucfhb-left { top: 100px; } /* height accounts for padding-top */
+	#ucfhb-right { height: 99px; }
+	#ucfhb-myucf,
+	#ucfhb-search {
+		margin-top: 15px;
+		width: 100% !important;
+	}
 }

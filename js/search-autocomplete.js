@@ -1,32 +1,4 @@
 window.onload = function() {
-	/* University Header MyUCF Sliding functionality */
-	var myUCFBtn = document.getElementById('ucfhb-myucf-logo'),
-		myUCFWrapper = document.getElementById('ucfhb-myucf'),
-		searchbar = document.getElementById('ucfhb-search'),
-		searchMinimal = document.getElementById('ucfhb-search-minimal'),
-		searchAutocomplete = document.getElementById('ucfhb-search-autocomplete'),
-		elemArray = [myUCFBtn, searchbar, searchMinimal, searchAutocomplete];
-	
-	var toggleClasses = function(elems, newClassName) {
-		var length = elems.length;
-		for (var i=0; i<length; i++) {
-			elems[i].className = newClassName;
-		}
-	}
-	
-	myUCFBtn.onclick = function() {
-		if (myUCFBtn.className == 'ucfhb-shiftleft') {
-			toggleClasses(elemArray, '');
-		}
-		else {
-			toggleClasses(elemArray, 'ucfhb-shiftleft');
-		}
-	}
-	searchMinimal.onclick = function() {
-		toggleClasses(elemArray, '');
-	}
-	
-
 	/* University Header Auto-Suggest Search Result functionality */
 	var searchForm 		= document.getElementById('ucfhb-search-form'),
 		searchField 	= document.getElementById('ucfhb-search-field'),

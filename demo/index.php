@@ -38,7 +38,7 @@
 		</div>
 	</div>
 	
-	<p style="width: 100%; display: block;">
+	<p style="width: 100%; display: block; overflow-x:hidden;">
 		<img class="screenshot active" id="home" src="../img/ucf-edu-nonav.jpg" />
 		<img class="screenshot" id="research" src="../img/ucf-edu-research.jpg" />
 		<img class="screenshot" id="directories" src="../img/directories.jpg" />

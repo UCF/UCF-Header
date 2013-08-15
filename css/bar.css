@@ -58,7 +58,7 @@
 }
 #ucfhb-myucf-logo img { float: left; padding-top: 13px; vertical-align: middle; }
 .ucfhb-icon { font-family: 'Helvetica-Neue', sans-serif; line-height: 14px; }
-#ucfhb-myucf-logo .ucfhb-icon { padding: 19px 0 0 8px; display: block; float: left; }
+#ucfhb-myucf-logo .ucfhb-icon { padding: 19px 0 0 5px; display: block; float: left; }
 #ucfhb-myucf-logo #ucfhb-icon-close { display: none; }
 #ucfhb-myucf-logo.ucfhb-shiftleft #ucfhb-icon-open { display: none; }
 #ucfhb-myucf-logo.ucfhb-shiftleft #ucfhb-icon-close { display: block; }

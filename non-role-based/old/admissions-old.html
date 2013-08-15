@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>University Header Prototyping</title>
+
+<style type="text/css">
+	@import url('css/reset.css');
+	
+	em { font-style: italic; }
+	p { text-align: center; }
+	#meta-nav { position: fixed; bottom: 20px; background: rgba(255,255,255,0.8); width: 100%; padding: 20px 0; }
+	#meta-nav a { font-weight: bold; }
+	
+	/* Main wrapper */
+	#ucfhb { height: 50px; width: 1410px; margin: auto; background: #222; }
+	
+	/* Inner wrap (fixed 940px width) */
+	#ucfhb-inner { width: 940px; margin: auto; overflow: hidden; }
+	
+	/* The Logo */
+	#ucfhb-logo { float: left; padding-top: 10px; width: 291px; }
+
+	/* The right-hand portion of the header */
+	#ucfhb-right { float: right; position: relative; width: 600px; }
+	
+	/* MyUCF: button */
+	#ucfhb-myucf { 
+		float: left; 
+		position: absolute;
+		top: 0;
+		right: 50px;
+		width: 500px;
+		height: 50px;
+	}
+	
+	#ucfhb-myucf-logo { 
+		display: block; 
+		font-size: 14px; 
+		color: #626262; 
+		text-decoration: none; 
+		width: 85px; 
+		height: 50px; 
+		position: absolute;
+		right: 193px;
+		top: 0;
+		transition: right 0.4s ease-in-out; /* 'move' left */
+    	-webkit-transition: right 0.4s ease-in-out;
+    	-ms-transition: right 0.4s ease-in-out;
+		z-index: 2;
+	}
+	#ucfhb-myucf-logo.ucfhb-shiftleft {
+		right: 392px;
+	}
+	#ucfhb-myucf-logo img { float: left; padding-top: 13px; }
+	#ucfhb-myucf-logo .ucfhb-icon { padding: 19px 0 0 8px; display: block; float: left; }
+	
+	/* MyUCF: login form */
+	#ucfhb-myucf-login { position: absolute; top: 0; right: 5px; width: 380px; height: 50px; z-index: 1; }
+	#ucfhb-myucf-login form { 
+		display: block;
+		opacity: 0;
+		visibility: hidden;
+		-webkit-transition: all 0s linear 0s; /* Force immediate hide of form fields */
+		-ms-transition: all 0s linear 0s;
+		transition: all 0s linear 0s;
+		height: 0;
+		width: 0;
+		position: absolute;
+		top: 7px;
+		right: 0;
+	}
+	#ucfhb-myucf-login form input[type="text"] { 
+		float: left; 
+		width: 140px; 
+		margin: 4px 2px; 
+		padding: 5px 4px; 
+		font-family: 'Helvetica-Neue', sans-serif;
+		font-size: 12px; 
+	}
+	#ucfhb-myucf-login form input[type="submit"] { 
+		float: left; 
+		display: block;
+		width: 56px;
+		height: 33px;
+		background: url('img/assets/myucf-login-gold.png') center center no-repeat;
+		cursor: pointer;
+		text-indent: -9999px;
+		border: 0;
+		padding: 0;
+		margin-left: 5px;
+		margin-top: 3px;
+	}
+	
+	.ucfhb-shiftleft + #ucfhb-myucf-login form { 
+		opacity: 1;
+		visibility: visible;
+		height: auto;
+		width: 380px;
+		-webkit-transition: opacity 0.2s ease-in 0.4s; /* Show the form field after the button has 'moved' left */
+		-ms-transition: opacity 0.2s ease-in 0.4s;
+		transition: opacity 0.2s ease-in 0.4s;
+	}
+	
+	/* Search */
+	#ucfhb-search { 
+		position: absolute;
+		top: 0;
+		right: 4px;
+		margin-top: 10px; 
+		padding-left: 10px; 
+		border-left: 1px solid #454545;
+		z-index: 2;
+		width: 220px;
+		transition: width 0.4s ease-in-out; /* shrink to the right */
+    	-webkit-transition: width 0.4s ease-in-out;
+    	-ms-transition: width 0.4s ease-in-out;
+	}
+	#ucfhb-search form { 
+		width: 220px;
+		height: 29px; 	
+	}
+	#ucfhb-search form input { 
+		width: 160px; 
+		height: 25px; 
+		border-radius: 30px; 
+		border: 0; 
+		padding: 2px 45px 2px 15px; 
+		font-family: 'Helvetica-Neue', sans-serif;
+		font-size: 13px;
+		letter-spacing: 0.1px;
+		background: #fff url('img/assets/search.png') 188px center no-repeat;
+		-webkit-appearance: none;
+		box-shadow: inset 0 2px 3px 0 rgba(0, 0, 0, 0.25), 0 0 0 0 transparent; 
+		transition: all 0.2s ease-in-out; /* glow effect */
+    	-webkit-transition: all 0.2s ease-in-out;
+    	-ms-transition: all 0.2s ease-in-out;
+	}
+	#ucfhb-search form input:focus {
+		outline: none;
+		box-shadow: inset 0 2px 3px 0 rgba(0, 0, 0, 0.25), 0px 0px 5px 2px rgba(253, 240, 183, 0.6);
+	}
+	
+	#ucfhb-search.ucfhb-shiftleft {
+		width: 32px;
+		overflow: hidden;
+	}
+	
+	#ucfhb-search.ucfhb-shiftleft form { 
+		display: block;
+		width: 0;
+		opacity: 0;
+		height: 0;
+		overflow: hidden;
+		
+		transition: width 0.4s ease-in-out; /* grow back to the left */
+    	-webkit-transition: width 0.4s ease-in-out;
+    	-ms-transition: width 0.4s ease-in-out;
+	}
+	
+	#ucfhb-search-minimal {
+		display: none;
+		width: 20px;
+		height: 25px;
+		padding: 5px 6px 1px 6px; 
+		border-radius: 5px; 
+		background: #424242;
+		-webkit-transition: all 0.2s ease-in 0.4s; /* Show the search button after myucf has 'moved' left */
+		-ms-transition: all 0.2s ease-in 0.4s;
+		transition: all 0.2s ease-in 0.4s;
+	}
+	#ucfhb-search-minimal img { width: 0; height: 0; }
+	#ucfhb-search-minimal.ucfhb-shiftleft { 
+		display: block;
+		-webkit-transition: all 0s linear 0s; /* Force immediate hide when myUCF is shifted back right */
+		-ms-transition: all 0s linear 0s;
+		transition: all 0s linear 0s;
+	}
+	#ucfhb-search-minimal.ucfhb-shiftleft img { width: auto; height: auto; }
+	
+	/* Other stuff */
+	.ucfhb-icon { font-family: 'Helvetica-Neue', sans-serif; }
+
+	
+</style>
+	
+	
+<script>	
+	window.onload = function() {
+		var myUCFBtn = document.getElementById('ucfhb-myucf-logo'),
+			myUCFWrapper = document.getElementById('ucfhb-myucf'),
+			searchbar = document.getElementById('ucfhb-search');
+			searchMinimal = document.getElementById('ucfhb-search-minimal');
+		
+		myUCFBtn.onclick = function() {
+			if (myUCFBtn.className == 'ucfhb-shiftleft') {
+				myUCFBtn.className = '';
+				searchbar.className = '';
+				searchMinimal.className = '';
+			}
+			else {
+				myUCFBtn.className = 'ucfhb-shiftleft';
+				searchbar.className = 'ucfhb-shiftleft';
+				searchMinimal.className = 'ucfhb-shiftleft';
+			}
+		}
+		searchMinimal.onclick = function() {
+			myUCFBtn.className = '';
+			searchbar.className = '';
+			searchMinimal.className = '';
+		}
+	}
+
+</script>
+
+</head>
+
+<body>
+
+	<div id="ucfhb">
+		<div id="ucfhb-inner">
+			<div id="ucfhb-logo">
+				<a href="http://www.ucf.edu"><img src="img/assets/ucflogo-gold-flourish.png" alt="University of Central Florida" title="University of Central Florida" /></a>
+			</div>
+			<div id="ucfhb-right">
+				<div id="ucfhb-myucf">
+					<a id="ucfhb-myucf-logo" href="#"><img src="img/assets/myucf-goldtext.png" /> <span class="ucfhb-icon">+</span></a>
+					<div id="ucfhb-myucf-login">
+						<form>
+							<input type="text" placeholder="Your PID" />
+							<input type="text" placeholder="PID Password" />
+							<input type="submit" value="Log In" />
+						</form>
+					</div>
+				</div>
+				<div id="ucfhb-search">
+					<form>
+						<input type="text" placeholder="Search UCF" />
+					</form>
+					<a id="ucfhb-search-minimal" href="#"><img src="img/assets/search.png" alt="Search" title="Search" /></a>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<p style="width: 100%; display: block;"><img src="img/admissions.jpg" /></p>
+	
+	<br/><br/><br/>
+	
+	<p id="meta-nav"><em>Jump to Prototype</em>:  <a href="index.html">New UCF.edu (role-based header)</a> | <a href="new-edu-simple.html">New UCF.edu (simple header)</a> | <a href="admissions.html">Admissions (role-based black header)</a> | Admissions (simple black header)</p>
+	<br/>
+
+</body>
+</html>

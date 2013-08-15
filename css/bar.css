@@ -33,7 +33,7 @@
 	position: absolute;
 	top: 0;
 	right: 50px;
-	width: 400px;
+	width: 360px;
 	height: 50px;
 }
 
@@ -54,7 +54,7 @@
 	outline: 0;
 }
 #ucfhb-myucf-logo.ucfhb-shiftleft {
-	right: 292px;
+	right: 252px;
 }
 #ucfhb-myucf-logo img { float: left; padding-top: 13px; vertical-align: middle; }
 .ucfhb-icon { font-family: 'Helvetica-Neue', sans-serif; line-height: 14px; }
@@ -64,7 +64,7 @@
 #ucfhb-myucf-logo.ucfhb-shiftleft #ucfhb-icon-close { display: block; }
 
 /* MyUCF: login form */
-#ucfhb-login { position: absolute; top: 0; right: 5px; width: 380px; height: 50px; z-index: 1; }
+#ucfhb-login { position: absolute; top: 0; right: 5px; width: 340px; height: 50px; z-index: 1; }
 #ucfhb-login > div {
 	display: block;
 	opacity: 0;
@@ -82,7 +82,7 @@
 	opacity: 1;
 	visibility: visible;
 	height: auto;
-	width: 280px;
+	width: 240px;
 	-webkit-transition: opacity 0.2s ease-in 0.4s; /* Show the form field after the button has 'moved' left */
 	-ms-transition: opacity 0.2s ease-in 0.4s;
 	transition: opacity 0.2s ease-in 0.4s;
@@ -95,7 +95,7 @@
 	padding: 4px 6px;
 	background: #fee485;
 	border-radius: 4px;
-	margin: 0 4px;
+	margin: 0 2px;
 }
 #ucfhb-login > div > a:hover { text-decoration: none; background: #FFFCAF; }
 

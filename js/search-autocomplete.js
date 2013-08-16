@@ -1,41 +1,46 @@
-window.onload = function() {
-	/* University Header Auto-Suggest Search Result functionality */
-	var autocompleteCloseBtn	= document.getElementById('ucfhb-search-autocomplete-close'),
-		autocompleteList		= document.getElementById('ucfhb-search-autocomplete'),
-		searchForm				= document.getElementById('ucfhb-search-form'),
-		searchField				= document.getElementById('ucfhb-search-field'),
-		searchService			= searchForm.getAttribute('data-autosearch-url'),
-		q						= encodeURIComponent(searchField.value),
-		query					= searchService + q;
-	  
-	// Load in a search query:  
-	function loadSearchContent(url, callback) {  		
+/* University Header Auto-Suggest Search Result functionality */
+function autocomplete(acCloseBtn, acList, searchForm, searchField, searchService) {
+	var self = this;
+
+	this.autocompleteCloseBtn	= acCloseBtn;
+	this.autocompleteList		= acList;
+	this.searchForm				= searchForm;
+	this.searchField			= searchField;
+	this.searchService			= searchService;
+
+	this.q						= encodeURIComponent(this.searchField.value);
+	this.query					= this.searchService + this.q;
+
+	var timer;
+
+	// Load in a search query (private):  
+	function loadSearchContent(url, callback) {
 		var xhr = new XMLHttpRequest();
-		xhr.onreadystatechange = ensureReadiness;  
-		  
-		function ensureReadiness() {  
-			if(xhr.readyState < 4) {  
-				return;  
-			}  
-			if(xhr.status !== 200) {  
-				return;  
+		xhr.onreadystatechange = ensureReadiness;
+	
+		function ensureReadiness() {
+			if(xhr.readyState < 4) {
+				return;
 			}
-			// all is well    
-			if(xhr.readyState === 4) {  
-				callback(xhr);  
-			}             
-		}  
-		  
-		xhr.open('GET', url, true);  
+			if(xhr.status !== 200) {
+				return;
+			}
+			// all is well
+			if(xhr.readyState === 4) {
+				callback(xhr);
+			}
+		}
+ 
+		xhr.open('GET', url, true);
 		xhr.send('');
 	}
 
 	// Delete existing results in an autocomplete list
-	function clearAutocompleteResults() {
-		while (autocompleteList.hasChildNodes()) {
-			autocompleteList.removeChild(autocompleteList.lastChild);
+	this.clearAutocompleteResults = function() {
+		while (self.autocompleteList.hasChildNodes()) {
+			self.autocompleteList.removeChild(self.autocompleteList.lastChild);
 		}
-	}
+	};
 	
 	// Debug feed load:
 	//loadSearchContent(query, function(xhr) {  
@@ -43,9 +48,9 @@ window.onload = function() {
 	//}); 
 	
 	// Output a search query's results:
-	function outputResults(url, q) {
+	this.outputResults = function(url, q) {
 		// First, clear existing results
-		clearAutocompleteResults();
+		self.clearAutocompleteResults();
 		
 		// Make sure there is actually a query to search for
 		if (q !== '') {
@@ -56,7 +61,7 @@ window.onload = function() {
 				// If data was returned, append the results to the
 				// autocomplete <ul>
 				if (json.results !== null && json.results.length > 0) {
-					autocompleteList.className = 'search-is-active';
+					self.autocompleteList.className = 'search-is-active';
 					
 					for (i = 0; i < json.results.length; i++) {
 						// Note: trim() is unsupported before IE9!!
@@ -66,7 +71,7 @@ window.onload = function() {
 							
 						var listItem = document.createElement('li');
 						listItem.innerHTML = name + org + phone;
-						autocompleteList.appendChild(listItem);
+						self.autocompleteList.appendChild(listItem);
 					}
 				}
 			});
@@ -74,14 +79,13 @@ window.onload = function() {
 		// If there is no query, make sure the autocomplete
 		// list is not visible
 		else {
-			autocompleteList.className = '';
+			self.autocompleteList.className = '';
 		}
-	}
+	};
 	
 	// Perform outputResults() when a query is
 	// being typed in the search bar:
-	var timer;
-	function searchOnKeyUp(searchService, q, query) {
+	this.searchOnKeyUp = function(searchService, q, query) {
 		clearTimeout(timer);
 		
 		if (q != encodeURIComponent(searchField.value)) {
@@ -90,26 +94,32 @@ window.onload = function() {
 		if (query != searchService + q) {
 			query = searchService + q;
 		}
-		
-		//console.log('q is: ' + q);
-		//console.log('query is: ' + query);
-		
-		timer = setTimeout(function (){ 
-		
-			//console.log('query in setTimeout is: ' + query);
-		
-			outputResults(query, q);
-		}, 1000);
-	}
+		timer = setTimeout(function (){
+			self.outputResults(query, q);
+		}, 600);
+	};
 	
-	// Handle the onkeyup event for autosearching:
-	searchForm.onkeyup = function() {
-		searchOnKeyUp(searchService, q, query);
+	// Listen for events (keyup in searchfield, close btn click)
+	this.handleEvents = function() {
+		// Handle the onkeyup event for autosearching:
+		self.searchForm.onkeyup = function() {
+			self.searchOnKeyUp(self.searchService, self.q, self.query);
+		};
+		// Handle autocomplete close btn click
+		self.autocompleteCloseBtn.onclick = function() {
+			self.clearAutocompleteResults();
+			self.autocompleteList.className = '';
+		};
 	};
+}
 
-	// Handle autocomplete close btn click
-	autocompleteCloseBtn.onclick = function() {
-		clearAutocompleteResults();
-		autocompleteList.className = '';
-	};
+window.onload = function() {
+	var ucfhbAcCloseBtn				= document.getElementById('ucfhb-search-autocomplete-close'),
+		ucfhbAcList					= document.getElementById('ucfhb-search-autocomplete'),
+		ucfhbSearchForm				= document.getElementById('ucfhb-search-form'),
+		ucfhbSearchField			= document.getElementById('ucfhb-search-field'),
+		ucfhbSearchService			= ucfhbSearchForm.getAttribute('data-autosearch-url');
+
+	var ucfhbAutocomplete = new autocomplete(ucfhbAcCloseBtn, ucfhbAcList, ucfhbSearchForm, ucfhbSearchField, ucfhbSearchService);
+	ucfhbAutocomplete.handleEvents();
 };

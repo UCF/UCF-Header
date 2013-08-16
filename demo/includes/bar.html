@@ -3,15 +3,15 @@
 		<div id="ucfhb-left">
 			<a id="ucfhb-mobile-toggle" href="#">Open Mobile Menu</a>
 			<div id="ucfhb-logo">
-				<a href="#"><img src="../img/assets/ucflogo-black-flourish.png" alt="University of Central Florida" title="University of Central Florida" /></a>
+				<a href="#"><img src="../img/assets/ucflogo-black-r.png" alt="University of Central Florida" title="University of Central Florida" /></a>
 			</div>
 		</div>
 		<div id="ucfhb-right">
 			<div id="ucfhb-myucf">
 				<a id="ucfhb-myucf-logo" href="#">
-					<img src="../img/assets/signon-blacktext.png" alt="Sign in to UCF online" title="Sign in to UCF online" />
-					 <span class="ucfhb-icon" id="ucfhb-icon-open">+</span>
-					 <span class="ucfhb-icon" id="ucfhb-icon-close">&raquo;</span>
+					<img src="../img/assets/signon-blacktext-r.png" alt="Sign in to UCF online" title="Sign in to UCF online" />
+					<span class="ucfhb-icon" id="ucfhb-icon-open">+</span>
+					<span class="ucfhb-icon" id="ucfhb-icon-close">&raquo;</span>
 				</a>
 				<div id="ucfhb-login">
 					<div>
@@ -23,11 +23,13 @@
 			</div>
 			<div id="ucfhb-search">
 				<form action="http://google.cc.ucf.edu/search" data-autosearch-url="../../../people/service.php?limit=5&search=" method="get" name="ucfhb-search-form" id="ucfhb-search-form" autocomplete="off">
+					<label for="ucfhb-search-field">Search UCF</label>
 					<input type="hidden" name="client" value="default_frontend" />
 					<input type="hidden" name="proxystylesheet" value="UCF_Main" />
-					<input type="text" name="q" id="ucfhb-search-field" placeholder="Search UCF" />
+					<input type="text" name="q" id="ucfhb-search-field" placeholder="Search UCF" autocomplete="off" autocapitalize="off" />
+					<input type="submit" value="Go" />
 				</form>
-				<a id="ucfhb-search-minimal" href="#"><img src="../img/assets/search.png" alt="Search" title="Search" /></a>
+				<a id="ucfhb-search-minimal" href="#"><img src="../img/assets/search-r.png" alt="Search" title="Search" /></a>
 			</div>
 		</div>
 		<ul id="ucfhb-search-autocomplete">
@@ -57,5 +59,6 @@
 			</li>
 			-->
 		</ul>
+		<a id="ucfhb-search-autocomplete-close" href="#" alt="Close autocomplete results" title="Close autocomplete results">&times;</a>
 	</div>
 </div>

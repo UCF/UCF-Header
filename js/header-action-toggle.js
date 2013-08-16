@@ -10,7 +10,7 @@ document.ready = function() {
 		searchAutocomplete = document.getElementById('ucfhb-search-autocomplete'),
 
 		shiftLeftElems = [myUCFBtn, searchbar, searchMinimal, searchAutocomplete],
-		mobileToggleElems = [barWrapper, mobileToggle, ucfLogo, barRight];
+		mobileToggleElems = [barWrapper, mobileToggle, ucfLogo, barRight, searchAutocomplete];
 
 	/* Function to toggle classes on an array of elements */
 	var toggleClasses = function(elems, newClassName) {

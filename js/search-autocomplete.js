@@ -54,8 +54,10 @@ function autocomplete(acCloseBtn, acList, searchForm, searchField, searchService
 		
 		// Make sure there is actually a query to search for
 		if (q !== '') {
+			// Make sure our query is URL encoded
+			q = encodeURIComponent(q);
+
 			loadSearchContent(url, function(xhr) {
-				//alert('test');
 				var json = JSON.parse(xhr.responseText);
 				
 				// If data was returned, append the results to the
@@ -64,7 +66,7 @@ function autocomplete(acCloseBtn, acList, searchForm, searchField, searchService
 					self.autocompleteList.className = 'search-is-active';
 					
 					for (i = 0; i < json.results.length; i++) {
-						// Note: trim() is unsupported before IE9!!
+						// TODO: trim() is unsupported before IE9!!
 						var name 	= json.results[i].name != null 			? '<span class="ucfhb-search-autocomplete-name">' + json.results[i].name.trim() + '</span>' : '',
 							org 	= json.results[i].organization != null 	? '<span class="ucfhb-search-autocomplete-org">' + json.results[i].organization + '</span>' : '',
 							phone 	= json.results[i].phone != null 		? '<span class="ucfhb-search-autocomplete-phone">' + json.results[i].phone + '</span>' : '';
@@ -73,6 +75,11 @@ function autocomplete(acCloseBtn, acList, searchForm, searchField, searchService
 						listItem.innerHTML = name + org + phone;
 						self.autocompleteList.appendChild(listItem);
 					}
+					// Append a link to Google's search results @ bottom of list
+					var viewMoreLi = document.createElement('li');
+					var viewMoreLink = self.searchForm.getAttribute('data-action-url') + q;
+					viewMoreLi.innerHTML = '<a href="' + viewMoreLink + '">View More Results &raquo;</a>';
+					self.autocompleteList.appendChild(viewMoreLi);
 				}
 			});
 		}

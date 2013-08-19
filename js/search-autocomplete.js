@@ -87,7 +87,7 @@ function autocomplete(acCloseBtn, acList, searchForm, searchField, searchService
 		// Make sure there is actually a query to search for
 		if (q !== '') {
 			q = q.toLowerCase();
-			
+
 			// Search against keyterm list first.
 			if (self.keyterms.terms) {
 				i = 0;

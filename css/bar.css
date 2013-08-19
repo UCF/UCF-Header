@@ -245,7 +245,7 @@
 	padding: 4px 35px 4px 8px;
 	border-top: 1px solid #ddd;
 }
-#ucfhb-search-autocomplete li:first-child { border-top: 0; margin-top: -10px; }
+#ucfhb-search-autocomplete li:first-child { border-top: 0; margin-top: -10px; *margin-top: 0; }
 #ucfhb-search-autocomplete li:hover {
 	background: #efefef;
 }

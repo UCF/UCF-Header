@@ -1,0 +1,20 @@
+{
+	"terms": {
+		"t_1": ["housing", "dorm", "apartment", "on-campus living", "residence", "nike", "apollo", "libra", "tower", "neptune", "lake claire"],
+		"t_2": ["test"],
+		"t_3": ["another test"]
+	},
+	"matches": {
+		"m_1": {
+			"name": "Housing and Residence Life",
+			"url": "http://housing.ucf.edu",
+			"icon": ""
+		},
+		"m_2": {
+
+		},
+		"m_3": {
+
+		}
+	}
+}

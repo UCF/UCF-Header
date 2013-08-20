@@ -10,23 +10,25 @@ if(!Array.prototype.indexOf){Array.prototype.indexOf=function(e){"use strict";if
 /**
  * University Header Auto-Suggest Search Result functionality 
  **/
-function autocomplete(acCloseBtn, acList, searchForm, searchField, searchService) {
+function autocomplete(acCloseBtn, acList, searchForm, searchField, searchService, searchAction) {
 	var self = this;
 
-	this.autocompleteCloseBtn	= acCloseBtn;
-	this.autocompleteList		= acList;
-	this.searchForm				= searchForm;
-	this.searchField			= searchField;
-	this.searchService			= searchService;
-	this.keyterms				= null;
-	this.keytermsUrl			= '../js/keyterms.json';
+	this.autocompleteCloseBtn	= acCloseBtn;				// <a> element in corner of autocomplete results
+	this.autocompleteList		= acList;					// Autocomplete <ul> element
+	this.searchForm				= searchForm;				// Search <form> element
+	this.searchField			= searchField;				// Search <input> element
+	this.searchService			= searchService;			// URL of the search service queried for autocomplete results (URL to UCF search service)
+	this.searchAction			= searchAction;				// 'data-action-url' attr of search <form> element; should match form 'action' attr. (URL to Google Search Appliance)
+	this.keyterms				= null;						// JSON populated by self.getKeytermList
+	this.keytermsUrl			= '../js/keyterms.json';	// URL of JSON object of keyterms
 
-	this.q						= encodeURIComponent(this.searchField.value);
-	this.query					= this.searchService + this.q;
+	this.q						= encodeURIComponent(this.searchField.value);	// Search <input> element's value
+	this.query					= this.searchService + this.q;					// Combined search service URL for a given query 'q'
 
-	var timer;
+	var timer;	// setTimeout timer value used by self.searchOnKeyUp
 
-	// Load in a search query (private):  
+
+	// Load in a search query via Ajax (private):  
 	function loadSearchContent(url, callback) {
 		var xhr = new XMLHttpRequest();
 		xhr.onreadystatechange = ensureReadiness;
@@ -92,16 +94,26 @@ function autocomplete(acCloseBtn, acList, searchForm, searchField, searchService
 			if (self.keyterms.terms) {
 				i = 0;
 				var terms = self.keyterms.terms,
-					matches = self.keyterms.matches;
+					matches = self.keyterms.matches,
+					matchesFound = false;
+
 				for (i = 0; i < countObjectProperties(terms); i++) {
 					var termKey = "t_" + (i + 1),
 						matchKey = "m_" + (i + 1);
+
 					if (terms[termKey].indexOf(q) > -1) {
+						matchesFound = true;
+
 						self.autocompleteList.className = 'search-is-active';
-						var name = matches[matchKey].name !== null	? '<span class="ucfhb-search-autocomplete-name">' + matches[matchKey].name.trim() + '</span>' : '',
-							link = matches[matchKey].url !== null	? '<a class="ucfhb-search-autocomplete-url" href="' + matches[matchKey].url.trim() + '">' + matches[matchKey].url.trim() + '</a>' : '';
+						q = encodeURIComponent(q);
+
+						var name = matches[matchKey].name !== null ? matches[matchKey].name.trim() : '',
+							nameSpan = '<span class="ucfhb-search-autocomplete-name">' + name + '</span>',
+							resultUrl = matches[matchKey].url !== '' ? matches[matchKey].url.trim() : self.searchAction + q;
+
 						var listItem = document.createElement('li');
-						listItem.innerHTML = name + link;
+						listItem.innerHTML = '<a href="' + resultUrl + '">' + nameSpan + '</a>';
+
 						if (terms[termKey][i] !== q) {
 							self.autocompleteList.insertBefore(listItem, self.autocompleteList.firstChild);
 						}
@@ -110,48 +122,52 @@ function autocomplete(acCloseBtn, acList, searchForm, searchField, searchService
 						}
 					}
 				}
-			}
 
-			// Search the search service if no keyterm results
-			if (self.autocompleteList.hasChildNodes() === false) {
-				loadSearchContent(url, function(xhr) {
-					var json = JSON.parse(xhr.responseText);
-					
-					// If data was returned, append the results to the
-					// autocomplete <ul>
-					if (json.results !== null && json.results.length > 0) {
-						self.autocompleteList.className = 'search-is-active';
-						i = 0;
-						for (i = 0; i < json.results.length; i++) {
-							// TODO: trim() is unsupported before IE9!!
-							var name	= json.results[i].name !== null				? '<span class="ucfhb-search-autocomplete-name">' + json.results[i].name.trim() + '</span>' : '',
-								org		= json.results[i].organization !== null		? '<span class="ucfhb-search-autocomplete-org">' + json.results[i].organization.trim() + '</span>' : '',
-								phone	= json.results[i].phone !== null			? '<span class="ucfhb-search-autocomplete-phone">' + json.results[i].phone.trim() + '</span>' : '';
-								
-							var listItem = document.createElement('li');
-							listItem.innerHTML = name + org + phone;
-							self.autocompleteList.appendChild(listItem);
+				if (matchesFound === true) {
+					// Add 'View More Results link'
+					q = encodeURIComponent(q);
+					var viewMoreLi = document.createElement('li');
+					var viewMoreLink = self.searchAction + q;
+					viewMoreLi.innerHTML = '<a href="' + viewMoreLink + '">View More Results &raquo;</a>';
+					viewMoreLi.className = 'ucfhb-search-autocomplete-more';
+					self.autocompleteList.appendChild(viewMoreLi);
+				}
+				// Try search service results if no keyterms are found
+				else {
+					loadSearchContent(url, function(xhr) {
+						var json = JSON.parse(xhr.responseText);
+						// If data was returned, append the results to the
+						// autocomplete <ul>
+						if (json.results !== null && json.results.length > 0) {
+							self.autocompleteList.className = 'search-is-active';
+							i = 0;
+							for (i = 0; i < json.results.length; i++) {
+								var name = json.results[i].name !== null ? json.results[i].name.trim() : '',
+									nameSpan = '<span class="ucfhb-search-autocomplete-name">' + name + '</span>',
+									orgSpan = json.results[i].organization !== null ? '<span class="ucfhb-search-autocomplete-org">' + json.results[i].organization.trim() + '</span>' : '',
+									resultUrl = self.searchAction + encodeURIComponent(name);
+									
+								var listItem = document.createElement('li');
+								listItem.innerHTML = '<a href="' + resultUrl + '">' + nameSpan + orgSpan + '</a>';
+								self.autocompleteList.appendChild(listItem);
+							}
+							// Add 'View More Results link'
+							q = encodeURIComponent(q);
+							var viewMoreLi = document.createElement('li');
+							var viewMoreLink = self.searchAction + q;
+							viewMoreLi.innerHTML = '<a href="' + viewMoreLink + '">View More Results &raquo;</a>';
+							viewMoreLi.className = 'ucfhb-search-autocomplete-more';
+							self.autocompleteList.appendChild(viewMoreLi);
 						}
-					}
-				});
+						else {
+							// Make sure we hide the list if it's already visible and no
+							// results are returned
+							self.autocompleteList.className = '';
+						}
+					});
+				}
 			}
 
-			// Append a link to Google's search results @ bottom of list
-			// if either search attempt returned results
-			if (self.autocompleteList.hasChildNodes() === true) {
-				// Make sure our query is URL encoded
-				q = encodeURIComponent(q);
-
-				var viewMoreLi = document.createElement('li');
-				var viewMoreLink = self.searchForm.getAttribute('data-action-url') + q;
-				viewMoreLi.innerHTML = '<a href="' + viewMoreLink + '">View More Results &raquo;</a>';
-				self.autocompleteList.appendChild(viewMoreLi);
-			}
-			// Make sure we hide the list if it's already visible and no
-			// results are returned
-			else {
-				self.autocompleteList.className = '';
-			}
 		}
 		// If there is no query, make sure the autocomplete
 		// list is not visible
@@ -197,8 +213,9 @@ window.onload = function() {
 		ucfhbAcList					= document.getElementById('ucfhb-search-autocomplete'),
 		ucfhbSearchForm				= document.getElementById('ucfhb-search-form'),
 		ucfhbSearchField			= document.getElementById('ucfhb-search-field'),
-		ucfhbSearchService			= ucfhbSearchForm.getAttribute('data-autosearch-url');
+		ucfhbSearchService			= ucfhbSearchForm.getAttribute('data-autosearch-url'),
+		ucfhbSearchAction			= ucfhbSearchForm.getAttribute('data-action-url');
 
-	var ucfhbAutocomplete = new autocomplete(ucfhbAcCloseBtn, ucfhbAcList, ucfhbSearchForm, ucfhbSearchField, ucfhbSearchService);
+	var ucfhbAutocomplete = new autocomplete(ucfhbAcCloseBtn, ucfhbAcList, ucfhbSearchForm, ucfhbSearchField, ucfhbSearchService, ucfhbSearchAction);
 	ucfhbAutocomplete.initialize();
 };

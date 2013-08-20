@@ -6,6 +6,8 @@ document.ready = function() {
 		myUCFBtn = document.getElementById('ucfhb-signon-logo'),
 		myUCFWrapper = document.getElementById('ucfhb-signon'),
 		searchbar = document.getElementById('ucfhb-search'),
+		searchField = document.getElementById('ucfhb-search-field'),
+		searchBtn = document.getElementById('ucfhb-search-submit'),
 		searchMinimal = document.getElementById('ucfhb-search-minimal'),
 		searchAutocomplete = document.getElementById('ucfhb-search-autocomplete'),
 
@@ -26,13 +28,22 @@ document.ready = function() {
 	myUCFBtn.onclick = function() {
 		if (myUCFBtn.className == 'ucfhb-shiftleft') {
 			toggleClasses(shiftLeftElems, '');
+			// Re-enable tabbing for previously disabled elements
+			searchField.removeAttribute('tabindex');
+			searchBtn.removeAttribute('tabindex');
 		}
 		else {
 			toggleClasses(shiftLeftElems, 'ucfhb-shiftleft');
+			// Disable tabbing on hidden elements
+			searchField.setAttribute('tabindex', '-1');
+			searchBtn.setAttribute('tabindex', '-1');
 		}
 	};
 	searchMinimal.onclick = function() {
 		toggleClasses(shiftLeftElems, '');
+		searchField.focus();
+		searchField.removeAttribute('tabindex');
+		searchBtn.removeAttribute('tabindex');
 	};
 	
 	/* Mobile show/hide functionality */

@@ -22,9 +22,6 @@ function autocomplete(acCloseBtn, acList, searchForm, searchField, searchService
 	this.keyterms				= null;						// JSON populated by self.getKeytermList
 	this.keytermsUrl			= '../js/keyterms.json';	// URL of JSON object of keyterms
 
-	this.q						= encodeURIComponent(this.searchField.value);	// Search <input> element's value
-	this.query					= this.searchService + this.q;					// Combined search service URL for a given query 'q'
-
 	var timer;	// setTimeout timer value used by self.searchOnKeyUp
 
 
@@ -62,6 +59,11 @@ function autocomplete(acCloseBtn, acList, searchForm, searchField, searchService
 		return count;
 	}
 
+	// Strip HTML tags from a string.
+	function stripTags(str) {
+		return str.replace(/(<([^>]+)>)/ig, '');
+	}
+
 	// Delete existing results in an autocomplete list
 	this.clearAutocompleteResults = function() {
 		while (self.autocompleteList.hasChildNodes()) {
@@ -82,13 +84,16 @@ function autocomplete(acCloseBtn, acList, searchForm, searchField, searchService
 	};
 	
 	// Output a search query's results:
-	this.outputResults = function(url, q) {
+	this.outputResults = function(q, url) {
+		var safeq = stripTags(q),				// Query with tags stripped
+			matchq = safeq.toLowerCase();		// Query made lowercase for matching against JSON vals
+			urlq = encodeURIComponent(safeq);	// URL-safe Query
+
 		// First, clear existing results
 		self.clearAutocompleteResults();
 		
 		// Make sure there is actually a query to search for
-		if (q !== '') {
-			q = q.toLowerCase();
+		if (safeq !== '') {
 
 			// Search against keyterm list first.
 			if (self.keyterms.terms) {
@@ -101,20 +106,20 @@ function autocomplete(acCloseBtn, acList, searchForm, searchField, searchService
 					var termKey = "t_" + (i + 1),
 						matchKey = "m_" + (i + 1);
 
-					if (terms[termKey].indexOf(q) > -1) {
+					if (terms[termKey].indexOf(matchq) > -1) {
 						matchesFound = true;
 
 						self.autocompleteList.className = 'search-is-active';
-						q = encodeURIComponent(q);
 
-						var name = matches[matchKey].name !== null ? matches[matchKey].name.trim() : '',
+						var name = matches[matchKey].name !== null ? stripTags(matches[matchKey].name.trim()) : '',
 							nameSpan = '<span class="ucfhb-search-autocomplete-name">' + name + '</span>',
-							resultUrl = matches[matchKey].url !== '' ? matches[matchKey].url.trim() : self.searchAction + q;
+							resultUrl = matches[matchKey].url !== '' ? stripTags(matches[matchKey].url.trim()) : self.searchAction + urlq;
 
 						var listItem = document.createElement('li');
-						listItem.innerHTML = '<a href="' + resultUrl + '">' + nameSpan + '</a>';
+						listItem.innerHTML = '<a href="' + resultUrl + '" tabindex="0">' + nameSpan + '</a>';
+						listItem.setAttribute('data-name-val', name);
 
-						if (terms[termKey][i] !== q) {
+						if (terms[termKey][i] !== safeq) {
 							self.autocompleteList.insertBefore(listItem, self.autocompleteList.firstChild);
 						}
 						else {
@@ -125,11 +130,11 @@ function autocomplete(acCloseBtn, acList, searchForm, searchField, searchService
 
 				if (matchesFound === true) {
 					// Add 'View More Results link'
-					q = encodeURIComponent(q);
 					var viewMoreLi = document.createElement('li');
-					var viewMoreLink = self.searchAction + q;
-					viewMoreLi.innerHTML = '<a href="' + viewMoreLink + '">View More Results &raquo;</a>';
-					viewMoreLi.className = 'ucfhb-search-autocomplete-more';
+					var viewMoreLink = self.searchAction + urlq;
+					viewMoreLi.innerHTML = '<a href="' + viewMoreLink + '" tabindex="0">View More Results &raquo;</a>';
+					viewMoreLi.id = 'ucfhb-search-autocomplete-more';
+					viewMoreLi.setAttribute('data-name-val', safeq);
 					self.autocompleteList.appendChild(viewMoreLi);
 				}
 				// Try search service results if no keyterms are found
@@ -142,21 +147,22 @@ function autocomplete(acCloseBtn, acList, searchForm, searchField, searchService
 							self.autocompleteList.className = 'search-is-active';
 							i = 0;
 							for (i = 0; i < json.results.length; i++) {
-								var name = json.results[i].name !== null ? json.results[i].name.trim() : '',
+								var name = json.results[i].name !== null ? stripTags(json.results[i].name.trim()) : '',
 									nameSpan = '<span class="ucfhb-search-autocomplete-name">' + name + '</span>',
-									orgSpan = json.results[i].organization !== null ? '<span class="ucfhb-search-autocomplete-org">' + json.results[i].organization.trim() + '</span>' : '',
+									orgSpan = json.results[i].organization !== null ? '<span class="ucfhb-search-autocomplete-org">' + stripTags(json.results[i].organization.trim()) + '</span>' : '',
 									resultUrl = self.searchAction + encodeURIComponent(name);
 									
 								var listItem = document.createElement('li');
-								listItem.innerHTML = '<a href="' + resultUrl + '">' + nameSpan + orgSpan + '</a>';
+								listItem.innerHTML = '<a href="' + resultUrl + '" tabindex="0">' + nameSpan + orgSpan + '</a>';
+								listItem.setAttribute('data-name-val', name);
 								self.autocompleteList.appendChild(listItem);
 							}
 							// Add 'View More Results link'
-							q = encodeURIComponent(q);
 							var viewMoreLi = document.createElement('li');
-							var viewMoreLink = self.searchAction + q;
-							viewMoreLi.innerHTML = '<a href="' + viewMoreLink + '">View More Results &raquo;</a>';
-							viewMoreLi.className = 'ucfhb-search-autocomplete-more';
+							var viewMoreLink = self.searchAction + urlq;
+							viewMoreLi.innerHTML = '<a href="' + viewMoreLink + '" tabindex="0">View More Results &raquo;</a>';
+							viewMoreLi.id = 'ucfhb-search-autocomplete-more';
+							viewMoreLi.setAttribute('data-name-val', safeq);
 							self.autocompleteList.appendChild(viewMoreLi);
 						}
 						else {
@@ -175,20 +181,77 @@ function autocomplete(acCloseBtn, acList, searchForm, searchField, searchService
 			self.autocompleteList.className = '';
 		}
 	};
+
+	// Navigate an autocomplete <ul>'s list items with up- and
+	// down-arrow keystrokes
+	this.acListKeystrokeSelect = function(keycode) {
+		var list = self.autocompleteList,
+			listFirstChild = list.firstChild,
+			listLastChild = list.lastChild,
+			selectedClass = 'ucfhb-autocomplete-selected',
+			selectedLi = null;
+		if (document.getElementsByClassName(selectedClass)[0]) {
+			selectedLi = document.getElementsByClassName(selectedClass)[0];
+		}
+		else {
+			selectedLi = listFirstChild;
+		}
+
+		// Function to 'select' a list item in an autocomplete list
+		var selectNewResult = function(oldLi, newLi, defaultLi) {
+			var newSearchVal = '';
+
+			// Unset any previously set classes
+			oldLi.className = '';
+			listFirstChild.className = '';
+			listLastChild.className = '';
+
+			// previous/nextSibling returns null when sibling is not found
+			if (newLi !== null) {
+				defaultLi.className = '';
+				newLi.className = selectedClass;
+				newSearchVal = newLi.getAttribute('data-name-val');
+			}
+			else {
+				defaultLi.className = selectedClass;
+				newSearchVal = defaultLi.getAttribute('data-name-val');
+			}
+
+			// Assign new search field value
+			self.searchField.value = newSearchVal;
+		};
+
+		if (list.className == 'search-is-active' && document.activeElement == self.searchField) {
+			// Detect an up/down keypress (when search field is focused + autocomplete is visible)
+			if (keycode == 40) {
+				// Move down one list item. Check if a list item is highlighted yet or not
+				var listNextSibling = null;
+				if (document.getElementsByClassName(selectedClass)[0]) {
+					listNextSibling = selectedLi.nextSibling;
+				}
+				else {
+					listNextSibling = listFirstChild;
+				}
+				selectNewResult(selectedLi, listNextSibling, listFirstChild);
+			}
+			else if (keycode == 38) {
+				// Move up one list item
+				var listPrevSibling = selectedLi.previousSibling;
+				selectNewResult(selectedLi, listPrevSibling, listLastChild);
+			}
+			else if (keycode == 39 || keycode == 37) {
+				// Left or right arrow keypress; do nothing
+				return;
+			}
+		}
+	};
 	
 	// Perform outputResults() when a query is
 	// being typed in the search bar:
 	this.searchOnKeyUp = function(searchService, q, query) {
 		clearTimeout(timer);
-		
-		if (q != encodeURIComponent(searchField.value)) {
-			q = encodeURIComponent(searchField.value);
-		}
-		if (query != searchService + q) {
-			query = searchService + q;
-		}
-		timer = setTimeout(function (){
-			self.outputResults(query, q);
+		timer = setTimeout(function () {
+			self.outputResults(q, query);
 		}, 600);
 	};
 	
@@ -197,8 +260,19 @@ function autocomplete(acCloseBtn, acList, searchForm, searchField, searchService
 		// Retrieve the keyterm list on load
 		self.getKeytermList();
 		// Handle the onkeyup event for autosearching:
-		self.searchForm.onkeyup = function() {
-			self.searchOnKeyUp(self.searchService, self.q, self.query);
+		self.searchForm.onkeyup = function(e) {
+			var q = stripTags(self.searchField.value),
+				query = searchService + q;
+			if (
+				typeof e.which == 'number' && (
+				e.which == 8 || // Detect backspaces
+				e.which > 44 // but not tab, enter, ctrl, etc...
+				)
+			) {
+				self.searchOnKeyUp(self.searchService, q, query);
+			} else {
+				self.acListKeystrokeSelect(e.which);
+			}
 		};
 		// Handle autocomplete close btn click
 		self.autocompleteCloseBtn.onclick = function() {

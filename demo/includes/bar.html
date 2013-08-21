@@ -9,9 +9,9 @@
 		<div id="ucfhb-right">
 			<div id="ucfhb-signon">
 				<a id="ucfhb-signon-logo" href="#">
-					<img src="../img/assets/signon-blacktext-r.png" alt="Toggle List: Sign in to UCF services" title="Toggle List: Sign in to UCF services" />
-					<span class="ucfhb-icon" id="ucfhb-icon-open">+</span>
-					<span class="ucfhb-icon" id="ucfhb-icon-close">&raquo;</span>
+					<img src="../img/assets/signon-blacktext-r.png" alt="UCF Log In: toggle list of UCF services" title="UCF Log In: toggle list of UCF services" />
+					<span class="ucfhb-icon" id="ucfhb-icon-open" aria-hidden="true">+</span>
+					<span class="ucfhb-icon" id="ucfhb-icon-close" aria-hidden="true">&raquo;</span>
 				</a>
 				<div id="ucfhb-services">
 					<div>
@@ -26,13 +26,14 @@
 					<label for="ucfhb-search-field">Search UCF</label>
 					<input type="hidden" name="client" value="default_frontend" />
 					<input type="hidden" name="proxystylesheet" value="UCF_Main" />
-					<input type="text" name="q" id="ucfhb-search-field" placeholder="Search UCF" autocomplete="off" autocapitalize="off" />
+					<input type="text" name="q" id="ucfhb-search-field" placeholder="Search UCF" autocomplete="off" autocapitalize="off" aria-autocomplete="list" aria-controls="ucfhb-search-autocomplete" role="textbox" role="search" />
 					<input type="submit" value="Go" id="ucfhb-search-submit" />
 				</form>
+				<span id="ucfhb-search-autocomplete-srhelp" role="status" aria-live="polite">test</span>
 				<a id="ucfhb-search-minimal" href="#"><img src="../img/assets/search-r.png" alt="Search" title="Search" /></a>
 			</div>
 		</div>
-		<ul id="ucfhb-search-autocomplete" tabindex="1">
+		<ul id="ucfhb-search-autocomplete" tabindex="1" aria-hidden="true" role="listbox">
 			<!--
 			<li>
 				<a href="http://today.ucf.edu/"><strong>UCF</strong> Today</a>

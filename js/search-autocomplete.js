@@ -10,10 +10,11 @@ if(!Array.prototype.indexOf){Array.prototype.indexOf=function(e){"use strict";if
 /**
  * University Header Auto-Suggest Search Result functionality 
  **/
-function autocomplete(acCloseBtn, acList, searchForm, searchField, searchService, searchAction) {
+function autocomplete(acCloseBtn, acHelp, acList, searchForm, searchField, searchService, searchAction) {
 	var self = this;
 
 	this.autocompleteCloseBtn	= acCloseBtn;				// <a> element in corner of autocomplete results
+	this.autocompleteHelp		= acHelp;					// Help text for screenreaders
 	this.autocompleteList		= acList;					// Autocomplete <ul> element
 	this.searchForm				= searchForm;				// Search <form> element
 	this.searchField			= searchField;				// Search <input> element
@@ -70,6 +71,44 @@ function autocomplete(acCloseBtn, acList, searchForm, searchField, searchService
 			self.autocompleteList.removeChild(self.autocompleteList.lastChild);
 		}
 	};
+
+	// Show/hide the autocomplete list and adjust ARIA landmarks as necessary
+	this.toggleAutocompleteList = function(toggleVal) {
+		if (toggleVal === true) {
+			self.autocompleteList.className = 'search-is-active';
+			self.autocompleteList.setAttribute('aria-hidden', 'false');
+		}
+		else {
+			self.autocompleteList.className = '';
+			self.autocompleteList.setAttribute('aria-hidden', 'true');
+		}
+	};
+
+	// Update the autocomplete help text for screenreaders
+	this.updateAutocompleteHelp = function(resultCount, q) {
+		var helpText = '';
+		if (resultCount === 0 && q === null) {
+			helpText = 'Search field is empty.';
+		}
+		else {
+			helpText = resultCount;
+			if (resultCount === 1) {
+				helpText += ' suggestion found';
+			}
+			else {
+				helpText += ' suggestions found';
+			}
+
+			if (q !== null) {
+				helpText += ' for "' + q + '"';
+			}
+
+			if (resultCount > 0) {
+				helpText += '. Use up and down arrow keys to select a suggestion.';
+			}
+		}
+		self.autocompleteHelp.innerHTML = helpText;
+	};
 	
 	// Debug feed load:
 	//loadSearchContent(query, function(xhr) {  
@@ -100,16 +139,15 @@ function autocomplete(acCloseBtn, acList, searchForm, searchField, searchService
 				i = 0;
 				var terms = self.keyterms.terms,
 					matches = self.keyterms.matches,
-					matchesFound = false;
+					matchesFound = 0;
 
 				for (i = 0; i < countObjectProperties(terms); i++) {
 					var termKey = "t_" + (i + 1),
 						matchKey = "m_" + (i + 1);
 
 					if (terms[termKey].indexOf(matchq) > -1) {
-						matchesFound = true;
-
-						self.autocompleteList.className = 'search-is-active';
+						matchesFound++;
+						self.toggleAutocompleteList(true);
 
 						var name = matches[matchKey].name !== null ? stripTags(matches[matchKey].name.trim()) : '',
 							nameSpan = '<span class="ucfhb-search-autocomplete-name">' + name + '</span>',
@@ -128,7 +166,7 @@ function autocomplete(acCloseBtn, acList, searchForm, searchField, searchService
 					}
 				}
 
-				if (matchesFound === true) {
+				if (matchesFound > 0) {
 					// Add 'View More Results link'
 					var viewMoreLi = document.createElement('li');
 					var viewMoreLink = self.searchAction + urlq;
@@ -136,6 +174,8 @@ function autocomplete(acCloseBtn, acList, searchForm, searchField, searchService
 					viewMoreLi.id = 'ucfhb-search-autocomplete-more';
 					viewMoreLi.setAttribute('data-name-val', safeq);
 					self.autocompleteList.appendChild(viewMoreLi);
+					// Update Screenreader help text
+					self.updateAutocompleteHelp(matchesFound, safeq);
 				}
 				// Try search service results if no keyterms are found
 				else {
@@ -144,9 +184,11 @@ function autocomplete(acCloseBtn, acList, searchForm, searchField, searchService
 						// If data was returned, append the results to the
 						// autocomplete <ul>
 						if (json.results !== null && json.results.length > 0) {
-							self.autocompleteList.className = 'search-is-active';
+							self.toggleAutocompleteList(true);
 							i = 0;
 							for (i = 0; i < json.results.length; i++) {
+								matchesFound++;
+
 								var name = json.results[i].name !== null ? stripTags(json.results[i].name.trim()) : '',
 									nameSpan = '<span class="ucfhb-search-autocomplete-name">' + name + '</span>',
 									orgSpan = json.results[i].organization !== null ? '<span class="ucfhb-search-autocomplete-org">' + stripTags(json.results[i].organization.trim()) + '</span>' : '',
@@ -164,11 +206,14 @@ function autocomplete(acCloseBtn, acList, searchForm, searchField, searchService
 							viewMoreLi.id = 'ucfhb-search-autocomplete-more';
 							viewMoreLi.setAttribute('data-name-val', safeq);
 							self.autocompleteList.appendChild(viewMoreLi);
+							// Update Screenreader help text
+							self.updateAutocompleteHelp(matchesFound, safeq);
 						}
 						else {
 							// Make sure we hide the list if it's already visible and no
 							// results are returned
-							self.autocompleteList.className = '';
+							self.toggleAutocompleteList(false);
+							self.updateAutocompleteHelp(0, safeq);
 						}
 					});
 				}
@@ -178,7 +223,8 @@ function autocomplete(acCloseBtn, acList, searchForm, searchField, searchService
 		// If there is no query, make sure the autocomplete
 		// list is not visible
 		else {
-			self.autocompleteList.className = '';
+			self.toggleAutocompleteList(false);
+			self.updateAutocompleteHelp(0, null);
 		}
 	};
 
@@ -219,6 +265,25 @@ function autocomplete(acCloseBtn, acList, searchForm, searchField, searchService
 
 			// Assign new search field value
 			self.searchField.value = newSearchVal;
+
+			// Simulate a right-arrow keystroke to force a re-read of 
+			// search field val for screenreaders
+			// http://stackoverflow.com/questions/596481/
+			var srEvent = document.createEvent('KeyboardEvent');
+			var initMethod = typeof srEvent.initKeyboardEvent !== 'undefined' ? 'initKeyboardEvent' : 'initKeyEvent';
+			srEvent[initMethod](
+               'keydown', // event type : keydown, keyup, keypress
+                true, // bubbles
+                true, // cancelable
+                window, // viewArg: should be window
+                false, // ctrlKeyArg
+                false, // altKeyArg
+                false, // shiftKeyArg
+                false, // metaKeyArg
+                39, // keyCodeArg : unsigned long the virtual key code, else 0
+                0 // charCodeArgs : unsigned long the Unicode character associated with the depressed key, else 0
+			);
+			document.dispatchEvent(srEvent);
 		};
 
 		if (list.className == 'search-is-active' && document.activeElement == self.searchField) {
@@ -277,19 +342,20 @@ function autocomplete(acCloseBtn, acList, searchForm, searchField, searchService
 		// Handle autocomplete close btn click
 		self.autocompleteCloseBtn.onclick = function() {
 			self.clearAutocompleteResults();
-			self.autocompleteList.className = '';
+			self.toggleAutocompleteList(false);
 		};
 	};
 }
 
 window.onload = function() {
 	var ucfhbAcCloseBtn				= document.getElementById('ucfhb-search-autocomplete-close'),
+		ucfhbAcSrHelp				= document.getElementById('ucfhb-search-autocomplete-srhelp'),
 		ucfhbAcList					= document.getElementById('ucfhb-search-autocomplete'),
 		ucfhbSearchForm				= document.getElementById('ucfhb-search-form'),
 		ucfhbSearchField			= document.getElementById('ucfhb-search-field'),
 		ucfhbSearchService			= ucfhbSearchForm.getAttribute('data-autosearch-url'),
 		ucfhbSearchAction			= ucfhbSearchForm.getAttribute('data-action-url');
 
-	var ucfhbAutocomplete = new autocomplete(ucfhbAcCloseBtn, ucfhbAcList, ucfhbSearchForm, ucfhbSearchField, ucfhbSearchService, ucfhbSearchAction);
+	var ucfhbAutocomplete = new autocomplete(ucfhbAcCloseBtn, ucfhbAcSrHelp, ucfhbAcList, ucfhbSearchForm, ucfhbSearchField, ucfhbSearchService, ucfhbSearchAction);
 	ucfhbAutocomplete.initialize();
 };

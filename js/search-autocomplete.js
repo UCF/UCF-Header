@@ -52,8 +52,8 @@ function autocomplete(acCloseBtn, acHelp, acList, searchForm, searchField, searc
 	// http://stackoverflow.com/questions/3529509/
 	function countObjectProperties(obj) {
 		var count = 0;
-		for(var i in obj) {
-			if(obj.hasOwnProperty(i)) {
+		for (var i in obj) {
+			if (obj.hasOwnProperty(i)) {
 				count++;
 			}
 		}
@@ -63,6 +63,38 @@ function autocomplete(acCloseBtn, acHelp, acList, searchForm, searchField, searc
 	// Strip HTML tags from a string.
 	function stripTags(str) {
 		return str.replace(/(<([^>]+)>)/ig, '');
+	}
+
+	// Get an element's children, filtered by class name.
+	// A more specific substitute for getElementsByClassName to
+	// prevent old IE issues.  Note this function is *not* intended 
+	// to be a robust alternative to getElementsByClassName.
+	//
+	// Returns an array or null on failure.
+	// Accepts a single class name.
+	function getChildrenByClassName(parent, className) {
+		var children = [];
+		// Make sure parent element is a valid element
+		if (
+			typeof parent === 'undefined' ||
+			parent.nodeType !== 1 ||
+			parent.childNodes.length < 1
+		) {
+			children = null;
+		}
+		else {
+			var childCount = 0;
+			for (i = 0; i < parent.childNodes.length; i++) {
+				if (parent.childNodes[i].className == className) {
+					children.push(parent.childNodes[i]);
+					childCount++;
+				}
+			}
+			if (childCount === 0) {
+				children = null;
+			}
+		}
+		return children;
 	}
 
 	// Delete existing results in an autocomplete list
@@ -236,8 +268,8 @@ function autocomplete(acCloseBtn, acHelp, acList, searchForm, searchField, searc
 			listLastChild = list.lastChild,
 			selectedClass = 'ucfhb-autocomplete-selected',
 			selectedLi = null;
-		if (document.getElementsByClassName(selectedClass)[0]) {
-			selectedLi = document.getElementsByClassName(selectedClass)[0];
+		if (getChildrenByClassName(list, selectedClass) !== null) {
+			selectedLi = getChildrenByClassName(list, selectedClass)[0];
 		}
 		else {
 			selectedLi = listFirstChild;
@@ -269,7 +301,7 @@ function autocomplete(acCloseBtn, acHelp, acList, searchForm, searchField, searc
 			// Simulate a right-arrow keystroke to force a re-read of 
 			// search field val for screenreaders
 			// http://stackoverflow.com/questions/596481/
-			var srEvent = document.createEvent('KeyboardEvent');
+			var srEvent = document.createEvent('KeyboardEvent'); /* TODO: document.createEvent not supported in <IE9 */
 			var initMethod = typeof srEvent.initKeyboardEvent !== 'undefined' ? 'initKeyboardEvent' : 'initKeyEvent';
 			srEvent[initMethod](
                'keydown', // event type : keydown, keyup, keypress
@@ -291,7 +323,7 @@ function autocomplete(acCloseBtn, acHelp, acList, searchForm, searchField, searc
 			if (keycode == 40) {
 				// Move down one list item. Check if a list item is highlighted yet or not
 				var listNextSibling = null;
-				if (document.getElementsByClassName(selectedClass)[0]) {
+				if (getChildrenByClassName(list, selectedClass) !== null) {
 					listNextSibling = selectedLi.nextSibling;
 				}
 				else {
@@ -326,17 +358,21 @@ function autocomplete(acCloseBtn, acHelp, acList, searchForm, searchField, searc
 		self.getKeytermList();
 		// Handle the onkeyup event for autosearching:
 		self.searchForm.onkeyup = function(e) {
+			// Make IE behave
+			e = e || window.event;
+			keycode = e.which || e.keyCode;
+
 			var q = stripTags(self.searchField.value),
 				query = searchService + q;
 			if (
-				typeof e.which == 'number' && (
-				e.which == 8 || // Detect backspaces
-				e.which > 44 // but not tab, enter, ctrl, etc...
+				typeof keycode == 'number' && (
+				keycode == 8 || // Detect backspaces
+				keycode > 44 // but not tab, enter, ctrl, etc...
 				)
 			) {
 				self.searchOnKeyUp(self.searchService, q, query);
 			} else {
-				self.acListKeystrokeSelect(e.which);
+				self.acListKeystrokeSelect(keycode);
 			}
 		};
 		// Handle autocomplete close btn click

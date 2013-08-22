@@ -3,7 +3,7 @@
  *
  * Uses Douglas Crockford's json2.js parser, MDN's Array.indexOf
  * and Array.match compatibility fixes, and .trim fix here:
- * http://stackoverflow.com/questions/2308134/ 
+ * http://stackoverflow.com/a/2308157
  **/
 if(!Array.prototype.indexOf){Array.prototype.indexOf=function(e){"use strict";if(this==null){throw new TypeError}var t,n,r=Object(this),i=r.length>>>0;if(i===0){return-1}t=0;if(arguments.length>1){t=Number(arguments[1]);if(t!=t){t=0}else if(t!=0&&t!=Infinity&&t!=-Infinity){t=(t>0||-1)*Math.floor(Math.abs(t))}}if(t>=i){return-1}for(n=t>=0?t:Math.max(i-Math.abs(t),0);n<i;n++){if(n in r&&r[n]===e){return n}}return-1}}if(typeof String.prototype.trim!=="function"){String.prototype.trim=function(){return this.replace(/^\s+|\s+$/g,"")}}if(typeof JSON!=="object"){JSON={}}(function(){"use strict";function f(e){return e<10?"0"+e:e}function quote(e){escapable.lastIndex=0;return escapable.test(e)?'"'+e.replace(escapable,function(e){var t=meta[e];return typeof t==="string"?t:"\\u"+("0000"+e.charCodeAt(0).toString(16)).slice(-4)})+'"':'"'+e+'"'}function str(e,t){var n,r,i,s,o=gap,u,a=t[e];if(a&&typeof a==="object"&&typeof a.toJSON==="function"){a=a.toJSON(e)}if(typeof rep==="function"){a=rep.call(t,e,a)}switch(typeof a){case"string":return quote(a);case"number":return isFinite(a)?String(a):"null";case"boolean":case"null":return String(a);case"object":if(!a){return"null"}gap+=indent;u=[];if(Object.prototype.toString.apply(a)==="[object Array]"){s=a.length;for(n=0;n<s;n+=1){u[n]=str(n,a)||"null"}i=u.length===0?"[]":gap?"[\n"+gap+u.join(",\n"+gap)+"\n"+o+"]":"["+u.join(",")+"]";gap=o;return i}if(rep&&typeof rep==="object"){s=rep.length;for(n=0;n<s;n+=1){if(typeof rep[n]==="string"){r=rep[n];i=str(r,a);if(i){u.push(quote(r)+(gap?": ":":")+i)}}}}else{for(r in a){if(Object.prototype.hasOwnProperty.call(a,r)){i=str(r,a);if(i){u.push(quote(r)+(gap?": ":":")+i)}}}}i=u.length===0?"{}":gap?"{\n"+gap+u.join(",\n"+gap)+"\n"+o+"}":"{"+u.join(",")+"}";gap=o;return i}}if(typeof Date.prototype.toJSON!=="function"){Date.prototype.toJSON=function(){return isFinite(this.valueOf())?this.getUTCFullYear()+"-"+f(this.getUTCMonth()+1)+"-"+f(this.getUTCDate())+"T"+f(this.getUTCHours())+":"+f(this.getUTCMinutes())+":"+f(this.getUTCSeconds())+"Z":null};String.prototype.toJSON=Number.prototype.toJSON=Boolean.prototype.toJSON=function(){return this.valueOf()}}var cx=/[\u0000\u00ad\u0600-\u0604\u070f\u17b4\u17b5\u200c-\u200f\u2028-\u202f\u2060-\u206f\ufeff\ufff0-\uffff]/g,escapable=/[\\\"\x00-\x1f\x7f-\x9f\u00ad\u0600-\u0604\u070f\u17b4\u17b5\u200c-\u200f\u2028-\u202f\u2060-\u206f\ufeff\ufff0-\uffff]/g,gap,indent,meta={"\b":"\\b","	":"\\t","\n":"\\n","\f":"\\f","\r":"\\r",'"':'\\"',"\\":"\\\\"},rep;if(typeof JSON.stringify!=="function"){JSON.stringify=function(e,t,n){var r;gap="";indent="";if(typeof n==="number"){for(r=0;r<n;r+=1){indent+=" "}}else if(typeof n==="string"){indent=n}rep=t;if(t&&typeof t!=="function"&&(typeof t!=="object"||typeof t.length!=="number")){throw new Error("JSON.stringify")}return str("",{"":e})}}if(typeof JSON.parse!=="function"){JSON.parse=function(text,reviver){function walk(e,t){var n,r,i=e[t];if(i&&typeof i==="object"){for(n in i){if(Object.prototype.hasOwnProperty.call(i,n)){r=walk(i,n);if(r!==undefined){i[n]=r}else{delete i[n]}}}}return reviver.call(e,t,i)}var j;text=String(text);cx.lastIndex=0;if(cx.test(text)){text=text.replace(cx,function(e){return"\\u"+("0000"+e.charCodeAt(0).toString(16)).slice(-4)})}if(/^[\],:{}\s]*$/.test(text.replace(/\\(?:["\\\/bfnrt]|u[0-9a-fA-F]{4})/g,"@").replace(/"[^"\\\n\r]*"|true|false|null|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?/g,"]").replace(/(?:^|:|,)(?:\s*\[)+/g,""))){j=eval("("+text+")");return typeof reviver==="function"?walk({"":j},""):j}throw new SyntaxError("JSON.parse")}}})()
 
@@ -51,7 +51,7 @@ function autocomplete(acCloseBtn, acHelp, acList, searchForm, searchField, searc
 	}
 
 	// Iterate through objects within an object (private)
-	// http://stackoverflow.com/questions/3529509/
+	// http://stackoverflow.com/a/3529588
 	function countObjectProperties(obj) {
 		var count = 0;
 		for (var i in obj) {
@@ -65,6 +65,36 @@ function autocomplete(acCloseBtn, acHelp, acList, searchForm, searchField, searc
 	// Strip HTML tags from a string.
 	function stripTags(str) {
 		return str.replace(/(<([^>]+)>)/ig, '');
+	}
+
+	// Detect whether a click event occurred within the boundaries
+	// of a given element.
+	// http://stackoverflow.com/a/1278068
+	function outsideElementClick(objEvent, objElement){
+		var objCurrentElement = objEvent.target || objEvent.srcElement;
+		var blnInsideX = false;
+		var blnInsideY = false;
+
+		if (
+			objCurrentElement.getBoundingClientRect().left >= objElement.getBoundingClientRect().left &&
+			objCurrentElement.getBoundingClientRect().right <= objElement.getBoundingClientRect().right
+		) {
+			blnInsideX = true;
+		}
+
+		if (
+			objCurrentElement.getBoundingClientRect().top >= objElement.getBoundingClientRect().top &&
+			objCurrentElement.getBoundingClientRect().bottom <= objElement.getBoundingClientRect().bottom
+		) {
+			blnInsideY = true;
+		}
+
+		if (blnInsideX && blnInsideY) {
+			return false;
+		}
+		else {
+			return true;
+		}
 	}
 
 	// Delete existing results in an autocomplete list
@@ -272,8 +302,8 @@ function autocomplete(acCloseBtn, acHelp, acList, searchForm, searchField, searc
 			// Simulate a right-arrow keystroke to force a re-read of 
 			// search field val for screenreaders.
 			// Fall back to document.createEventObject for <IE9
-			// http://stackoverflow.com/questions/596481/
-			// http://stackoverflow.com/questions/827716/
+			// http://stackoverflow.com/a/12187302
+			// http://stackoverflow.com/a/827793
 			var srEvent = null;
 			if (document.createEvent) {
 				srEvent = document.createEvent('KeyboardEvent');
@@ -335,17 +365,20 @@ function autocomplete(acCloseBtn, acHelp, acList, searchForm, searchField, searc
 	
 	// On load + listen for events
 	this.initialize = function() {
+		var q = null,
+			query = null;
+
 		// Retrieve the keyterm list on load
 		self.getKeytermList();
 
 		// Handle the onkeyup event for autosearching:
-		self.searchForm.onkeyup = function(e) {
+		self.searchField.onkeyup = function(e) {
 			// Make <IE9 behave
 			e = e || window.event;
 			keycode = e.which || e.keyCode;
 
-			var q = stripTags(self.searchField.value),
-				query = self.searchService + q;
+			q = stripTags(self.searchField.value);
+			query = self.searchService + q;
 
 			// If this keystroke is a backspace or other alphabetic character,
 			// or if this is specifically an arrow-down keystroke when
@@ -358,10 +391,10 @@ function autocomplete(acCloseBtn, acHelp, acList, searchForm, searchField, searc
 					)
 				) ||
 				(
-					(self.isSearchActive() === false) &&
-					(self.searchField.value !== null) &&
-					(self.searchField.value !== '') &&
-					(keycode === 40)
+					self.isSearchActive() === false &&
+					self.searchField.value !== null &&
+					self.searchField.value !== '' &&
+					keycode === 40
 				)
 			) {
 				self.searchOnKeyUp(self.searchService, q, query);
@@ -373,10 +406,39 @@ function autocomplete(acCloseBtn, acHelp, acList, searchForm, searchField, searc
 			}
 		};
 
-		// Handle autocomplete close btn click
+		// Handle a re-focus of the search field when search is not active
+		self.searchField.onfocus = function() {
+			q = stripTags(self.searchField.value);
+			query = self.searchService + q;
+			
+			if (
+				self.isSearchActive() === false &&
+				self.searchField.value !== '' &&
+				self.searchField.value !== null
+			) {
+				self.searchOnKeyUp(self.searchService, q, query);
+			}
+		};
+
+		// Handle autocomplete close w/btn click or click outside list
+		// Checks for standard addEventListener, falls back to attachEvent
 		self.autocompleteCloseBtn.onclick = function() {
 			self.toggleAutocompleteList(false);
 		};
+		if (document.addEventListener) {
+			document.addEventListener('click', function(e) {
+				if (outsideElementClick(e, self.autocompleteList) && self.isSearchActive()) {
+					self.toggleAutocompleteList(false);
+				}
+			});
+		}
+		else {
+			document.attachEvent('onclick', function(e) {
+				if (outsideElementClick(e, self.autocompleteList) && self.isSearchActive()) {
+					self.toggleAutocompleteList(false);
+				}
+			});
+		}
 	};
 }
 

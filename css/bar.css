@@ -141,8 +141,9 @@
 }
 #ucfhb-search form label {
 	display: block;
-	width: 0;
-	height: 0;
+	position: absolute;
+	width: 1px;
+	height: 1px;
 	text-indent: -9999px;
 	margin: 0;
 	padding: 0;
@@ -194,8 +195,9 @@
 #ucfhb-search-autocomplete-srhelp {
 	display: block;
 	text-indent: -9999px;
-	width: 0;
-	height: 0;
+	position: absolute;
+	width: 1px;
+	height: 1px;
 	margin: 0;
 	padding: 0;
 }
@@ -275,10 +277,10 @@
 	background: #fff;
 }
 #ucfhb-search-autocomplete li:first-child { border-top: 0; margin-top: -10px; *margin-top: 0; }
-#ucfhb-search-autocomplete li#ucfhb-search-autocomplete-more {
+#ucfhb-search-autocomplete li.ucfhb-search-autocomplete-more {
 	text-align: right;
 }
-#ucfhb-search-autocomplete li#ucfhb-search-autocomplete-more a { font-size: 11px; padding-right: 5px; }
+#ucfhb-search-autocomplete li.ucfhb-search-autocomplete-more a { font-size: 11px; padding-right: 5px; }
 #ucfhb-search-autocomplete li a {
 	font-family: Helvetica, sans-serif; 
 	font-size: 14px; 
@@ -290,7 +292,7 @@
 }
 #ucfhb-search-autocomplete li a:hover,
 #ucfhb-search-autocomplete li a:focus,
-#ucfhb-search-autocomplete li.ucfhb-autocomplete-selected a {
+#ucfhb-autocomplete-selected a {
 	background: #efefef;
 }
 #ucfhb-search-autocomplete li a:hover { text-decoration: underline; color: #005580; }

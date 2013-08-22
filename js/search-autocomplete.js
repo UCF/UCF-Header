@@ -13,15 +13,17 @@ if(!Array.prototype.indexOf){Array.prototype.indexOf=function(e){"use strict";if
 function autocomplete(acCloseBtn, acHelp, acList, searchForm, searchField, searchService, searchAction) {
 	var self = this;
 
-	this.autocompleteCloseBtn	= acCloseBtn;				// <a> element in corner of autocomplete results
-	this.autocompleteHelp		= acHelp;					// Help text for screenreaders
-	this.autocompleteList		= acList;					// Autocomplete <ul> element
-	this.searchForm				= searchForm;				// Search <form> element
-	this.searchField			= searchField;				// Search <input> element
-	this.searchService			= searchService;			// URL of the search service queried for autocomplete results (URL to UCF search service)
-	this.searchAction			= searchAction;				// 'data-action-url' attr of search <form> element; should match form 'action' attr. (URL to Google Search Appliance)
-	this.keyterms				= null;						// JSON populated by self.getKeytermList
-	this.keytermsUrl			= '../js/keyterms.json';	// URL of JSON object of keyterms
+	this.autocompleteCloseBtn	= acCloseBtn;						// <a> element in corner of autocomplete results
+	this.autocompleteHelp		= acHelp;							// Help text for screenreaders
+	this.autocompleteList		= acList;							// Autocomplete <ul> element
+	this.autocompleteSelectedId = 'ucfhb-autocomplete-selected';	// ID assigned to a selected autocomplete <li>
+	this.searchForm				= searchForm;						// Search <form> element
+	this.searchField			= searchField;						// Search <input> element
+	this.searchService			= searchService;					// URL of the search service queried for autocomplete results (URL to UCF search service)
+	this.searchAction			= searchAction;						// 'data-action-url' attr of search <form> element; should match form 'action' attr. (URL to Google Search Appliance)
+	this.keyterms				= null;								// JSON populated by self.getKeytermList
+	this.keytermsUrl			= '../js/keyterms.json';			// URL of JSON object of keyterms
+	this.searchActiveClass		= 'search-is-active';				// Class assigned to an active (visible) autocomplete <ul>
 
 	var timer;	// setTimeout timer value used by self.searchOnKeyUp
 
@@ -65,38 +67,6 @@ function autocomplete(acCloseBtn, acHelp, acList, searchForm, searchField, searc
 		return str.replace(/(<([^>]+)>)/ig, '');
 	}
 
-	// Get an element's children, filtered by class name.
-	// A more specific substitute for getElementsByClassName to
-	// prevent old IE issues.  Note this function is *not* intended 
-	// to be a robust alternative to getElementsByClassName.
-	//
-	// Returns an array or null on failure.
-	// Accepts a single class name.
-	function getChildrenByClassName(parent, className) {
-		var children = [];
-		// Make sure parent element is a valid element
-		if (
-			typeof parent === 'undefined' ||
-			parent.nodeType !== 1 ||
-			parent.childNodes.length < 1
-		) {
-			children = null;
-		}
-		else {
-			var childCount = 0;
-			for (i = 0; i < parent.childNodes.length; i++) {
-				if (parent.childNodes[i].className == className) {
-					children.push(parent.childNodes[i]);
-					childCount++;
-				}
-			}
-			if (childCount === 0) {
-				children = null;
-			}
-		}
-		return children;
-	}
-
 	// Delete existing results in an autocomplete list
 	this.clearAutocompleteResults = function() {
 		while (self.autocompleteList.hasChildNodes()) {
@@ -104,10 +74,17 @@ function autocomplete(acCloseBtn, acHelp, acList, searchForm, searchField, searc
 		}
 	};
 
+	// Returns true or false if an autocomplete list is visible
+	this.isSearchActive = function() {
+		return self.autocompleteList.className == self.searchActiveClass;
+	};
+
 	// Show/hide the autocomplete list and adjust ARIA landmarks as necessary
 	this.toggleAutocompleteList = function(toggleVal) {
+		// Always make sure any previous results are cleared
+		self.clearAutocompleteResults();
 		if (toggleVal === true) {
-			self.autocompleteList.className = 'search-is-active';
+			self.autocompleteList.className = self.searchActiveClass;
 			self.autocompleteList.setAttribute('aria-hidden', 'false');
 		}
 		else {
@@ -141,11 +118,6 @@ function autocomplete(acCloseBtn, acHelp, acList, searchForm, searchField, searc
 		}
 		self.autocompleteHelp.innerHTML = helpText;
 	};
-	
-	// Debug feed load:
-	//loadSearchContent(query, function(xhr) {  
-	//	console.log(xhr.responseHTML);  
-	//}); 
 
 	// List of keyterms for faster search matching 
 	this.getKeytermList = function() {
@@ -160,8 +132,16 @@ function autocomplete(acCloseBtn, acHelp, acList, searchForm, searchField, searc
 			matchq = safeq.toLowerCase();		// Query made lowercase for matching against JSON vals
 			urlq = encodeURIComponent(safeq);	// URL-safe Query
 
-		// First, clear existing results
-		self.clearAutocompleteResults();
+		// Function for adding 'View more' link to the end of
+		// an autocomplete list
+		var appendViewMore = function() {
+			var viewMoreLi = document.createElement('li');
+			var viewMoreLink = self.searchAction + urlq;
+			viewMoreLi.innerHTML = '<a href="' + viewMoreLink + '" tabindex="0">View More Results &raquo;</a>';
+			viewMoreLi.className = 'ucfhb-search-autocomplete-more';
+			viewMoreLi.setAttribute('data-name-val', safeq);
+			self.autocompleteList.appendChild(viewMoreLi);
+		};
 		
 		// Make sure there is actually a query to search for
 		if (safeq !== '') {
@@ -199,14 +179,8 @@ function autocomplete(acCloseBtn, acHelp, acList, searchForm, searchField, searc
 				}
 
 				if (matchesFound > 0) {
-					// Add 'View More Results link'
-					var viewMoreLi = document.createElement('li');
-					var viewMoreLink = self.searchAction + urlq;
-					viewMoreLi.innerHTML = '<a href="' + viewMoreLink + '" tabindex="0">View More Results &raquo;</a>';
-					viewMoreLi.id = 'ucfhb-search-autocomplete-more';
-					viewMoreLi.setAttribute('data-name-val', safeq);
-					self.autocompleteList.appendChild(viewMoreLi);
-					// Update Screenreader help text
+					// Add 'View More Results link'; update screenreader help text
+					appendViewMore();
 					self.updateAutocompleteHelp(matchesFound, safeq);
 				}
 				// Try search service results if no keyterms are found
@@ -231,14 +205,8 @@ function autocomplete(acCloseBtn, acHelp, acList, searchForm, searchField, searc
 								listItem.setAttribute('data-name-val', name);
 								self.autocompleteList.appendChild(listItem);
 							}
-							// Add 'View More Results link'
-							var viewMoreLi = document.createElement('li');
-							var viewMoreLink = self.searchAction + urlq;
-							viewMoreLi.innerHTML = '<a href="' + viewMoreLink + '" tabindex="0">View More Results &raquo;</a>';
-							viewMoreLi.id = 'ucfhb-search-autocomplete-more';
-							viewMoreLi.setAttribute('data-name-val', safeq);
-							self.autocompleteList.appendChild(viewMoreLi);
-							// Update Screenreader help text
+							// Add 'View More Results link'; update screenreader help text
+							appendViewMore();
 							self.updateAutocompleteHelp(matchesFound, safeq);
 						}
 						else {
@@ -266,10 +234,13 @@ function autocomplete(acCloseBtn, acHelp, acList, searchForm, searchField, searc
 		var list = self.autocompleteList,
 			listFirstChild = list.firstChild,
 			listLastChild = list.lastChild,
-			selectedClass = 'ucfhb-autocomplete-selected',
-			selectedLi = null;
-		if (getChildrenByClassName(list, selectedClass) !== null) {
-			selectedLi = getChildrenByClassName(list, selectedClass)[0];
+			selectedId = self.autocompleteSelectedId,
+			selectedLi = null,
+			listNextSibling = null,
+			listPrevSibling = null;
+
+		if (document.getElementById(selectedId)) {
+			selectedLi = document.getElementById(selectedId);
 		}
 		else {
 			selectedLi = listFirstChild;
@@ -279,19 +250,19 @@ function autocomplete(acCloseBtn, acHelp, acList, searchForm, searchField, searc
 		var selectNewResult = function(oldLi, newLi, defaultLi) {
 			var newSearchVal = '';
 
-			// Unset any previously set classes
-			oldLi.className = '';
-			listFirstChild.className = '';
-			listLastChild.className = '';
+			// Unset any previously set ID
+			oldLi.id = '';
+			listFirstChild.id = '';
+			listLastChild.id = '';
 
 			// previous/nextSibling returns null when sibling is not found
 			if (newLi !== null) {
-				defaultLi.className = '';
-				newLi.className = selectedClass;
+				defaultLi.id = '';
+				newLi.id = selectedId;
 				newSearchVal = newLi.getAttribute('data-name-val');
 			}
 			else {
-				defaultLi.className = selectedClass;
+				defaultLi.id = selectedId;
 				newSearchVal = defaultLi.getAttribute('data-name-val');
 			}
 
@@ -299,31 +270,41 @@ function autocomplete(acCloseBtn, acHelp, acList, searchForm, searchField, searc
 			self.searchField.value = newSearchVal;
 
 			// Simulate a right-arrow keystroke to force a re-read of 
-			// search field val for screenreaders
+			// search field val for screenreaders.
+			// Fall back to document.createEventObject for <IE9
 			// http://stackoverflow.com/questions/596481/
-			var srEvent = document.createEvent('KeyboardEvent'); /* TODO: document.createEvent not supported in <IE9 */
-			var initMethod = typeof srEvent.initKeyboardEvent !== 'undefined' ? 'initKeyboardEvent' : 'initKeyEvent';
-			srEvent[initMethod](
-               'keydown', // event type : keydown, keyup, keypress
-                true, // bubbles
-                true, // cancelable
-                window, // viewArg: should be window
-                false, // ctrlKeyArg
-                false, // altKeyArg
-                false, // shiftKeyArg
-                false, // metaKeyArg
-                39, // keyCodeArg : unsigned long the virtual key code, else 0
-                0 // charCodeArgs : unsigned long the Unicode character associated with the depressed key, else 0
-			);
-			document.dispatchEvent(srEvent);
+			// http://stackoverflow.com/questions/827716/
+			var srEvent = null;
+			if (document.createEvent) {
+				srEvent = document.createEvent('KeyboardEvent');
+				var initMethod = typeof srEvent.initKeyboardEvent !== 'undefined' ? 'initKeyboardEvent' : 'initKeyEvent';
+				srEvent[initMethod](
+					'keydown', // event type : keydown, keyup, keypress
+					true, // bubbles
+					true, // cancelable
+					window, // viewArg: should be window
+					false, // ctrlKeyArg
+					false, // altKeyArg
+					false, // shiftKeyArg
+					false, // metaKeyArg
+					39, // keyCodeArg : unsigned long the virtual key code, else 0
+					0 // charCodeArgs : unsigned long the Unicode character associated with the depressed key, else 0
+				);
+				document.dispatchEvent(srEvent);
+			}
+			else if (document.createEventObject) {
+				srEvent = document.createEventObject('KeyboardEvent');
+				srEvent.keyCode = 39;
+				self.searchField.fireEvent('onkeyup', srEvent);
+			}
 		};
 
-		if (list.className == 'search-is-active' && document.activeElement == self.searchField) {
-			// Detect an up/down keypress (when search field is focused + autocomplete is visible)
+		// Detect an up/down keypress
+		// (when search field is focused + autocomplete is visible)
+		if (self.isSearchActive() && document.activeElement == self.searchField) {
 			if (keycode == 40) {
 				// Move down one list item. Check if a list item is highlighted yet or not
-				var listNextSibling = null;
-				if (getChildrenByClassName(list, selectedClass) !== null) {
+				if (document.getElementById(selectedId)) {
 					listNextSibling = selectedLi.nextSibling;
 				}
 				else {
@@ -333,7 +314,7 @@ function autocomplete(acCloseBtn, acHelp, acList, searchForm, searchField, searc
 			}
 			else if (keycode == 38) {
 				// Move up one list item
-				var listPrevSibling = selectedLi.previousSibling;
+				listPrevSibling = selectedLi.previousSibling;
 				selectNewResult(selectedLi, listPrevSibling, listLastChild);
 			}
 			else if (keycode == 39 || keycode == 37) {
@@ -356,28 +337,44 @@ function autocomplete(acCloseBtn, acHelp, acList, searchForm, searchField, searc
 	this.initialize = function() {
 		// Retrieve the keyterm list on load
 		self.getKeytermList();
+
 		// Handle the onkeyup event for autosearching:
 		self.searchForm.onkeyup = function(e) {
-			// Make IE behave
+			// Make <IE9 behave
 			e = e || window.event;
 			keycode = e.which || e.keyCode;
 
 			var q = stripTags(self.searchField.value),
-				query = searchService + q;
+				query = self.searchService + q;
+
+			// If this keystroke is a backspace or other alphabetic character,
+			// or if this is specifically an arrow-down keystroke when
+			// the search field is already populated:
 			if (
-				typeof keycode == 'number' && (
-				keycode == 8 || // Detect backspaces
-				keycode > 44 // but not tab, enter, ctrl, etc...
+				(
+					typeof keycode == 'number' && (
+					keycode == 8 || // Detect backspaces
+					keycode > 44 // but not tab, enter, ctrl, etc...
+					)
+				) ||
+				(
+					(self.isSearchActive() === false) &&
+					(self.searchField.value !== null) &&
+					(self.searchField.value !== '') &&
+					(keycode === 40)
 				)
 			) {
 				self.searchOnKeyUp(self.searchService, q, query);
-			} else {
+			}
+			// Otherwise, check for up/down arrow keystrokes on an
+			// active search:
+			else {
 				self.acListKeystrokeSelect(keycode);
 			}
 		};
+
 		// Handle autocomplete close btn click
 		self.autocompleteCloseBtn.onclick = function() {
-			self.clearAutocompleteResults();
 			self.toggleAutocompleteList(false);
 		};
 	};

@@ -65,7 +65,7 @@
 #ucfhb-signon-logo.ucfhb-shiftleft #ucfhb-icon-close { display: block; }
 
 /* MyUCF: login form */
-#ucfhb-services { position: absolute; top: 0; right: 5px; width: 340px; height: 50px; z-index: 1; }
+#ucfhb-services { position: absolute; top: 0; right: 5px; width: 340px; height: 50px; z-index: 1; overflow: hidden; }
 #ucfhb-services > div {
 	display: block;
 	opacity: 0;
@@ -224,13 +224,15 @@
 	height: 25px;
 	padding: 5px 6px 1px 6px; 
 	border-radius: 5px; 
-	background: #DBAC04;
+	background-color: #DBAC04;
 	position: absolute;
 	top: 0;
 	-webkit-transition: all 0.2s ease-in 0.4s; /* Show the search button after myucf has 'moved' left */
 	-ms-transition: all 0.2s ease-in 0.4s;
 	transition: all 0.2s ease-in 0.4s;
 }
+#ucfhb-search form #ucfhb-search-submit:hover,
+#ucfhb-search-minimal:hover { background-color: #ffeba4; }
 #ucfhb-search-minimal img { width: 0; height: 0; vertical-align: top; }
 #ucfhb-search-minimal.ucfhb-shiftleft { 
 	display: block;

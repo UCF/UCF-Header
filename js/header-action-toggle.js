@@ -14,11 +14,19 @@ document.ready = function() {
 		shiftLeftElems = [myUCFBtn, searchbar, searchMinimal, searchAutocomplete],
 		mobileToggleElems = [barWrapper, mobileToggle, ucfLogo, barRight, searchAutocomplete];
 
+		goldBarClass = 'ucfhb-gold';
+
 	/* Function to toggle classes on an array of elements */
 	var toggleClasses = function(elems, newClassName) {
 		var length = elems.length;
 		for (var i=0; i<length; i++) {
-			elems[i].className = newClassName;
+			// Maintain goldBarClass if it is assigned
+			if (elems[i].className.indexOf(goldBarClass) > -1) {
+				elems[i].className = goldBarClass + ' ' + newClassName;
+			}
+			else {
+				elems[i].className = newClassName;
+			}
 		}
 	};
 

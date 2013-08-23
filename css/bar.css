@@ -527,7 +527,7 @@
 	background-position: 0 3px;
 }
 
-#ucfhb-signon-logo { color: #aa8912; }
+.ucfhb-gold #ucfhb-signon-logo { color: #aa8912; }
 .ucfhb-gold #ucfhb-signon-logo .ucfhb-hidden { background-position: 0 -106px; }
 .ucfhb-gold #ucfhb-signon-logo:hover .ucfhb-hidden,
 .ucfhb-gold #ucfhb-signon-logo.ucfhb-shiftleft .ucfhb-hidden {

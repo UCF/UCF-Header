@@ -10,20 +10,20 @@ if(!Array.prototype.indexOf){Array.prototype.indexOf=function(e){"use strict";if
 /**
  * University Header Auto-Suggest Search Result functionality 
  **/
-function autocomplete(acCloseBtn, acHelp, acList, searchForm, searchField, searchService, searchAction) {
+function ucfhbAutocompleteSearch() {
 	var self = this;
 
-	this.autocompleteCloseBtn	= acCloseBtn;						// <a> element in corner of autocomplete results
-	this.autocompleteHelp		= acHelp;							// Help text for screenreaders
-	this.autocompleteList		= acList;							// Autocomplete <ul> element
-	this.autocompleteSelectedId = 'ucfhb-autocomplete-selected';	// ID assigned to a selected autocomplete <li>
-	this.searchForm				= searchForm;						// Search <form> element
-	this.searchField			= searchField;						// Search <input> element
-	this.searchService			= searchService;					// URL of the search service queried for autocomplete results (URL to UCF search service)
-	this.searchAction			= searchAction;						// 'data-action-url' attr of search <form> element; should match form 'action' attr. (URL to Google Search Appliance)
-	this.keyterms				= null;								// JSON populated by self.getKeytermList
-	this.keytermsUrl			= '../js/keyterms.json';			// URL of JSON object of keyterms
-	this.searchActiveClass		= 'search-is-active';				// Class assigned to an active (visible) autocomplete <ul>
+	this.autocompleteCloseBtn	= document.getElementById('ucfhb-search-autocomplete-close');	// <a> element in corner of autocomplete results
+	this.autocompleteHelp		= document.getElementById('ucfhb-search-autocomplete-srhelp');	// Help text for screenreaders
+	this.autocompleteList		= document.getElementById('ucfhb-search-autocomplete');			// Autocomplete <ul> element
+	this.autocompleteSelectedId = 'ucfhb-autocomplete-selected';								// ID assigned to a selected autocomplete <li>
+	this.searchForm				= document.getElementById('ucfhb-search-form');					// Search <form> element
+	this.searchField			= document.getElementById('ucfhb-search-field');				// Search <input> element
+	this.searchService			= this.searchForm.getAttribute('data-autosearch-url');			// URL of the search service queried for autocomplete results (URL to UCF search service)
+	this.searchAction			= this.searchForm.getAttribute('data-action-url');				// 'data-action-url' attr of search <form> element; should match form 'action' attr. (URL to Google Search Appliance)
+	this.keyterms				= null;															// JSON populated by self.getKeytermList
+	this.keytermsUrl			= '../js/keyterms.json';										// URL of JSON object of keyterms
+	this.searchActiveClass		= 'search-is-active';											// Class assigned to an active (visible) autocomplete <ul>
 
 	var timer;	// setTimeout timer value used by self.searchOnKeyUp
 
@@ -443,14 +443,6 @@ function autocomplete(acCloseBtn, acHelp, acList, searchForm, searchField, searc
 }
 
 window.onload = function() {
-	var ucfhbAcCloseBtn				= document.getElementById('ucfhb-search-autocomplete-close'),
-		ucfhbAcSrHelp				= document.getElementById('ucfhb-search-autocomplete-srhelp'),
-		ucfhbAcList					= document.getElementById('ucfhb-search-autocomplete'),
-		ucfhbSearchForm				= document.getElementById('ucfhb-search-form'),
-		ucfhbSearchField			= document.getElementById('ucfhb-search-field'),
-		ucfhbSearchService			= ucfhbSearchForm.getAttribute('data-autosearch-url'),
-		ucfhbSearchAction			= ucfhbSearchForm.getAttribute('data-action-url');
-
-	var ucfhbAutocomplete = new autocomplete(ucfhbAcCloseBtn, ucfhbAcSrHelp, ucfhbAcList, ucfhbSearchForm, ucfhbSearchField, ucfhbSearchService, ucfhbSearchAction);
+	var ucfhbAutocomplete = new ucfhbAutocompleteSearch();
 	ucfhbAutocomplete.initialize();
 };

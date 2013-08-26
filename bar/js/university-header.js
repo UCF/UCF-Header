@@ -1,3 +1,14 @@
+/* Append analytics code to end of body after setTimeout */
+var _gaq = _gaq || [];
+_gaq.push(['ucfhb._setAccount', 'UA-1658069-22']);
+_gaq.push(['ucfhb._setDomainName', 'none']);
+_gaq.push(['ucfhb._trackPageview']);
+(function() {
+	var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+	ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+	var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+})();
+
 (function() {
 	/**
 	 * Locations of external CSS, HTML files.
@@ -116,6 +127,9 @@
 				searchBtn = document.getElementById('ucfhb-search-submit'),
 				searchMinimal = document.getElementById('ucfhb-search-minimal'),
 				searchAutocomplete = document.getElementById('ucfhb-search-autocomplete'),
+				linkMyucf = document.getElementById('ucfhb-myucf'),
+				linkKnightsmail = document.getElementById('ucfhb-knightsmail'),
+				linkWebcourses = document.getElementById('ucfhb-webcourses'),
 
 				shiftLeftElems = [myUCFBtn, searchbar, searchMinimal, searchAutocomplete],
 				mobileToggleElems = [ucfhbBar, mobileToggle, ucfLogo, barRight, searchAutocomplete];
@@ -170,19 +184,16 @@
 			searchForm.onsubmit = function() {
 				_gaq.push(['ucfhb._trackEvent', 'Header', 'search', searchField.value]);
 			};
+			linkMyucf.onclick = function() {
+				_gaq.push(['ucfhb._trackEvent', 'Header', 'signon', 'myucf']);
+			};
+			linkKnightsmail.onclick = function() {
+				_gaq.push(['ucfhb._trackEvent', 'Header', 'signon', 'knightsmail']);
+			};
+			linkWebcourses.onclick = function() {
+				_gaq.push(['ucfhb._trackEvent', 'Header', 'signon', 'webcourses']);
+			};
 		};
-
-		/* Append analytics code to end of body after setTimeout */
-		var _gaq = _gaq || [];
-		_gaq.push(['ucfhb._setAccount', 'UA-1658069-19']);
-		_gaq.push(['ucfhb._setDomainName', 'none']);
-		_gaq.push(['ucfhb._trackPageview']);
-
-		(function() {
-			var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-			ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-			var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-		})();
 
 	};
 
@@ -325,7 +336,7 @@
 			var appendViewMore = function() {
 				var viewMoreLi = document.createElement('li');
 				var viewMoreLink = self.searchAction + urlq;
-				viewMoreLi.innerHTML = '<a href="' + viewMoreLink + '" tabindex="0" onclick="_gaq.push([\'ucfhb._trackEvent\', \'Header\', \'search\', \'More results for ' + searchField.value + '\'])">View More Results &raquo;</a>';
+				viewMoreLi.innerHTML = '<a href="' + viewMoreLink + '" tabindex="0" onclick="_gaq.push([\'ucfhb._trackEvent\', \'Header\', \'search\', \'More results for ' + searchField.value + '\'])">View More Results</a>';
 				viewMoreLi.className = 'ucfhb-search-autocomplete-more';
 				viewMoreLi.setAttribute('data-name-val', safeq);
 				self.autocompleteList.appendChild(viewMoreLi);

@@ -409,7 +409,10 @@
 	#ucfhb.ucfhb-mobileslide {
 		margin-top: 0;
 	}
-	#ucfhb-inner { width: 100%; height: 150px; }
+	#ucfhb-inner { 
+		width: 100%;
+		height: 150px;
+	}
 	#ucfhb-logo { padding-left: 3px; }
 	#ucfhb-left { width: 100%; height: 39px; position: absolute; top: 50px; float: none; } /* height accounts for padding-top */
 	#ucfhb-mobile-toggle { display: block; }

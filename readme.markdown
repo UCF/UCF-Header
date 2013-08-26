@@ -9,3 +9,4 @@ Simple working demo of the future UCF Header (the "black bar").
 * Faster, Lighter, Harder, Better, Stronger -- lightweight code with no jQuery dependencies or other external libraries. Rely on CSS3 transitions for fancy effects; keep the rendering javascript to a minimum.
 * Responsive -- match Bootstrap 2.x's responsive breakpoints for seamless integration with many other projects. Make the bar mobile-friendly.
 * Search as you type -- more intuitive searching; combine a set list of common key terms and search results via the UCF search service.
+* Utilize protocol-agnostic resources for compatibility across HTTP and HTTPS

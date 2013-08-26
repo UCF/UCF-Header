@@ -1,12 +1,14 @@
 (function() {
 	/**
 	 * Locations of external CSS, HTML files.
-	 * These resources should be protocol-agnostic!
+	 * These resources should be protocol-agnostic and link to
+	 * an absolute URL.
 	 **/
-	var ucfhbStylesheet = '//webcom.dev.smca.ucf.edu/UCF-Header/css/bar.css',
-		ucfhbBsStylesheet = '//webcom.dev.smca.ucf.edu/UCF-Header/css/bar-bootstrap2x-overrides.css',
-		ucfhbHtml = '//webcom.dev.smca.ucf.edu/UCF-Header/demo/includes/bar.html',
-		ucfhbKeyterms = '//webcom.dev.smca.ucf.edu/UCF-Header/js/keyterms.json';
+
+	var ucfhbStylesheet = window.location.protocol + '//webcom.dev.smca.ucf.edu/UCF-Header/css/bar.css',
+		ucfhbBsStylesheet = window.location.protocol + '//webcom.dev.smca.ucf.edu/UCF-Header/css/bar-bootstrap2x-overrides.css',
+		ucfhbHtml = window.location.protocol + '//webcom.dev.smca.ucf.edu/UCF-Header/demo/includes/bar.html',
+		ucfhbKeyterms = window.location.protocol + '//webcom.dev.smca.ucf.edu/UCF-Header/js/keyterms.json';
 
 
 	/**
@@ -63,11 +65,12 @@
 	 **/
 	window.onload = function() {
 		/* Append stylesheet to head */
+		var head = document.getElementsByTagName('head')[0];
 		var stylesheet = document.createElement('link');
 		stylesheet.setAttribute('href', ucfhbStylesheet);
 		stylesheet.setAttribute('rel', 'stylesheet');
 		stylesheet.setAttribute('type', 'text/css');
-		document.head.appendChild(stylesheet);
+		head.appendChild(stylesheet);
 
 		/* Append Bootstrap 2.x override stylesheet to head */
 		if (useBsOverride === true) {
@@ -75,10 +78,10 @@
 			bsStylesheet.setAttribute('href', ucfhbBsStylesheet);
 			bsStylesheet.setAttribute('rel', 'stylesheet');
 			bsStylesheet.setAttribute('type', 'text/css');
-			document.head.appendChild(bsStylesheet);
+			head.appendChild(bsStylesheet);
 		}
 
-		/* Create the outermost div, if necessary */
+		/* Create the outermost bar div, if necessary */
 		var ucfhbBar = null;
 		if (document.getElementById('ucfhb')) {
 			ucfhbBar = document.getElementById('ucfhb');
@@ -86,21 +89,17 @@
 		else {
 			ucfhbBar = document.createElement('div');
 			ucfhbBar.id = 'ucfhb';
+			document.body.insertBefore(ucfhbBar, document.body.firstChild);
 		}
 
 		/* Load in the bar HTML and initialize autocomplete + event listeners */
 		loadContent(ucfhbHtml, function(xhr) {
 			ucfhbBar.innerHTML = xhr.responseText;
-			if (document.getElementById('ucfhb')) {
-				document.body.insertBefore(ucfhbBar, document.body.firstChild);
-			}
 
 			var ucfhbAutocomplete = new ucfhbAutocompleteSearch();
 			ucfhbAutocomplete.initialize();
 
 			ucfhbEventListener();
-
-			// TODO: Append analytics code to end of body after setTimeout
 		});
 
 		/* Define listeners */
@@ -169,9 +168,21 @@
 			// Analytics tracking (this functionality is also added to
 			// all links in autocomplete list items)
 			searchForm.onsubmit = function() {
-				_gaq.push(['_trackEvent', 'Header', 'search', searchField.value]);
+				_gaq.push(['ucfhb._trackEvent', 'Header', 'search', searchField.value]);
 			};
 		};
+
+		/* Append analytics code to end of body after setTimeout */
+		var _gaq = _gaq || [];
+		_gaq.push(['ucfhb._setAccount', 'UA-1658069-19']);
+		_gaq.push(['ucfhb._setDomainName', 'none']);
+		_gaq.push(['ucfhb._trackPageview']);
+
+		(function() {
+			var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+			ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+			var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+		})();
 
 	};
 
@@ -314,7 +325,7 @@
 			var appendViewMore = function() {
 				var viewMoreLi = document.createElement('li');
 				var viewMoreLink = self.searchAction + urlq;
-				viewMoreLi.innerHTML = '<a href="' + viewMoreLink + '" tabindex="0" onclick="_gaq.push([\'_trackEvent\', \'Header\', \'search\', \'More results for ' + searchField.value + '\'])">View More Results &raquo;</a>';
+				viewMoreLi.innerHTML = '<a href="' + viewMoreLink + '" tabindex="0" onclick="_gaq.push([\'ucfhb._trackEvent\', \'Header\', \'search\', \'More results for ' + searchField.value + '\'])">View More Results &raquo;</a>';
 				viewMoreLi.className = 'ucfhb-search-autocomplete-more';
 				viewMoreLi.setAttribute('data-name-val', safeq);
 				self.autocompleteList.appendChild(viewMoreLi);
@@ -343,7 +354,7 @@
 								resultUrl = matches[matchKey].url !== '' ? stripTags(matches[matchKey].url.trim()) : self.searchAction + urlq;
 
 							var listItem = document.createElement('li');
-							listItem.innerHTML = '<a href="' + resultUrl + '" tabindex="0" onclick="_gaq.push([\'_trackEvent\', \'Header\', \'search\', \'' + name + '\'])">' + nameSpan + '</a>';
+							listItem.innerHTML = '<a href="' + resultUrl + '" tabindex="0" onclick="_gaq.push([\'ucfhb._trackEvent\', \'Header\', \'search\', \'' + name + '\'])">' + nameSpan + '</a>';
 							listItem.setAttribute('data-name-val', name);
 
 							if (terms[termKey][i] !== safeq) {
@@ -378,7 +389,7 @@
 										resultUrl = self.searchAction + encodeURIComponent(name);
 										
 									var listItem = document.createElement('li');
-									listItem.innerHTML = '<a href="' + resultUrl + '" tabindex="0" onclick="_gaq.push([\'_trackEvent\', \'Header\', \'search\', \'' + name + '\'])">' + nameSpan + orgSpan + '</a>';
+									listItem.innerHTML = '<a href="' + resultUrl + '" tabindex="0" onclick="_gaq.push([\'ucfhb._trackEvent\', \'Header\', \'search\', \'' + name + '\'])">' + nameSpan + orgSpan + '</a>';
 									listItem.setAttribute('data-name-val', name);
 									self.autocompleteList.appendChild(listItem);
 								}

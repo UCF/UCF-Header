@@ -1,6 +1,5 @@
-<?php include('includes/html-header.html'); ?>	
-<?php include('includes/bar.html'); ?>
-
+<?php include('includes/html-header.html'); ?>
+<div id="ucfhb" style="height: 50px; width: 100%; margin: auto; background: #222; position: relative; z-index: 999;"></div>
 	<div id="edu-nav-top">
 		<div class="container">
 			<div class="row">

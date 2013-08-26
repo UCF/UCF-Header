@@ -1,6 +1,0 @@
-em { font-style: italic; }
-p { text-align: center; }
-#meta-nav { position: fixed; bottom: 20px; background: rgba(255,255,255,0.8); width: 100%; padding: 20px 0; }
-#meta-nav a { font-weight: bold; }
-.screenshot { display: none; margin: auto; }
-.screenshot.active { display: block; }

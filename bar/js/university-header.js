@@ -5,10 +5,10 @@
 	 * an absolute URL.
 	 **/
 
-	var ucfhbStylesheet = window.location.protocol + '//webcom.dev.smca.ucf.edu/UCF-Header/css/bar.css',
-		ucfhbBsStylesheet = window.location.protocol + '//webcom.dev.smca.ucf.edu/UCF-Header/css/bar-bootstrap2x-overrides.css',
-		ucfhbHtml = window.location.protocol + '//webcom.dev.smca.ucf.edu/UCF-Header/demo/includes/bar.html',
-		ucfhbKeyterms = window.location.protocol + '//webcom.dev.smca.ucf.edu/UCF-Header/js/keyterms.json';
+	var ucfhbStylesheet = window.location.protocol + '//webcom.dev.smca.ucf.edu/UCF-Header/bar/css/university-header.css',
+		ucfhbBsStylesheet = window.location.protocol + '//webcom.dev.smca.ucf.edu/UCF-Header/bar/css/university-header-bootstrap.css',
+		ucfhbHtml = window.location.protocol + '//webcom.dev.smca.ucf.edu/UCF-Header/bar/html/university-header.html',
+		ucfhbKeyterms = window.location.protocol + '//webcom.dev.smca.ucf.edu/UCF-Header/bar/js/keyterms.json';
 
 
 	/**

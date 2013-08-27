@@ -1,4 +1,6 @@
-/* Append analytics code to end of body after setTimeout */
+/**
+ * Append analytics code
+ **/
 var _gaq = _gaq || [];
 _gaq.push(['ucfhb._setAccount', 'UA-1658069-22']);
 _gaq.push(['ucfhb._setDomainName', 'none']);
@@ -8,6 +10,46 @@ _gaq.push(['ucfhb._trackPageview']);
 	ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
 	var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
 })();
+
+/**
+ * Click tracking
+ **/
+var ucfhbTrackClick = function(link, action, label) {
+	_gaq.push(['ucfhb._trackEvent', 'Header', action, label]);
+	window.setTimeout(function(){ document.location = link; }, 200);
+};
+var ucfhbAssignTrackingListener = function(elem, eventType, link, action, label) {
+	// Cross-browser addEventListener check.
+	eventType = String(eventType);
+	if (elem.addEventListener) {
+		elem.addEventListener(eventType, function(event) {
+			event.preventDefault();
+
+			// One off for form submit since we 
+			// need to get the value on the fly
+			if (eventType == 'submit') {
+				label = label.value;
+				link += encodeURIComponent(label);
+			}
+
+			ucfhbTrackClick(link, action, label);
+		}, false);
+	}
+	else {
+		elem.attachEvent('on' + eventType, function(event) {
+			// One off for form submit since we 
+			// need to get the value on the fly
+			if (eventType == 'submit') {
+				label = label.value;
+				link += encodeURIComponent(label);
+			}
+
+			ucfhbTrackClick(link, action, label);
+			return false;
+		});
+	}
+};
+
 
 (function() {
 	/**
@@ -103,16 +145,6 @@ _gaq.push(['ucfhb._trackPageview']);
 			document.body.insertBefore(ucfhbBar, document.body.firstChild);
 		}
 
-		/* Load in the bar HTML and initialize autocomplete + event listeners */
-		loadContent(ucfhbHtml, function(xhr) {
-			ucfhbBar.innerHTML = xhr.responseText;
-
-			var ucfhbAutocomplete = new ucfhbAutocompleteSearch();
-			ucfhbAutocomplete.initialize();
-
-			ucfhbEventListener();
-		});
-
 		/* Define listeners */
 		var ucfhbEventListener = function() {
 			// Fetch inserted DOM elements
@@ -181,19 +213,21 @@ _gaq.push(['ucfhb._trackPageview']);
 			};
 			// Analytics tracking (this functionality is also added to
 			// all links in autocomplete list items)
-			searchForm.onsubmit = function() {
-				_gaq.push(['ucfhb._trackEvent', 'Header', 'search', searchField.value]);
-			};
-			linkMyucf.onclick = function() {
-				_gaq.push(['ucfhb._trackEvent', 'Header', 'signon', 'myucf']);
-			};
-			linkKnightsmail.onclick = function() {
-				_gaq.push(['ucfhb._trackEvent', 'Header', 'signon', 'knightsmail']);
-			};
-			linkWebcourses.onclick = function() {
-				_gaq.push(['ucfhb._trackEvent', 'Header', 'signon', 'webcourses']);
-			};
+			ucfhbAssignTrackingListener(searchForm, 'submit', searchForm.getAttribute('data-action-url'), 'search', searchField);
+			ucfhbAssignTrackingListener(linkMyucf, 'click', linkMyucf.getAttribute('href'), 'signon', 'MyUCF');
+			ucfhbAssignTrackingListener(linkKnightsmail, 'click', linkKnightsmail.getAttribute('href'), 'signon', 'Knightsmail');
+			ucfhbAssignTrackingListener(linkWebcourses, 'click', linkWebcourses.getAttribute('href'), 'signon', 'Webcourses');
 		};
+
+		/* Load in the bar HTML and initialize autocomplete + event listeners */
+		loadContent(ucfhbHtml, function(xhr) {
+			ucfhbBar.innerHTML = xhr.responseText;
+
+			var ucfhbAutocomplete = new ucfhbAutocompleteSearch();
+			ucfhbAutocomplete.initialize();
+
+			ucfhbEventListener();
+		});
 
 	};
 
@@ -239,7 +273,7 @@ _gaq.push(['ucfhb._trackPageview']);
 		// Detect whether a click event occurred within the boundaries
 		// of a given element.
 		// http://stackoverflow.com/a/1278068
-		function outsideElementClick(objEvent, objElement){
+		function outsideElementClick(objEvent, objElement) {
 			var objCurrentElement = objEvent.target || objEvent.srcElement;
 			var blnInsideX = false;
 			var blnInsideY = false;
@@ -336,9 +370,13 @@ _gaq.push(['ucfhb._trackPageview']);
 			var appendViewMore = function() {
 				var viewMoreLi = document.createElement('li');
 				var viewMoreLink = self.searchAction + urlq;
-				viewMoreLi.innerHTML = '<a href="' + viewMoreLink + '" tabindex="0" onclick="_gaq.push([\'ucfhb._trackEvent\', \'Header\', \'search\', \'More results for ' + searchField.value + '\'])">View More Results</a>';
+				viewMoreLi.innerHTML = '<a href="' + viewMoreLink + '" tabindex="0">View More Results</a>';
 				viewMoreLi.className = 'ucfhb-search-autocomplete-more';
 				viewMoreLi.setAttribute('data-name-val', safeq);
+
+				var link = viewMoreLi.getElementsByTagName('a')[0];
+				ucfhbAssignTrackingListener(link, 'click', new String(viewMoreLink), "search", "View more results: " + safeq);
+
 				self.autocompleteList.appendChild(viewMoreLi);
 			};
 			
@@ -365,8 +403,11 @@ _gaq.push(['ucfhb._trackPageview']);
 								resultUrl = matches[matchKey].url !== '' ? stripTags(matches[matchKey].url.trim()) : self.searchAction + urlq;
 
 							var listItem = document.createElement('li');
-							listItem.innerHTML = '<a href="' + resultUrl + '" tabindex="0" onclick="_gaq.push([\'ucfhb._trackEvent\', \'Header\', \'search\', \'' + name + '\'])">' + nameSpan + '</a>';
+							listItem.innerHTML = '<a href="' + resultUrl + '" tabindex="0">' + nameSpan + '</a>';
 							listItem.setAttribute('data-name-val', name);
+
+							var link = listItem.getElementsByTagName('a')[0];
+							ucfhbAssignTrackingListener(link, 'click', new String(resultUrl), "search", "" + name);
 
 							if (terms[termKey][i] !== safeq) {
 								self.autocompleteList.insertBefore(listItem, self.autocompleteList.firstChild);
@@ -400,8 +441,12 @@ _gaq.push(['ucfhb._trackPageview']);
 										resultUrl = self.searchAction + encodeURIComponent(name);
 										
 									var listItem = document.createElement('li');
-									listItem.innerHTML = '<a href="' + resultUrl + '" tabindex="0" onclick="_gaq.push([\'ucfhb._trackEvent\', \'Header\', \'search\', \'' + name + '\'])">' + nameSpan + orgSpan + '</a>';
+									listItem.innerHTML = '<a href="' + resultUrl + '" tabindex="0" >' + nameSpan + orgSpan + '</a>';
 									listItem.setAttribute('data-name-val', name);
+									
+									var link = listItem.getElementsByTagName('a')[0];
+									ucfhbAssignTrackingListener(link, 'click', new String(resultUrl), "search", "" + name);
+									
 									self.autocompleteList.appendChild(listItem);
 								}
 								// Add 'View More Results link'; update screenreader help text

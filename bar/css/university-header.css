@@ -32,7 +32,7 @@
  **
 
 /* Main wrapper */
-#ucfhb { height: 50px; width: 100%; margin: auto; background: #222; position: relative; z-index: 999; }
+#ucfhb { height: 50px; width: 100%; margin: auto; background: #000; position: relative; z-index: 999; }
 
 /* Inner wrap (fixed 940px width) */
 #ucfhb-inner { width: 940px; margin: auto; height: 50px; position: relative; z-index: 1000; }

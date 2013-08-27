@@ -3,10 +3,11 @@
 	<head>
 		<title>UCF University Header</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta charset="utf-8">
 		<link media="all" type="text/css" href="http://www.ucf.edu/wp-content/themes/Main-Site-Theme/static/bootstrap/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 		<link media="all" type="text/css" href="http://www.ucf.edu/wp-content/themes/Main-Site-Theme/static/bootstrap/bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet">
 		<link media="all" type="text/css" href="http://www.ucf.edu/wp-content/themes/Main-Site-Theme/static/css/webcom-base.css" rel="stylesheet">
-		<script id="ucfhb-script" src="http://webcom.dev.smca.ucf.edu/UCF-Header/bar/js/university-header.js?use-bootstrap-overrides=1"></script>
+		<script type="text/javascript" id="ucfhb-script" src="http://webcom.dev.smca.ucf.edu/UCF-Header/bar/js/university-header.js?use-bootstrap-overrides=1"></script>
 		<style type="text/css">
 			h1 { padding-top: 20px; }
 		</style>

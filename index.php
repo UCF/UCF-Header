@@ -56,7 +56,7 @@
 						<i class="icon-info-sign"></i> <strong><em>Note: The University Header must always be the first element
 						at the top of the screen.</em></strong>
 					</p>
-					<pre>&lt;div id="ucfhb" style="height: 50px; width: 100%; margin: auto; background: #222; position: relative; z-index: 999;"&gt;&lt;/div&gt;</pre>
+					<pre>&lt;div id="ucfhb" style="height: 50px; width: 100%; margin: auto; background: #000; position: relative; z-index: 999;"&gt;&lt;/div&gt;</pre>
 
 					<h3>Bootstrap 2.x overrides</h3>
 					<p>

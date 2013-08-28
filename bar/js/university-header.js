@@ -19,8 +19,11 @@ var ucfhbTrackClick = function(link, action, label) {
 	window.setTimeout(function(){ document.location = link; }, 200);
 };
 var ucfhbAssignTrackingListener = function(elem, eventType, link, action, label) {
+	eventType 	= String(eventType);
+	action 		= action || null;
+	label 		= label || null;
+
 	// Cross-browser addEventListener check.
-	eventType = String(eventType);
 	if (elem.addEventListener) {
 		elem.addEventListener(eventType, function(event) {
 			event.preventDefault();
@@ -28,11 +31,19 @@ var ucfhbAssignTrackingListener = function(elem, eventType, link, action, label)
 			// One off for form submit since we 
 			// need to get the value on the fly
 			if (eventType == 'submit') {
-				label = label.value;
-				link += encodeURIComponent(label);
+				label = label.value || null;
+				if (label !== null) {
+					link += encodeURIComponent(label);
+				}
 			}
 
-			ucfhbTrackClick(link, action, label);
+			// Only track actions w/valid values
+			if (action !== null && label !== null) {
+				ucfhbTrackClick(link, action, label);
+			}
+			else {
+				document.location = link;
+			}
 		}, false);
 	}
 	else {
@@ -40,11 +51,19 @@ var ucfhbAssignTrackingListener = function(elem, eventType, link, action, label)
 			// One off for form submit since we 
 			// need to get the value on the fly
 			if (eventType == 'submit') {
-				label = label.value;
-				link += encodeURIComponent(label);
+				label = label.value || null;
+				if (label !== null) {
+					link += encodeURIComponent(label);
+				}
 			}
 
-			ucfhbTrackClick(link, action, label);
+			// Only track actions w/valid values
+			if (action !== null && label !== null) {
+				ucfhbTrackClick(link, action, label);
+			}
+			else {
+				document.location = link;
+			}
 			return false;
 		});
 	}
@@ -215,6 +234,10 @@ var ucfhbAssignTrackingListener = function(elem, eventType, link, action, label)
 					toggleClasses(mobileToggleElems, 'ucfhb-mobileslide');
 				}
 			};
+
+			// 
+
+
 			// Analytics tracking (this functionality is also added to
 			// all links in autocomplete list items)
 			ucfhbAssignTrackingListener(searchForm, 'submit', searchForm.getAttribute('data-action-url'), 'search', searchField);

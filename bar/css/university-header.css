@@ -375,6 +375,7 @@
 	font-weight: bold;
 	color: #333;
 	z-index: 999;
+	text-decoration: none;
 }
 #ucfhb-search-autocomplete-close:hover { text-decoration: none; }
 #ucfhb-search-autocomplete.search-is-active + #ucfhb-search-autocomplete-close { display: block; }

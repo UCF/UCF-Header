@@ -23,32 +23,21 @@
 						consistent navigational elements and a universal search feature with search suggestions.
 					</p>
 					<p>
-						The university header has a responsive option and will adapt to various screen sizes as necessary.  Responsiveness follows 
+						The University Header has a responsive option and will adapt to various screen sizes as necessary.  Responsiveness follows 
 						<a href="http://getbootstrap.com"><strong>Twitter Bootstrap's</strong></a> scaffolding standards.
 					</p>
 
-					<h2>Installation</h2>
-					<p>
-						To add the University Header to your website, add the following script tag to your document.
-					</p>
-					<div class="alert alert-info">
+					<div class="hero-unit">
+						<h2>Installation</h2>
 						<p>
-							<i class="icon-info-sign"></i> <strong>Note:</strong> If you've included the old version of the University Header on your website, your site should display the new bar automatically 
-							without needing any modifications.
+							To add the University Header to your website, add the following script tag to your document.
 						</p>
+						<pre>&lt;script type="text/javascript" id="ucfhb-script" src="//universityheader.ucf.edu/bar/js/university-header.js"&gt;&lt;/script&gt;</pre>
 					</div>
-
-					<h3>Standard</h3>
-					<pre>&lt;script type="text/javascript" id="ucfhb-script" src="http://universityheader.ucf.edu/bar/js/university-header.js"&gt;&lt;/script&gt;</pre>
-
-					<h3>Minified (recommended)</h3>
-					<pre>&lt;script type="text/javascript" id="ucfhb-script" src="http://universityheader.ucf.edu/bar/js/university-header.min.js"&gt;&lt;/script&gt;</pre>
-
-					<hr/>
 
 					<h2>Usage</h2>
 					<p>
-						Please keep in mind the following when including the University Header on your website:
+						The University Header is intended to be a 'plug-and-go' solution.  Please keep the following in mind when including the University Header on your site:
 					</p>
 					<ol>
 						<li>
@@ -58,10 +47,10 @@
 						</li>
 						<li>
 							<h3>The University Header should always be at the top of each page.</h3>
-							Do not place the bar below any other elements on the page.  The bar should always be first.
+							Do not modify where the bar is intended to render.  The bar should always be the first element on the page.
 						</li>
 						<li>
-							<h3>The University Header should not present any other content beyond its default parameters.</h3>
+							<h3>The University Header should not present any other content beyond its default content.</h3>
 							The bar should not be given the appearance of an 'attachment' of the default bar on your site, and should not include extra 
 							links or graphics beyond what the default bar provides.  
 							<em>Your site's navigation should not be displayed as an extension or piece of the University Header.</em>
@@ -100,7 +89,7 @@
 						a style override is necessary for sites using these versions of Bootstrap.  These overrides can also be used for any other framework 
 						that applies 20px of left- and right-hand padding to the <code>&lt;body&gt;</code>.
 					</p>
-					<pre>&lt;script type="text/javascript" id="ucfhb-script" src="http://universityheader.ucf.edu/bar/js/university-header.js?use-bootstrap-overrides=1"&gt;&lt;/script&gt;</pre>
+					<pre>&lt;script type="text/javascript" id="ucfhb-script" src="//universityheader.ucf.edu/bar/js/university-header.js?use-bootstrap-overrides=1"&gt;&lt;/script&gt;</pre>
 					<div class="alert alert-info">
 						<p>
 							<i class="icon-info-sign"></i> <strong>Note:</strong> This option requires that the <code>&lt;script&gt;</code> tag has an ID of <code>ucfhb-script</code>. 

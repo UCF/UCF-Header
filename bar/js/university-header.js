@@ -114,7 +114,11 @@ var ucfhbAssignTrackingListener = function(elem, eventType, link, action, label)
 
 
 	/** 
-	 * Insert the bar into the DOM; start listening for events
+	 * Insert the bar into the DOM; start listening for events.
+	 *
+	 * window.onload has to wait for the DOM and all resources to
+	 * finish loading, but is the most reliable DOM readiness check
+	 * available, and doesn't rely on dumb IE hacks.
 	 **/
 	window.onload = function() {
 		/* Append stylesheet to head */

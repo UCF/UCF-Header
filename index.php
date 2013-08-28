@@ -7,7 +7,7 @@
 		<link media="all" type="text/css" href="http://www.ucf.edu/wp-content/themes/Main-Site-Theme/static/bootstrap/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 		<link media="all" type="text/css" href="http://www.ucf.edu/wp-content/themes/Main-Site-Theme/static/bootstrap/bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet">
 		<link media="all" type="text/css" href="http://www.ucf.edu/wp-content/themes/Main-Site-Theme/static/css/webcom-base.css" rel="stylesheet">
-		<script type="text/javascript" id="ucfhb-script" src="http://webcom.dev.smca.ucf.edu/UCF-Header/bar/js/university-header.min.js?use-bootstrap-overrides=1"></script>
+		<script type="text/javascript" id="ucfhb-script" src="http://webcom.dev.smca.ucf.edu/UCF-Header/bar/js/university-header.js?use-bootstrap-overrides=1"></script>
 		<style type="text/css">
 			h1 { padding-top: 20px; }
 			h3 { padding-top: 10px; }
@@ -29,8 +29,7 @@
 
 					<h2>Installation</h2>
 					<p>
-						To add the University Header to your website, add the following script tag to your document.  We recommend placing it in the footer of 
-						your document to help reduce load times, but you can place it in the header if necessary.
+						To add the University Header to your website, add the following script tag to your document.
 					</p>
 					<div class="alert alert-info">
 						<p>
@@ -42,7 +41,7 @@
 					<h3>Standard</h3>
 					<pre>&lt;script type="text/javascript" id="ucfhb-script" src="http://universityheader.ucf.edu/bar/js/university-header.js"&gt;&lt;/script&gt;</pre>
 
-					<h3>Minified</h3>
+					<h3>Minified (recommended)</h3>
 					<pre>&lt;script type="text/javascript" id="ucfhb-script" src="http://universityheader.ucf.edu/bar/js/university-header.min.js"&gt;&lt;/script&gt;</pre>
 
 					<hr/>
@@ -82,6 +81,10 @@
 					<p>
 						To reduce the flicker effect of loaded header content on larger sites, add the below markup
 						as the <em>very first</em> child element of your <code>&lt;body&gt;</code>.
+					</p>
+					<p>
+						Keep in mind that this snippet may require updating in the future to match the bar's script as it is updated and maintained.  Use this 
+						snippet only if the performance boost is significant.
 					</p>
 					<div class="alert alert-warning">
 						<p>

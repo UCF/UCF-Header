@@ -1,23 +1,125 @@
 {
 	"terms": {
-		"t_1": ["housing", "dorm", "apartment", "on-campus living", "residence", "nike", "apollo", "libra", "tower", "neptune", "lake claire"],
-		"t_2": ["test"],
-		"t_3": ["another test"]
+		"t_1": ["housing", "dorm", "apartment", "on-campus living", "residence", "nike", "apollo", "libra", "tower", "neptune", "lake claire"]
+		"t_2": ["calendar", "academic calendar", "fall", "spring", "summer"]
+		"t_3": ["library", "libraries"]
+		"t_4": ["email", "knights", "mail"]
+		"t_5": ["email", "outlook"]
+		"t_6": ["giving", "gift", "donate", "donation"]
+		"t_7": ["scholarship"]
+		"t_8": ["aid", "financial"]
+		"t_9": ["webcourses"]
+		"t_10": ["book", "bookstore"]
+		"t_11": ["webcourses"]
+		"t_12": ["orientation"]
+		"t_13": ["job", "employment", "career"]
+		"t_14": ["career"]
+		"t_15": ["parking"]
+		"t_16": ["map"]
+		"t_17": ["registrar"]
+		"t_18": ["transcript"]
+		"t_19": ["nursing"]
+		"t_20": ["education"]
 	},
 	"matches": {
 		"m_1": {
 			"name": "Housing and Residence Life",
-			"url": "",
+			"url": "http://housing.ucf.edu",
 			"icon": ""
 		},
 		"m_2": {
-			"name": "",
-			"url": "",
+			"name": "Academic Calendar",
+			"url": "http://calendar.ucf.edu",
 			"icon": ""
 		},
 		"m_3": {
-			"name": "",
-			"url": "",
+			"name": "UCF Libraries"
+			"url": "http://library.ucf.edu/",
+			"icon": ""
+		}
+		"m_4": {
+			"name": "Knights Email "
+			"url": "http://knightsemail.ucf.edu",
+			"icon": ""
+		}
+		"m_5": {
+			"name": "Faculty and Staff Webmail",
+			"url": "http://webmail.ucf.edu",
+			"icon": ""
+		}
+		"m_6": {
+			"name": "Giving to UCF",
+			"url": "http://ucffoundation.org/",
+			"icon": ""
+		}
+		"m_7": {
+			"name": "Scholarship Information",
+			"url": "http://finaid.ucf.edu/scholarships/",
+			"icon": ""
+		}
+		"m_8": {
+			"name": "Financial Aid",
+			"url": "http://finaid.ucf.edu/types/",
+			"icon": ""
+		}
+		"m_9": {
+			"name": "Webcourses",
+			"url": "http://webcourses.ucf.edu",
+			"icon": ""
+		}
+		"m_10": {
+			"name": "UCF Bookstore",
+			"url": "bookstore.ucf.edu",
+			"icon": ""
+		}
+		"m_11": {
+			"name": "Webcourses",
+			"url": "http://webcourses.ucf.edu",
+			"icon": ""
+		}
+		"m_12": {
+			"name": "Orientation",
+			"url": "http://orientation.ucf.edu/",
+			"icon": ""
+		}
+		"m_13": {
+			"name": "Jobs with UCF",
+			"url": "https://www.jobswithucf.com/",
+			"icon": ""
+		}
+		"m_14": {
+			"name": "Career Services",
+			"url": "http://career.sdes.ucf.edu/",
+			"icon": ""
+		}
+		"m_15": {
+			"name": "Parking Services",
+			"url": "http://parking.ucf.edu/",
+			"icon": ""
+		}
+		"m_16": {
+			"name": "Campus Map",
+			"url": "http://map.ucf.edu",
+			"icon": ""
+		}
+		"m_17": {
+			"name": "Registrar",
+			"url": "http://registrar.ucf.edu/",
+			"icon": ""
+		}
+		"m_18": {
+			"name": "Official Transcript Requests",
+			"url": "http://registrar.ucf.edu/transcript-request",
+			"icon": ""
+		}
+		"m_19": {
+			"name": "College of Nursing",
+			"url": "http://nursing.ucf.edu",
+			"icon": ""
+		}
+		"m_20": {
+			"name": "College of Education and Human Performance",
+			"url": "http://education.ucf.edu/",
 			"icon": ""
 		}
 	}

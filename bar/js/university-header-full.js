@@ -235,9 +235,6 @@ var ucfhbAssignTrackingListener = function(elem, eventType, link, action, label)
 				}
 			};
 
-			// 
-
-
 			// Analytics tracking (this functionality is also added to
 			// all links in autocomplete list items)
 			ucfhbAssignTrackingListener(searchForm, 'submit', searchForm.getAttribute('data-action-url'), 'search', searchField);
@@ -246,16 +243,52 @@ var ucfhbAssignTrackingListener = function(elem, eventType, link, action, label)
 			ucfhbAssignTrackingListener(linkWebcourses, 'click', linkWebcourses.getAttribute('href'), 'signon', 'Webcourses');
 		};
 
-		/* Load in the bar HTML and initialize autocomplete + event listeners */
-		loadContent(ucfhbHtml, function(xhr) {
-			ucfhbBar.innerHTML = xhr.responseText;
+		// Add the bar's markup; initialize autocomplete + event listeners
+		var markup = [
+			'<div id="ucfhb-inner" style="display: none;">',
+				'<div id="ucfhb-left">',
+					'<div id="ucfhb-logo">',
+						'<a href="http://www.ucf.edu">University of Central Florida</a>',
+					'</div>',
+					'<a id="ucfhb-mobile-toggle" href="#">Open Mobile Menu</a>',
+				'</div>',
+				'<div id="ucfhb-right">',
+					'<div id="ucfhb-signon">',
+						'<a id="ucfhb-signon-logo" href="#">',
+							'<span class="ucfhb-hidden">UCF Log In: toggle list of UCF services</span>',
+							'<span class="ucfhb-icon" id="ucfhb-icon-open" aria-hidden="true">+</span>',
+							'<span class="ucfhb-icon" id="ucfhb-icon-close" aria-hidden="true">&raquo;</span>',
+						'</a>',
+						'<div id="ucfhb-services">',
+							'<div>',
+								'<a id="ucfhb-myucf" class="ucfhb-service" href="https://my.ucf.edu/psp/PAPROD/EMPLOYEE/EMPL/?cmd=login">myUCF</a>',
+								'<a id="ucfhb-knightsmail" class="ucfhb-service" href="https://www.outlook.com/Knights.ucf.edu">KnightsMail</a>',
+								'<a id="ucfhb-webcourses" class="ucfhb-service" href="https://webcourses.ucf.edu">Webcourses</a>',
+							'</div>',
+						'</div>',
+					'</div>',
+					'<div id="ucfhb-search">',
+						'<form action="http://google.cc.ucf.edu/search" data-action-url="http://google.cc.ucf.edu/search?client=default_frontend&proxystylesheet=UCF_Main&q=" data-autosearch-url="../../../people/service.php?limit=3&search=" method="get" name="ucfhb-search-form" id="ucfhb-search-form" autocomplete="off">',
+							'<label for="ucfhb-search-field">Search UCF</label>',
+							'<input type="hidden" name="client" value="default_frontend" />',
+							'<input type="hidden" name="proxystylesheet" value="UCF_Main" />',
+							'<input type="text" name="q" id="ucfhb-search-field" placeholder="Search UCF" autocomplete="off" autocapitalize="off" aria-autocomplete="list" aria-owns="ucfhb-search-autocomplete" aria-activedescendant="ucfhb-autocomplete-selected" aria-haspopup="true" role="search" />',
+							'<input type="submit" value="Go" id="ucfhb-search-submit" />',
+						'</form>',
+						'<span id="ucfhb-search-autocomplete-srhelp" role="status" aria-live="polite"></span>',
+						'<a id="ucfhb-search-minimal" href="#">Search</a>',
+					'</div>',
+				'</div>',
+				'<ul id="ucfhb-search-autocomplete" tabindex="1" aria-hidden="true" role="listbox"></ul>',
+				'<a id="ucfhb-search-autocomplete-close" href="#" alt="Close autocomplete results" title="Close autocomplete results">&times;</a>',
+			'</div>'
+		].join('\n');
+		ucfhbBar.innerHTML = markup;
 
-			var ucfhbAutocomplete = new ucfhbAutocompleteSearch();
-			ucfhbAutocomplete.initialize();
+		var ucfhbAutocomplete = new ucfhbAutocompleteSearch();
+		ucfhbAutocomplete.initialize();
 
-			ucfhbEventListener();
-		});
-
+		ucfhbEventListener();
 	};
 
 
@@ -416,6 +449,7 @@ var ucfhbAssignTrackingListener = function(elem, eventType, link, action, label)
 					var terms = self.keyterms.terms,
 						matches = self.keyterms.matches,
 						matchesFound = 0;
+						results = [];
 
 					for (i = 0; i < countObjectProperties(terms); i++) {
 						var termKey = "t_" + (i + 1),
@@ -423,29 +457,28 @@ var ucfhbAssignTrackingListener = function(elem, eventType, link, action, label)
 
 						if (terms[termKey].indexOf(matchq) > -1) {
 							matchesFound++;
-							self.toggleAutocompleteList(true);
+							results.push(matches[matchKey]);
+						}
+					}
+					if (matchesFound > 0) {
+						self.toggleAutocompleteList(true);
 
-							var name = matches[matchKey].name !== null ? stripTags(matches[matchKey].name.trim()) : '',
+						i = 0;
+						for (i = 0; i < matchesFound; i++) {
+							var name = stripTags(results[i].name.trim()),
 								nameSpan = '<span class="ucfhb-search-autocomplete-name">' + name + '</span>',
-								resultUrl = matches[matchKey].url !== '' ? stripTags(matches[matchKey].url.trim()) : self.searchAction + urlq;
+								resultUrl = results[i].url !== '' ? stripTags(results[i].url.trim()) : self.searchAction + urlq;
 
 							var listItem = document.createElement('li');
 							listItem.innerHTML = '<a href="' + resultUrl + '" tabindex="0">' + nameSpan + '</a>';
 							listItem.setAttribute('data-name-val', name);
 
+							self.autocompleteList.appendChild(listItem);
+
 							var link = listItem.getElementsByTagName('a')[0];
 							ucfhbAssignTrackingListener(link, 'click', new String(resultUrl), "search", "" + name);
-
-							if (terms[termKey][i] !== safeq) {
-								self.autocompleteList.insertBefore(listItem, self.autocompleteList.firstChild);
-							}
-							else {
-								self.autocompleteList.appendChild(listItem);
-							}
 						}
-					}
 
-					if (matchesFound > 0) {
 						// Add 'View More Results link'; update screenreader help text
 						appendViewMore();
 						self.updateAutocompleteHelp(matchesFound, safeq);

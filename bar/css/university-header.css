@@ -35,7 +35,9 @@
 #ucfhb { height: 50px; width: 100%; margin: auto; background: #000; position: relative; z-index: 999; }
 
 /* Inner wrap (fixed 940px width) */
-#ucfhb-inner { width: 940px; margin: auto; height: 50px; position: relative; z-index: 1000; }
+/* display: block is added to override display:none inline styles, which prevent 
+ * plaintext content flicker if the header css hasn't appended before the bar content. */
+#ucfhb-inner { display: block !important; width: 940px; margin: auto; height: 50px; position: relative; z-index: 1000; }
 
 /* The left-hand portion of the header */
 #ucfhb-left { float: left; padding-top: 11px; width: 320px; }

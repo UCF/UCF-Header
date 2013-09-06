@@ -1,4 +1,4 @@
-{
+var ucfhb_keyterms = {
 	"terms": {
 		"t_1": ["housing", "dorm", "apartment", "on-campus living", "residence", "nike", "apollo", "libra", "tower", "neptune", "lake claire"],
 		"t_2": ["calendar", "academic calendar", "fall", "spring", "summer"],

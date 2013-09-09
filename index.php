@@ -66,23 +66,6 @@
 					</p>
 					<pre>&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;</pre>
 
-					<h3>Reduce flicker effect</h3>
-					<p>
-						To reduce the flicker effect of loaded header content on larger sites, add the below markup
-						as the <em>very first</em> child element of your <code>&lt;body&gt;</code>.
-					</p>
-					<p>
-						Keep in mind that this snippet may require updating in the future to match the bar's script as it is updated and maintained.  Use this 
-						snippet only if the performance boost is significant.
-					</p>
-					<div class="alert alert-warning">
-						<p>
-							<i class="icon-info-sign"></i> <strong>Note: <em>The University Header must always be the first element
-							at the top of the screen.</em></strong>  Do not place the bar below any other elements on your page.
-						</p>
-					</div>
-					<pre>&lt;div id="ucfhb" style="height: 50px; width: 100%; margin: auto; background: #000; position: relative; z-index: 999;"&gt;&lt;/div&gt;</pre>
-
 					<h3>Bootstrap 2.x overrides</h3>
 					<p>
 						Due to the way that older versions of Bootstrap apply left- and right-hand padding to elements at screen sizes less than 768px wide, 
@@ -117,6 +100,14 @@
 						The University Header has been tested in iOS 6.0+ and stock Android browser emulators running Android v1.5+, as well as the latest 
 						version of Opera Mobile.
 					</p>
+
+					<div class="alert alert-info">
+						<p>
+							<i class="icon-info-sign"></i> <strong>Note:</strong> The University Header may not render properly if the <code>&lt;body&gt;</code> 
+							tag on your site has margins, padding, or other non-standard styles applied to it.  Use a CSS Reset, CSS framework, or your own 
+							<code>&lt;body&gt;</code> tag styles to ensure consistent rendering across all browsers.
+						</p>
+					</div>
 
 					<br/><br/>
 				</div>

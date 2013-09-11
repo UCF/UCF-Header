@@ -70,6 +70,20 @@ var ucfhbAssignTrackingListener = function(elem, eventType, link, action, label)
 };
 
 
+/**
+ * JSONP implementation for search service proxy results
+ **/
+var ucfhbJsonp = null; 
+function ucfhbSetJsonp(json) {
+	if (json) {
+		ucfhbJsonp = json;
+	}
+	else {
+		ucfhbJsonp = null;
+	}
+}
+
+
 (function() {
 	/**
 	 * Locations of external CSS files.
@@ -77,7 +91,8 @@ var ucfhbAssignTrackingListener = function(elem, eventType, link, action, label)
 	 * an absolute URL.
 	 **/
 	var ucfhbStylesheet = window.location.protocol + '//webcom.dev.smca.ucf.edu/UCF-Header/bar/css/university-header.css',
-		ucfhbBsStylesheet = window.location.protocol + '//webcom.dev.smca.ucf.edu/UCF-Header/bar/css/university-header-bootstrap.css';
+		ucfhbBsStylesheet = window.location.protocol + '//webcom.dev.smca.ucf.edu/UCF-Header/bar/css/university-header-bootstrap.css',
+		ucfhbJsonpScript = window.location.protocol + '//webcom.dev.smca.ucf.edu/UCF-Header/bar/data/?search=';
 
 
 	/**
@@ -93,6 +108,7 @@ var ucfhbAssignTrackingListener = function(elem, eventType, link, action, label)
 			useBsOverride = true;
 		}
 	}
+
 
 	/**
 	 * contentloaded.js
@@ -157,27 +173,22 @@ var ucfhbAssignTrackingListener = function(elem, eventType, link, action, label)
 
 
 	/**
-	 * Generic Ajax call function
+	 * Generate a script tag for autocomplete search results (JSONP)
 	 **/
-	function loadContent(url, callback) {
-		var xhr = new XMLHttpRequest();
-		xhr.onreadystatechange = ensureReadiness;
-	
-		function ensureReadiness() {
-			if(xhr.readyState < 4) {
-				return;
-			}
-			if(xhr.status !== 200) {
-				return;
-			}
-			// all is well
-			if(xhr.readyState === 4) {
-				callback(xhr);
-			}
+	var ucfhbCreateJsonpScript = function(query, callback, timeout) {
+		var head = document.getElementsByTagName('head')[0];
+		var script = document.createElement('script');
+		script.setAttribute('src', ucfhbJsonpScript + query);
+		script.setAttribute('type', 'text/javascript');
+		script.id = 'ucfhb-json';
+		head.appendChild(script);
+
+		if (typeof callback !== 'undefined' && callback !== null) {
+			setTimeout(function() {
+
+				callback();
+			}, timeout);
 		}
-	
-		xhr.open('GET', url, true);
-		xhr.send('');
 	}
 
 
@@ -239,7 +250,7 @@ var ucfhbAssignTrackingListener = function(elem, eventType, link, action, label)
 						'</div>',
 					'</div>',
 					'<div id="ucfhb-search">',
-						'<form action="http://google.cc.ucf.edu/search" data-action-url="http://google.cc.ucf.edu/search?client=default_frontend&proxystylesheet=UCF_Main&q=" data-autosearch-url="http://search.smca.ucf.edu/service.php?limit=3&search=" method="get" name="ucfhb-search-form" id="ucfhb-search-form" autocomplete="off">',
+						'<form action="http://google.cc.ucf.edu/search" data-action-url="http://google.cc.ucf.edu/search?client=default_frontend&proxystylesheet=UCF_Main&q=" data-autosearch-url="'+ ucfhbJsonpScript +'" method="get" name="ucfhb-search-form" id="ucfhb-search-form" autocomplete="off">',
 							'<label for="ucfhb-search-field">Search UCF</label>',
 							'<input type="hidden" name="client" value="default_frontend" />',
 							'<input type="hidden" name="proxystylesheet" value="UCF_Main" />',
@@ -352,13 +363,14 @@ var ucfhbAssignTrackingListener = function(elem, eventType, link, action, label)
 	function ucfhbAutocompleteSearch() {
 		var self = this;
 
+		this.searchService			= ucfhbJsonpScript;	// URL of the search service queried for autocomplete results (URL to UCF search service proxy)
+
 		this.autocompleteCloseBtn	= document.getElementById('ucfhb-search-autocomplete-close');	// <a> element in corner of autocomplete results
 		this.autocompleteHelp		= document.getElementById('ucfhb-search-autocomplete-srhelp');	// Help text for screenreaders
 		this.autocompleteList		= document.getElementById('ucfhb-search-autocomplete');			// Autocomplete <ul> element
 		this.autocompleteSelectedId = 'ucfhb-autocomplete-selected';								// ID assigned to a selected autocomplete <li>
 		this.searchForm				= document.getElementById('ucfhb-search-form');					// Search <form> element
 		this.searchField			= document.getElementById('ucfhb-search-field');				// Search <input> element
-		this.searchService			= this.searchForm.getAttribute('data-autosearch-url');			// URL of the search service queried for autocomplete results (URL to UCF search service)
 		this.searchAction			= this.searchForm.getAttribute('data-action-url');				// 'data-action-url' attr of search <form> element; should match form 'action' attr. (URL to Google Search Appliance)
 		this.searchActiveClass		= 'search-is-active';											// Class assigned to an active (visible) autocomplete <ul>
 
@@ -520,6 +532,19 @@ var ucfhbAssignTrackingListener = function(elem, eventType, link, action, label)
 			}
 		}
 
+		// Retrieve JSONP results from search service proxy
+		function ucfhbGetJsonp(query, callback) {
+			var script = document.getElementById('ucfhb-json');
+			if (script) {
+				script.parentNode.removeChild(script);
+			}
+			ucfhbCreateJsonpScript(query, function() {
+				var json = JSON.parse(ucfhbJsonp);
+				callback(json);
+			}, 600); // Give Javascript time to rebuild the script tag value
+		}
+
+
 		// Delete existing results in an autocomplete list
 		this.clearAutocompleteResults = function() {
 			while (self.autocompleteList.hasChildNodes()) {
@@ -638,11 +663,8 @@ var ucfhbAssignTrackingListener = function(elem, eventType, link, action, label)
 					}
 					// Try search service results if no keyterms are found
 					else {
-						loadContent(url, function(xhr) {
-							var json = JSON.parse(xhr.responseText);
-							// If data was returned, append the results to the
-							// autocomplete <ul>
-							if (json.results !== null && json.results.length > 0) {
+						ucfhbGetJsonp(urlq, function(json) {
+							if (json && json.results !== null && json.results.length > 0) {
 								self.toggleAutocompleteList(true);
 								i = 0;
 								for (i = 0; i < json.results.length; i++) {
@@ -783,11 +805,11 @@ var ucfhbAssignTrackingListener = function(elem, eventType, link, action, label)
 		
 		// Perform outputResults() when a query is
 		// being typed in the search bar:
-		this.searchOnKeyUp = function(searchService, q, query) {
+		this.searchOnKeyUp = function(q, query) {
 			clearTimeout(timer);
 			timer = setTimeout(function () {
 				self.outputResults(q, query);
-			}, 600);
+			}, 200);
 		};
 		
 		// On load + listen for events
@@ -821,7 +843,7 @@ var ucfhbAssignTrackingListener = function(elem, eventType, link, action, label)
 						keycode === 40
 					)
 				) {
-					self.searchOnKeyUp(self.searchService, q, query);
+					self.searchOnKeyUp(q, query);
 				}
 				// Otherwise, check for up/down arrow keystrokes on an
 				// active search:
@@ -840,7 +862,7 @@ var ucfhbAssignTrackingListener = function(elem, eventType, link, action, label)
 					self.searchField.value !== '' &&
 					self.searchField.value !== null
 				) {
-					self.searchOnKeyUp(self.searchService, q, query);
+					self.searchOnKeyUp(q, query);
 				}
 			};
 

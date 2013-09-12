@@ -32,7 +32,7 @@
  **
 
 /* Main wrapper */
-#ucfhb { height: 50px; width: 100%; margin: auto; background: #000; position: relative; z-index: 999; }
+#ucfhb { height: 50px; width: 100%; margin: auto; background: #000; position: relative; z-index: 10000; }
 
 /* Inner wrap (fixed 940px width) */
 /* display: block is added to override display:none inline styles, which prevent 

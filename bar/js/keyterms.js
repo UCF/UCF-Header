@@ -19,7 +19,9 @@ var ucfhb_keyterms = {
 		"t_17": ["registrar"],
 		"t_18": ["transcript"],
 		"t_19": ["nursing"],
-		"t_20": ["education"]
+		"t_20": ["education"],
+		"t_21": ["art", "arts", "humanities"],
+		"t_22": ["science"]
 	},
 	"matches": {
 		"m_1": {
@@ -101,6 +103,14 @@ var ucfhb_keyterms = {
 		"m_20": {
 			"name": "College of Education and Human Performance",
 			"url": "http://education.ucf.edu/"
+		},
+		"m_21": {
+			"name": "College of Arts and Humanities",
+			"url": "http://www.cah.ucf.edu/"
+		},
+		"m_22": {
+			"name": "College of Science",
+			"url": "http://www.cos.ucf.edu/"
 		}
 	}
 }

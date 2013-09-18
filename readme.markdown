@@ -5,7 +5,7 @@ Visit http://universityheader.ucf.edu for usage instructions and guidelines.
 ## Installation
 
 - Clone this repository and place it in a web-accessible location.
-- Update index.html, line 10 <script> src attribute to point to your new location.
+- Update index.html, line 10 `<script>` src attribute to point to your new location.
 - Update absolute URLs in bar/js/university-header-full.js on lines 93, 94 and 95 
 to point to your new location.
 - Update same absolute URLs above in bar/js/university-header.js, or run bar/js/university-header-full.js 

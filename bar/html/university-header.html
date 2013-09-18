@@ -1,0 +1,38 @@
+<!-- This markup serves as a reference for the markup inserted in university-header.js -->
+	<div id="ucfhb-inner" style="display: none;">
+		<div id="ucfhb-left">
+			<div id="ucfhb-logo">
+				<a href="http://www.ucf.edu">University of Central Florida</a>
+			</div>
+			<a id="ucfhb-mobile-toggle" href="#">Open Mobile Menu</a>
+		</div>
+		<div id="ucfhb-right">
+			<div id="ucfhb-signon">
+				<a id="ucfhb-signon-logo" href="#">
+					<span class="ucfhb-hidden">UCF Log In: toggle list of UCF services</span>
+					<span class="ucfhb-icon" id="ucfhb-icon-open" aria-hidden="true">+</span>
+					<span class="ucfhb-icon" id="ucfhb-icon-close" aria-hidden="true">&raquo;</span>
+				</a>
+				<div id="ucfhb-services">
+					<div>
+						<a id="ucfhb-myucf" class="ucfhb-service" href="https://my.ucf.edu/psp/PAPROD/EMPLOYEE/EMPL/?cmd=login">myUCF</a>
+						<a id="ucfhb-knightsmail" class="ucfhb-service" href="https://www.outlook.com/Knights.ucf.edu">KnightsMail</a>
+						<a id="ucfhb-webcourses" class="ucfhb-service" href="https://webcourses.ucf.edu">Webcourses</a>
+					</div>
+				</div>
+			</div>
+			<div id="ucfhb-search">
+				<form action="http://google.cc.ucf.edu/search" data-action-url="http://google.cc.ucf.edu/search?client=default_frontend&proxystylesheet=UCF_Main&q=" data-autosearch-url="http://search.smca.ucf.edu/service.php?limit=3&search=" method="get" name="ucfhb-search-form" id="ucfhb-search-form" autocomplete="off">
+					<label for="ucfhb-search-field">Search UCF</label>
+					<input type="hidden" name="client" value="default_frontend" />
+					<input type="hidden" name="proxystylesheet" value="UCF_Main" />
+					<input type="text" name="q" id="ucfhb-search-field" placeholder="Search UCF" autocomplete="off" autocapitalize="off" aria-autocomplete="list" aria-owns="ucfhb-search-autocomplete" aria-activedescendant="ucfhb-autocomplete-selected" aria-haspopup="true" role="search" />
+					<input type="submit" value="Go" id="ucfhb-search-submit" />
+				</form>
+				<span id="ucfhb-search-autocomplete-srhelp" role="status" aria-live="polite"></span>
+				<a id="ucfhb-search-minimal" href="#">Search</a>
+			</div>
+		</div>
+		<ul id="ucfhb-search-autocomplete" tabindex="1" aria-hidden="true" role="listbox"></ul>
+		<a id="ucfhb-search-autocomplete-close" href="#" alt="Close autocomplete results" title="Close autocomplete results">&times;</a>
+	</div>

@@ -4,6 +4,7 @@
 Thumbs.db
 .fuse_*
 .Python
+.pyc
 
 compiler/bin/
 compiler/include/

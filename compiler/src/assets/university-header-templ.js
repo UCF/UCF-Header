@@ -227,8 +227,8 @@ function ucfhbSetJsonp(json) {
 		}
 
 		// Add the bar's markup; initialize autocomplete + event listeners
-		@!@MARKUP@!@
-		ucfhbBar.innerHTML = markup;
+		var markup = @!@MARKUP@!@;
+		ucfhbBar.innerHTML = markup.join('\n');
 
 		callback();
 	}
@@ -338,7 +338,7 @@ function ucfhbSetJsonp(json) {
 		this.searchActiveClass		= 'search-is-active';											// Class assigned to an active (visible) autocomplete <ul>
 
 		// this.keyterms contains all autocomplete keyterms + matches that are attempted before attempting a search service request.
-		@!@KEYTERMS@!@
+		this.keyterms = @!@KEYTERMS@!@;
 
 		var timer;	// setTimeout timer value used by self.searchOnKeyUp
 

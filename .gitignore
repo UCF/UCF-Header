@@ -6,6 +6,7 @@ Thumbs.db
 .Python
 *.pyc
 
+test/
 compiler/bin/
 compiler/include/
 compiler/lib/

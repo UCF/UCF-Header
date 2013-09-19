@@ -1,1 +1,2 @@
-slimit
+uglipyjs
+PyExecJS

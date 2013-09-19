@@ -14,8 +14,8 @@ Visit http://universityheader.ucf.edu for usage instructions and guidelines.
 - $ cd UCF-Header/
 - $ virtualenv compiler
 - $ cd compiler/
-- $ pip install -r requirements.txt
 - $ source bin/activate
+- $ pip install -r requirements.txt
 - Update values in `compiler/src/config.templ.py` as necessary for your environment; save as `compiler/src/config.py`
 - $ python src/build.py
 - Load `index.html` (in repo's root directory); make sure all assets are loaded in correctly.  Purge files in cache if necessary.

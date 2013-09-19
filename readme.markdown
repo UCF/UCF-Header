@@ -1,29 +1,27 @@
-# UCF Header v2.0.0
+# New University Header
 
 Visit http://universityheader.ucf.edu for usage instructions and guidelines.
+
+## Requirements
+- PHP
+- Python
+- pip (Python package manager)
+- virtualenv (Python virtual environment generator; can use pip to install--`pip install virtualenv`)
 
 ## Installation
 
 - Clone this repository and place it in a web-accessible location.
-- Update index.html, line 10 `<script>` src attribute to point to your new location.
-- Update absolute URLs in bar/js/university-header-full.js on lines 93, 94 and 95 
-to point to your new location.
-- Update same absolute URLs above in bar/js/university-header.js, or run bar/js/university-header-full.js 
-thru jscompress.com and replace the file content with the minified results.
-- Clear your cache if any of these files have been cached already.
+- $ cd UCF-Header/
+- $ virtualenv compiler
+- $ cd compiler/
+- $ pip install -r requirements.txt
+- $ source bin/activate
+- Update values in `compiler/src/config.templ.py` as necessary for your environment; save as `compiler/src/config.py`
+- $ python src/build.py
+- Load `index.html` (in repo's root directory); make sure all assets are loaded in correctly.  Purge files in cache if necessary.
 
 ## Updating Content
 
-Currently all content, including markup and keyterms, must be updated in
-university-header.js and university-header-full.js.
-
-bar/js/university-header.js is a minified version of bar/js/university-header-full.js; 
-when making updates to the bar, update bar/js/university-header-full.js first, then 
-minify the updated file and paste the results into bar/js/university-header.js.
-
-Currently, bar/html/university-header.html and bar/js/keyterms.js serve ONLY as a reference 
-for the data that is included in the actual university header js files.  Updating these 
-files does NOT update what appears in the bar.
-
-## Future TODO
-Update the repo to build the university header js files with a compiler!
+Do NOT update content in either of the university-header.js files in `/bar/js`. 
+Update Keyterms in `compiler/src/assets/keyterms.js` and bar markup in 
+`compiler/src/assets/university-header-markup.js`, then recompile.

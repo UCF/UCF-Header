@@ -3,5 +3,9 @@
 .DS_Store
 Thumbs.db
 .fuse_*
+.Python
 
-test/
+compiler/bin/
+compiler/include/
+compiler/lib/
+compiler/src/config.py

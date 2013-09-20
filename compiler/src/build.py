@@ -17,7 +17,7 @@ if __name__ == '__main__':
 	markup = open(os.path.join(script_dir, 'assets/university-header-markup.js'), 'r').read()
 
 	template = open(os.path.join(script_dir, 'assets/university-header-templ.js'), 'r')
-	searchproxytext = open(os.path.join(script_dir, '../../bar/data/index.php'), 'r').read()
+	searchproxytemplate = open(os.path.join(script_dir, 'assets/search-proxy-templ.php'), 'r').read()
 	searchproxy = open(os.path.join(script_dir, '../../bar/data/index.php'), 'w+')
 	jsfull = open(os.path.join(script_dir, '../../bar/js/university-header-full.js'), 'w+')
 	jsmin = open(os.path.join(script_dir, '../../bar/js/university-header.js'), 'w+')
@@ -32,9 +32,10 @@ if __name__ == '__main__':
 	jsfull.close()
 	print "university-header-full.js saved."
 
-	print "Updating search service location in data/index.php..."
-	searchproxytext = searchproxytext.replace('@!@SEARCH_SERVICE@!@', config['search_service'])
-	searchproxy.write(searchproxytext)
+	print "Updating data/index.php..."
+	searchproxy.write(
+		searchproxytemplate.replace('@!@SEARCH_SERVICE@!@', config['search_service'])
+	)
 	searchproxy.close()
 	print "data/index.php saved."
 

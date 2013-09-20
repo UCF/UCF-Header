@@ -11,3 +11,6 @@ compiler/bin/
 compiler/include/
 compiler/lib/
 compiler/src/config.py
+
+bar/js/*
+bar/data/*

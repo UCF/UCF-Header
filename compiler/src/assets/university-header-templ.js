@@ -230,8 +230,6 @@ function ucfhbSetJsonp(json) {
 		var markup = @!@MARKUP@!@;
 		ucfhbBar.innerHTML = markup.join('\n');
 
-		ucfhbCreateJsonpScript('', null, 0);
-
 		callback();
 	}
 

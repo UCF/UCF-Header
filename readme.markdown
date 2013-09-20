@@ -24,4 +24,9 @@ Visit http://universityheader.ucf.edu for usage instructions and guidelines.
 
 Do NOT update content in either of the university-header.js files in `/bar/js`. 
 Update Keyterms in `compiler/src/assets/keyterms.js` and bar markup in 
-`compiler/src/assets/university-header-markup.js`, then recompile.
+`compiler/src/assets/university-header-markup.js`.
+
+Note:  When updating keyterms, check to make sure the json file is completely valid.  Run the entire file through jsonlint.com.
+Broken json will cause the compiler to fail.
+
+To compile, `cd` to the `compiler/` directory, run `source bin/activate`, then run `python src/build.py`.

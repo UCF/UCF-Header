@@ -6,7 +6,7 @@
 		"t_4": ["email", "knights", "mail"],
 		"t_5": ["email", "outlook"],
 		"t_6": ["giv", "giving", "gift", "donate", "donation"],
-		"t_7": ["schola"", "scholarship"],
+		"t_7": ["schola", "scholarship"],
 		"t_8": ["aid", "finan", "financial"],
 		"t_9": ["web", "onlin", "webcourses"],
 		"t_10": ["book", "bookstore"],
@@ -35,11 +35,11 @@
 		"t_33": ["major", "minor", "degree", "prog", "program"],
 		"t_34": ["tour", "campus"],
 		"t_35": ["stud", "student", "student union", "union", "food"],
-		"t_36": ["foot", "football", "athlet", "athletic",]
+		"t_36": ["foot", "football", "athlet", "athletic"],
 		"t_37": ["under", "undergrad", "undergraduate", "admis", "admissions"],
 		"t_38": ["sga", "stud", "student", "gov", "govern"],
-		"t_39": ["cat", "catal", "catalog", "cour", "course" "under", "undergrad"],
-		"t_40": ["cat", "catal", "catalog", "cour", "course" "grad", "graduate"],
+		"t_39": ["cat", "catal", "catalog", "cour", "course", "under", "undergrad"],
+		"t_40": ["cat", "catal", "catalog", "cour", "course", "grad", "graduate"],
 		"t_41": ["grad", "graduate", "master", "college", "admis", "admission"],
 		"t_42": ["nid", "login", "pass", "password",]
 		

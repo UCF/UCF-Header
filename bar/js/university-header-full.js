@@ -2,7 +2,7 @@
  * Append analytics code
  **/
 var _gaq = _gaq || [];
-_gaq.push(['ucfhb._setAccount', 'UA-1658069-22']);
+_gaq.push(['ucfhb._setAccount', '']);
 _gaq.push(['ucfhb._setDomainName', 'none']);
 _gaq.push(['ucfhb._trackPageview']);
 (function() {
@@ -90,9 +90,9 @@ function ucfhbSetJsonp(json) {
 	 * These resources should be protocol-agnostic and link to
 	 * an absolute URL.
 	 **/
-	var ucfhbStylesheet = window.location.protocol + '//webcom.dev.smca.ucf.edu/UCF-Header/bar/css/university-header.css',
-		ucfhbBsStylesheet = window.location.protocol + '//webcom.dev.smca.ucf.edu/UCF-Header/bar/css/university-header-bootstrap.css',
-		ucfhbJsonpScript = window.location.protocol + '//webcom.dev.smca.ucf.edu/UCF-Header/bar/data/?search=';
+	var ucfhbStylesheet = window.location.protocol + '//universityheader.ucf.edu/bar/css/university-header.css',
+		ucfhbBsStylesheet = window.location.protocol + '//universityheader.ucf.edu/bar/css/university-header-bootstrap.css',
+		ucfhbJsonpScript = window.location.protocol + '//universityheader.ucf.edu/bar/data/?search=';
 
 
 	/**
@@ -378,28 +378,49 @@ function ucfhbSetJsonp(json) {
 		// this.keyterms contains all autocomplete keyterms + matches that are attempted before attempting a search service request.
 		this.keyterms = {
 	"terms": {
-		"t_1": ["housing", "dorm", "apartment", "on-campus living", "residence", "nike", "apollo", "libra", "tower", "neptune", "lake claire"],
-		"t_2": ["calendar", "academic calendar", "fall", "spring", "summer"],
-		"t_3": ["library", "libraries"],
+		"t_1": ["hous","housing", "dorm", "apartment", "on-campus living", "residence", "nike", "apollo", "libra", "tower", "neptune", "lake claire"],
+		"t_2": ["cal", "calendar", "acad", "academic calendar", "fall", "spring", "summer", "sched", "schedule", "deadline", "drop"],
+		"t_3": ["lib", "library", "libraries"],
 		"t_4": ["email", "knights", "mail"],
 		"t_5": ["email", "outlook"],
-		"t_6": ["giving", "gift", "donate", "donation"],
-		"t_7": ["scholarship"],
-		"t_8": ["aid", "financial"],
-		"t_9": ["webcourses"],
+		"t_6": ["giv", "giving", "gift", "donate", "donation"],
+		"t_7": ["schola", "scholarship"],
+		"t_8": ["aid", "finan", "financial"],
+		"t_9": ["web", "onlin", "webcourses"],
 		"t_10": ["book", "bookstore"],
-		"t_11": ["webcourses"],
-		"t_12": ["orientation"],
-		"t_13": ["job", "employment", "career"],
-		"t_14": ["career"],
-		"t_15": ["parking"],
-		"t_16": ["map"],
-		"t_17": ["registrar"],
-		"t_18": ["transcript"],
-		"t_19": ["nursing"],
-		"t_20": ["education"],
-		"t_21": ["art", "arts", "humanities"],
-		"t_22": ["science"]
+		"t_11": ["tuit", "tuition", "cost"],
+		"t_12": ["orien", "orientation"],
+		"t_13": ["job", "employment", "employ", "career"],
+		"t_14": ["career", "intern"],
+		"t_15": ["park", "parking"],
+		"t_16": ["map", "campus"],
+		"t_17": ["regist", "registrar"],
+		"t_18": ["transc", "transcript"],
+		"t_19": ["nurs", "nursing", "college"],
+		"t_20": ["educ", "education", "college"],
+		"t_21": ["art", "arts", "humanities", "college", "cah"],
+		"t_22": ["scien", "science", "college", "cos"],
+		"t_23": ["psy", "psych", "psychology"],
+		"t_24": ["heal", "health", "service", "well"],
+		"t_25": ["heal", "health", "public", "affairs", "college"],
+		"t_26": ["hosp", "hospitality", "rosen", "college"],
+		"t_27": ["busi", "business", "college", "coba"],
+		"t_28": ["med", "medic", "medicine", "college"],
+		"t_29": ["serv", "service", "stud", "student"],
+		"t_30": ["dining", "food", "serv", "service"],
+		"t_31": ["phon", "phone", "phonebook"],
+		"t_32": ["under", "undergrad", "undergraduate", "stud", "studies"],
+		"t_33": ["major", "minor", "degree", "prog", "program"],
+		"t_34": ["tour", "campus"],
+		"t_35": ["stud", "student", "student union", "union", "food"],
+		"t_36": ["foot", "football", "athlet", "athletic"],
+		"t_37": ["under", "undergrad", "undergraduate", "admis", "admissions"],
+		"t_38": ["sga", "stud", "student", "gov", "govern"],
+		"t_39": ["cat", "catal", "catalog", "cour", "course", "under", "undergrad"],
+		"t_40": ["cat", "catal", "catalog", "cour", "course", "grad", "graduate"],
+		"t_41": ["grad", "graduate", "master", "college", "admis", "admission"],
+		"t_42": ["nid", "login", "pass", "password",]
+		
 	},
 	"matches": {
 		"m_1": {
@@ -443,8 +464,8 @@ function ucfhbSetJsonp(json) {
 			"url": "bookstore.ucf.edu"
 		},
 		"m_11": {
-			"name": "Webcourses",
-			"url": "http://webcourses.ucf.edu"
+			"name": "Tuition and Fees",
+			"url": "http://tuitionfees.smca.ucf.edu/"
 		},
 		"m_12": {
 			"name": "Orientation",
@@ -489,7 +510,87 @@ function ucfhbSetJsonp(json) {
 		"m_22": {
 			"name": "College of Science",
 			"url": "http://www.cos.ucf.edu/"
-		}
+		},
+		"m_23": {
+			"name": "Department of Psychology",
+			"url": "http://psychology.cos.ucf.edu/"
+		},
+		"m_24": {
+			"name": "Health Services",
+			"url": "http://hs.ucf.edu/"
+		},
+		"m_25": {
+			"name": "College of Health and Public Affairs",
+			"url": "http://cohpa.ucf.edu/"
+		},
+		"m_26": {
+			"name": "Rosen College of Hospitality Management",
+			"url": "http://hospitality.ucf.edu/"
+		},
+		"m_27": {
+			"name": "College of Business Administration",
+			"url": "http://www.bus.ucf.edu/"
+		},
+		"m_28": {
+			"name": "College of Medicine",
+			"url": "http://med.ucf.edu/"
+		},
+		"m_29": {
+			"name": "Student Services",
+			"url": "http://www.sdes.ucf.edu/list"
+		},
+		"m_30": {
+			"name": "Dining Services",
+			"url": "http://www.ucfdining.com/"
+		},
+		"m_31": {
+			"name": "UCF Phonebook",
+			"url": "http://www.ucf.edu/phonebook/"
+		},
+		"m_32": {
+			"name": "Undergraduate Studies",
+			"url": "http://undergraduatestudies.ucf.edu/"
+		},
+		"m_33": {
+			"name": "Undergraduate Catalog",
+			"url": "http://catalog.ucf.edu/programs"
+		},
+		"m_34": {
+			"name": "Campus Visit",
+			"url": "http://admissions.ucf.edu/visit/"
+		},
+		"m_35": {
+			"name": "Student Union",
+			"url": "http://studentunion.ucf.edu/"
+		},
+		"m_36": {
+			"name": "UCF Knights | Athletics",
+			"url": "http://www.ucfknights.com/"
+		},
+		"m_37": {
+			"name": "Undergraduate Admissions",
+			"url": "http://admissions.ucf.edu/"
+		},
+		"m_38": {
+			"name": "Student Government",
+			"url": "http://sga.ucf.edu"
+		},
+		"m_39": {
+			"name": "Undergraduate Catalog",
+			"url": "http://catalog.ucf.edu/programs"
+		},
+		"m_40": {
+			"name": "Graduate Catalog",
+			"url": "http://www.graduatecatalog.ucf.edu/programs/"
+		},
+		"m_41": {
+			"name": "Graduate Admissions",
+			"url": "http://www.admissions.graduate.ucf.edu/"
+		},
+		"m_42": {
+			"name": "NID",
+			"url": "http://mynid.ucf.edu"
+		},
 	}
 };
 

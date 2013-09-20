@@ -1,5 +1,6 @@
 # Define bar markup, keyterms locations
 # load in university-header-templ.py; find+replace all placeholder values
+# update search service location in /bar/data/index.php
 # save out to /bar/js/university-header-full.js
 # minify; save out to /bar/js/university-header.js
 
@@ -16,6 +17,8 @@ if __name__ == '__main__':
 	markup = open(os.path.join(script_dir, 'assets/university-header-markup.js'), 'r').read()
 
 	template = open(os.path.join(script_dir, 'assets/university-header-templ.js'), 'r')
+	searchproxytext = open(os.path.join(script_dir, '../../bar/data/index.php'), 'r').read()
+	searchproxy = open(os.path.join(script_dir, '../../bar/data/index.php'), 'w+')
 	jsfull = open(os.path.join(script_dir, '../../bar/js/university-header-full.js'), 'w+')
 	jsmin = open(os.path.join(script_dir, '../../bar/js/university-header.js'), 'w+')
 
@@ -29,10 +32,18 @@ if __name__ == '__main__':
 	jsfull.close()
 	print "university-header-full.js saved."
 
-	jsfulltext = open(os.path.join(script_dir, '../../bar/js/university-header-full.js'), 'r').read()
+	print "Updating search service location in data/index.php..."
+	searchproxytext = searchproxytext.replace('@!@SEARCH_SERVICE@!@', config['search_service'])
+	searchproxy.write(searchproxytext)
+	searchproxy.close()
+	print "data/index.php saved."
 
+	jsfulltext = open(os.path.join(script_dir, '../../bar/js/university-header-full.js'), 'r').read()
 	print "Writing university-header.js..."
-	jsmin.write(uglipyjs.compile(jsfulltext))
+	try:
+		jsmin.write(uglipyjs.compile(jsfulltext))
+	except:
+		print "ERROR: Minification failed. Does assets/keyterms.json pass validation? (Try running json through jsonlint.com)"
 
 	jsfull.close()
 	jsmin.close()

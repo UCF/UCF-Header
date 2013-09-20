@@ -12,3 +12,6 @@ compiler/include/
 compiler/lib/
 compiler/src/config.py
 
+bar/js/university-header.js
+bar/js/university-header-full.js
+bar/data/index.php

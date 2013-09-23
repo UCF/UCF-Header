@@ -5,6 +5,7 @@
 # minify; save out to /bar/js/university-header.js
 
 import os
+import sys
 import json
 import uglipyjs
 from config import config
@@ -43,8 +44,8 @@ if __name__ == '__main__':
 	print "Writing university-header.js..."
 	try:
 		jsmin.write(uglipyjs.compile(jsfulltext))
-	except:
-		print "ERROR: Minification failed. Does assets/keyterms.json pass validation? (Try running json through jsonlint.com)"
+	except Exception, error:
+		sys.exit("ERROR: Minification failed. " + str(error))
 
 	jsfull.close()
 	jsmin.close()

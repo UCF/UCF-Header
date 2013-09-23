@@ -5,6 +5,7 @@ Visit http://universityheader.ucf.edu for usage instructions and guidelines.
 ## Requirements
 - PHP
 - Python
+- node.js
 - pip (Python package manager)
 - virtualenv (Python virtual environment generator; can use pip to install--`pip install virtualenv`)
 

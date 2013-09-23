@@ -7,6 +7,7 @@
 import os
 import sys
 import json
+import execjs
 import uglipyjs
 from config import config
 
@@ -33,7 +34,7 @@ if __name__ == '__main__':
 	jsfull.close()
 	print "university-header-full.js saved."
 
-	print "Updating data/index.php..."
+	print "Creating data/index.php..."
 	searchproxy.write(
 		searchproxytemplate.replace('@!@SEARCH_SERVICE@!@', config['search_service'])
 	)
@@ -41,7 +42,7 @@ if __name__ == '__main__':
 	print "data/index.php saved."
 
 	jsfulltext = open(os.path.join(script_dir, '../../bar/js/university-header-full.js'), 'r').read()
-	print "Writing university-header.js..."
+	print "Minifying university-header-full.js using javascript runtime '" + execjs.get().name + "'..."
 	try:
 		jsmin.write(uglipyjs.compile(jsfulltext))
 	except Exception, error:
@@ -49,4 +50,4 @@ if __name__ == '__main__':
 
 	jsfull.close()
 	jsmin.close()
-	print "university-header.js saved."
+	print "Minified university-header.js saved."

@@ -1,0 +1,216 @@
+{
+	"terms": {
+		"t_1": ["hous","housing", "dorm", "apartment", "on-campus living", "residence", "nike", "apollo", "libra", "tower", "neptune", "lake claire"],
+		"t_2": ["cal", "calendar", "acad", "academic calendar", "fall", "spring", "summer", "sched", "schedule", "deadline", "drop"],
+		"t_3": ["lib", "library", "libraries"],
+		"t_4": ["email", "knights", "mail"],
+		"t_5": ["email", "outlook"],
+		"t_6": ["giv", "giving", "gift", "donate", "donation"],
+		"t_7": ["schola", "scholarship"],
+		"t_8": ["aid", "finan", "financial"],
+		"t_9": ["web", "onlin", "webcourses"],
+		"t_10": ["book", "bookstore"],
+		"t_11": ["tuit", "tuition", "cost"],
+		"t_12": ["orien", "orientation"],
+		"t_13": ["job", "employment", "employ", "career"],
+		"t_14": ["career", "intern"],
+		"t_15": ["park", "parking"],
+		"t_16": ["map", "campus"],
+		"t_17": ["regist", "registrar"],
+		"t_18": ["transc", "transcript"],
+		"t_19": ["nurs", "nursing", "college"],
+		"t_20": ["educ", "education", "college"],
+		"t_21": ["art", "arts", "humanities", "college", "cah"],
+		"t_22": ["scien", "science", "college", "cos"],
+		"t_23": ["psy", "psych", "psychology"],
+		"t_24": ["heal", "health", "service", "well"],
+		"t_25": ["heal", "health", "public", "affairs", "college"],
+		"t_26": ["hosp", "hospitality", "rosen", "college"],
+		"t_27": ["busi", "business", "college", "coba"],
+		"t_28": ["med", "medic", "medicine", "college"],
+		"t_29": ["serv", "service", "stud", "student"],
+		"t_30": ["dining", "food", "serv", "service"],
+		"t_31": ["phon", "phone", "phonebook"],
+		"t_32": ["under", "undergrad", "undergraduate", "stud", "studies"],
+		"t_33": ["major", "minor", "degree", "prog", "program"],
+		"t_34": ["tour", "campus"],
+		"t_35": ["stud", "student", "student union", "union", "food"],
+		"t_36": ["foot", "football", "athlet", "athletic"],
+		"t_37": ["under", "undergrad", "undergraduate", "admis", "admissions"],
+		"t_38": ["sga", "stud", "student", "gov", "govern"],
+		"t_39": ["cat", "catal", "catalog", "cour", "course", "under", "undergrad"],
+		"t_40": ["cat", "catal", "catalog", "cour", "course", "grad", "graduate"],
+		"t_41": ["grad", "graduate", "master", "college", "admis", "admission"],
+		"t_42": ["nid", "login", "pass", "password"]
+	},
+	"matches": {
+		"m_1": {
+			"name": "Housing and Residence Life",
+			"url": "http://housing.ucf.edu"
+		},
+		"m_2": {
+			"name": "Academic Calendar",
+			"url": "http://calendar.ucf.edu"
+		},
+		"m_3": {
+			"name": "UCF Libraries",
+			"url": "http://library.ucf.edu/"
+		},
+		"m_4": {
+			"name": "Knights Email",
+			"url": "http://knightsemail.ucf.edu"
+		},
+		"m_5": {
+			"name": "Faculty and Staff Webmail",
+			"url": "http://webmail.ucf.edu"
+		},
+		"m_6": {
+			"name": "Giving to UCF",
+			"url": "http://ucffoundation.org/"
+		},
+		"m_7": {
+			"name": "Scholarship Information",
+			"url": "http://finaid.ucf.edu/scholarships/"
+		},
+		"m_8": {
+			"name": "Financial Aid",
+			"url": "http://finaid.ucf.edu/types/"
+		},
+		"m_9": {
+			"name": "Webcourses",
+			"url": "http://webcourses.ucf.edu"
+		},
+		"m_10": {
+			"name": "UCF Bookstore",
+			"url": "bookstore.ucf.edu"
+		},
+		"m_11": {
+			"name": "Tuition and Fees",
+			"url": "http://tuitionfees.smca.ucf.edu/"
+		},
+		"m_12": {
+			"name": "Orientation",
+			"url": "http://orientation.ucf.edu/"
+		},
+		"m_13": {
+			"name": "Jobs with UCF",
+			"url": "https://www.jobswithucf.com/"
+		},
+		"m_14": {
+			"name": "Career Services",
+			"url": "http://career.sdes.ucf.edu/"
+		},
+		"m_15": {
+			"name": "Parking Services",
+			"url": "http://parking.ucf.edu/"
+		},
+		"m_16": {
+			"name": "Campus Map",
+			"url": "http://map.ucf.edu"
+		},
+		"m_17": {
+			"name": "Registrar",
+			"url": "http://registrar.ucf.edu/"
+		},
+		"m_18": {
+			"name": "Official Transcript Requests",
+			"url": "http://registrar.ucf.edu/transcript-request"
+		},
+		"m_19": {
+			"name": "College of Nursing",
+			"url": "http://nursing.ucf.edu"
+		},
+		"m_20": {
+			"name": "College of Education and Human Performance",
+			"url": "http://education.ucf.edu/"
+		},
+		"m_21": {
+			"name": "College of Arts and Humanities",
+			"url": "http://www.cah.ucf.edu/"
+		},
+		"m_22": {
+			"name": "College of Science",
+			"url": "http://www.cos.ucf.edu/"
+		},
+		"m_23": {
+			"name": "Department of Psychology",
+			"url": "http://psychology.cos.ucf.edu/"
+		},
+		"m_24": {
+			"name": "Health Services",
+			"url": "http://hs.ucf.edu/"
+		},
+		"m_25": {
+			"name": "College of Health and Public Affairs",
+			"url": "http://cohpa.ucf.edu/"
+		},
+		"m_26": {
+			"name": "Rosen College of Hospitality Management",
+			"url": "http://hospitality.ucf.edu/"
+		},
+		"m_27": {
+			"name": "College of Business Administration",
+			"url": "http://www.bus.ucf.edu/"
+		},
+		"m_28": {
+			"name": "College of Medicine",
+			"url": "http://med.ucf.edu/"
+		},
+		"m_29": {
+			"name": "Student Services",
+			"url": "http://www.sdes.ucf.edu/list"
+		},
+		"m_30": {
+			"name": "Dining Services",
+			"url": "http://www.ucfdining.com/"
+		},
+		"m_31": {
+			"name": "UCF Phonebook",
+			"url": "http://www.ucf.edu/phonebook/"
+		},
+		"m_32": {
+			"name": "Undergraduate Studies",
+			"url": "http://undergraduatestudies.ucf.edu/"
+		},
+		"m_33": {
+			"name": "Undergraduate Catalog",
+			"url": "http://catalog.ucf.edu/programs"
+		},
+		"m_34": {
+			"name": "Campus Visit",
+			"url": "http://admissions.ucf.edu/visit/"
+		},
+		"m_35": {
+			"name": "Student Union",
+			"url": "http://studentunion.ucf.edu/"
+		},
+		"m_36": {
+			"name": "UCF Knights | Athletics",
+			"url": "http://www.ucfknights.com/"
+		},
+		"m_37": {
+			"name": "Undergraduate Admissions",
+			"url": "http://admissions.ucf.edu/"
+		},
+		"m_38": {
+			"name": "Student Government",
+			"url": "http://sga.ucf.edu"
+		},
+		"m_39": {
+			"name": "Undergraduate Catalog",
+			"url": "http://catalog.ucf.edu/programs"
+		},
+		"m_40": {
+			"name": "Graduate Catalog",
+			"url": "http://www.graduatecatalog.ucf.edu/programs/"
+		},
+		"m_41": {
+			"name": "Graduate Admissions",
+			"url": "http://www.admissions.graduate.ucf.edu/"
+		},
+		"m_42": {
+			"name": "NID",
+			"url": "http://mynid.ucf.edu"
+		}
+	}
+}

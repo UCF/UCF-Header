@@ -5,9 +5,7 @@ Thumbs.db
 .fuse_*
 .Python
 *.pyc
+*.tmp-e
 
 test/
-compiler/bin/
-compiler/include/
-compiler/lib/
-compiler/compile.conf
+compiler/config.conf

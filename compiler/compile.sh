@@ -2,15 +2,22 @@
 # Convert
 set -o nounset
 set -x
-source compile.conf
-cp src/assets/university-header-templ.js src/assets/university-header-templ.js.tmp
-perl -i -ne 's/\@\!\@KEYTERMS\@\!\@/`cat src\/assets\/keyterms.json`/e;print' src/assets/university-header-templ.js.tmp
-perl -i -ne 's/\@\!\@MARKUP\@\!\@/`cat src\/assets\/university-header-markup.js`/e;print' src/assets/university-header-templ.js.tmp
-# perl -i -ne 's/\@\!\@GA\@\!\@/'$GA'/g' src/assets/university-header-templ.js.tmp
-sed -i -e "s|@!@GA@!@|$GA|g" src/assets/university-header-templ.js.tmp
-sed -i -e "s|@!@ROOT_URL@!@|$ROOT_URL|g" src/assets/university-header-templ.js.tmp
-mv src/assets/university-header-templ.js.tmp ../bar/js/university-header-full.js
+source config.conf
 
-cp src/assets/search-proxy-templ.php src/assets/search-proxy-templ.php.tmp
-sed -i -e "s|@!@SEARCH_SERVICE@!@|$SEARCH_SERVICE|g" src/assets/search-proxy-templ.php.tmp
-mv src/assets/search-proxy-templ.php.tmp ../bar/data/index.php
+# Find/replace content from keyterms, markup template files into header template
+cp assets/university-header-templ.js assets/university-header-templ.js.tmp
+perl -i -ne 's/\@\!\@KEYTERMS\@\!\@/`cat assets\/keyterms.json`/e;print' src/assets/university-header-templ.js.tmp
+perl -i -ne 's/\@\!\@MARKUP\@\!\@/`cat assets\/university-header-markup.js`/e;print' src/assets/university-header-templ.js.tmp
+# Find/replace config variables in header template
+sed -i -e "s|@!@GA@!@|$GA|g" assets/university-header-templ.js.tmp
+sed -i -e "s|@!@ROOT_URL@!@|$ROOT_URL|g" assets/university-header-templ.js.tmp
+# Save bar/js/university-header-full.js
+mv assets/university-header-templ.js.tmp ../bar/js/university-header-full.js
+
+# Minify university-header-full.js
+java -jar compiler.jar --js ../bar/js/university-header-full.js --js_output_file ../bar/js/university-header.js
+
+# Find/replace search service url in proxy template; save out as bar/data/index.php
+cp assets/search-proxy-templ.php assets/search-proxy-templ.php.tmp
+sed -i -e "s|@!@SEARCH_SERVICE@!@|$SEARCH_SERVICE|g" assets/search-proxy-templ.php.tmp
+mv assets/search-proxy-templ.php.tmp ../bar/data/index.php

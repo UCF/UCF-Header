@@ -10,4 +10,4 @@ test/
 compiler/bin/
 compiler/include/
 compiler/lib/
-compiler/src/config.py
+compiler/config.conf

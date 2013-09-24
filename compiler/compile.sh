@@ -2,6 +2,7 @@
 # Convert
 set -o nounset
 set -x
+cd "$(dirname "$0")"
 source config.conf
 
 # Find/replace content from keyterms, markup template files into header template

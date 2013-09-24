@@ -41,8 +41,7 @@
 		"t_39": ["cat", "catal", "catalog", "cour", "course", "under", "undergrad"],
 		"t_40": ["cat", "catal", "catalog", "cour", "course", "grad", "graduate"],
 		"t_41": ["grad", "graduate", "master", "college", "admis", "admission"],
-		"t_42": ["nid", "login", "pass", "password",]
-		
+		"t_42": ["nid", "login", "pass", "password"]
 	},
 	"matches": {
 		"m_1": {
@@ -212,6 +211,6 @@
 		"m_42": {
 			"name": "NID",
 			"url": "http://mynid.ucf.edu"
-		},
+		}
 	}
 }

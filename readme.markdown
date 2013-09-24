@@ -4,29 +4,23 @@ Visit http://universityheader.ucf.edu for usage instructions and guidelines.
 
 ## Requirements
 - PHP
-- Python
-- pip (Python package manager)
-- virtualenv (Python virtual environment generator; can use pip to install--`pip install virtualenv`)
+- Java Runtime Environment version 6 (required for Google Closure compiler application)
 
 ## Installation
 
 - Clone this repository and place it in a web-accessible location.
-- $ cd UCF-Header/
-- $ virtualenv compiler
-- $ cd compiler/
-- $ source bin/activate
-- $ pip install -r requirements.txt
-- Update values in `compiler/src/config.templ.py` as necessary for your environment; save as `compiler/src/config.py`
-- $ python src/build.py
-- Load `index.html` (in repo's root directory); make sure all assets are loaded in correctly.  Purge files in cache if necessary.
+- `$ cd UCF-Header/compiler/`
+- If this is a first-time install, copy `config.templ.conf`, update config values as necessary for your environment, and save as `config.conf`.
+- `$ ./compile.sh`
+- Load `index.html` (in repo's root directory) in your browser; make sure all assets are loaded in correctly.  Purge files in cache if necessary.
 
 ## Updating Content
 
 Do NOT update content in either of the university-header.js files in `/bar/js`. 
-Update Keyterms in `compiler/src/assets/keyterms.js` and bar markup in 
-`compiler/src/assets/university-header-markup.js`, then recompile.
+Update keyterms in `compiler/assets/keyterms.js` and bar markup in 
+`compiler/assets/university-header-markup.js`, then recompile.
 
-Note:  When updating keyterms, check to make sure the json file is completely valid.  Run the entire file through jsonlint.com.
-Broken json will cause the compiler to fail.
+*Note:  When updating keyterms, check to make sure the json file is completely valid.  Run the entire file through jsonlint.com.
+Broken json will cause the compiler to fail.*
 
-To compile, `cd` to the `compiler/` directory, run `source bin/activate`, then run `python src/build.py`.
+To compile and test changes to asset files, ssh into your environment and execute `$ ./compile.sh` from the `UCF-Header/compiler/` directory.

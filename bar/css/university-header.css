@@ -152,6 +152,15 @@
 #ucfhb-services > div > #ucfhb-knightsmail:hover { background-position: -232px -69px; }
 #ucfhb-services > div > #ucfhb-webcourses:hover { background-position: -292px -69px; }
 
+@media 
+ 	(-webkit-min-device-pixel-ratio: 2), 
+ 	(min-resolution: 192dpi) { 
+ 		#ucfhb-services > div > #ucfhb-myucf:hover { background-position: -177px -70px; }
+ 		#ucfhb-services > div > #ucfhb-knightsmail:hover { background-position: -232px -70px; }
+ 		#ucfhb-services > div > #ucfhb-webcourses:hover { background-position: -292px -70px; }
+}
+
+
 /* Search */
 #ucfhb-search { 
 	position: absolute;

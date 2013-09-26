@@ -89,7 +89,6 @@
 	-webkit-transition: right 0.4s ease-in-out;
 	-ms-transition: right 0.4s ease-in-out;
 	z-index: 2;
-	outline: 0;
 }
 #ucfhb-signon-logo:hover,
 #ucfhb-signon-logo.ucfhb-shiftleft { color: #fff; }

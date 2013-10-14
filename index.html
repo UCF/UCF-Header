@@ -76,10 +76,19 @@
 					<div class="alert alert-info">
 						<p>
 							<i class="icon-info-sign"></i> <strong>Note:</strong> This option requires that the <code>&lt;script&gt;</code> tag has an ID of <code>ucfhb-script</code>. 
-							If you're using WordPress, <a href="http://codex.wordpress.org/Function_Reference/wp_enqueue_script">click here</a> to 
-							read more about using the wp_enqueue_script() function for registering scripts.  The ID value is passed as the first argument 
-							of this function.
-						</p>
+							If your site runs on WordPress, uses <code><a href="http://codex.wordpress.org/Function_Reference/wp_enqueue_script">wp_enqueue_script()</a></code> to enqueue scripts, and requires these overrides, enqueue the University Header script with <code><a href="http://codex.wordpress.org/Function_Reference/wp_enqueue_script">wp_enqueue_script()</a></code> using the Bootstrap override parameter above, and add the following snippet to your theme's functions.php file:</p>
+							<pre>/**
+ * Add ID attribute to registered University Header script.
+ **/
+function add_id_to_ucfhb($url) {
+    if ( (false !== strpos($url, 'bar/js/university-header.js')) || (false !== strpos($url, 'bar/js/university-header-full.js')) ) {
+      remove_filter('clean_url', 'add_id_to_ucfhb', 10, 3);
+      return "$url' id='ucfhb-script";
+    }
+    return $url;
+}
+add_filter('clean_url', 'add_id_to_ucfhb', 10, 3);
+</pre>
 					</div>
 
 					<hr/>

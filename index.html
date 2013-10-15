@@ -91,6 +91,11 @@ add_filter('clean_url', 'add_id_to_ucfhb', 10, 3);
 </pre>
 					</div>
 
+					<h3>Protocol-relative script source in WordPress</h3>
+					<p>
+						Keep in mind that protocol-agnostic URLs ('//universityheader.ucf.edu...' vs 'http://universityheader.ucf.edu...') can only be <a href="http://codex.wordpress.org/Function_Reference/wp_register_script">registered</a> via WordPress in version 3.5 or above. Older version of WordPress that enqueue scripts must specify a protocol at the beginning of the script source; this can be done explicitly or can be grabbed on the fly, using PHP.
+					</p>
+
 					<hr/>
 
 					<h2>Browser Compatibility</h2>

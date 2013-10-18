@@ -226,7 +226,9 @@ function ucfhbSetJsonp(json) {
 			document.body.insertBefore(ucfhbBar, document.body.firstChild);
 		}
 
-		// Add .preload class to 
+		// Add .preload class to #ucfhb to prevent onload transition
+		// animations. This class is removed when a class-changing toggle
+		// is clicked (and this class is replaced/removed.)
 		ucfhbBar.className += ' preload';
 
 		// Add the bar's markup; initialize autocomplete + event listeners
@@ -320,10 +322,6 @@ function ucfhbSetJsonp(json) {
 
 	contentLoaded(window, function() {
 		ucfhbCreateBar(ucfhbInitialize);
-		// Remove .preload class from #ucfhb
-		setTimeout(function() {
-			document.getElementById('ucfhb').className.replace(/(?:^|\s)preload(?!\S)/g, '');
-		}, 400);
 	});
 
 

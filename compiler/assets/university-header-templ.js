@@ -227,7 +227,7 @@ function ucfhbSetJsonp(json) {
 		}
 
 		// Add .preload class to #ucfhb to prevent onload transition
-		// animations. This class is removed when a class-changing toggle
+		// animations. This class is removed when the mobile toggle btn
 		// is clicked (and this class is replaced/removed.)
 		ucfhbBar.className += ' preload';
 

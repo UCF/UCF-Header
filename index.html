@@ -19,40 +19,40 @@
 				<div class="span12">
 					<h1>University Header</h1>
 					<p>
-						The UCF University Header is a single, cohesive marketing and branding tool for the entire university; it provides 
-						consistent navigational elements and a universal search feature with search suggestions.
+						The UCF University Header is a cohesive marketing and branding tool for the entire university. It provides consistent 
+						navigational elements and a universal search feature with search suggestions.
 					</p>
 					<p>
-						The University Header has a responsive option and will adapt to various screen sizes as necessary.  Responsiveness follows 
-						<a href="http://getbootstrap.com"><strong>Twitter Bootstrap's</strong></a> scaffolding standards.
+						The University Header has a responsive option and will adapt to various screen sizes as necessary. Responsiveness follows 
+						<a href="http://getbootstrap.com"><strong>Twitter Bootstrap's</strong></a> breakpoint standards.
 					</p>
 
 					<div class="hero-unit">
 						<h2>Installation</h2>
 						<p>
-							To add the University Header to your website, add the following script tag to your document.
+							To add the University Header to your website, add this script tag to your document.
 						</p>
 						<pre>&lt;script type="text/javascript" id="ucfhb-script" src="//universityheader.ucf.edu/bar/js/university-header.js"&gt;&lt;/script&gt;</pre>
 					</div>
 
 					<h2>Usage</h2>
 					<p>
-						The University Header is intended to be a 'plug-and-go' solution.  Please keep the following in mind when including the University Header on your site:
+						The University Header is a "plug-and-go" solution. Please keep the following in mind when including it on your site:
 					</p>
 					<ol>
 						<li>
 							<h3>The University Header should be consistent visually and functionally across all UCF websites.</h3>
-							Please do not modify the bar's existing appearance or functionality; this includes modifying graphics/colors associated with the bar, links 
-							included within the bar, markup associated with the bar, and the search and autocomplete functionality.
+							Please do not modify the bar's existing appearance or functionality, such as modifying graphics/colors associated with the bar, 
+							links included within the bar, markup associated with the bar or the search and autocomplete functionality.
 						</li>
 						<li>
 							<h3>The University Header should always be at the top of each page.</h3>
-							Do not modify where the bar is intended to render.  The bar should always be the first element on the page.
+							Do not modify where the bar is intended to render. The bar should always be the first element on the page.
 						</li>
 						<li>
 							<h3>The University Header should not present any other content beyond its default content.</h3>
-							The bar should not be given the appearance of an 'attachment' of the default bar on your site, and should not include extra 
-							links or graphics beyond what the default bar provides.  
+							The bar should not be given the appearance of an "attachment" of the default bar on your site, and should not include extra 
+							links or graphics beyond what the default bar provides.
 							<em>Your site's navigation should not be displayed as an extension or piece of the University Header.</em>
 						</li>
 					</ol>
@@ -92,7 +92,10 @@ add_filter('clean_url', 'add_id_to_ucfhb', 10, 3);
 
 					<h3>Protocol-relative script source in WordPress</h3>
 					<p>
-						Keep in mind that protocol-agnostic URLs ('//universityheader.ucf.edu...' vs 'http://universityheader.ucf.edu...') can only be <a href="http://codex.wordpress.org/Function_Reference/wp_register_script">registered</a> via WordPress in version 3.5 or above. Older version of WordPress that enqueue scripts must specify a protocol at the beginning of the script source; this can be done explicitly or can be grabbed on the fly, using PHP.
+						Keep in mind that protocol-agnostic URLs ('//universityheader.ucf.edu...' vs 'http://universityheader.ucf.edu...') can only be 
+						<a href="http://codex.wordpress.org/Function_Reference/wp_register_script">registered</a> via WordPress in version 3.5 or above. 
+						Older version of WordPress that enqueue scripts must specify a protocol at the beginning of the script source; this can be done explicitly 
+						or can be grabbed on the fly, using PHP.
 					</p>
 
 					<hr/>
@@ -103,7 +106,7 @@ add_filter('clean_url', 'add_id_to_ucfhb', 10, 3);
 					<p>
 						The University Header is compatible with IE7 and greater and works in any other modern browser.<br/>
 						Note that some features, such as CSS3 animations on the UCF Login toggle, are not available on older browsers.  Responsiveness is 
-						nonfunctional in IE8 and lower due to lack of support for CSS media queries; functionality can be added with additional libraries such as 
+						nonfunctional in IE8 and older due to lack of support for CSS media queries; functionality can be added with additional libraries such as 
 						<a href="https://github.com/scottjehl/Respond">respond.js</a> if necessary.  The UCF Header has not been tested with these libraries 
 						and support with these libraries is not guaranteed.
 					</p>

@@ -226,6 +226,9 @@ function ucfhbSetJsonp(json) {
 			document.body.insertBefore(ucfhbBar, document.body.firstChild);
 		}
 
+		// Add .preload class to 
+		ucfhbBar.className += ' preload';
+
 		// Add the bar's markup; initialize autocomplete + event listeners
 		var markup = @!@MARKUP@!@;
 		ucfhbBar.innerHTML = markup.join('\n');
@@ -317,6 +320,10 @@ function ucfhbSetJsonp(json) {
 
 	contentLoaded(window, function() {
 		ucfhbCreateBar(ucfhbInitialize);
+		// Remove .preload class from #ucfhb
+		setTimeout(function() {
+			document.getElementById('ucfhb').className.replace(/(?:^|\s)preload(?!\S)/g, '');
+		}, 400);
 	});
 
 

@@ -33,6 +33,20 @@
 
 /* Main wrapper */
 #ucfhb { height: 50px; width: 100%; margin: auto; background: #000; position: relative; z-index: 10000; }
+/* Foundation CSS Framework overrides */
+#ucfhb,
+#ucfhb:before,
+#ucfhb:after,
+#ucfhb *,
+#ucfhb *:before,
+#ucfhb *:after {
+	-webkit-box-sizing: none !important;
+	-moz-box-sizing: none !important;
+	-ms-box-sizing: none !important;
+	box-sizing: none !important;
+}
+/* Common miscellaneous overrides */
+#ucfhb a { border: 0; }
 
 /* Inner wrap (fixed 940px width) */
 /* display: block is added to override display:none inline styles, which prevent 
@@ -203,6 +217,9 @@
 	padding: 2px 45px 2px 15px; 
 	font-family: 'Helvetica-Neue', sans-serif;
 	font-size: 13px;
+	font-style: normal;
+	font-weight: normal;
+	color: #000;
 	letter-spacing: 0.1px;
 	background-size: 20px 19px;
 	-webkit-appearance: none;
@@ -215,6 +232,36 @@
 	outline: none;
 	box-shadow: inset 0 2px 3px 0 rgba(0, 0, 0, 0.25), 0px 0px 5px 2px rgba(253, 240, 183, 0.6);
 }
+/* Can't comma-separate these... */
+#ucfhb-search form input[type="text"]::-webkit-input-placeholder {
+   font-family: 'Helvetica-Neue', sans-serif;
+   font-size: 13px;
+   font-style: normal;
+   font-weight: normal;
+   color: #666;
+}
+#ucfhb-search form input[type="text"]:-moz-placeholder { /* Firefox 18- */
+   font-family: 'Helvetica-Neue', sans-serif;
+   font-size: 13px;
+   font-style: normal;
+   font-weight: normal;
+   color: #555; 
+}
+#ucfhb-search form input[type="text"]::-moz-placeholder {  /* Firefox 19+ */
+   font-family: 'Helvetica-Neue', sans-serif;
+   font-size: 13px;
+   font-style: normal;
+   font-weight: normal;
+   color: #555;
+}
+#ucfhb-search form input[type="text"]:-ms-input-placeholder {  
+   font-family: 'Helvetica-Neue', sans-serif;
+   font-size: 13px;
+   font-style: normal;
+   font-weight: normal;
+   color: #555;
+}
+
 #ucfhb-search form #ucfhb-search-submit {
 	position: absolute;
 	right: 0;
@@ -418,6 +465,12 @@
 		-webkit-transition: margin 0.4s ease-in-out;
 		-ms-transition: margin 0.4s ease-in-out;
 	}
+	/* Prevent transition animations onload until .preload class is removed. */
+	#ucfhb.preload {
+		transition: none !important;
+		-webkit-transition: none !important;
+		-ms-transition: none !important;
+	}
 	#ucfhb.ucfhb-mobileslide {
 		margin-top: 0;
 	}
@@ -474,6 +527,19 @@
 	#ucfhb-search { height: 38px; margin-top: 4px; }
 	#ucfhb-search form { padding: 0 10px; margin: auto; height: 38px; }
 	#ucfhb-search form input[type="text"] { font-size: 16px; padding-top: 4px; padding-bottom: 8px; }
+	/* Can't comma-separate these... */
+	#ucfhb-search form input[type="text"]::-webkit-input-placeholder {
+	   font-size: 16px;
+	}
+	#ucfhb-search form input[type="text"]:-moz-placeholder { /* Firefox 18- */
+	   font-size: 16px; 
+	}
+	#ucfhb-search form input[type="text"]::-moz-placeholder {  /* Firefox 19+ */
+	   font-size: 16px;
+	}
+	#ucfhb-search form input[type="text"]:-ms-input-placeholder {  
+	   font-size: 16px;
+	}
 	#ucfhb-search form #ucfhb-search-submit {
 		height: 37px;
 		right: 14px;

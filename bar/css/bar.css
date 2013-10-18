@@ -40,10 +40,9 @@
 #ucfhb *,
 #ucfhb *:before,
 #ucfhb *:after {
-	-webkit-box-sizing: none !important;
-	-moz-box-sizing: none !important;
-	-ms-box-sizing: none !important;
-	box-sizing: none !important;
+	box-sizing: content-box !important;
+	-moz-box-sizing: content-box !important;
+	-webkit-box-sizing: content-box !important;
 }
 /* Common miscellaneous overrides */
 #ucfhb a { border: 0; }
@@ -212,9 +211,10 @@
 	height: 25px; 
 	border-radius: 30px; 
 	border: 0;
-	margin: 2px 0 0 0;
-	*margin: 0;
-	padding: 2px 45px 2px 15px; 
+	margin: 0;
+	padding: 2px 45px 2px 15px;
+	position: absolute;
+	top: 2px;
 	font-family: 'Helvetica-Neue', sans-serif;
 	font-size: 13px;
 	font-style: normal;
@@ -267,7 +267,10 @@
 	right: 0;
 	top: 2px;
 	height: 29px;
-	width: 40px;
+	width: 28px;
+	*width: 40px;
+	padding: 0 6px;
+	margin: 0;
 	border-radius: 0 30px 30px 0;
 	border: 0;
 	text-indent: -9999px;

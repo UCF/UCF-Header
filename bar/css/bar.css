@@ -104,7 +104,9 @@
 	z-index: 2;
 }
 #ucfhb-signon-logo:hover,
-#ucfhb-signon-logo.ucfhb-shiftleft { color: #fff; }
+#ucfhb-signon-logo:focus,
+#ucfhb-signon-logo:active,
+#ucfhb-signon-logo.ucfhb-shiftleft { color: #fff !important; }
 #ucfhb-signon-logo.ucfhb-shiftleft {
 	right: 215px;
 }
@@ -157,6 +159,7 @@
 	margin: 5px 6px 0 6px;
 	width: 55px;
 	height: 34px;
+	padding: 0;
 }
 #ucfhb-services > div > #ucfhb-myucf { background-position: -177px -35px; }
 #ucfhb-services > div > #ucfhb-knightsmail { background-position: -232px -35px; }
@@ -194,6 +197,7 @@
 	height: 29px;
 	margin-bottom: 0;
 	position: relative;
+	text-align: left;
 }
 #ucfhb-search form label {
 	display: block;
@@ -206,15 +210,16 @@
 	line-height: 0 !important;
 	font-size: 0;
 }
-#ucfhb-search form input[type="text"] { 
-	width: 160px; 
-	height: 25px; 
+#ucfhb-search-field { 
+	width: 160px !important; 
+	height: 25px !important; 
 	border-radius: 30px; 
 	border: 0;
 	margin: 0;
 	padding: 2px 45px 2px 15px;
 	position: absolute;
 	top: 2px;
+	left: 0;
 	font-family: 'Helvetica-Neue', sans-serif;
 	font-size: 13px;
 	font-style: normal;
@@ -228,33 +233,33 @@
 	-webkit-transition: all 0.2s ease-in-out;
 	-ms-transition: all 0.2s ease-in-out;
 }
-#ucfhb-search form input[type="text"]:focus {
+#ucfhb-search-field:focus {
 	outline: none;
 	box-shadow: inset 0 2px 3px 0 rgba(0, 0, 0, 0.25), 0px 0px 5px 2px rgba(253, 240, 183, 0.6);
 }
 /* Can't comma-separate these... */
-#ucfhb-search form input[type="text"]::-webkit-input-placeholder {
+#ucfhb-search-field::-webkit-input-placeholder {
    font-family: 'Helvetica-Neue', sans-serif;
    font-size: 13px;
    font-style: normal;
    font-weight: normal;
    color: #666;
 }
-#ucfhb-search form input[type="text"]:-moz-placeholder { /* Firefox 18- */
+#ucfhb-search-field:-moz-placeholder { /* Firefox 18- */
    font-family: 'Helvetica-Neue', sans-serif;
    font-size: 13px;
    font-style: normal;
    font-weight: normal;
    color: #555; 
 }
-#ucfhb-search form input[type="text"]::-moz-placeholder {  /* Firefox 19+ */
+#ucfhb-search-field::-moz-placeholder {  /* Firefox 19+ */
    font-family: 'Helvetica-Neue', sans-serif;
    font-size: 13px;
    font-style: normal;
    font-weight: normal;
    color: #555;
 }
-#ucfhb-search form input[type="text"]:-ms-input-placeholder {  
+#ucfhb-search-field:-ms-input-placeholder {  
    font-family: 'Helvetica-Neue', sans-serif;
    font-size: 13px;
    font-style: normal;
@@ -454,7 +459,7 @@
 	#ucfhb-right { width: 448px; }
 	#ucfhb-services { width: 335px; right: 10px; }
 	#ucfhb-search { right: 9px; }
-	#ucfhb-search form input[type="text"] { width: 155px; }
+	#ucfhb-search-field { width: 155px !important; }
 	#ucfhb-search-autocomplete { right: 10px; }
 	#ucfhb-search-autocomplete-close { right: 10px; }
 }
@@ -529,18 +534,18 @@
 	#ucfhb-services > div > a { line-height: 30px; margin: 0; }
 	#ucfhb-search { height: 38px; margin-top: 4px; }
 	#ucfhb-search form { padding: 0 10px; margin: auto; height: 38px; }
-	#ucfhb-search form input[type="text"] { font-size: 16px; padding-top: 4px; padding-bottom: 8px; }
+	#ucfhb-search-field { font-size: 16px; padding-top: 4px; padding-bottom: 8px; }
 	/* Can't comma-separate these... */
-	#ucfhb-search form input[type="text"]::-webkit-input-placeholder {
+	#ucfhb-search-field::-webkit-input-placeholder {
 	   font-size: 16px;
 	}
-	#ucfhb-search form input[type="text"]:-moz-placeholder { /* Firefox 18- */
+	#ucfhb-search-field:-moz-placeholder { /* Firefox 18- */
 	   font-size: 16px; 
 	}
-	#ucfhb-search form input[type="text"]::-moz-placeholder {  /* Firefox 19+ */
+	#ucfhb-search-field::-moz-placeholder {  /* Firefox 19+ */
 	   font-size: 16px;
 	}
-	#ucfhb-search form input[type="text"]:-ms-input-placeholder {  
+	#ucfhb-search-field:-ms-input-placeholder {  
 	   font-size: 16px;
 	}
 	#ucfhb-search form #ucfhb-search-submit {

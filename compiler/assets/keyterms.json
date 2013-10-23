@@ -5,7 +5,7 @@
 		"t_3": ["lib", "library", "libraries"],
 		"t_4": ["email", "knights", "mail"],
 		"t_5": ["email", "outlook"],
-		"t_6": ["giv", "giving", "gift", "donate", "donation"],
+		"t_6": ["giv", "giving", "gift", "donate", "donation", "giving to UCF", "give to UCF"],
 		"t_7": ["schola", "scholarship"],
 		"t_8": ["aid", "finan", "financial"],
 		"t_9": ["web", "online", "webcourses"],
@@ -68,7 +68,7 @@
 		},
 		"m_6": {
 			"name": "Giving to UCF",
-			"url": "http://ucffoundation.org/"
+			"url": "https://giving.ucffoundation.org/ucffoundation"
 		},
 		"m_7": {
 			"name": "Scholarship Information",

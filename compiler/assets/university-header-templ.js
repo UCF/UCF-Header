@@ -517,7 +517,7 @@ function ucfhbSetJsonp(json) {
 							self.autocompleteList.appendChild(listItem);
 
 							var link = listItem.getElementsByTagName('a')[0];
-							ucfhbAssignTrackingListener(link, 'click', new String(resultUrl), "search", "" + name);
+							ucfhbAssignTrackingListener(link, 'click', new String(resultUrl), "keyterm-search", "" + name);
 						}
 
 						// Add 'View More Results link'; update screenreader help text

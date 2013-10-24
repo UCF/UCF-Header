@@ -43,7 +43,8 @@
 		"t_41": ["grad", "graduate", "master", "college", "admis", "admissions"],
 		"t_42": ["nid", "login", "pass", "password"],
 		"t_43": ["my ucf", "myucf"],
-		"t_44": ["hr", "hum", "human", "human resource", "human resources"]
+		"t_44": ["hr", "hum", "human", "human resource", "human resources"],
+		"t_45": ["foundation", "UCF foundation"]
 	},
 	"matches": {
 		"m_1": {
@@ -217,6 +218,14 @@
 		"m_43": {
 			"name": "MyUCF",
 			"url": "https://my.ucf.edu"
+		},
+		"m_44": {
+			"name": "Human Resources",
+			"url": "http://hr.ucf.edu/"
+		},
+		"m_45": {
+			"name": "UCF Foundation",
+			"url": "http://ucffoundation.org/"
 		}
 	}
 }

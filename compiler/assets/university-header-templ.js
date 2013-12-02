@@ -14,9 +14,15 @@ _gaq.push(['ucfhb._trackPageview']);
 /**
  * Click tracking
  **/
-var ucfhbTrackClick = function(link, action, label) {
-	_gaq.push(['ucfhb._trackEvent', 'Header', action, label]);
-	window.setTimeout(function(){ document.location = link; }, 200);
+var ucfhbTrackAction = function(link, action, label) {
+	// Only track actions w/valid values
+	if (action !== null && label !== null) {
+		_gaq.push(['ucfhb._trackEvent', 'Header', action, label]);
+		window.setTimeout(function(){ document.location = link; }, 200);
+	}
+	else {
+		document.location = link;
+	}
 };
 var ucfhbAssignTrackingListener = function(elem, eventType, link, action, label) {
 	eventType 	= String(eventType);
@@ -27,43 +33,12 @@ var ucfhbAssignTrackingListener = function(elem, eventType, link, action, label)
 	if (elem.addEventListener) {
 		elem.addEventListener(eventType, function(event) {
 			event.preventDefault();
-
-			// One off for form submit since we 
-			// need to get the value on the fly
-			if (eventType == 'submit') {
-				label = label.value || null;
-				if (label !== null) {
-					link += encodeURIComponent(label);
-				}
-			}
-
-			// Only track actions w/valid values
-			if (action !== null && label !== null) {
-				ucfhbTrackClick(link, action, label);
-			}
-			else {
-				document.location = link;
-			}
+			ucfhbTrackAction(link, action, label);
 		}, false);
 	}
 	else {
 		elem.attachEvent('on' + eventType, function(event) {
-			// One off for form submit since we 
-			// need to get the value on the fly
-			if (eventType == 'submit') {
-				label = label.value || null;
-				if (label !== null) {
-					link += encodeURIComponent(label);
-				}
-			}
-
-			// Only track actions w/valid values
-			if (action !== null && label !== null) {
-				ucfhbTrackClick(link, action, label);
-			}
-			else {
-				document.location = link;
-			}
+			ucfhbTrackAction(link, action, label);
 			return false;
 		});
 	}
@@ -85,6 +60,14 @@ function ucfhbSetJsonp(json) {
 
 
 (function() {
+	/**
+	 * Define GA tracking actions
+	 **/
+	var ucfhbTrackingActionSignon = 'signon', 							// When a UCF Login button is clicked
+		ucfhbTrackingActionSearch = 'search', 							// When the search form is submitted (no autocomplete results were selected)
+		ucfhbTrackingActionACKeyterm = 'autocomplete-keyterm-search', 	// When an autocomplete keyterm suggestion is clicked or submitted
+		ucfhbTrackingActionACSearch = 'autocomplete-search'; 			// When a non-keyterm autocomplete suggestion is clicked or submitted
+
 	/**
 	 * Locations of external CSS files.
 	 * These resources should be protocol-agnostic and link to
@@ -245,24 +228,24 @@ function ucfhbSetJsonp(json) {
 		/* Define listeners */
 		var ucfhbEventListener = function() {
 			// Fetch inserted DOM elements
-			var ucfhbBar = document.getElementById('ucfhb'),
-				mobileToggle = document.getElementById('ucfhb-mobile-toggle'),
-				ucfLogo = document.getElementById('ucfhb-logo'),
-				barRight = document.getElementById('ucfhb-right'),
-				myUCFBtn = document.getElementById('ucfhb-signon-logo'),
-				myUCFWrapper = document.getElementById('ucfhb-signon'),
-				searchbar = document.getElementById('ucfhb-search'),
-				searchForm = document.getElementById('ucfhb-search-form');
-				searchField = document.getElementById('ucfhb-search-field'),
-				searchBtn = document.getElementById('ucfhb-search-submit'),
-				searchMinimal = document.getElementById('ucfhb-search-minimal'),
-				searchAutocomplete = document.getElementById('ucfhb-search-autocomplete'),
-				linkMyucf = document.getElementById('ucfhb-myucf'),
-				linkKnightsmail = document.getElementById('ucfhb-knightsmail'),
-				linkWebcourses = document.getElementById('ucfhb-webcourses'),
+			var ucfhbBar 			= document.getElementById('ucfhb'),
+				mobileToggle 		= document.getElementById('ucfhb-mobile-toggle'),
+				ucfLogo 			= document.getElementById('ucfhb-logo'),
+				barRight 			= document.getElementById('ucfhb-right'),
+				myUCFBtn 			= document.getElementById('ucfhb-signon-logo'),
+				myUCFWrapper 		= document.getElementById('ucfhb-signon'),
+				searchbar 			= document.getElementById('ucfhb-search'),
+				searchForm 			= document.getElementById('ucfhb-search-form');
+				searchField 		= document.getElementById('ucfhb-search-field'),
+				searchBtn 			= document.getElementById('ucfhb-search-submit'),
+				searchMinimal 		= document.getElementById('ucfhb-search-minimal'),
+				searchAutocomplete 	= document.getElementById('ucfhb-search-autocomplete'),
+				linkMyucf 			= document.getElementById('ucfhb-myucf'),
+				linkKnightsmail 	= document.getElementById('ucfhb-knightsmail'),
+				linkWebcourses 		= document.getElementById('ucfhb-webcourses'),
 
-				shiftLeftElems = [myUCFBtn, searchbar, searchMinimal, searchAutocomplete],
-				mobileToggleElems = [ucfhbBar, mobileToggle, ucfLogo, barRight, searchAutocomplete];
+				shiftLeftElems 		= [myUCFBtn, searchbar, searchMinimal, searchAutocomplete],
+				mobileToggleElems 	= [ucfhbBar, mobileToggle, ucfLogo, barRight, searchAutocomplete];
 
 			var goldBarClass = 'ucfhb-gold';
 
@@ -311,11 +294,10 @@ function ucfhbSetJsonp(json) {
 			};
 
 			// Analytics tracking (this functionality is also added to
-			// all links in autocomplete list items)
-			ucfhbAssignTrackingListener(searchForm, 'submit', searchForm.getAttribute('data-action-url'), 'search', searchField);
-			ucfhbAssignTrackingListener(linkMyucf, 'click', linkMyucf.getAttribute('href'), 'signon', 'MyUCF');
-			ucfhbAssignTrackingListener(linkKnightsmail, 'click', linkKnightsmail.getAttribute('href'), 'signon', 'Knightsmail');
-			ucfhbAssignTrackingListener(linkWebcourses, 'click', linkWebcourses.getAttribute('href'), 'signon', 'Webcourses');
+			// all links in autocomplete list items and for form submissions)
+			ucfhbAssignTrackingListener(linkMyucf, 'click', linkMyucf.getAttribute('href'), ucfhbTrackingActionSignon, 'MyUCF');
+			ucfhbAssignTrackingListener(linkKnightsmail, 'click', linkKnightsmail.getAttribute('href'), ucfhbTrackingActionSignon, 'Knightsmail');
+			ucfhbAssignTrackingListener(linkWebcourses, 'click', linkWebcourses.getAttribute('href'), ucfhbTrackingActionSignon, 'Webcourses');
 		};
 		ucfhbEventListener();
 	}
@@ -339,8 +321,11 @@ function ucfhbSetJsonp(json) {
 		this.autocompleteSelectedId = 'ucfhb-autocomplete-selected';								// ID assigned to a selected autocomplete <li>
 		this.searchForm				= document.getElementById('ucfhb-search-form');					// Search <form> element
 		this.searchField			= document.getElementById('ucfhb-search-field');				// Search <input> element
+		this.searchSubmit			= document.getElementById('ucfhb-search-submit');				// Search submit button element
 		this.searchAction			= this.searchForm.getAttribute('data-action-url');				// 'data-action-url' attr of search <form> element; should match form 'action' attr. (URL to Google Search Appliance)
 		this.searchActiveClass		= 'search-is-active';											// Class assigned to an active (visible) autocomplete <ul>
+		this.searchKeytermLinkClass = 'search-autocomplete-keyterm';								// Class assigned to an autocomplete <a> element that links to a keyterm's URL
+		this.searchResultsLinkClass = 'search-autocomplete-result';									// Class assigned to an autocomplete <a> elements that links to a non-keyterm's URL (generic search result)
 
 		// this.keyterms contains all autocomplete keyterms + matches that are attempted before attempting a search service request.
 		this.keyterms = @!@KEYTERMS@!@;
@@ -471,12 +456,12 @@ function ucfhbSetJsonp(json) {
 			var appendViewMore = function() {
 				var viewMoreLi = document.createElement('li');
 				var viewMoreLink = self.searchAction + urlq;
-				viewMoreLi.innerHTML = '<a href="' + viewMoreLink + '" tabindex="0">View More Results</a>';
+				viewMoreLi.innerHTML = '<a class="' + self.searchResultsLinkClass + '" href="' + viewMoreLink + '" tabindex="0">View More Results</a>';
 				viewMoreLi.className = 'ucfhb-search-autocomplete-more';
 				viewMoreLi.setAttribute('data-name-val', safeq);
 
 				var link = viewMoreLi.getElementsByTagName('a')[0];
-				ucfhbAssignTrackingListener(link, 'click', new String(viewMoreLink), "search", "View more results: " + safeq);
+				ucfhbAssignTrackingListener(link, 'click', new String(viewMoreLink), ucfhbTrackingActionSearch, 'View more results: ' + safeq);
 
 				self.autocompleteList.appendChild(viewMoreLi);
 			};
@@ -511,13 +496,13 @@ function ucfhbSetJsonp(json) {
 								resultUrl = results[i].url !== '' ? stripTags(results[i].url.trim()) : self.searchAction + urlq;
 
 							var listItem = document.createElement('li');
-							listItem.innerHTML = '<a href="' + resultUrl + '" tabindex="0">' + nameSpan + '</a>';
+							listItem.innerHTML = '<a class="' + self.searchKeytermLinkClass + '" href="' + resultUrl + '" tabindex="0">' + nameSpan + '</a>';
 							listItem.setAttribute('data-name-val', name);
 
 							self.autocompleteList.appendChild(listItem);
 
 							var link = listItem.getElementsByTagName('a')[0];
-							ucfhbAssignTrackingListener(link, 'click', new String(resultUrl), "keyterm-search", "" + name);
+							ucfhbAssignTrackingListener(link, 'click', new String(resultUrl), ucfhbTrackingActionACKeyterm, '' + name);
 						}
 
 						// Add 'View More Results link'; update screenreader help text
@@ -539,11 +524,11 @@ function ucfhbSetJsonp(json) {
 										resultUrl = self.searchAction + encodeURIComponent(name);
 										
 									var listItem = document.createElement('li');
-									listItem.innerHTML = '<a href="' + resultUrl + '" tabindex="0" >' + nameSpan + orgSpan + '</a>';
+									listItem.innerHTML = '<a class="'+ self.searchResultsLinkClass +'" href="' + resultUrl + '" tabindex="0" >' + nameSpan + orgSpan + '</a>';
 									listItem.setAttribute('data-name-val', name);
 									
 									var link = listItem.getElementsByTagName('a')[0];
-									ucfhbAssignTrackingListener(link, 'click', new String(resultUrl), "search", "" + name);
+									ucfhbAssignTrackingListener(link, 'click', new String(resultUrl), ucfhbTrackingActionACSearch, '' + name);
 									
 									self.autocompleteList.appendChild(listItem);
 								}
@@ -637,7 +622,7 @@ function ucfhbSetJsonp(json) {
 				else if (document.createEventObject) {
 					srEvent = document.createEventObject('KeyboardEvent');
 					srEvent.keyCode = 39;
-					self.searchField.fireEvent('onkeyup', srEvent);
+					self.searchField.fireEvent('onkeydown', srEvent);
 				}
 			};
 
@@ -659,8 +644,8 @@ function ucfhbSetJsonp(json) {
 					listPrevSibling = selectedLi.previousSibling;
 					selectNewResult(selectedLi, listPrevSibling, listLastChild);
 				}
-				else if (keycode == 39 || keycode == 37) {
-					// Left or right arrow keypress; do nothing
+				else if (keycode == 39 || keycode == 37 || keycode == 13) {
+					// Left or right arrow keypress or enter key; do nothing
 					return;
 				}
 			}
@@ -729,15 +714,64 @@ function ucfhbSetJsonp(json) {
 				}
 			};
 
-			// Handle autocomplete close w/btn click or click outside list
+			// Handle search form submission; intercept and redirect to a 
+			// provided URL instead of search results if necessary.
 			// Checks for standard addEventListener, falls back to attachEvent
+			var handleAutocompleteSelect = function(event) {
+				if (event.preventDefault) {
+					event.preventDefault();
+				}
+				else {
+					event.returnValue = false;
+				}
+
+				var selectedLi = document.getElementById(self.autocompleteSelectedId);
+
+				// If an autocomplete list item is highlighted and is 'submitted'
+				// with the enter key, redirect the user to the URL provided
+				// in the list item instead of to search results
+				if (
+					selectedLi &&
+					self.isSearchActive() === true
+				) {
+					var selectedLink = selectedLi.getElementsByTagName('a')[0];
+
+					// Distinguish between keyterm searches and other generic searches
+					if (selectedLink) {
+						if (selectedLink.className.indexOf(self.searchKeytermLinkClass) > -1) {
+							ucfhbTrackAction(selectedLink.getAttribute('href'), ucfhbTrackingActionACKeyterm, self.searchField.value);
+						}
+						else if (selectedLink.className.indexOf(self.searchResultsLinkClass) > -1) {
+							ucfhbTrackAction(selectedLink.getAttribute('href'), ucfhbTrackingActionACSearch, self.searchField.value);
+						}
+					}
+				}
+				else {
+					var searchURL = self.searchForm.getAttribute('data-action-url') + encodeURIComponent(self.searchField.value);
+					ucfhbTrackAction(searchURL, ucfhbTrackingActionSearch, self.searchField.value);
+				}
+			}
+			if (self.searchForm.addEventListener) {
+			    self.searchForm.addEventListener('submit', handleAutocompleteSelect, false);
+			}
+			else if (self.searchForm.attachEvent) {
+			    self.searchForm.attachEvent('onsubmit', handleAutocompleteSelect);
+			}
+
+			// Handle autocomplete close w/btn click or click outside list.
+			// Make sure to avoid tracking form submissions as outer element clicks;
+			// search form submission is detected as a 'click' here on the form submit btn.
+			// Checks for standard addEventListener, falls back to attachEvent.
 			self.autocompleteCloseBtn.onclick = function() {
 				self.toggleAutocompleteList(false);
 			};
 			if (document.addEventListener) {
 				document.addEventListener('click', function(e) {
-					if (outsideElementClick(e, self.autocompleteList) && self.isSearchActive()) {
-						self.toggleAutocompleteList(false);
+					var target = e.target || e.srcElement;
+					if ( target && e.target.getAttribute('id') !== self.searchSubmit.getAttribute('id') ) {
+						if (outsideElementClick(e, self.autocompleteList) && self.isSearchActive()) {
+							self.toggleAutocompleteList(false);
+						}
 					}
 				});
 			}

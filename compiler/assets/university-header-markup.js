@@ -16,7 +16,7 @@
 				'<div id="ucfhb-services">',
 					'<div>',
 						'<a id="ucfhb-myucf" class="ucfhb-service" href="https://my.ucf.edu/psp/PAPROD/EMPLOYEE/EMPL/?cmd=login">myUCF</a>',
-						'<a id="ucfhb-knightsmail" class="ucfhb-service" href="https://www.outlook.com/Knights.ucf.edu">KnightsMail</a>',
+						'<a id="ucfhb-knightsmail" class="ucfhb-service" href="http://knightsemail.ucf.edu">KnightsMail</a>',
 						'<a id="ucfhb-webcourses" class="ucfhb-service" href="https://webcourses.ucf.edu">Webcourses</a>',
 					'</div>',
 				'</div>',

@@ -1,7 +1,7 @@
 {
 	"terms": {
 		"t_1": ["hous","housing", "dorm", "apartment", "on-campus living", "residence", "nike", "apollo", "libra", "tower", "neptune", "lake claire"],
-		"t_2": ["cal", "calendar", "acad", "academic calendar", "fall", "spring", "summer", "sched", "schedule", "deadline", "drop"],
+		"t_2": ["cal", "calendar", "acad", "academic calendar", "fall", "spring", "summer", "sched", "schedule", "deadline", "deadlines", "drop"],
 		"t_3": ["lib", "library", "libraries"],
 		"t_4": ["email", "knights", "mail"],
 		"t_5": ["email", "outlook"],
@@ -30,7 +30,7 @@
 		"t_28": ["med", "medic", "medicine", "college"],
 		"t_29": ["serv", "service", "stud", "student"],
 		"t_30": ["dining", "food", "serv", "service"],
-		"t_31": ["phon", "phone", "phonebook"],
+		"t_31": ["phon", "phone", "phonebook", "dir", "directory"],
 		"t_32": ["under", "undergrad", "undergraduate", "stud", "studies"],
 		"t_33": ["major", "minor", "degree", "prog", "program"],
 		"t_34": ["tour", "campus", "open", "open house"],

@@ -66,7 +66,8 @@ function ucfhbSetJsonp(json) {
 	var ucfhbTrackingActionSignon = 'signon', 							// When a UCF Login button is clicked
 		ucfhbTrackingActionSearch = 'search', 							// When the search form is submitted (no autocomplete results were selected)
 		ucfhbTrackingActionACKeyterm = 'autocomplete-keyterm-search', 	// When an autocomplete keyterm suggestion is clicked or submitted
-		ucfhbTrackingActionACSearch = 'autocomplete-search'; 			// When a non-keyterm autocomplete suggestion is clicked or submitted
+		ucfhbTrackingActionACSearch = 'autocomplete-search', 			// When a non-keyterm autocomplete suggestion is clicked or submitted
+		ucfhbTrackingActionLogoClick = 'ucf-logo'						// When the UCF logo is clicked
 
 	/**
 	 * Locations of external CSS files.
@@ -231,6 +232,7 @@ function ucfhbSetJsonp(json) {
 			var ucfhbBar 			= document.getElementById('ucfhb'),
 				mobileToggle 		= document.getElementById('ucfhb-mobile-toggle'),
 				ucfLogo 			= document.getElementById('ucfhb-logo'),
+				ucfLogoLink			= ucfLogo.firstElementChild||ucfLogo.firstChild,
 				barRight 			= document.getElementById('ucfhb-right'),
 				myUCFBtn 			= document.getElementById('ucfhb-signon-logo'),
 				myUCFWrapper 		= document.getElementById('ucfhb-signon'),
@@ -298,6 +300,7 @@ function ucfhbSetJsonp(json) {
 			ucfhbAssignTrackingListener(linkMyucf, 'click', linkMyucf.getAttribute('href'), ucfhbTrackingActionSignon, 'MyUCF');
 			ucfhbAssignTrackingListener(linkKnightsmail, 'click', linkKnightsmail.getAttribute('href'), ucfhbTrackingActionSignon, 'Knightsmail');
 			ucfhbAssignTrackingListener(linkWebcourses, 'click', linkWebcourses.getAttribute('href'), ucfhbTrackingActionSignon, 'Webcourses');
+			ucfhbAssignTrackingListener(ucfLogoLink, 'click', ucfLogoLink.getAttribute('href'), ucfhbTrackingActionLogoClick, 'UCF Logo');
 		};
 		ucfhbEventListener();
 	}

@@ -232,7 +232,7 @@ function ucfhbSetJsonp(json) {
 			var ucfhbBar 			= document.getElementById('ucfhb'),
 				mobileToggle 		= document.getElementById('ucfhb-mobile-toggle'),
 				ucfLogo 			= document.getElementById('ucfhb-logo'),
-				ucfLogoLink			= ucfLogo.firstElementChild||ucfLogo.firstChild,
+				ucfLogoLink			= ucfLogo.firstElementChild || ucfLogo.firstChild,
 				barRight 			= document.getElementById('ucfhb-right'),
 				myUCFBtn 			= document.getElementById('ucfhb-signon-logo'),
 				myUCFWrapper 		= document.getElementById('ucfhb-signon'),

@@ -67,7 +67,7 @@ function ucfhbSetJsonp(json) {
 		ucfhbTrackingActionSearch = 'search', 							// When the search form is submitted (no autocomplete results were selected)
 		ucfhbTrackingActionACKeyterm = 'autocomplete-keyterm-search', 	// When an autocomplete keyterm suggestion is clicked or submitted
 		ucfhbTrackingActionACSearch = 'autocomplete-search', 			// When a non-keyterm autocomplete suggestion is clicked or submitted
-		ucfhbTrackingActionLogoClick = 'ucf-logo'						// When the UCF logo is clicked
+		ucfhbTrackingActionLogoClick = 'ucf-logo';						// When the UCF logo is clicked
 
 	/**
 	 * Locations of external CSS files.

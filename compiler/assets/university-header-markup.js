@@ -22,7 +22,7 @@
 				'</div>',
 			'</div>',
 			'<div id="ucfhb-search">',
-				'<form action="http://google.cc.ucf.edu/search" data-action-url="http://google.cc.ucf.edu/search?client=UCF_Main&proxystylesheet=UCF_Main&q=" data-autosearch-url="'+ ucfhbJsonpScript +'" method="get" name="ucfhb-search-form" id="ucfhb-search-form" autocomplete="off">',
+				'<form action="//google.cc.ucf.edu/search" data-action-url="//google.cc.ucf.edu/search?client=UCF_Main&proxystylesheet=UCF_Main&q=" data-autosearch-url="'+ ucfhbJsonpScript +'" method="get" name="ucfhb-search-form" id="ucfhb-search-form" autocomplete="off">',
 					'<label for="ucfhb-search-field">Search UCF</label>',
 					'<input type="hidden" name="client" value="UCF_Main" />',
 					'<input type="hidden" name="proxystylesheet" value="UCF_Main" />',

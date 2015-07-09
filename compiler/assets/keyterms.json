@@ -48,7 +48,8 @@
 		"t_46": ["major", "majors"],
 		"t_47": ["master", "masters"],
 		"t_48": ["minor", "minors"],
-		"t_49": ["honors"]
+		"t_49": ["honors"],
+		"t_50": ["online"]
 	},
 	"matches": {
 		"m_1": {
@@ -84,8 +85,8 @@
 			"url": "http://finaid.ucf.edu/general/"
 		},
 		"m_9": {
-			"name": "UCF Online",
-			"url": "http://www.ucf.edu/online"
+			"name": "Webcourses",
+			"url": "http://webcourses.ucf.edu"
 		},
 		"m_10": {
 			"name": "UCF Bookstore",
@@ -246,6 +247,10 @@
 		"m_49": {
 			"name": "The Burnett Honors College",
 			"url": "http://honors.ucf.edu/"
+		},
+		"m_50": {
+			"name": "UCF Online",
+			"url": "http://www.ucf.edu/online"
 		}
 	}
 }

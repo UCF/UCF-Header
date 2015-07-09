@@ -6,13 +6,13 @@
 		"t_4": ["email", "knights", "mail"],
 		"t_5": ["email", "outlook"],
 		"t_6": ["giv", "giving", "gift", "donate", "donation", "giving to UCF", "give to UCF"],
-		"t_7": ["schola", "scholarship"],
-		"t_8": ["aid", "finan", "financial"],
+		"t_7": ["schola", "scholarship", "scholarships"],
+		"t_8": ["aid", "finan", "financial", "financial aid"],
 		"t_9": ["web", "online", "webcourses"],
 		"t_10": ["book", "bookstore"],
 		"t_11": ["tuit", "tuition", "cost"],
 		"t_12": ["orien", "orientation"],
-		"t_13": ["job", "employment", "employ", "career"],
+		"t_13": ["job", "jobs", "employment", "employ", "career"],
 		"t_14": ["career", "intern"],
 		"t_15": ["park", "parking"],
 		"t_16": ["map", "campus"],
@@ -32,7 +32,7 @@
 		"t_30": ["dining", "food", "serv", "service"],
 		"t_31": ["phon", "phone", "phonebook", "dir", "directory"],
 		"t_32": ["under", "undergrad", "undergraduate", "stud", "studies"],
-		"t_33": ["major", "minor", "degree", "prog", "program"],
+		"t_33": ["degree", "prog", "program"],
 		"t_34": ["tour", "campus", "open", "open house"],
 		"t_35": ["stud", "student", "student union", "union", "food"],
 		"t_36": ["foot", "football", "athlet", "athletic"],
@@ -44,12 +44,16 @@
 		"t_42": ["nid", "login", "pass", "password"],
 		"t_43": ["my ucf", "myucf"],
 		"t_44": ["hr", "hum", "human", "human resource", "human resources"],
-		"t_45": ["foundation", "UCF foundation"]
+		"t_45": ["foundation", "UCF foundation"],
+		"t_46": ["major", "majors"],
+		"t_47": ["master", "masters"],
+		"t_48": ["minor", "minors"],
+		"t_49": ["honors"]
 	},
 	"matches": {
 		"m_1": {
 			"name": "Housing and Residence Life",
-			"url": "http://housing.ucf.edu"
+			"url": "http://www.housing.ucf.edu"
 		},
 		"m_2": {
 			"name": "Academic Calendar",
@@ -77,11 +81,11 @@
 		},
 		"m_8": {
 			"name": "Financial Aid",
-			"url": "http://finaid.ucf.edu/types/"
+			"url": "http://finaid.ucf.edu/general/"
 		},
 		"m_9": {
-			"name": "Webcourses",
-			"url": "http://webcourses.ucf.edu"
+			"name": "UCF Online",
+			"url": "http://www.ucf.edu/online"
 		},
 		"m_10": {
 			"name": "UCF Bookstore",
@@ -226,6 +230,22 @@
 		"m_45": {
 			"name": "UCF Foundation",
 			"url": "http://ucffoundation.org/"
+		},
+		"m_46": {
+			"name": "UCF Majors",
+			"url": "http://www.ucf.edu/degree-search/majors"
+		},
+		"m_47": {
+			"name": "UCF Masters",
+			"url": "http://www.ucf.edu/degree-search/masters"
+		},
+		"m_48": {
+			"name": "UCF Minors",
+			"url": "http://www.ucf.edu/degree-search/minors"
+		},
+		"m_49": {
+			"name": "The Burnett Honors College",
+			"url": "http://honors.ucf.edu/"
 		}
 	}
 }

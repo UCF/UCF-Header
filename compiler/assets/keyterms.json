@@ -12,10 +12,10 @@
 		"t_10": ["book", "bookstore"],
 		"t_11": ["tuit", "tuition", "cost"],
 		"t_12": ["orien", "orientation"],
-		"t_13": ["job", "jobs", "employment", "employ", "career"],
+		"t_13": ["job", "jobs", "employment", "employ", "career", "careers"],
 		"t_14": ["career", "intern"],
 		"t_15": ["park", "parking"],
-		"t_16": ["map", "campus"],
+		"t_16": ["map", "campus", "campus map"],
 		"t_17": ["regist", "registrar"],
 		"t_18": ["transc", "transcript"],
 		"t_19": ["nurs", "nursing", "college"],
@@ -29,11 +29,11 @@
 		"t_27": ["busi", "business", "college", "coba"],
 		"t_28": ["med", "medic", "medicine", "college"],
 		"t_29": ["serv", "service", "stud", "student"],
-		"t_30": ["dining", "food", "serv", "service"],
+		"t_30": ["dining", "food", "serv", "service", "meal plan"],
 		"t_31": ["phon", "phone", "phonebook", "dir", "directory"],
 		"t_32": ["under", "undergrad", "undergraduate", "stud", "studies"],
-		"t_33": ["degree", "prog", "program"],
-		"t_34": ["tour", "campus", "open", "open house"],
+		"t_33": ["degree", "prog", "program", "undergraduate catalog"],
+		"t_34": ["tour", "tours", "campus", "open", "open house", "visit"],
 		"t_35": ["stud", "student", "student union", "union", "food"],
 		"t_36": ["foot", "football", "athlet", "athletic"],
 		"t_37": ["under", "undergrad", "undergraduate", "admis", "admissions"],
@@ -49,7 +49,9 @@
 		"t_47": ["master", "masters"],
 		"t_48": ["minor", "minors"],
 		"t_49": ["honors"],
-		"t_50": ["online"]
+		"t_50": ["online"],
+		"t_51": ["grad", "graduation", "graduate"],
+		"t_52": ["transfer"]
 	},
 	"matches": {
 		"m_1": {
@@ -251,6 +253,14 @@
 		"m_50": {
 			"name": "UCF Online",
 			"url": "http://www.ucf.edu/online"
+		},
+		"m_51": {
+			"name": "UCF Commencement",
+			"url": "http://commencement.ucf.edu/"
+		},
+		"m_52": {
+			"name": "Transfer & Transition Services",
+			"url": "http://transfer.sdes.ucf.edu/"
 		}
 	}
 }

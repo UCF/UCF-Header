@@ -3,36 +3,38 @@
  * Assign spritesheet.png backgrounds in bulk.
  * Background-positions should be assigned per ID
  **/
+
+/* Icons */
+
 #ucfhb-mobile-toggle,
 #ucfhb-logo a,
-#ucfhb-signon-logo .ucfhb-hidden,
-#ucfhb-services > div > .ucfhb-service,
+#ucfhb-signon-logo,
 #ucfhb-search form #ucfhb-search-submit,
-#ucfhb-search-minimal {
-	background-image: url('../img/spritesheet.png');
+#ucfhb-search-minimal,
+#ucfhb-services a {
+	background-image: url('../img/icons.png');
 	background-repeat: no-repeat;
-}
-@media 
- 	(-webkit-min-device-pixel-ratio: 2), 
- 	(min-resolution: 192dpi) { 
- 		#ucfhb-mobile-toggle,
- 		#ucfhb-logo a,
- 		#ucfhb-signon-logo .ucfhb-hidden,
- 		#ucfhb-services > div > .ucfhb-service,
- 		#ucfhb-search form #ucfhb-search-submit,
- 		#ucfhb-search-minimal {
- 			background-image: url('../img/spritesheet-r.png');
- 			background-size: 350px 160px;
- 		}
+	padding-left: 27px;
 }
 
+.pegasus {
+	background-position: 12px -173px;
+}
 
 /**
  * FULL-WIDTH STYLING
  **
 
 /* Main wrapper */
-#ucfhb { height: 50px; width: 100%; margin: auto; background: #000; position: relative; z-index: 10000; }
+#ucfhb {
+	height: 50px;
+	width: 100%;
+	margin: auto;
+	background: #000;
+	position: relative;
+	z-index: 10000;
+}
+
 /* Foundation CSS Framework overrides */
 #ucfhb,
 #ucfhb:before,
@@ -48,13 +50,20 @@
 #ucfhb a { border: 0; }
 
 /* Inner wrap (fixed 940px width) */
-/* display: block is added to override display:none inline styles, which prevent 
+/* display: block is added to override display:none inline styles, which prevent
  * plaintext content flicker if the header css hasn't appended before the bar content. */
-#ucfhb-inner { display: block !important; width: 940px; margin: auto; height: 50px; position: relative; z-index: 1000; }
+#ucfhb-inner {
+	display: block !important;
+	width: 940px;
+	margin: auto;
+	height: 50px;
+	position: relative;
+	z-index: 1000;
+}
 
 /* The left-hand portion of the header */
 #ucfhb-left { float: left; padding-top: 11px; width: 320px; }
-#ucfhb-mobile-toggle { 
+#ucfhb-mobile-toggle {
 	display: none;
 	width: 30px;
 	height: 30px;
@@ -65,39 +74,62 @@
 }
 #ucfhb-mobile-toggle.ucfhb-mobileslide { background-position: -198px -136px; }
 #ucfhb-mobile-toggle:focus { outline: 0; }
-#ucfhb-logo { float: left; padding-top: 2px; }
+#ucfhb-logo {
+	float: left;
+	padding-left: 15px;
+}
 #ucfhb-logo a {
-	width: 284px;
+	background-position: -5px -174px;
+	color: #FFCC00;
+	display: block;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 15px;
 	height: 24px;
 	max-width: 284px;
-	display: block;
-	text-indent: -9999px;
-	background-position: -2px -9px;
+	padding-top: 4px;
+	text-transform: uppercase;
+	width: 284px;
 }
 
 /* The right-hand portion of the header */
-#ucfhb-right { float: right; position: relative; width: 600px; height: 50px; overflow: hidden; }
+#ucfhb-right {
+	float: right;
+	position: relative;
+	width: 450px;
+	height: 50px;
+	overflow: hidden;
+}
 
 /* MyUCF: button */
-#ucfhb-signon { 
-	float: left; 
+#ucfhb-signon {
+	float: left;
 	position: absolute;
 	top: 0;
-	right: 50px;
+	right: 60px;
 	width: 360px;
 	height: 50px;
 }
 
-#ucfhb-signon-logo { 
-	display: block; 
-	font-size: 14px; 
-	color: #ffc904; 
-	text-decoration: none; 
-	width: 85px; 
-	height: 50px; 
+.ucfhb-sign-in {
+	color: white;
+	font-family: Arial, Helvetica, sans-serif;
+	margin-top: 17px;
+	position: absolute;
+	width: 50px;
+}
+.ucfhb-sign-in:hover {
+	color: #686868;
+}
+
+#ucfhb-signon-logo {
+	display: block;
+	font-size: 14px;
+	text-decoration: none;
+	width: 65px;
+	height: 34px;
 	position: absolute;
 	right: 195px;
-	top: 0;
+	top: -1;
 	transition: right 0.4s ease-in-out; /* 'move' left */
 	-webkit-transition: right 0.4s ease-in-out;
 	-ms-transition: right 0.4s ease-in-out;
@@ -108,7 +140,7 @@
 #ucfhb-signon-logo:active,
 #ucfhb-signon-logo.ucfhb-shiftleft { color: #fff !important; }
 #ucfhb-signon-logo.ucfhb-shiftleft {
-	right: 215px;
+	right: 277px;
 }
 #ucfhb-signon-logo .ucfhb-hidden {
 	float: left;
@@ -129,7 +161,15 @@
 #ucfhb-signon-logo.ucfhb-shiftleft #ucfhb-icon-close { display: block; }
 
 /* MyUCF: login form */
-#ucfhb-services { position: absolute; top: 0; right: 5px; width: 340px; height: 50px; z-index: 1; overflow: hidden; }
+#ucfhb-services {
+	position: absolute;
+	top: 2px;
+	right: 0;
+	width: 280px;
+	height: 51px;
+	z-index: 1;
+	overflow: hidden;
+}
 #ucfhb-services > div {
 	display: block;
 	opacity: 0;
@@ -143,57 +183,62 @@
 	top: 3px;
 	right: 0;
 }
-.ucfhb-shiftleft + #ucfhb-services > div { 
+.ucfhb-shiftleft + #ucfhb-services > div {
 	opacity: 1;
 	visibility: visible;
 	height: auto;
-	width: 210px;
+	width: 310px;
 	-webkit-transition: opacity 0.2s ease-in 0.4s; /* Show the form field after the button has 'moved' left */
 	-ms-transition: opacity 0.2s ease-in 0.4s;
 	transition: opacity 0.2s ease-in 0.4s;
 }
-#ucfhb-services > div > .ucfhb-service {
+#ucfhb-services .ucfhb-service {
+	font-family: Arial, Helvetica, sans-serif;
 	display: block;
 	float: left;
-	text-indent: -9999px;
-	margin: 5px 6px 0 6px;
-	width: 55px;
-	height: 34px;
-	padding: 0;
+	margin: 12px 0;
+	padding: 0 0 0 38px;
 }
-#ucfhb-services > div > #ucfhb-myucf { background-position: -177px -35px; }
-#ucfhb-services > div > #ucfhb-knightsmail { background-position: -232px -35px; }
-#ucfhb-services > div > #ucfhb-webcourses { background-position: -292px -35px; }
-#ucfhb-services > div > #ucfhb-myucf:hover { background-position: -177px -69px; }
-#ucfhb-services > div > #ucfhb-knightsmail:hover { background-position: -232px -69px; }
-#ucfhb-services > div > #ucfhb-webcourses:hover { background-position: -292px -69px; }
+#ucfhb-services a.ucfhb-service {
+	color: white;
+}
+#ucfhb-services a.ucfhb-service:hover,
+#ucfhb-services #ucfhb-myucf span:hover {
+	color: #686868;
+}
+#ucfhb-services #ucfhb-myucf {
+	font-size: 16px;
+	font-weight: bold;
+}
+#ucfhb-services #ucfhb-myucf span {
+	color: #ffc904;
+}
 
-@media 
- 	(-webkit-min-device-pixel-ratio: 2), 
- 	(min-resolution: 192dpi) { 
- 		#ucfhb-services > div > #ucfhb-myucf:hover { background-position: -177px -70px; }
- 		#ucfhb-services > div > #ucfhb-knightsmail:hover { background-position: -232px -70px; }
- 		#ucfhb-services > div > #ucfhb-webcourses:hover { background-position: -292px -70px; }
-}
+/*@media
+ 	(-webkit-min-device-pixel-ratio: 2),
+ 	(min-resolution: 192dpi) {
+ 		#ucfhb-services #ucfhb-myucf:hover { background-position: -177px -70px; }
+ 		#ucfhb-services #ucfhb-knightsmail:hover { background-position: -232px -70px; }
+ 		#ucfhb-services #ucfhb-webcourses:hover { background-position: -292px -70px; }
+}*/
 
 
 /* Search */
-#ucfhb-search { 
+#ucfhb-search {
 	position: absolute;
 	top: 0;
 	right: 4px;
-	margin-top: 9px; 
-	padding-left: 10px; 
-	border-left: 1px solid #454545;
+	margin-top: 9px;
+	padding-left: 10px;
 	z-index: 2;
-	width: 220px;
+	width: 251px;
 	height: 32px;
 	transition: width 0.4s ease-in-out; /* shrink to the right */
 	-webkit-transition: width 0.4s ease-in-out;
 	-ms-transition: width 0.4s ease-in-out;
 }
-#ucfhb-search form { 
-	width: 220px;
+#ucfhb-search form {
+	width: 251px;
 	height: 29px;
 	margin-bottom: 0;
 	position: relative;
@@ -210,10 +255,10 @@
 	line-height: 0 !important;
 	font-size: 0;
 }
-#ucfhb-search-field { 
-	width: 160px !important; 
-	height: 25px !important; 
-	border-radius: 30px; 
+#ucfhb-search-field {
+	width: 155px !important;
+	height: 25px !important;
+	border-radius: 5px 0 0 5px;
 	border: 0;
 	margin: 0;
 	padding: 2px 45px 2px 15px;
@@ -228,15 +273,16 @@
 	letter-spacing: 0.1px;
 	background-size: 20px 19px;
 	-webkit-appearance: none;
-	box-shadow: inset 0 2px 3px 0 rgba(0, 0, 0, 0.25), 0 0 0 0 transparent;
-	transition: all 0.2s ease-in-out; /* glow effect */
-	-webkit-transition: all 0.2s ease-in-out;
-	-ms-transition: all 0.2s ease-in-out;
 }
+/*
 #ucfhb-search-field:focus {
-	outline: none;
-	box-shadow: inset 0 2px 3px 0 rgba(0, 0, 0, 0.25), 0px 0px 5px 2px rgba(253, 240, 183, 0.6);
-}
+	width: 300px !important;
+	right: 0;
+	-webkit-transition: all 0.2s ease-in 0.4s;
+	-ms-transition: all 0.2s ease-in 0.4s;
+	transition: all 0.2s ease-in 0.4s;
+} */
+
 /* Can't comma-separate these... */
 #ucfhb-search-field::-webkit-input-placeholder {
    font-family: 'Helvetica-Neue', sans-serif;
@@ -250,7 +296,7 @@
    font-size: 13px;
    font-style: normal;
    font-weight: normal;
-   color: #555; 
+   color: #555;
 }
 #ucfhb-search-field::-moz-placeholder {  /* Firefox 19+ */
    font-family: 'Helvetica-Neue', sans-serif;
@@ -259,7 +305,7 @@
    font-weight: normal;
    color: #555;
 }
-#ucfhb-search-field:-ms-input-placeholder {  
+#ucfhb-search-field:-ms-input-placeholder {
    font-family: 'Helvetica-Neue', sans-serif;
    font-size: 13px;
    font-style: normal;
@@ -268,20 +314,22 @@
 }
 
 #ucfhb-search form #ucfhb-search-submit {
+	background-image: url('../img/icons.png');
+	background-repeat: no-repeat;
+	background-position: 3px -47px;
 	position: absolute;
 	right: 0;
 	top: 2px;
 	height: 29px;
 	width: 28px;
 	*width: 40px;
-	padding: 0 6px;
+	padding: 0 3px 0 5px;
 	margin: 0;
-	border-radius: 0 30px 30px 0;
+	border-radius: 0 4px 4px 0;
 	border: 0;
 	text-indent: -9999px;
 	display: block;
 	background-color: #ffc904;
-	background-position: 10px -136px;
 }
 
 #ucfhb-search-autocomplete-srhelp {
@@ -299,7 +347,7 @@
 	overflow: hidden;
 }
 
-#ucfhb-search.ucfhb-shiftleft form { 
+#ucfhb-search.ucfhb-shiftleft form {
 	display: block;
 	width: 0;
 	opacity: 0;
@@ -311,23 +359,25 @@
 }
 
 #ucfhb-search-minimal {
+	background-image: url('../img/icons.png');
+	background-repeat: no-repeat;
+	background-position: 0 -47px;
 	display: none;
 	width: 20px;
 	height: 25px;
 	padding: 3px 6px;
-	border-radius: 5px; 
+	border-radius: 4px;
 	position: absolute;
 	top: 0;
 	-webkit-transition: all 0.2s ease-in 0.4s; /* Show the search button after myucf has 'moved' left */
 	-ms-transition: all 0.2s ease-in 0.4s;
 	transition: all 0.2s ease-in 0.4s;
 	background-color: #ffc904;
-	background-position: 7px -136px;
 	text-indent: -9999px;
 }
 #ucfhb-search form #ucfhb-search-submit:hover,
 #ucfhb-search-minimal:hover { background-color: #ffeba4; }
-#ucfhb-search-minimal.ucfhb-shiftleft { 
+#ucfhb-search-minimal.ucfhb-shiftleft {
 	display: block;
 	-webkit-transition: all 0s linear 0s; /* Force immediate hide when myUCF is shifted back right */
 	-ms-transition: all 0s linear 0s;
@@ -335,32 +385,19 @@
 }
 
 
-#ucfhb-search-autocomplete { 
+#ucfhb-search-autocomplete {
 	display: none;
 	list-style-type: none;
 	margin: 0;
 	position: absolute;
 	right: 4px;
-	top: 44px;
-	width: 218px;
+	top: 43px;
+	width: 250px;
 	z-index: 10001;
-	border-radius: 4px;
 	border: 1px solid #ddd;
 	padding: 0;
 	min-height: 30px;
 	background: #fff url('../img/ajax-loader.gif') center center no-repeat;
-}
-#ucfhb-search-autocomplete:before { /* Up Carat */
-	position: relative;
-	top: -10px;
-	display: block;
-	content: "";
-	width: 0;
-	height: 0;
-	border-style: solid;
-	border-width: 0 10px 10px 10px;
-	border-color: transparent transparent #ddd transparent;
-	margin: auto;
 }
 #ucfhb-search-autocomplete.ucfhb-shiftleft { display: none; }
 #ucfhb-search-autocomplete.search-is-active { display: block; }
@@ -368,42 +405,41 @@
 	display: block;
 	padding: 0;
 	margin: 0;
-	border-top: 1px solid #ddd;
 	background: #fff;
 }
-#ucfhb-search-autocomplete li:first-child { border-top: 0; margin-top: -10px; *margin-top: 0; }
+#ucfhb-search-autocomplete li:first-child {
+	border-top: 0;
+	margin-top: 0;
+}
 #ucfhb-search-autocomplete li.ucfhb-search-autocomplete-more {
+	display: none;
 	text-align: right;
 }
 #ucfhb-search-autocomplete li.ucfhb-search-autocomplete-more a { font-size: 11px; padding-right: 5px; }
 #ucfhb-search-autocomplete li a {
-	font-family: Helvetica, sans-serif; 
-	font-size: 14px; 
-	line-height: 20px; 
-	color: #0088CC;
+	font-family: Helvetica, sans-serif;
+	font-size: 14px;
+	line-height: 20px;
+	color: #000;
 	text-decoration: none;
 	display: block;
-	padding: 4px 35px 4px 8px;
+	padding: 7px 10px;
 }
 #ucfhb-search-autocomplete li a:hover,
 #ucfhb-search-autocomplete li a:focus,
 #ucfhb-autocomplete-selected a {
 	background: #efefef;
 }
-#ucfhb-search-autocomplete li a:hover { text-decoration: underline; color: #005580; }
-#ucfhb-search-autocomplete li a.ucfhb-search-autocomplete-url { 
-	font-size: 11px; 
-	text-align: left; 
-	line-height: 16px; 
-	font-family: Helvetica, sans-serif; 
+#ucfhb-search-autocomplete li a.ucfhb-search-autocomplete-url {
+	font-size: 11px;
+	text-align: left;
+	line-height: 16px;
+	font-family: Helvetica, sans-serif;
 	color: #008000;
 	text-decoration: none;
 	width: 100%;
 	display: block;
 }
-#ucfhb-search-autocomplete li a.ucfhb-search-autocomplete-url:hover { text-decoration: underline; }
-
-
 #ucfhb-search-autocomplete li span { text-align: left; display: block; }
 #ucfhb-search-autocomplete li span.ucfhb-search-autocomplete-name {
 	font-family: Helvetica, sans-serif;
@@ -417,7 +453,7 @@
 	font-size: 11px;
 	line-height: 15px;
 	margin-bottom: 0;
-	color: #666;
+	color: #999;
 }
 #ucfhb-search-autocomplete li span.ucfhb-search-autocomplete-phone {
 	font-family: Helvetica, sans-serif;
@@ -428,7 +464,7 @@
 }
 
 #ucfhb-search-autocomplete-close {
-	display: none;
+	display: none !important;
 	width: 30px;
 	height: 30px;
 	position: absolute;
@@ -455,23 +491,27 @@
  * Designed to match Bootstrap 2.x breakpoints
  **/
 
-/* Tablet size (768-979px) */ 
+ @media (min-width: 1170px) {
+	#ucfhb-inner { width: 1170px; }
+ }
+
+/* Tablet size (768-979px) */
 @media (max-width: 979px) {
 	#ucfhb-inner { width: 768px; }
-	#ucfhb-logo { padding-left: 10px; }
+	#ucfhb-logo { margin-left: 10px; }
 	#ucfhb-right { width: 448px; }
-	#ucfhb-services { width: 335px; right: 10px; }
+	#ucfhb-services { width: 335px; right: -7px; }
 	#ucfhb-search { right: 9px; }
-	#ucfhb-search-field { width: 155px !important; }
+	#ucfhb-search-field { width: 161px !important; }
 	#ucfhb-search-autocomplete { right: 10px; }
 	#ucfhb-search-autocomplete-close { right: 10px; }
 }
 
-/* Small tablet size (>=767px) */ 
+/* Small tablet size (>=767px) */
 @media (max-width: 767px) {
 	#ucfhb {
 		height: 100px;
-		margin-top: -50px;
+		margin-top: 45px;
 		transition: margin 0.4s ease-in-out; /* expand down */
 		-webkit-transition: margin 0.4s ease-in-out;
 		-ms-transition: margin 0.4s ease-in-out;
@@ -485,11 +525,11 @@
 	#ucfhb.ucfhb-mobileslide {
 		margin-top: 0;
 	}
-	#ucfhb-inner { 
+	#ucfhb-inner {
 		width: 100%;
 		height: 50px;
 	}
-	#ucfhb-logo { padding-left: 3px; }
+	#ucfhb-logo { margin-left: 3px; }
 	#ucfhb-left { width: 100%; height: 39px; position: absolute; top: 50px; float: none; } /* height accounts for padding-top */
 	#ucfhb-mobile-toggle { display: block; }
 
@@ -543,18 +583,18 @@
 	   font-size: 16px;
 	}
 	#ucfhb-search-field:-moz-placeholder { /* Firefox 18- */
-	   font-size: 16px; 
+	   font-size: 16px;
 	}
 	#ucfhb-search-field::-moz-placeholder {  /* Firefox 19+ */
 	   font-size: 16px;
 	}
-	#ucfhb-search-field:-ms-input-placeholder {  
+	#ucfhb-search-field:-ms-input-placeholder {
 	   font-size: 16px;
 	}
 	#ucfhb-search form #ucfhb-search-submit {
 		height: 37px;
 		right: 14px;
-		background-position: 10px -132px;
+		background-position: 3px -45px;
 	}
 
 	#ucfhb-search-autocomplete {
@@ -602,7 +642,7 @@
 	}
 	#ucfhb-search { margin-top: 10px; }
 
-	#ucfhb-search-autocomplete { width: 100%; right: 0; top: 93px; }
+	#ucfhb-search-autocomplete { width: 100%; right: 0; top: 94px; }
 	#ucfhb-search-autocomplete-close { bottom: -23px; }
 }
 
@@ -621,22 +661,24 @@
 	max-width: 254px;
 	background-position: 0 3px;
 }
-
-.ucfhb-gold #ucfhb-signon-logo { color: #aa8912; }
-.ucfhb-gold #ucfhb-signon-logo:hover,
-.ucfhb-gold #ucfhb-signon-logo.ucfhb-shiftleft { color: #fff; }
-.ucfhb-gold #ucfhb-signon-logo .ucfhb-hidden { background-position: 0 -106px; }
-.ucfhb-gold #ucfhb-signon-logo:hover .ucfhb-hidden,
-.ucfhb-gold #ucfhb-signon-logo.ucfhb-shiftleft .ucfhb-hidden {
-	background-position: -60px -106px;
+#ucfhb-signon-logo {
+	background-position: 0 14px;
 }
-.ucfhb-gold #ucfhb-services > div > #ucfhb-myucf { background-position: 3px -35px; }
-.ucfhb-gold #ucfhb-services > div > #ucfhb-knightsmail { background-position: -52px -35px; }
-.ucfhb-gold #ucfhb-services > div > #ucfhb-webcourses { background-position: -112px -35px; }
-.ucfhb-gold #ucfhb-services > div > #ucfhb-myucf:hover { background-position: 3px -69px; }
-.ucfhb-gold #ucfhb-services > div > #ucfhb-knightsmail:hover { background-position: -52px -69px; }
-.ucfhb-gold #ucfhb-services > div > #ucfhb-webcourses:hover { background-position: -112px -69px; }
-
+#ucfhb-signon-logo:hover {
+	background-position: 0 -11px;
+}
+#ucfhb-services #ucfhb-knightsmail {
+	background-position: 10px -79px;
+}
+#ucfhb-services #ucfhb-webcourses {
+	background-position: 12px -127px;
+}
+#ucfhb-services #ucfhb-knightsmail:hover {
+	background-position: 10px -104px;
+}
+#ucfhb-services #ucfhb-webcourses:hover {
+	background-position: 12px -149px;
+}
 .ucfhb-gold #ucfhb-search { border-left: 1px solid #caa31b; }
 .ucfhb-gold #ucfhb-search form #ucfhb-search-submit {
 	background-color: #DBAC04;
@@ -659,4 +701,4 @@
  	.ucfhb-gold #ucfhb-right { border-bottom: 1px solid #E5BA1D; }
  	.ucfhb-gold #ucfhb-search { border-left: 0; }
  	.ucfhb-gold #ucfhb-search form #ucfhb-search-submit { background-position: 10px -132px; }
-} 
+}

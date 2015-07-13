@@ -17,10 +17,6 @@
 	padding-left: 27px;
 }
 
-.pegasus {
-	background-position: 12px -173px;
-}
-
 /**
  * FULL-WIDTH STYLING
  **
@@ -79,7 +75,7 @@
 	padding-left: 15px;
 }
 #ucfhb-logo a {
-	background-position: -5px -174px;
+	background-position: -5px -215px;
 	color: #FFCC00;
 	display: block;
 	font-family: Arial, Helvetica, sans-serif;
@@ -129,7 +125,7 @@
 	height: 34px;
 	position: absolute;
 	right: 195px;
-	top: -1;
+	top: -2px;
 	transition: right 0.4s ease-in-out; /* 'move' left */
 	-webkit-transition: right 0.4s ease-in-out;
 	-ms-transition: right 0.4s ease-in-out;
@@ -316,7 +312,7 @@
 #ucfhb-search form #ucfhb-search-submit {
 	background-image: url('../img/icons.png');
 	background-repeat: no-repeat;
-	background-position: 3px -47px;
+	background-position: 3px -57px;
 	position: absolute;
 	right: 0;
 	top: 2px;
@@ -361,7 +357,7 @@
 #ucfhb-search-minimal {
 	background-image: url('../img/icons.png');
 	background-repeat: no-repeat;
-	background-position: 0 -47px;
+	background-position: 0 -57px;
 	display: none;
 	width: 20px;
 	height: 25px;
@@ -662,22 +658,22 @@
 	background-position: 0 3px;
 }
 #ucfhb-signon-logo {
-	background-position: 0 14px;
+	background-position: 0 16px;
 }
 #ucfhb-signon-logo:hover {
-	background-position: 0 -11px;
+	background-position: 0 -15px;
 }
 #ucfhb-services #ucfhb-knightsmail {
-	background-position: 10px -79px;
-}
-#ucfhb-services #ucfhb-webcourses {
-	background-position: 12px -127px;
+	background-position: 10px -94px;
 }
 #ucfhb-services #ucfhb-knightsmail:hover {
-	background-position: 10px -104px;
+	background-position: 10px -126px;
+}
+#ucfhb-services #ucfhb-webcourses {
+	background-position: 12px -156px;
 }
 #ucfhb-services #ucfhb-webcourses:hover {
-	background-position: 12px -149px;
+	background-position: 12px -188px;
 }
 .ucfhb-gold #ucfhb-search { border-left: 1px solid #caa31b; }
 .ucfhb-gold #ucfhb-search form #ucfhb-search-submit {

@@ -17,6 +17,13 @@
 	padding-left: 27px;
 }
 
+#ucfhb-services #ucfhb-myucf {
+	background-image: none;
+}
+#ucfhb-services #ucfhb-myucf:hover {
+	background-image: none;
+}
+
 /**
  * FULL-WIDTH STYLING
  **
@@ -83,6 +90,7 @@
 	height: 24px;
 	max-width: 284px;
 	padding-top: 4px;
+	text-indent: -9999px;
 	text-transform: uppercase;
 	width: 284px;
 }
@@ -106,24 +114,18 @@
 	height: 50px;
 }
 
-.ucfhb-sign-in {
-	color: white;
-	font-family: Arial, Helvetica, sans-serif;
-	margin-top: 17px;
-	position: absolute;
-	width: 50px;
-}
-
 #ucfhb-signon-logo {
-	background-position: 0 16px;
+	background-position: 0 1px;
+	color: white;
 	display: block;
+	font-family: Arial, Helvetica, sans-serif;
 	font-size: 14px;
 	text-decoration: none;
-	width: 65px;
+	width: 60px;
 	height: 34px;
 	position: absolute;
 	right: 195px;
-	top: -1px;
+	margin-top: 16px;
 	transition: right 0.4s ease-in-out; /* 'move' left */
 	-webkit-transition: right 0.4s ease-in-out;
 	-ms-transition: right 0.4s ease-in-out;
@@ -131,7 +133,7 @@
 }
 
 #ucfhb-signon-logo:hover {
-	background-position: 0 -15px;
+	background-position: 0 -30px;
 	color: #686868;
 }
 #ucfhb-signon-logo.ucfhb-shiftleft {
@@ -191,7 +193,7 @@
 	font-family: Arial, Helvetica, sans-serif;
 	display: block;
 	float: left;
-	margin: 12px 0;
+	margin: 11px 0;
 	padding: 0 0 0 38px;
 }
 #ucfhb-services #ucfhb-knightsmail {
@@ -581,12 +583,6 @@
 		right: auto;
 		overflow: auto;
 	}
-	#ucfhb-services #ucfhb-myucf {
-		background-position: 50px 50px;
-	}
-	#ucfhb-services #ucfhb-myucf:hover {
-		background-position: 50px 50px;
-	}
 	#ucfhb-services #ucfhb-knightsmail {
 		background-position: 10px -89px;
 	}
@@ -651,8 +647,8 @@
 	}
 }
 
-/* Phone size (>=480px) */
-@media (max-width: 480px) {
+/* Phone size (>=640px) */
+@media (max-width: 640px) {
 	#ucfhb {
 		height: 150px;
 		margin-top: -100px;
@@ -665,8 +661,15 @@
 	#ucfhb-search {
 		width: 100% !important;
 	}
-	#ucfhb-search { margin-top: 10px; }
-
+	#ucfhb-search {
+		margin-top: 0;
+	}
+	#ucfhb-services .ucfhb-service {
+		margin: 6px 0;
+	}
+	#ucfhb-services #ucfhb-myucf {
+		padding-left: 18px;
+	}
 	#ucfhb-search-autocomplete { width: 100%; right: 0; top: 94px; }
 	#ucfhb-search-autocomplete-close { bottom: -23px; }
 }

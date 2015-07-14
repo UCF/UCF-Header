@@ -235,6 +235,7 @@ function ucfhbSetJsonp(json) {
 				ucfLogoLink			= ucfLogo.firstElementChild || ucfLogo.firstChild,
 				barRight 			= document.getElementById('ucfhb-right'),
 				myUCFBtn 			= document.getElementById('ucfhb-signon-logo'),
+				signInToggle		= document.getElementById('ucfhb-sign-in-toggle'),
 				myUCFWrapper 		= document.getElementById('ucfhb-signon'),
 				searchbar 			= document.getElementById('ucfhb-search'),
 				searchForm 			= document.getElementById('ucfhb-search-form');
@@ -267,14 +268,14 @@ function ucfhbSetJsonp(json) {
 			// MyUCF Sliding functionality
 			myUCFBtn.onclick = function() {
 				if (myUCFBtn.className == 'ucfhb-shiftleft') {
-					myUCFBtn.innerHTML = 'UCF Sign in >';
+					toggleClasses([signInToggle], 'ucfhb-arrow-right');
 					toggleClasses(shiftLeftElems, '');
 					// Re-enable tabbing for previously disabled elements
 					searchField.removeAttribute('tabindex');
 					searchBtn.removeAttribute('tabindex');
 				}
 				else {
-					myUCFBtn.innerHTML = 'UCF Sign in <';
+					toggleClasses([signInToggle], 'ucfhb-arrow-left');
 					toggleClasses(shiftLeftElems, 'ucfhb-shiftleft');
 					// Disable tabbing on hidden elements
 					searchField.setAttribute('tabindex', '-1');

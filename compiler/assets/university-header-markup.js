@@ -9,7 +9,7 @@
 		'<div id="ucfhb-right">',
 			'<div id="ucfhb-signon">',
 				'<a id="ucfhb-signon-logo" href="#">',
-					'UCF Sign In <span class="sign-in-toggle">&gt;</span>',
+					'UCF Sign In <span id="ucfhb-sign-in-toggle" class="ucfhb-arrow-right"></span>',
 				'</a>',
 				'<div id="ucfhb-services">',
 					'<div>',

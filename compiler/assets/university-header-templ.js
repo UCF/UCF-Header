@@ -268,14 +268,14 @@ function ucfhbSetJsonp(json) {
 			// MyUCF Sliding functionality
 			myUCFBtn.onclick = function() {
 				if (myUCFBtn.className == 'ucfhb-shiftleft') {
-					toggleClasses([signInToggle], 'ucfhb-arrow-right');
+					toggleClasses([signInToggle], 'ucfhb-arrow-left');
 					toggleClasses(shiftLeftElems, '');
 					// Re-enable tabbing for previously disabled elements
 					searchField.removeAttribute('tabindex');
 					searchBtn.removeAttribute('tabindex');
 				}
 				else {
-					toggleClasses([signInToggle], 'ucfhb-arrow-left');
+					toggleClasses([signInToggle], 'ucfhb-arrow-right');
 					toggleClasses(shiftLeftElems, 'ucfhb-shiftleft');
 					// Disable tabbing on hidden elements
 					searchField.setAttribute('tabindex', '-1');

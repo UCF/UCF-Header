@@ -48,7 +48,7 @@ var ucfhbAssignTrackingListener = function(elem, eventType, link, action, label)
 /**
  * JSONP implementation for search service proxy results
  **/
-var ucfhbJsonp = null; 
+var ucfhbJsonp = null;
 function ucfhbSetJsonp(json) {
 	if (json) {
 		ucfhbJsonp = json;
@@ -177,7 +177,7 @@ function ucfhbSetJsonp(json) {
 	}
 
 
-	/** 
+	/**
 	 * Insert the bar into the DOM; start listening for events.
 	 * Uses contentLoaded.js to determine when the DOM is ready.
 	 **/
@@ -311,7 +311,7 @@ function ucfhbSetJsonp(json) {
 
 
 	/**
-	 * University Header Auto-Suggest Search Result functionality 
+	 * University Header Auto-Suggest Search Result functionality
 	 **/
 	function ucfhbAutocompleteSearch() {
 		var self = this;
@@ -447,7 +447,7 @@ function ucfhbSetJsonp(json) {
 			}
 			self.autocompleteHelp.innerHTML = helpText;
 		};
-		
+
 		// Output a search query's results:
 		this.outputResults = function(q, url) {
 			var safeq = stripTags(q),				// Query with tags stripped
@@ -468,7 +468,7 @@ function ucfhbSetJsonp(json) {
 
 				self.autocompleteList.appendChild(viewMoreLi);
 			};
-			
+
 			// Make sure there is actually a query to search for
 			if (safeq !== '') {
 
@@ -525,14 +525,14 @@ function ucfhbSetJsonp(json) {
 										nameSpan = '<span class="ucfhb-search-autocomplete-name">' + name + '</span>',
 										orgSpan = json.results[i].organization !== null ? '<span class="ucfhb-search-autocomplete-org">' + stripTags(json.results[i].organization.trim()) + '</span>' : '',
 										resultUrl = self.searchAction + encodeURIComponent(name);
-										
+
 									var listItem = document.createElement('li');
 									listItem.innerHTML = '<a class="'+ self.searchResultsLinkClass +'" href="' + resultUrl + '" tabindex="0" >' + nameSpan + orgSpan + '</a>';
 									listItem.setAttribute('data-name-val', name);
-									
+
 									var link = listItem.getElementsByTagName('a')[0];
 									ucfhbAssignTrackingListener(link, 'click', new String(resultUrl), ucfhbTrackingActionACSearch, '' + name);
-									
+
 									self.autocompleteList.appendChild(listItem);
 								}
 								// Add 'View More Results link'; update screenreader help text
@@ -597,9 +597,9 @@ function ucfhbSetJsonp(json) {
 				}
 
 				// Assign new search field value
-				self.searchField.value = newSearchVal;
+				self.searchField.value = newSearchVal.replace(/&#39;/g,"'");
 
-				// Simulate a right-arrow keystroke to force a re-read of 
+				// Simulate a right-arrow keystroke to force a re-read of
 				// search field val for screenreaders.
 				// Fall back to document.createEventObject for <IE9
 				// http://stackoverflow.com/a/12187302
@@ -653,7 +653,7 @@ function ucfhbSetJsonp(json) {
 				}
 			}
 		};
-		
+
 		// Perform outputResults() when a query is
 		// being typed in the search bar:
 		this.searchOnKeyUp = function(q, query) {
@@ -662,7 +662,7 @@ function ucfhbSetJsonp(json) {
 				self.outputResults(q, query);
 			}, 550);
 		};
-		
+
 		// On load + listen for events
 		this.initialize = function() {
 			var q = null,
@@ -707,7 +707,7 @@ function ucfhbSetJsonp(json) {
 			self.searchField.onfocus = function() {
 				q = stripTags(self.searchField.value);
 				query = self.searchService + q;
-				
+
 				if (
 					self.isSearchActive() === false &&
 					self.searchField.value !== '' &&
@@ -717,7 +717,7 @@ function ucfhbSetJsonp(json) {
 				}
 			};
 
-			// Handle search form submission; intercept and redirect to a 
+			// Handle search form submission; intercept and redirect to a
 			// provided URL instead of search results if necessary.
 			// Checks for standard addEventListener, falls back to attachEvent
 			var handleAutocompleteSelect = function(event) {

@@ -125,9 +125,6 @@
 	right: 348px;
 	width: 37px;
 }
-#ucfhb-signon-logo.ucfhb-shiftleft:hover {
-	background-position: -279px -53px;
-}
 #ucfhb-signon-logo .ucfhb-hidden {
 	float: left;
 	margin-top: 14px;
@@ -230,9 +227,9 @@
 }
 #ucfhb-search-field {
 	width: 117px !important;
-	height: 25px !important;
+	height: 23px !important;
 	border-radius: 5px 0 0 5px;
-	border: 0;
+	border: solid 1px #fff;
 	margin: 0;
 	padding: 2px 45px 2px 15px;
 	position: absolute;
@@ -248,7 +245,7 @@
 	-webkit-appearance: none;
 }
 #ucfhb-search-field:focus {
-	background-color: #EAEAEA;
+	border: solid 1px #ffc904;
 }
 
 /* Can't comma-separate these... */
@@ -536,7 +533,7 @@
 		background-position: 0 -150px;
 	}
 	#ucfhb-services #ucfhb-myucf:hover {
-		background-position: -257px -150px;
+		background-position: 0 -150px;
 	}
 	#ucfhb-services #ucfhb-knightsmail {
 		background-position: 0 -198px;

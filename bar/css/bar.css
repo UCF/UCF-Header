@@ -441,7 +441,7 @@
 @media (max-width: 979px) {
 	#ucfhb-inner { width: 768px; }
 	#ucfhb-logo { margin-left: 10px; }
-	#ucfhb-search-autocomplete { right: 10px; }
+	#ucfhb-search-autocomplete { right: 20px; }
 	#ucfhb-search-autocomplete-close { right: 10px; }
 }
 

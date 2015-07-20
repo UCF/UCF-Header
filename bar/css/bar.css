@@ -80,7 +80,7 @@
 }
 #ucfhb-mobile-toggle:focus { outline: 0; }
 #ucfhb-logo a {
-	background-position: 0 -9px;
+	background-position: 0 -7px;
 	display: block;
 	margin: 10px 0 0 5px;
 	min-height: 30px;
@@ -232,6 +232,9 @@
 	letter-spacing: 0.1px;
 	background-size: 20px 19px;
 	-webkit-appearance: none;
+}
+#ucfhb-search-field:focus {
+	background-color: #EAEAEA;
 }
 
 /* Can't comma-separate these... */

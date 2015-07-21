@@ -97,12 +97,12 @@
   outline: 0;
 }
 #ucfhb-logo a {
-  background-position: 0 -131px;
+  background-position: 0 -100px;
   display: block;
   margin: 9px 0 0 0;
   min-height: 31px;
   text-indent: -9999px;
-  width: 322px;
+  width: 296px;
 }
 
 /* The right-hand portion of the header */
@@ -477,6 +477,10 @@
 
  @media (min-width: 1200px) {
   #ucfhb-inner { width: 1170px; }
+  #ucfhb-logo a {
+    background-position: 0 -131px;
+    width: 322px;
+  }
   #ucfhb-right {
     width: 460px;
   }

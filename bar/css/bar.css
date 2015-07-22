@@ -30,7 +30,7 @@
     #ucfhb-search form #ucfhb-search-submit,
     #ucfhb-search-minimal {
       background-image: url('../img/spritesheet-r.png');
-      background-size: 346px 164px;
+      background-size: 326px 190px;
     }
 }
 
@@ -79,7 +79,7 @@
   float: left;
 }
 #ucfhb-mobile-toggle {
-  background-position: -36px 9px;
+  background-position: -36px 8px;
   display: none;
   height: 45px;
   position: absolute;
@@ -660,4 +660,11 @@
     margin: 6px 0;
   }
   #ucfhb-search-autocomplete { width: 100%; top: 94px; }
+}
+
+/* Small Phone size (>=350px) */
+@media (max-width: 350px) {
+  #ucfhb-logo a {
+    background-position: 0 -162px;
+  }
 }

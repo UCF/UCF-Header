@@ -30,6 +30,5 @@
 			'</div>',
 		'</div>',
 		'<ul id="ucfhb-search-autocomplete" tabindex="1" aria-hidden="true" role="listbox"></ul>',
-		'<a id="ucfhb-search-autocomplete-close" href="#" alt="Close autocomplete results" title="Close autocomplete results">&times;</a>',
 	'</div>'
 ]

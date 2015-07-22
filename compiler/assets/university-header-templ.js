@@ -333,7 +333,6 @@ function ucfhbSetJsonp(json) {
 
 		this.searchService			= ucfhbJsonpScript;	// URL of the search service queried for autocomplete results (URL to UCF search service proxy)
 
-		this.autocompleteCloseBtn	= document.getElementById('ucfhb-search-autocomplete-close');	// <a> element in corner of autocomplete results
 		this.autocompleteHelp		= document.getElementById('ucfhb-search-autocomplete-srhelp');	// Help text for screenreaders
 		this.autocompleteList		= document.getElementById('ucfhb-search-autocomplete');			// Autocomplete <ul> element
 		this.autocompleteSelectedId = 'ucfhb-autocomplete-selected';								// ID assigned to a selected autocomplete <li>
@@ -466,23 +465,8 @@ function ucfhbSetJsonp(json) {
 		// Output a search query's results:
 		this.outputResults = function(q, url) {
 			var safeq = stripTags(q),				// Query with tags stripped
-				matchq = safeq.toLowerCase();		// Query made lowercase for matching against JSON vals
+				matchq = safeq.toLowerCase(),		// Query made lowercase for matching against JSON vals
 				urlq = encodeURIComponent(safeq);	// URL-safe Query
-
-			// Function for adding 'View more' link to the end of
-			// an autocomplete list
-			var appendViewMore = function() {
-				var viewMoreLi = document.createElement('li');
-				var viewMoreLink = self.searchAction + urlq;
-				viewMoreLi.innerHTML = '<a class="' + self.searchResultsLinkClass + '" href="' + viewMoreLink + '" tabindex="0">View More Results</a>';
-				viewMoreLi.className = 'ucfhb-search-autocomplete-more';
-				viewMoreLi.setAttribute('data-name-val', safeq);
-
-				var link = viewMoreLi.getElementsByTagName('a')[0];
-				ucfhbAssignTrackingListener(link, 'click', new String(viewMoreLink), ucfhbTrackingActionSearch, 'View more results: ' + safeq);
-
-				self.autocompleteList.appendChild(viewMoreLi);
-			};
 
 			// Make sure there is actually a query to search for
 			if (safeq !== '') {
@@ -524,7 +508,6 @@ function ucfhbSetJsonp(json) {
 						}
 
 						// Add 'View More Results link'; update screenreader help text
-						appendViewMore();
 						self.updateAutocompleteHelp(matchesFound, safeq);
 					}
 					// Try search service results if no keyterms are found
@@ -551,7 +534,6 @@ function ucfhbSetJsonp(json) {
 									self.autocompleteList.appendChild(listItem);
 								}
 								// Add 'View More Results link'; update screenreader help text
-								appendViewMore();
 								self.updateAutocompleteHelp(matchesFound, safeq);
 							}
 							else {
@@ -780,9 +762,6 @@ function ucfhbSetJsonp(json) {
 			// Make sure to avoid tracking form submissions as outer element clicks;
 			// search form submission is detected as a 'click' here on the form submit btn.
 			// Checks for standard addEventListener, falls back to attachEvent.
-			self.autocompleteCloseBtn.onclick = function() {
-				self.toggleAutocompleteList(false);
-			};
 			if (document.addEventListener) {
 				document.addEventListener('click', function(e) {
 					var target = e.target || e.srcElement;

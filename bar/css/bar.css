@@ -12,8 +12,6 @@
 #ucfhb-search form #ucfhb-search-submit,
 #ucfhb-search-minimal,
 #ucfhb-services a,
-.ucfhb-arrow-left,
-.ucfhb-arrow-right,
 #ucfhb-search form #ucfhb-search-submit,
 #ucfhb-search-minimal {
   background-image: url('../img/spritesheet.png');
@@ -400,11 +398,6 @@
   border-top: 0;
   margin-top: 0;
 }
-#ucfhb-search-autocomplete li.ucfhb-search-autocomplete-more {
-  display: none;
-  text-align: right;
-}
-#ucfhb-search-autocomplete li.ucfhb-search-autocomplete-more a { font-size: 11px; padding-right: 5px; }
 #ucfhb-search-autocomplete li a {
   font-family: Helvetica, sans-serif;
   font-size: 14px;
@@ -451,27 +444,6 @@
   margin-bottom: 0;
   margin-top: 2px;
 }
-
-#ucfhb-search-autocomplete-close {
-  display: none !important;
-  width: 30px;
-  height: 30px;
-  position: absolute;
-  right: 4px;
-  bottom: -24px;
-  border-radius: 0 0 0 10px;
-  margin: 0;
-  padding: 0;
-  text-align: center;
-  background: #ddd;
-  font-size: 20px;
-  line-height: 24px;
-  font-weight: bold;
-  color: #333;
-  z-index: 10002;
-  text-decoration: none;
-}
-#ucfhb-search-autocomplete.search-is-active + #ucfhb-search-autocomplete-close { display: block; }
 
 /* Tablet size (768-979px) */
 @media (max-width: 979px) {
@@ -591,12 +563,10 @@
     right: auto;
   }
   #ucfhb-search-minimal.ucfhb-shiftleft { display: none; }
-  #ucfhb-search-autocomplete.search-is-active,
-  #ucfhb-search-autocomplete.search-is-active + #ucfhb-search-autocomplete-close {
+  #ucfhb-search-autocomplete.search-is-active {
     display: none;
   }
-  #ucfhb.ucfhb-mobileslide #ucfhb-search-autocomplete.search-is-active,
-  #ucfhb.ucfhb-mobileslide #ucfhb-search-autocomplete.search-is-active + #ucfhb-search-autocomplete-close {
+  #ucfhb.ucfhb-mobileslide #ucfhb-search-autocomplete.search-is-active {
     display: block; /* Don't let results stack on top of the bar when resized down */
   }
 }

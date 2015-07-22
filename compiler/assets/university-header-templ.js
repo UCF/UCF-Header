@@ -76,6 +76,7 @@ function ucfhbSetJsonp(json) {
 	 **/
 	var ucfhbStylesheet = window.location.protocol + '//@!@ROOT_URL@!@/bar/css/bar.css',
 		ucfhbBsStylesheet = window.location.protocol + '//@!@ROOT_URL@!@/bar/css/bar-bootstrap.css',
+		ucfhb1200BpStylesheet = window.location.protocol + '//@!@ROOT_URL@!@/bar/css/1200-breakpoint.css',
 		ucfhbJsonpScript = window.location.protocol + '//@!@ROOT_URL@!@/bar/data/?search=';
 
 
@@ -84,12 +85,17 @@ function ucfhbSetJsonp(json) {
 	 * university header script. Requires that the script tag
 	 * has an ID of 'ucfhb-script'
 	 **/
-	var useBsOverride = false;
-	var ucfhbScript = null;
+	var useBsOverride = false,
+		use1200Breakpoint = false,
+		ucfhbScript = null;
 	if (document.getElementById('ucfhb-script')) {
 		ucfhbScript = document.getElementById('ucfhb-script');
 		if (ucfhbScript.getAttribute('src').indexOf('use-bootstrap-overrides=1') > -1) {
 			useBsOverride = true;
+		}
+
+		if (ucfhbScript.getAttribute('src').indexOf('use-1200-breakpoint=1') > -1) {
+			use1200Breakpoint = true;
 		}
 	}
 
@@ -197,6 +203,15 @@ function ucfhbSetJsonp(json) {
 			bsStylesheet.setAttribute('rel', 'stylesheet');
 			bsStylesheet.setAttribute('type', 'text/css');
 			head.appendChild(bsStylesheet);
+		}
+
+		/* Append 1200 breakpoint stylesheet to head */
+		if (use1200Breakpoint === true) {
+			var bp1200Stylesheet = document.createElement('link');
+			bp1200Stylesheet.setAttribute('href', ucfhb1200BpStylesheet);
+			bp1200Stylesheet.setAttribute('rel', 'stylesheet');
+			bp1200Stylesheet.setAttribute('type', 'text/css');
+			head.appendChild(bp1200Stylesheet);
 		}
 
 		/* Create the outermost bar div, if necessary */

@@ -138,7 +138,7 @@
 #ucfhb-signon-logo.ucfhb-shiftleft {
   background-position: 0 0;
   right: 315px;
-  width: 37px;
+  width: 44px;
 }
 #ucfhb-signon-logo .ucfhb-hidden {
   float: left;
@@ -159,7 +159,7 @@
 
 /* MyUCF: login form */
 #ucfhb-services {
-  width: 312px;
+  width: 321px;
   z-index: 1;
 }
 
@@ -207,7 +207,7 @@
 #ucfhb-services #ucfhb-knightsmail {
   background-position: 8px -70px;
   height: 25px;
-  width: 121px;
+  width: 128px;
 }
 #ucfhb-services #ucfhb-webcourses {
   background-position: -124px -70px;
@@ -496,14 +496,14 @@
   #ucfhb-services {
     height: auto;
     position: static;
-    padding: 0;
+    padding: 0 0 0 20px;
     text-align: center;
     width: auto;
   }
   #ucfhb-services > div {
     position: static;
     height: auto;
-    width: 312px;
+    width: 319px;
     margin: auto;
     visibility: visible;
     opacity: 1;

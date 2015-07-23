@@ -496,7 +496,7 @@
   #ucfhb-services {
     height: auto;
     position: static;
-    padding: 0 0 0 20px;
+    padding: 0;
     text-align: center;
     width: auto;
   }

@@ -597,7 +597,7 @@ function ucfhbSetJsonp(json) {
 				}
 
 				// Assign new search field value
-				self.searchField.value = newSearchVal;
+				self.searchField.value = newSearchVal.replace(/&#39;/g,"'");
 
 				// Simulate a right-arrow keystroke to force a re-read of
 				// search field val for screenreaders.

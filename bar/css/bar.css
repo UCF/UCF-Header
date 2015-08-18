@@ -235,6 +235,7 @@
   z-index: 2;
 }
 #ucfhb-search form {
+  display: block;
   width: 210px;
   height: 29px;
   margin-bottom: 0;

@@ -19,11 +19,11 @@
 				<div class="span12">
 					<h1>University Header</h1>
 					<p>
-						The UCF University Header is a cohesive marketing and branding tool for the entire university. It provides consistent 
+						The UCF University Header is a cohesive marketing and branding tool for the entire university. It provides consistent
 						navigational elements and a universal search feature with search suggestions.
 					</p>
 					<p>
-						The University Header has a responsive option and will adapt to various screen sizes as necessary. Responsiveness follows 
+						The University Header has a responsive option and will adapt to various screen sizes as necessary. Responsiveness follows
 						<a href="http://getbootstrap.com"><strong>Twitter Bootstrap's</strong></a> breakpoint standards.
 					</p>
 
@@ -42,7 +42,7 @@
 					<ol>
 						<li>
 							<h3>The University Header should be consistent visually and functionally across all UCF websites.</h3>
-							Please do not modify the bar's existing appearance or functionality, such as modifying graphics/colors associated with the bar, 
+							Please do not modify the bar's existing appearance or functionality, such as modifying graphics/colors associated with the bar,
 							links included within the bar, markup associated with the bar or the search and autocomplete functionality.
 						</li>
 						<li>
@@ -51,7 +51,7 @@
 						</li>
 						<li>
 							<h3>The University Header should not present any other content beyond its default content.</h3>
-							The bar should not be given the appearance of an "attachment" of the default bar on your site, and should not include extra 
+							The bar should not be given the appearance of an "attachment" of the default bar on your site, and should not include extra
 							links or graphics beyond what the default bar provides.
 							<em>Your site's navigation should not be displayed as an extension or piece of the University Header.</em>
 						</li>
@@ -68,14 +68,20 @@
 
 					<h3>Bootstrap 2.x overrides</h3>
 					<p>
-						Due to the way that some older versions of the Bootstrap CSS framework apply left- and right-hand padding to elements at screen sizes less than 768px wide, 
+						Due to the way that some older versions of the Bootstrap CSS framework apply left- and right-hand padding to elements at screen sizes less than 768px wide,
 						a style override is necessary for sites using these versions of Bootstrap if they utilize responsive styles.
 					</p>
 					<pre>&lt;script type="text/javascript" id="ucfhb-script" src="//universityheader.ucf.edu/bar/js/university-header.js?use-bootstrap-overrides=1"&gt;&lt;/script&gt;</pre>
+
+					<h3>For sites with a max-width greater than 1200px</h3>
+					<p>
+						A "use-1200-breakpoint" parameter can be added to display a wider version of the header.
+					</p>
+					<pre>&lt;script type="text/javascript" id="ucfhb-script" src="//universityheader.ucf.edu/bar/js/university-header.js?use-1200-breakpoint=1"&gt;&lt;/script&gt;</pre>
 					<div class="alert alert-info">
 						<p>
-							<i class="icon-info-sign"></i> <strong>Note:</strong> This option requires that the <code>&lt;script&gt;</code> tag has an ID of <code>ucfhb-script</code>. 
-							If your site runs on WordPress, uses <code><a href="http://codex.wordpress.org/Function_Reference/wp_enqueue_script">wp_enqueue_script()</a></code> to enqueue scripts, and requires these overrides, enqueue the University Header script with <code><a href="http://codex.wordpress.org/Function_Reference/wp_enqueue_script">wp_enqueue_script()</a></code> using the Bootstrap override parameter above, and add the following snippet to your theme's functions.php file:</p>
+							<i class="icon-info-sign"></i> <strong>Note:</strong> These options require that the <code>&lt;script&gt;</code> tag has an ID of <code>ucfhb-script</code>.
+							If your site runs on WordPress, uses <code><a href="http://codex.wordpress.org/Function_Reference/wp_enqueue_script">wp_enqueue_script()</a></code> to enqueue scripts, and requires these overrides, enqueue the University Header script with <code><a href="http://codex.wordpress.org/Function_Reference/wp_enqueue_script">wp_enqueue_script()</a></code> using the parameter(s) above, and add the following snippet to your theme's functions.php file:</p>
 							<pre>/**
  * Add ID attribute to registered University Header script.
  **/
@@ -92,9 +98,9 @@ add_filter('clean_url', 'add_id_to_ucfhb', 10, 3);
 
 					<h3>Protocol-relative script source in WordPress</h3>
 					<p>
-						Keep in mind that protocol-agnostic URLs ('//universityheader.ucf.edu...' vs 'http://universityheader.ucf.edu...') can only be 
-						<a href="http://codex.wordpress.org/Function_Reference/wp_register_script">registered</a> via WordPress in version 3.5 or above. 
-						Older version of WordPress that enqueue scripts must specify a protocol at the beginning of the script source; this can be done explicitly 
+						Keep in mind that protocol-agnostic URLs ('//universityheader.ucf.edu...' vs 'http://universityheader.ucf.edu...') can only be
+						<a href="http://codex.wordpress.org/Function_Reference/wp_register_script">registered</a> via WordPress in version 3.5 or above.
+						Older version of WordPress that enqueue scripts must specify a protocol at the beginning of the script source; this can be done explicitly
 						or can be grabbed on the fly, using PHP.
 					</p>
 
@@ -105,22 +111,22 @@ add_filter('clean_url', 'add_id_to_ucfhb', 10, 3);
 					<h3>Desktop</h3>
 					<p>
 						The University Header is compatible with IE7 and greater and works in any other modern browser.<br/>
-						Note that some features, such as CSS3 animations on the UCF Login toggle, are not available on older browsers.  Responsiveness is 
-						nonfunctional in IE8 and older due to lack of support for CSS media queries; functionality can be added with additional libraries such as 
-						<a href="https://github.com/scottjehl/Respond">respond.js</a> if necessary.  The UCF Header has not been tested with these libraries 
+						Note that some features, such as CSS3 animations on the UCF Login toggle, are not available on older browsers.  Responsiveness is
+						nonfunctional in IE8 and older due to lack of support for CSS media queries; functionality can be added with additional libraries such as
+						<a href="https://github.com/scottjehl/Respond">respond.js</a> if necessary.  The UCF Header has not been tested with these libraries
 						and support with these libraries is not guaranteed.
 					</p>
 
 					<h3>Mobile</h3>
 					<p>
-						The University Header has been tested in iOS 6.0+ and stock Android browser emulators running Android v1.5+, as well as the latest 
+						The University Header has been tested in iOS 6.0+ and stock Android browser emulators running Android v1.5+, as well as the latest
 						version of Opera Mobile.
 					</p>
 
 					<div class="alert alert-info">
 						<p>
-							<i class="icon-info-sign"></i> <strong>Note:</strong> The University Header may not render properly if the <code>&lt;body&gt;</code> 
-							tag on your site has margins, padding, or other non-standard styles applied to it.  Use a CSS Reset, CSS framework, or your own 
+							<i class="icon-info-sign"></i> <strong>Note:</strong> The University Header may not render properly if the <code>&lt;body&gt;</code>
+							tag on your site has margins, padding, or other non-standard styles applied to it.  Use a CSS Reset, CSS framework, or your own
 							<code>&lt;body&gt;</code> tag styles to ensure consistent rendering across all browsers.
 						</p>
 					</div>

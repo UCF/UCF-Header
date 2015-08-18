@@ -12,8 +12,6 @@
 #ucfhb-search form #ucfhb-search-submit,
 #ucfhb-search-minimal,
 #ucfhb-services a,
-.ucfhb-arrow-left,
-.ucfhb-arrow-right,
 #ucfhb-search form #ucfhb-search-submit,
 #ucfhb-search-minimal {
   background-image: url('../img/spritesheet.png');
@@ -30,7 +28,7 @@
     #ucfhb-search form #ucfhb-search-submit,
     #ucfhb-search-minimal {
       background-image: url('../img/spritesheet-r.png');
-      background-size: 346px 164px;
+      background-size: 326px 190px;
     }
 }
 
@@ -79,7 +77,7 @@
   float: left;
 }
 #ucfhb-mobile-toggle {
-  background-position: -36px 9px;
+  background-position: -36px 8px;
   display: none;
   height: 45px;
   position: absolute;
@@ -93,7 +91,10 @@
 }
 #ucfhb-mobile-toggle:hover,
 #ucfhb-mobile-toggle:active,
-#ucfhb-mobile-toggle:focus {
+#ucfhb-mobile-toggle:focus,
+#ucfhb-signon-logo:hover,
+#ucfhb-signon-logo:active,
+#ucfhb-signon-logo:focus {
   outline: 0;
 }
 #ucfhb-logo a {
@@ -140,7 +141,7 @@
 #ucfhb-signon-logo.ucfhb-shiftleft {
   background-position: 0 0;
   right: 315px;
-  width: 37px;
+  width: 44px;
 }
 #ucfhb-signon-logo .ucfhb-hidden {
   float: left;
@@ -161,7 +162,7 @@
 
 /* MyUCF: login form */
 #ucfhb-services {
-  width: 312px;
+  width: 321px;
   z-index: 1;
 }
 
@@ -209,7 +210,7 @@
 #ucfhb-services #ucfhb-knightsmail {
   background-position: 8px -70px;
   height: 25px;
-  width: 121px;
+  width: 128px;
 }
 #ucfhb-services #ucfhb-webcourses {
   background-position: -124px -70px;
@@ -400,11 +401,6 @@
   border-top: 0;
   margin-top: 0;
 }
-#ucfhb-search-autocomplete li.ucfhb-search-autocomplete-more {
-  display: none;
-  text-align: right;
-}
-#ucfhb-search-autocomplete li.ucfhb-search-autocomplete-more a { font-size: 11px; padding-right: 5px; }
 #ucfhb-search-autocomplete li a {
   font-family: Helvetica, sans-serif;
   font-size: 14px;
@@ -452,57 +448,6 @@
   margin-top: 2px;
 }
 
-#ucfhb-search-autocomplete-close {
-  display: none !important;
-  width: 30px;
-  height: 30px;
-  position: absolute;
-  right: 4px;
-  bottom: -24px;
-  border-radius: 0 0 0 10px;
-  margin: 0;
-  padding: 0;
-  text-align: center;
-  background: #ddd;
-  font-size: 20px;
-  line-height: 24px;
-  font-weight: bold;
-  color: #333;
-  z-index: 10002;
-  text-decoration: none;
-}
-#ucfhb-search-autocomplete.search-is-active + #ucfhb-search-autocomplete-close { display: block; }
-
-
-/**
- * RESPONSIVE STYLING
- * Designed to match Bootstrap 2.x breakpoints
- **/
-
- @media (min-width: 1200px) {
-  #ucfhb-inner { width: 1170px; }
-  #ucfhb-logo a {
-    background-position: 0 -131px;
-    width: 322px;
-  }
-  #ucfhb-right {
-    width: 460px;
-  }
-  #ucfhb-signon-logo {
-    right: 238px;
-  }
-  #ucfhb-search,
-  #ucfhb-search form {
-    width: 270px;
-  }
-  #ucfhb-search-field {
-    width: 208px !important;
-  }
-  #ucfhb-search-autocomplete {
-    width: 320px;
-  }
- }
-
 /* Tablet size (768-979px) */
 @media (max-width: 979px) {
   #ucfhb {
@@ -526,7 +471,10 @@
     height: 50px;
   }
   #ucfhb-left { width: 100%; height: 39px; position: absolute; top: 50px; float: none; } /* height accounts for padding-top */
-  #ucfhb-mobile-toggle { display: block; }
+  #ucfhb-mobile-toggle {
+    display: block;
+
+  }
 
   /* Shift the right-hand portion to the top of ucfhb-inner */
   #ucfhb-right {
@@ -561,7 +509,7 @@
   #ucfhb-services > div {
     position: static;
     height: auto;
-    width: 312px;
+    width: 319px;
     margin: auto;
     visibility: visible;
     opacity: 1;
@@ -621,12 +569,10 @@
     right: auto;
   }
   #ucfhb-search-minimal.ucfhb-shiftleft { display: none; }
-  #ucfhb-search-autocomplete.search-is-active,
-  #ucfhb-search-autocomplete.search-is-active + #ucfhb-search-autocomplete-close {
+  #ucfhb-search-autocomplete.search-is-active {
     display: none;
   }
-  #ucfhb.ucfhb-mobileslide #ucfhb-search-autocomplete.search-is-active,
-  #ucfhb.ucfhb-mobileslide #ucfhb-search-autocomplete.search-is-active + #ucfhb-search-autocomplete-close {
+  #ucfhb.ucfhb-mobileslide #ucfhb-search-autocomplete.search-is-active {
     display: block; /* Don't let results stack on top of the bar when resized down */
   }
 }
@@ -660,4 +606,11 @@
     margin: 6px 0;
   }
   #ucfhb-search-autocomplete { width: 100%; top: 94px; }
+}
+
+/* Small Phone size (>=350px) */
+@media (max-width: 350px) {
+  #ucfhb-logo a {
+    background-position: 0 -162px;
+  }
 }

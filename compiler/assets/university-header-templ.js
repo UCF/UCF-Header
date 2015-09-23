@@ -74,9 +74,9 @@ function ucfhbSetJsonp(json) {
 	 * These resources should be protocol-agnostic and link to
 	 * an absolute URL.
 	 **/
-	var ucfhbStylesheet = window.location.protocol + '//@!@ROOT_URL@!@/bar/css/bar.css',
-		ucfhbBsStylesheet = window.location.protocol + '//@!@ROOT_URL@!@/bar/css/bar-bootstrap.css',
-		ucfhb1200BpStylesheet = window.location.protocol + '//@!@ROOT_URL@!@/bar/css/1200-breakpoint.css',
+	var ucfhbStylesheet = window.location.protocol + '//@!@ROOT_URL@!@/bar/css/bar.css?@!@VERSION@!@',
+		ucfhbBsStylesheet = window.location.protocol + '//@!@ROOT_URL@!@/bar/css/bar-bootstrap.css?@!@VERSION@!@',
+		ucfhb1200BpStylesheet = window.location.protocol + '//@!@ROOT_URL@!@/bar/css/1200-breakpoint.css?@!@VERSION@!@',
 		ucfhbJsonpScript = window.location.protocol + '//@!@ROOT_URL@!@/bar/data/?search=';
 
 

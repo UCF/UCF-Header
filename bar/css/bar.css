@@ -14,7 +14,7 @@
 #ucfhb-services a,
 #ucfhb-search form #ucfhb-search-submit,
 #ucfhb-search-minimal {
-  background-image: url('../img/spritesheet.png');
+  background-image: url('../img/spritesheet-v1.png');
   background-repeat: no-repeat;
   text-indent: -9999px;
 }
@@ -27,7 +27,7 @@
     #ucfhb-services > div > .ucfhb-service,
     #ucfhb-search form #ucfhb-search-submit,
     #ucfhb-search-minimal {
-      background-image: url('../img/spritesheet-r.png');
+      background-image: url('../img/spritesheet-r-v1.png');
       background-size: 326px 190px;
     }
 }

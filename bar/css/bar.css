@@ -23,8 +23,10 @@
   (min-resolution: 192dpi) {
     #ucfhb-mobile-toggle,
     #ucfhb-logo a,
-    #ucfhb-signon-logo .ucfhb-hidden,
-    #ucfhb-services > div > .ucfhb-service,
+    #ucfhb-signon-logo,
+    #ucfhb-search form #ucfhb-search-submit,
+    #ucfhb-search-minimal,
+    #ucfhb-services a,
     #ucfhb-search form #ucfhb-search-submit,
     #ucfhb-search-minimal {
       background-image: url('../img/spritesheet-r.png');

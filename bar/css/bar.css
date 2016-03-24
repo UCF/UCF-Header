@@ -14,7 +14,7 @@
 #ucfhb-services a,
 #ucfhb-search form #ucfhb-search-submit,
 #ucfhb-search-minimal {
-  background-image: url('../img/spritesheet.png');
+  background-image: url('../img/spritesheet-v1.png');
   background-repeat: no-repeat;
   text-indent: -9999px;
 }
@@ -29,7 +29,7 @@
     #ucfhb-services a,
     #ucfhb-search form #ucfhb-search-submit,
     #ucfhb-search-minimal {
-      background-image: url('../img/spritesheet-r.png');
+      background-image: url('../img/spritesheet-r-v1.png');
       background-size: 326px 190px;
     }
 }
@@ -240,6 +240,7 @@
   display: block;
   width: 210px;
   height: 29px;
+  margin-top: 0;
   margin-bottom: 0;
   position: relative;
   text-align: left;
@@ -260,6 +261,7 @@
   height: 23px !important;
   border-radius: 5px 0 0 5px;
   border: solid 1px #fff;
+  box-shadow: none;
   margin: 0;
   padding: 2px 40px 2px 15px;
   position: absolute;

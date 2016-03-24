@@ -238,6 +238,7 @@
   display: block;
   width: 210px;
   height: 29px;
+  margin-top: 0;
   margin-bottom: 0;
   position: relative;
   text-align: left;
@@ -258,6 +259,7 @@
   height: 23px !important;
   border-radius: 5px 0 0 5px;
   border: solid 1px #fff;
+  box-shadow: none;
   margin: 0;
   padding: 2px 40px 2px 15px;
   position: absolute;

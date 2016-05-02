@@ -1,0 +1,3 @@
+User-agent: *
+Disallow: /compiler/
+Disallow: /bar/data/*

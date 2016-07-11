@@ -457,7 +457,7 @@ function ucfhbSetJsonp(json) {
 				urlq = encodeURIComponent(safeq);	// URL-safe Query
 
 			// Make sure there is actually a query to search for
-			if (safeq !== '') {
+			if (safeq !== '' && safeq.length > 1) {
 
 				// Search against keyterm list first.
 				if (self.keyterms.keyterms) {
@@ -467,18 +467,23 @@ function ucfhbSetJsonp(json) {
 					for (var i = 0; i < self.keyterms.keyterms.length; i++) {
 						var keyterm = self.keyterms.keyterms[i];
 
-						if (keyterm.matches.indexOf(matchq) > -1) {
-							matchesFound++;
-							results.push(keyterm);
-						}
+            // Search each value in keyterm.matches for a match until one is found
+            for (var j = 0; j < keyterm.matches.length; j++) {
+              var match = keyterm.matches[j];
+              if (match.indexOf(matchq) > -1) {
+                matchesFound++;
+                results.push(keyterm);
+                break;
+              }
+            }
 					}
 					if (matchesFound > 0) {
 						self.toggleAutocompleteList(true);
 
-						for (var j = 0; j < matchesFound; j++) {
-							var name = stripTags(results[j].name.trim()),
+						for (var k = 0; k < matchesFound; k++) {
+							var name = stripTags(results[k].name.trim()),
 								nameSpan = '<span class="ucfhb-search-autocomplete-name">' + name + '</span>',
-								resultUrl = results[j].url !== '' ? stripTags(results[j].url.trim()) : self.searchAction + urlq;
+								resultUrl = results[k].url !== '' ? stripTags(results[k].url.trim()) : self.searchAction + urlq;
 
 							var listItem = document.createElement('li');
 							listItem.innerHTML = '<a class="' + self.searchKeytermLinkClass + '" href="' + resultUrl + '" tabindex="0">' + nameSpan + '</a>';
@@ -499,12 +504,12 @@ function ucfhbSetJsonp(json) {
 							if (json && json.results !== null && json.results.length > 0) {
 								self.toggleAutocompleteList(true);
 
-								for (var k = 0; k < json.results.length; k++) {
+								for (var l = 0; l < json.results.length; l++) {
 									matchesFound++;
 
-									var name = json.results[k].name !== null ? stripTags(json.results[k].name.trim()) : '',
+									var name = json.results[l].name !== null ? stripTags(json.results[l].name.trim()) : '',
 										nameSpan = '<span class="ucfhb-search-autocomplete-name">' + name + '</span>',
-										orgSpan = json.results[k].organization !== null ? '<span class="ucfhb-search-autocomplete-org">' + stripTags(json.results[k].organization.trim()) + '</span>' : '',
+										orgSpan = json.results[l].organization !== null ? '<span class="ucfhb-search-autocomplete-org">' + stripTags(json.results[l].organization.trim()) + '</span>' : '',
 										resultUrl = self.searchAction + encodeURIComponent(name);
 
 									var listItem = document.createElement('li');

@@ -8,17 +8,17 @@
 		{
 			"name": "Academic Calendar",
 			"url": "http://calendar.ucf.edu",
-			"matches": ["cal", "calendar", "acad", "academic calendar", "fall", "spring", "summer", "sched", "schedule", "deadline", "deadlines", "drop"]
+			"matches": ["calendar", "academic calendar", "fall", "spring", "summer", "schedule", "deadlines", "drop"]
 		},
 		{
 			"name": "UCF Libraries",
 			"url": "http://library.ucf.edu/",
-			"matches": ["lib", "library", "libraries", "ucf library"]
+			"matches": ["library", "libraries", "ucf library", "ucf libraries"]
 		},
 		{
 			"name": "Knights Email",
 			"url": "http://knightsemail.ucf.edu",
-			"matches": ["email", "knights", "mail"]
+			"matches": ["email", "knights"]
 		},
 		{
 			"name": "Faculty and Staff Webmail",
@@ -28,22 +28,22 @@
 		{
 			"name": "Giving to UCF",
 			"url": "https://giving.ucffoundation.org/ucffoundation",
-			"matches": ["giv", "giving", "gift", "donate", "donation", "giving to UCF", "give to UCF"]
+			"matches": ["giving", "gift", "donate", "donation", "giving to UCF", "give to UCF"]
 		},
 		{
 			"name": "Scholarship Information",
 			"url": "http://finaid.ucf.edu/scholarships/",
-			"matches": ["schola", "scholarship", "scholarships"]
+			"matches": ["scholarships", "scholarship information"]
 		},
 		{
 			"name": "Financial Aid",
 			"url": "http://finaid.ucf.edu/general/",
-			"matches": ["aid", "finan", "financial", "financial aid"]
+			"matches": ["aid", "financial", "financial aid"]
 		},
 		{
 			"name": "Webcourses",
 			"url": "http://webcourses.ucf.edu",
-			"matches": ["web", "online", "webcourses"]
+			"matches": ["online", "webcourses"]
 		},
 		{
 			"name": "UCF Bookstore",
@@ -53,27 +53,27 @@
 		{
 			"name": "Tuition and Fees",
 			"url": "http://tuitionfees.smca.ucf.edu/",
-			"matches": ["tuit", "tuition", "cost", "tuition and fees", "fees"]
+			"matches": ["tuition", "cost", "tuition and fees", "fees"]
 		},
 		{
 			"name": "Orientation",
 			"url": "http://orientation.ucf.edu/",
-			"matches": ["orien", "orientation"]
+			"matches": ["orientation"]
 		},
 		{
 			"name": "Jobs with UCF",
 			"url": "https://www.jobswithucf.com/",
-			"matches": ["job", "jobs", "employment", "employ", "career", "careers"]
+			"matches": ["jobs", "employment", "careers"]
 		},
 		{
 			"name": "Career Services",
 			"url": "http://career.sdes.ucf.edu/",
-			"matches": ["career", "careers", "intern", "career services"]
+			"matches": ["careers", "intern", "career services"]
 		},
 		{
 			"name": "Parking Services",
 			"url": "http://parking.ucf.edu/",
-			"matches": ["park", "parking", "parking services"]
+			"matches": ["parking", "parking services"]
 		},
 		{
 			"name": "Campus Map",
@@ -83,132 +83,132 @@
 		{
 			"name": "Registrar",
 			"url": "http://registrar.ucf.edu/",
-			"matches": ["regist", "registrar"]
+			"matches": ["registrar"]
 		},
 		{
 			"name": "Official Transcript Requests",
 			"url": "http://registrar.ucf.edu/transcript-request",
-			"matches": ["transc", "transcript", "transcripts"]
+			"matches": ["transcripts", "transcript request"]
 		},
 		{
 			"name": "College of Nursing",
 			"url": "http://nursing.ucf.edu",
-			"matches": ["nurs", "nursing", "college"]
+			"matches": ["nursing", "college", "college of nursing"]
 		},
 		{
 			"name": "College of Education and Human Performance",
 			"url": "http://education.ucf.edu/",
-			"matches": ["educ", "education", "college"]
+			"matches": ["education", "college", "college of education and human performance"]
 		},
 		{
 			"name": "College of Arts and Humanities",
 			"url": "http://www.cah.ucf.edu/",
-			"matches": ["art", "arts", "humanities", "college", "cah"]
+			"matches": ["arts", "humanities", "college", "cah", "college of arts and humantities"]
 		},
 		{
 			"name": "College of Science",
 			"url": "http://www.cos.ucf.edu/",
-			"matches": ["scien", "science", "college", "cos"]
+			"matches": ["cos", "college of sciences"]
 		},
 		{
 			"name": "Department of Psychology",
 			"url": "http://psychology.cos.ucf.edu/",
-			"matches": ["psy", "psych", "psychology"]
+			"matches": ["department of psychology"]
 		},
 		{
 			"name": "Student Health Services",
 			"url": "http://shs.sdes.ucf.edu/",
-			"matches": ["heal", "health", "service", "well", "immunization", "immunizations"]
+			"matches": ["health", "services", "wellness", "immunizations", "student health services"]
 		},
 		{
 			"name": "College of Health and Public Affairs",
 			"url": "http://cohpa.ucf.edu/",
-			"matches": ["heal", "health", "public", "affairs", "college"]
+			"matches": ["health", "public", "affairs", "college of health and public affairs"]
 		},
 		{
 			"name": "Rosen College of Hospitality Management",
 			"url": "http://hospitality.ucf.edu/",
-			"matches": ["hosp", "hospitality", "rosen", "college"]
+			"matches": ["hospitality", "rosen", "college of hospitality management", "rosen college of hospitality management"]
 		},
 		{
 			"name": "College of Business Administration",
 			"url": "http://business.ucf.edu/",
-			"matches": ["busi", "business", "college", "coba"]
+			"matches": ["business", "college of business administration", "coba"]
 		},
 		{
 			"name": "College of Medicine",
 			"url": "http://med.ucf.edu/",
-			"matches": ["med", "medic", "medicine", "college"]
+			"matches": ["medicine", "college of medicine"]
 		},
 		{
 			"name": "Student Services",
 			"url": "http://www.sdes.ucf.edu/programs-and-services",
-			"matches": ["serv", "service", "stud", "student"]
+			"matches": ["services", "student", "student services"]
 		},
 		{
 			"name": "Dining Services",
 			"url": "http://www.ucfdining.com/",
-			"matches": ["dining", "food", "serv", "service", "meal plan"]
+			"matches": ["dining", "food", "services", "meal plan", "dining services"]
 		},
 		{
 			"name": "UCF Phonebook",
 			"url": "http://www.ucf.edu/phonebook/",
-			"matches": ["phon", "phone", "phonebook", "dir", "directory"]
+			"matches": ["phonebook", "directory", "ucf phonebook"]
 		},
 		{
 			"name": "Undergraduate Studies",
 			"url": "http://undergraduatestudies.ucf.edu/",
-			"matches": ["under", "undergrad", "undergraduate", "stud", "studies"]
+			"matches": ["undergraduate studies"]
 		},
 		{
 			"name": "Undergraduate Catalog",
 			"url": "http://catalog.ucf.edu/programs",
-			"matches": ["degree", "prog", "program", "undergraduate catalog"]
+			"matches": ["degrees", "programs", "degree programs", "undergraduate catalog"]
 		},
 		{
 			"name": "Campus Visit",
 			"url": "http://admissions.ucf.edu/visit/",
-			"matches": ["tour", "tours", "campus", "open", "open house", "visit", "campus tour", "campus visit"]
+			"matches": ["tours", "open house", "visit", "campus tour", "campus visit"]
 		},
 		{
 			"name": "Student Union",
 			"url": "http://studentunion.ucf.edu/",
-			"matches": ["stud", "student", "student union", "union", "food"]
+			"matches": ["student union", "union", "food"]
 		},
 		{
 			"name": "UCF Knights | Athletics",
 			"url": "http://www.ucfknights.com/",
-			"matches": ["foot", "football", "athlet", "athletic"]
+			"matches": ["football", "athletics", "knights"]
 		},
 		{
 			"name": "Undergraduate Admissions",
 			"url": "http://admissions.ucf.edu/",
-			"matches": ["under", "undergrad", "undergraduate", "admis", "admissions"]
+			"matches": ["undergraduate", "admissions", "undergraduate admissions"]
 		},
 		{
 			"name": "Student Government",
 			"url": "http://sga.ucf.edu",
-			"matches": ["sga", "stud", "student", "gov", "govern"]
+			"matches": ["sga", "government", "student government association"]
 		},
 		{
 			"name": "Undergraduate Catalog",
 			"url": "http://catalog.ucf.edu/programs",
-			"matches": ["cat", "catal", "catalog", "cour", "course", "under", "undergrad", "course catalog"]
+			"matches": ["courses", "undergrauate course catalog", "undergraduate catalog"]
 		},
 		{
 			"name": "Graduate Catalog",
 			"url": "http://www.graduatecatalog.ucf.edu/programs/",
-			"matches": ["cat", "catal", "catalog", "cour", "course", "grad", "graduate", "course catalog"]
+			"matches": ["courses", "graduate course catalog", "graduate catalog"]
 		},
 		{
 			"name": "Graduate Admissions",
 			"url": "http://www.admissions.graduate.ucf.edu/",
-			"matches": ["grad", "graduate", "master", "college", "admis", "admissions"]
+			"matches": ["graduate admissions", "masters", "college"]
 		},
 		{
 			"name": "NID",
 			"url": "http://mynid.ucf.edu",
-			"matches": ["nid", "login", "pass", "password"]
+			"matches": ["nid", "login", "log in", "sign in", "sign on", "password"]
 		},
 		{
 			"name": "MyUCF",
@@ -218,62 +218,62 @@
 		{
 			"name": "Human Resources",
 			"url": "http://hr.ucf.edu/",
-			"matches": ["hr", "hum", "human", "human resource", "human resources"]
+			"matches": ["hr", "human resources"]
 		},
 		{
 			"name": "UCF Foundation",
 			"url": "http://ucffoundation.org/",
-			"matches": ["foundation", "UCF foundation"]
+			"matches": ["UCF foundation"]
 		},
 		{
 			"name": "UCF Majors",
 			"url": "http://www.ucf.edu/degree-search/majors",
-			"matches": ["major", "majors"]
+			"matches": ["majors", "ucf majors"]
 		},
 		{
 			"name": "UCF Masters",
 			"url": "http://www.ucf.edu/degree-search/masters",
-			"matches": ["master", "masters"]
+			"matches": ["masters", "ucf masters"]
 		},
 		{
 			"name": "UCF Minors",
 			"url": "http://www.ucf.edu/degree-search/minors",
-			"matches": ["minor", "minors"]
+			"matches": ["minors", "ucf minors"]
 		},
 		{
 			"name": "The Burnett Honors College",
 			"url": "http://honors.ucf.edu/",
-			"matches": ["honors", "burnett", "burnett honors", "burnett honors college"]
+			"matches": ["the burnett honors college"]
 		},
 		{
 			"name": "UCF Online",
 			"url": "http://www.ucf.edu/online",
-			"matches": ["online", "ucf online", "online programs", "online degrees"]
+			"matches": ["ucf online", "online programs", "online degrees"]
 		},
 		{
 			"name": "UCF Commencement",
 			"url": "http://commencement.ucf.edu/",
-			"matches": ["grad", "graduation", "graduate"]
+			"matches": ["graduation", "graduate", "commencement", "ucf commencement"]
 		},
 		{
 			"name": "Transfer &amp; Transition Services",
 			"url": "http://transfer.sdes.ucf.edu/",
-			"matches": ["transfer", "transfer to ucf", "transfer and transition services", "transfer & transition services"]
+			"matches": ["transfers", "transfer to ucf", "transfer and transition services", "transfer & transition services"]
 		},
 		{
 			"name": "Office of Student Involvement",
 			"url": "http://osi.ucf.edu/",
-			"matches": ["osi", "student involvement", "office of student involvement"]
+			"matches": ["osi", "office of student involvement"]
 		},
 		{
 			"name": "Student Accessibility Services",
 			"url": "http://sas.sdes.ucf.edu/",
-			"matches": ["sas", "accessibility", "accessibility services", "student accessibility", "student accessibility services"]
+			"matches": ["sas", "student accessibility services"]
 		},
 		{
 			"name": "Clubs and Organizations",
 			"url": "https://ucf.collegiatelink.net/Organizations",
-			"matches": ["club", "clubs", "organizations", "directory", "clubs and organizations", "organization directory", "organizations directory", "club directory", "clubs directory"]
+			"matches": ["clubs", "organizations", "clubs and organizations", "organization directory", "organizations directory", "club directory", "clubs directory"]
 		},
 		{
 			"name": "DirectConnect to UCF",
@@ -283,47 +283,47 @@
 		{
 			"name": "Fraternity &amp; Sorority Life",
 			"url": "http://fsl.sdes.ucf.edu/",
-			"matches": ["greek life", "greek", "frat", "fraternity", "fraternity", "sorority", "sororities", "fraternity and sorority life", "fraternity sorority life", "fraternity & sorority life"]
+			"matches": ["greek life", "fraternity", "fraternities", "sorority", "sororities", "fraternity and sorority life", "fraternity sorority life", "fraternity & sorority life"]
 		},
 		{
 			"name": "Hotels near UCF",
 			"url": "http://www.ucfalumni.com/alumnicenter/areahotels",
-			"matches": ["where to stay near ucf", "hotel", "hotels", "hotel accomodations", "area hotels", "nearby hotels", "hotels near ucf", "hotels around ucf", "visit", "tour", "tours", "campus visit", "campus tour"]
+			"matches": ["where to stay near ucf", "hotel accomodations", "area hotels", "nearby hotels", "hotels near ucf", "hotels around ucf", "tours", "campus visit", "campus tour"]
 		},
 		{
 			"name": "International Affairs and Global Strategies",
 			"url": "https://www.international.ucf.edu/",
-			"matches": ["international", "international student", "international students", "international admission", "abroad", "ucf abroad", "study abroad", "international scholars", "international affairs", "international affairs and global strategies", "iags"]
+			"matches": ["international students", "international admission", "ucf abroad", "study abroad", "international scholars", "international affairs", "international affairs and global strategies", "iags"]
 		},
 		{
 			"name": "Graduate Teaching (GTA) Training",
 			"url": "http://www.students.graduate.ucf.edu/GTA_Training_Requirements/",
-			"matches": ["gta", "gta training"]
+			"matches": ["gta training"]
 		},
 		{
 			"name": "Undergraduate Admissions and Application Information",
 			"url": "http://admissions.ucf.edu/",
-			"matches": ["application", "apply", "application deadline", "undergraduate application"]
+			"matches": ["apply", "application deadline", "undergraduate application"]
 		},
 		{
 			"name": "Graduate Admissions and Application Information",
 			"url": "http://www.admissions.graduate.ucf.edu/",
-			"matches": ["application", "apply", "application deadline", "graduate application"]
+			"matches": ["apply", "application deadline", "graduate application"]
 		},
 		{
 			"name": "Check Application Status",
 			"url": "https://my.ucf.edu",
-			"matches": ["application", "application status", "apply"]
+			"matches": ["application status", "apply"]
 		},
 		{
 			"name": "KnightLink",
 			"url": "http://career.ucf.edu/knightlink",
-			"matches": ["careers", "jobs", "student jobs", "knightlink", "knight link", "career services"]
+			"matches": ["careers", "student jobs", "knightlink", "knight link", "career services"]
 		},
 		{
 			"name": "Recreation and Wellness Center",
 			"url": "http://rwc.sdes.ucf.edu/",
-			"matches": ["rwc", "rec", "recreation", "wellness", "recreation and wellness", "recreation and wellness center", "recreation & wellness center", "intramural", "intramural sports", "sports"]
+			"matches": ["rwc", "recreation", "wellness", "recreation and wellness center", "recreation & wellness center", "intramural sports", "sports"]
 		}
 	]
 }

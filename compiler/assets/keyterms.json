@@ -1,331 +1,329 @@
 {
-	"terms": {
-		"t_1": ["hous", "housing", "dorm", "apartment", "on-campus living", "residence", "residency", "nike", "apollo", "libra", "tower", "neptune", "lake claire"],
-		"t_2": ["cal", "calendar", "acad", "academic calendar", "fall", "spring", "summer", "sched", "schedule", "deadline", "deadlines", "drop"],
-		"t_3": ["lib", "library", "libraries", "ucf library"],
-		"t_4": ["email", "knights", "mail"],
-		"t_5": ["email", "outlook", "faculty", "faculty email", "faculty mail"],
-		"t_6": ["giv", "giving", "gift", "donate", "donation", "giving to UCF", "give to UCF"],
-		"t_7": ["schola", "scholarship", "scholarships"],
-		"t_8": ["aid", "finan", "financial", "financial aid"],
-		"t_9": ["web", "online", "webcourses"],
-		"t_10": ["book", "bookstore"],
-		"t_11": ["tuit", "tuition", "cost", "tuition and fees", "fees"],
-		"t_12": ["orien", "orientation"],
-		"t_13": ["job", "jobs", "employment", "employ", "career", "careers"],
-		"t_14": ["career", "careers", "intern", "career services"],
-		"t_15": ["park", "parking", "parking services"],
-		"t_16": ["map", "campus", "campus map"],
-		"t_17": ["regist", "registrar"],
-		"t_18": ["transc", "transcript", "transcripts"],
-		"t_19": ["nurs", "nursing", "college"],
-		"t_20": ["educ", "education", "college"],
-		"t_21": ["art", "arts", "humanities", "college", "cah"],
-		"t_22": ["scien", "science", "college", "cos"],
-		"t_23": ["psy", "psych", "psychology"],
-		"t_24": ["heal", "health", "service", "well", "immunization", "immunizations"],
-		"t_25": ["heal", "health", "public", "affairs", "college"],
-		"t_26": ["hosp", "hospitality", "rosen", "college"],
-		"t_27": ["busi", "business", "college", "coba"],
-		"t_28": ["med", "medic", "medicine", "college"],
-		"t_29": ["serv", "service", "stud", "student"],
-		"t_30": ["dining", "food", "serv", "service", "meal plan"],
-		"t_31": ["phon", "phone", "phonebook", "dir", "directory"],
-		"t_32": ["under", "undergrad", "undergraduate", "stud", "studies"],
-		"t_33": ["degree", "prog", "program", "undergraduate catalog"],
-		"t_34": ["tour", "tours", "campus", "open", "open house", "visit", "campus tour", "campus visit"],
-		"t_35": ["stud", "student", "student union", "union", "food"],
-		"t_36": ["foot", "football", "athlet", "athletic"],
-		"t_37": ["under", "undergrad", "undergraduate", "admis", "admissions"],
-		"t_38": ["sga", "stud", "student", "gov", "govern"],
-		"t_39": ["cat", "catal", "catalog", "cour", "course", "under", "undergrad", "course catalog"],
-		"t_40": ["cat", "catal", "catalog", "cour", "course", "grad", "graduate", "course catalog"],
-		"t_41": ["grad", "graduate", "master", "college", "admis", "admissions"],
-		"t_42": ["nid", "login", "pass", "password"],
-		"t_43": ["my ucf", "myucf"],
-		"t_44": ["hr", "hum", "human", "human resource", "human resources"],
-		"t_45": ["foundation", "UCF foundation"],
-		"t_46": ["major", "majors"],
-		"t_47": ["master", "masters"],
-		"t_48": ["minor", "minors"],
-		"t_49": ["honors"],
-		"t_50": ["online"],
-		"t_51": ["grad", "graduation", "graduate"],
-		"t_52": ["transfer", "transfer to ucf", "transfer and transition services", "transfer & transition services"],
-		"t_53": ["osi", "student involvement", "office of student involvement"],
-		"t_54": ["sas", "accessibility", "accessibility services", "student accessibility", "student accessibility services"],
-		"t_55": ["club", "clubs", "organizations", "directory", "clubs and organizations", "organization directory", "organizations directory", "club directory", "clubs directory"],
-		"t_56": ["directconnect", "direct connect", "direct connect to ucf", "direct connect ucf", "directconnect ucf", "directconnect to ucf", "admissions"],
-		"t_57": ["greek life", "greek", "frat", "fraternity", "fraternity", "sorority", "sororities", "fraternity and sorority life", "fraternity sorority life", "fraternity & sorority life"],
-		"t_58": ["where to stay near ucf", "hotel", "hotels", "hotel accomodations", "area hotels", "nearby hotels", "hotels near ucf", "hotels around ucf", "visit", "tour", "tours", "campus visit", "campus tour"],
-		"t_59": ["international", "international student", "international students", "international admission", "abroad", "ucf abroad", "study abroad", "international scholars", "international affairs", "international affairs and global strategies", "iags"],
-		"t_60": ["gta", "gta training"],
-		"t_61": ["application", "apply", "application deadline", "undergraduate application"],
-		"t_62": ["application", "apply", "application deadline", "graduate application"],
-		"t_63": ["application", "application status", "apply"],
-		"t_64": ["careers", "jobs", "student jobs", "knightlink", "knight link", "career services"],
-		"t_65": ["rwc", "rec", "recreation", "wellness", "recreation and wellness", "recreation and wellness center", "recreation & wellness center", "intramural", "intramural sports", "sports"]
-	},
-	"matches": {
-		"m_1": {
+	"keyterms": [
+		{
 			"name": "Housing and Residence Life",
-			"url": "http://www.housing.ucf.edu"
+			"url": "http://www.housing.ucf.edu",
+			"matches": ["hous", "housing", "dorm", "apartment", "on-campus living", "residence", "residency", "nike", "apollo", "libra", "tower", "neptune", "lake claire"]
 		},
-		"m_2": {
+		{
 			"name": "Academic Calendar",
-			"url": "http://calendar.ucf.edu"
+			"url": "http://calendar.ucf.edu",
+			"matches": ["cal", "calendar", "acad", "academic calendar", "fall", "spring", "summer", "sched", "schedule", "deadline", "deadlines", "drop"]
 		},
-		"m_3": {
+		{
 			"name": "UCF Libraries",
-			"url": "http://library.ucf.edu/"
+			"url": "http://library.ucf.edu/",
+			"matches": ["lib", "library", "libraries", "ucf library"]
 		},
-		"m_4": {
+		{
 			"name": "Knights Email",
-			"url": "http://knightsemail.ucf.edu"
+			"url": "http://knightsemail.ucf.edu",
+			"matches": ["email", "knights", "mail"]
 		},
-		"m_5": {
+		{
 			"name": "Faculty and Staff Webmail",
-			"url": "http://webmail.ucf.edu"
+			"url": "http://webmail.ucf.edu",
+			"matches": ["email", "outlook", "faculty", "faculty email", "faculty mail"]
 		},
-		"m_6": {
+		{
 			"name": "Giving to UCF",
-			"url": "https://giving.ucffoundation.org/ucffoundation"
+			"url": "https://giving.ucffoundation.org/ucffoundation",
+			"matches": ["giv", "giving", "gift", "donate", "donation", "giving to UCF", "give to UCF"]
 		},
-		"m_7": {
+		{
 			"name": "Scholarship Information",
-			"url": "http://finaid.ucf.edu/scholarships/"
+			"url": "http://finaid.ucf.edu/scholarships/",
+			"matches": ["schola", "scholarship", "scholarships"]
 		},
-		"m_8": {
+		{
 			"name": "Financial Aid",
-			"url": "http://finaid.ucf.edu/general/"
+			"url": "http://finaid.ucf.edu/general/",
+			"matches": ["aid", "finan", "financial", "financial aid"]
 		},
-		"m_9": {
+		{
 			"name": "Webcourses",
-			"url": "http://webcourses.ucf.edu"
+			"url": "http://webcourses.ucf.edu",
+			"matches": ["web", "online", "webcourses"]
 		},
-		"m_10": {
+		{
 			"name": "UCF Bookstore",
-			"url": "http://bookstore.ucf.edu"
+			"url": "http://bookstore.ucf.edu",
+			"matches": ["book", "bookstore"]
 		},
-		"m_11": {
+		{
 			"name": "Tuition and Fees",
-			"url": "http://tuitionfees.smca.ucf.edu/"
+			"url": "http://tuitionfees.smca.ucf.edu/",
+			"matches": ["tuit", "tuition", "cost", "tuition and fees", "fees"]
 		},
-		"m_12": {
+		{
 			"name": "Orientation",
-			"url": "http://orientation.ucf.edu/"
+			"url": "http://orientation.ucf.edu/",
+			"matches": ["orien", "orientation"]
 		},
-		"m_13": {
+		{
 			"name": "Jobs with UCF",
-			"url": "https://www.jobswithucf.com/"
+			"url": "https://www.jobswithucf.com/",
+			"matches": ["job", "jobs", "employment", "employ", "career", "careers"]
 		},
-		"m_14": {
+		{
 			"name": "Career Services",
-			"url": "http://career.sdes.ucf.edu/"
+			"url": "http://career.sdes.ucf.edu/",
+			"matches": ["career", "careers", "intern", "career services"]
 		},
-		"m_15": {
+		{
 			"name": "Parking Services",
-			"url": "http://parking.ucf.edu/"
+			"url": "http://parking.ucf.edu/",
+			"matches": ["park", "parking", "parking services"]
 		},
-		"m_16": {
+		{
 			"name": "Campus Map",
-			"url": "http://map.ucf.edu"
+			"url": "http://map.ucf.edu",
+			"matches": ["map", "campus", "campus map"]
 		},
-		"m_17": {
+		{
 			"name": "Registrar",
-			"url": "http://registrar.ucf.edu/"
+			"url": "http://registrar.ucf.edu/",
+			"matches": ["regist", "registrar"]
 		},
-		"m_18": {
+		{
 			"name": "Official Transcript Requests",
-			"url": "http://registrar.ucf.edu/transcript-request"
+			"url": "http://registrar.ucf.edu/transcript-request",
+			"matches": ["transc", "transcript", "transcripts"]
 		},
-		"m_19": {
+		{
 			"name": "College of Nursing",
-			"url": "http://nursing.ucf.edu"
+			"url": "http://nursing.ucf.edu",
+			"matches": ["nurs", "nursing", "college"]
 		},
-		"m_20": {
+		{
 			"name": "College of Education and Human Performance",
-			"url": "http://education.ucf.edu/"
+			"url": "http://education.ucf.edu/",
+			"matches": ["educ", "education", "college"]
 		},
-		"m_21": {
+		{
 			"name": "College of Arts and Humanities",
-			"url": "http://www.cah.ucf.edu/"
+			"url": "http://www.cah.ucf.edu/",
+			"matches": ["art", "arts", "humanities", "college", "cah"]
 		},
-		"m_22": {
+		{
 			"name": "College of Science",
-			"url": "http://www.cos.ucf.edu/"
+			"url": "http://www.cos.ucf.edu/",
+			"matches": ["scien", "science", "college", "cos"]
 		},
-		"m_23": {
+		{
 			"name": "Department of Psychology",
-			"url": "http://psychology.cos.ucf.edu/"
+			"url": "http://psychology.cos.ucf.edu/",
+			"matches": ["psy", "psych", "psychology"]
 		},
-		"m_24": {
+		{
 			"name": "Student Health Services",
-			"url": "http://shs.sdes.ucf.edu/"
+			"url": "http://shs.sdes.ucf.edu/",
+			"matches": ["heal", "health", "service", "well", "immunization", "immunizations"]
 		},
-		"m_25": {
+		{
 			"name": "College of Health and Public Affairs",
-			"url": "http://cohpa.ucf.edu/"
+			"url": "http://cohpa.ucf.edu/",
+			"matches": ["heal", "health", "public", "affairs", "college"]
 		},
-		"m_26": {
+		{
 			"name": "Rosen College of Hospitality Management",
-			"url": "http://hospitality.ucf.edu/"
+			"url": "http://hospitality.ucf.edu/",
+			"matches": ["hosp", "hospitality", "rosen", "college"]
 		},
-		"m_27": {
+		{
 			"name": "College of Business Administration",
-			"url": "http://business.ucf.edu/"
+			"url": "http://business.ucf.edu/",
+			"matches": ["busi", "business", "college", "coba"]
 		},
-		"m_28": {
+		{
 			"name": "College of Medicine",
-			"url": "http://med.ucf.edu/"
+			"url": "http://med.ucf.edu/",
+			"matches": ["med", "medic", "medicine", "college"]
 		},
-		"m_29": {
+		{
 			"name": "Student Services",
-			"url": "http://www.sdes.ucf.edu/programs-and-services"
+			"url": "http://www.sdes.ucf.edu/programs-and-services",
+			"matches": ["serv", "service", "stud", "student"]
 		},
-		"m_30": {
+		{
 			"name": "Dining Services",
-			"url": "http://www.ucfdining.com/"
+			"url": "http://www.ucfdining.com/",
+			"matches": ["dining", "food", "serv", "service", "meal plan"]
 		},
-		"m_31": {
+		{
 			"name": "UCF Phonebook",
-			"url": "http://www.ucf.edu/phonebook/"
+			"url": "http://www.ucf.edu/phonebook/",
+			"matches": ["phon", "phone", "phonebook", "dir", "directory"]
 		},
-		"m_32": {
+		{
 			"name": "Undergraduate Studies",
-			"url": "http://undergraduatestudies.ucf.edu/"
+			"url": "http://undergraduatestudies.ucf.edu/",
+			"matches": ["under", "undergrad", "undergraduate", "stud", "studies"]
 		},
-		"m_33": {
+		{
 			"name": "Undergraduate Catalog",
-			"url": "http://catalog.ucf.edu/programs"
+			"url": "http://catalog.ucf.edu/programs",
+			"matches": ["degree", "prog", "program", "undergraduate catalog"]
 		},
-		"m_34": {
+		{
 			"name": "Campus Visit",
-			"url": "http://admissions.ucf.edu/visit/"
+			"url": "http://admissions.ucf.edu/visit/",
+			"matches": ["tour", "tours", "campus", "open", "open house", "visit", "campus tour", "campus visit"]
 		},
-		"m_35": {
+		{
 			"name": "Student Union",
-			"url": "http://studentunion.ucf.edu/"
+			"url": "http://studentunion.ucf.edu/",
+			"matches": ["stud", "student", "student union", "union", "food"]
 		},
-		"m_36": {
+		{
 			"name": "UCF Knights | Athletics",
-			"url": "http://www.ucfknights.com/"
+			"url": "http://www.ucfknights.com/",
+			"matches": ["foot", "football", "athlet", "athletic"]
 		},
-		"m_37": {
+		{
 			"name": "Undergraduate Admissions",
-			"url": "http://admissions.ucf.edu/"
+			"url": "http://admissions.ucf.edu/",
+			"matches": ["under", "undergrad", "undergraduate", "admis", "admissions"]
 		},
-		"m_38": {
+		{
 			"name": "Student Government",
-			"url": "http://sga.ucf.edu"
+			"url": "http://sga.ucf.edu",
+			"matches": ["sga", "stud", "student", "gov", "govern"]
 		},
-		"m_39": {
+		{
 			"name": "Undergraduate Catalog",
-			"url": "http://catalog.ucf.edu/programs"
+			"url": "http://catalog.ucf.edu/programs",
+			"matches": ["cat", "catal", "catalog", "cour", "course", "under", "undergrad", "course catalog"]
 		},
-		"m_40": {
+		{
 			"name": "Graduate Catalog",
-			"url": "http://www.graduatecatalog.ucf.edu/programs/"
+			"url": "http://www.graduatecatalog.ucf.edu/programs/",
+			"matches": ["cat", "catal", "catalog", "cour", "course", "grad", "graduate", "course catalog"]
 		},
-		"m_41": {
+		{
 			"name": "Graduate Admissions",
-			"url": "http://www.admissions.graduate.ucf.edu/"
+			"url": "http://www.admissions.graduate.ucf.edu/",
+			"matches": ["grad", "graduate", "master", "college", "admis", "admissions"]
 		},
-		"m_42": {
+		{
 			"name": "NID",
-			"url": "http://mynid.ucf.edu"
+			"url": "http://mynid.ucf.edu",
+			"matches": ["nid", "login", "pass", "password"]
 		},
-		"m_43": {
+		{
 			"name": "MyUCF",
-			"url": "https://my.ucf.edu"
+			"url": "https://my.ucf.edu",
+			"matches": ["my ucf", "myucf"]
 		},
-		"m_44": {
+		{
 			"name": "Human Resources",
-			"url": "http://hr.ucf.edu/"
+			"url": "http://hr.ucf.edu/",
+			"matches": ["hr", "hum", "human", "human resource", "human resources"]
 		},
-		"m_45": {
+		{
 			"name": "UCF Foundation",
-			"url": "http://ucffoundation.org/"
+			"url": "http://ucffoundation.org/",
+			"matches": ["foundation", "UCF foundation"]
 		},
-		"m_46": {
+		{
 			"name": "UCF Majors",
-			"url": "http://www.ucf.edu/degree-search/majors"
+			"url": "http://www.ucf.edu/degree-search/majors",
+			"matches": ["major", "majors"]
 		},
-		"m_47": {
+		{
 			"name": "UCF Masters",
-			"url": "http://www.ucf.edu/degree-search/masters"
+			"url": "http://www.ucf.edu/degree-search/masters",
+			"matches": ["master", "masters"]
 		},
-		"m_48": {
+		{
 			"name": "UCF Minors",
-			"url": "http://www.ucf.edu/degree-search/minors"
+			"url": "http://www.ucf.edu/degree-search/minors",
+			"matches": ["minor", "minors"]
 		},
-		"m_49": {
+		{
 			"name": "The Burnett Honors College",
-			"url": "http://honors.ucf.edu/"
+			"url": "http://honors.ucf.edu/",
+			"matches": ["honors", "burnett", "burnett honors", "burnett honors college"]
 		},
-		"m_50": {
+		{
 			"name": "UCF Online",
-			"url": "http://www.ucf.edu/online"
+			"url": "http://www.ucf.edu/online",
+			"matches": ["online", "ucf online", "online programs", "online degrees"]
 		},
-		"m_51": {
+		{
 			"name": "UCF Commencement",
-			"url": "http://commencement.ucf.edu/"
+			"url": "http://commencement.ucf.edu/",
+			"matches": ["grad", "graduation", "graduate"]
 		},
-		"m_52": {
+		{
 			"name": "Transfer &amp; Transition Services",
-			"url": "http://transfer.sdes.ucf.edu/"
+			"url": "http://transfer.sdes.ucf.edu/",
+			"matches": ["transfer", "transfer to ucf", "transfer and transition services", "transfer & transition services"]
 		},
-		"m_53": {
+		{
 			"name": "Office of Student Involvement",
-			"url": "http://osi.ucf.edu/"
+			"url": "http://osi.ucf.edu/",
+			"matches": ["osi", "student involvement", "office of student involvement"]
 		},
-		"m_54": {
+		{
 			"name": "Student Accessibility Services",
-			"url": "http://sas.sdes.ucf.edu/"
+			"url": "http://sas.sdes.ucf.edu/",
+			"matches": ["sas", "accessibility", "accessibility services", "student accessibility", "student accessibility services"]
 		},
-		"m_55": {
+		{
 			"name": "Clubs and Organizations",
-			"url": "https://ucf.collegiatelink.net/Organizations"
+			"url": "https://ucf.collegiatelink.net/Organizations",
+			"matches": ["club", "clubs", "organizations", "directory", "clubs and organizations", "organization directory", "organizations directory", "club directory", "clubs directory"]
 		},
-		"m_56": {
+		{
 			"name": "DirectConnect to UCF",
-			"url": "http://regionalcampuses.ucf.edu/directconnect-to-ucf/"
+			"url": "http://regionalcampuses.ucf.edu/directconnect-to-ucf/",
+			"matches": ["directconnect", "direct connect", "direct connect to ucf", "direct connect ucf", "directconnect ucf", "directconnect to ucf", "admissions"]
 		},
-		"m_57": {
+		{
 			"name": "Fraternity &amp; Sorority Life",
-			"url": "http://fsl.sdes.ucf.edu/"
+			"url": "http://fsl.sdes.ucf.edu/",
+			"matches": ["greek life", "greek", "frat", "fraternity", "fraternity", "sorority", "sororities", "fraternity and sorority life", "fraternity sorority life", "fraternity & sorority life"]
 		},
-		"m_58": {
+		{
 			"name": "Hotels near UCF",
-			"url": "http://www.ucfalumni.com/alumnicenter/areahotels"
+			"url": "http://www.ucfalumni.com/alumnicenter/areahotels",
+			"matches": ["where to stay near ucf", "hotel", "hotels", "hotel accomodations", "area hotels", "nearby hotels", "hotels near ucf", "hotels around ucf", "visit", "tour", "tours", "campus visit", "campus tour"]
 		},
-		"m_59": {
+		{
 			"name": "International Affairs and Global Strategies",
-			"url": "https://www.international.ucf.edu/"
+			"url": "https://www.international.ucf.edu/",
+			"matches": ["international", "international student", "international students", "international admission", "abroad", "ucf abroad", "study abroad", "international scholars", "international affairs", "international affairs and global strategies", "iags"]
 		},
-		"m_60": {
+		{
 			"name": "Graduate Teaching (GTA) Training",
-			"url": "http://www.students.graduate.ucf.edu/GTA_Training_Requirements/"
+			"url": "http://www.students.graduate.ucf.edu/GTA_Training_Requirements/",
+			"matches": ["gta", "gta training"]
 		},
-		"m_61": {
+		{
 			"name": "Undergraduate Admissions and Application Information",
-			"url": "http://admissions.ucf.edu/"
+			"url": "http://admissions.ucf.edu/",
+			"matches": ["application", "apply", "application deadline", "undergraduate application"]
 		},
-		"m_62": {
+		{
 			"name": "Graduate Admissions and Application Information",
-			"url": "http://www.admissions.graduate.ucf.edu/"
+			"url": "http://www.admissions.graduate.ucf.edu/",
+			"matches": ["application", "apply", "application deadline", "graduate application"]
 		},
-		"m_63": {
+		{
 			"name": "Check Application Status",
-			"url": "https://my.ucf.edu"
+			"url": "https://my.ucf.edu",
+			"matches": ["application", "application status", "apply"]
 		},
-		"m_64": {
+		{
 			"name": "KnightLink",
-			"url": "http://career.ucf.edu/knightlink"
+			"url": "http://career.ucf.edu/knightlink",
+			"matches": ["careers", "jobs", "student jobs", "knightlink", "knight link", "career services"]
 		},
-		"m_65": {
+		{
 			"name": "Recreation and Wellness Center",
-			"url": "http://rwc.sdes.ucf.edu/"
+			"url": "http://rwc.sdes.ucf.edu/",
+			"matches": ["rwc", "rec", "recreation", "wellness", "recreation and wellness", "recreation and wellness center", "recreation & wellness center", "intramural", "intramural sports", "sports"]
 		}
-	}
+	]
 }

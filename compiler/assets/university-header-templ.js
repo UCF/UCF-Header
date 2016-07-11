@@ -350,18 +350,6 @@ function ucfhbSetJsonp(json) {
 		var timer;	// setTimeout timer value used by self.searchOnKeyUp
 
 
-		// Iterate through objects within an object (private)
-		// http://stackoverflow.com/a/3529588
-		function countObjectProperties(obj) {
-			var count = 0;
-			for (var i in obj) {
-				if (obj.hasOwnProperty(i)) {
-					count++;
-				}
-			}
-			return count;
-		}
-
 		// Strip HTML tags from a string.
 		function stripTags(str) {
 			return str.replace(/(<([^>]+)>)/ig, '');
@@ -472,30 +460,25 @@ function ucfhbSetJsonp(json) {
 			if (safeq !== '') {
 
 				// Search against keyterm list first.
-				if (self.keyterms.terms) {
-					i = 0;
-					var terms = self.keyterms.terms,
-						matches = self.keyterms.matches,
-						matchesFound = 0;
-						results = [];
+				if (self.keyterms.keyterms) {
+					var matchesFound = 0;
+						  results = [];
 
-					for (i = 0; i < countObjectProperties(terms); i++) {
-						var termKey = "t_" + (i + 1),
-							matchKey = "m_" + (i + 1);
+					for (var i = 0; i < self.keyterms.keyterms.length; i++) {
+						var keyterm = self.keyterms.keyterms[i];
 
-						if (terms[termKey].indexOf(matchq) > -1) {
+						if (keyterm.matches.indexOf(matchq) > -1) {
 							matchesFound++;
-							results.push(matches[matchKey]);
+							results.push(keyterm);
 						}
 					}
 					if (matchesFound > 0) {
 						self.toggleAutocompleteList(true);
 
-						i = 0;
-						for (i = 0; i < matchesFound; i++) {
-							var name = stripTags(results[i].name.trim()),
+						for (var j = 0; j < matchesFound; j++) {
+							var name = stripTags(results[j].name.trim()),
 								nameSpan = '<span class="ucfhb-search-autocomplete-name">' + name + '</span>',
-								resultUrl = results[i].url !== '' ? stripTags(results[i].url.trim()) : self.searchAction + urlq;
+								resultUrl = results[j].url !== '' ? stripTags(results[j].url.trim()) : self.searchAction + urlq;
 
 							var listItem = document.createElement('li');
 							listItem.innerHTML = '<a class="' + self.searchKeytermLinkClass + '" href="' + resultUrl + '" tabindex="0">' + nameSpan + '</a>';
@@ -515,13 +498,13 @@ function ucfhbSetJsonp(json) {
 						ucfhbGetJsonp(urlq, function(json) {
 							if (json && json.results !== null && json.results.length > 0) {
 								self.toggleAutocompleteList(true);
-								i = 0;
-								for (i = 0; i < json.results.length; i++) {
+
+								for (var k = 0; k < json.results.length; k++) {
 									matchesFound++;
 
-									var name = json.results[i].name !== null ? stripTags(json.results[i].name.trim()) : '',
+									var name = json.results[k].name !== null ? stripTags(json.results[k].name.trim()) : '',
 										nameSpan = '<span class="ucfhb-search-autocomplete-name">' + name + '</span>',
-										orgSpan = json.results[i].organization !== null ? '<span class="ucfhb-search-autocomplete-org">' + stripTags(json.results[i].organization.trim()) + '</span>' : '',
+										orgSpan = json.results[k].organization !== null ? '<span class="ucfhb-search-autocomplete-org">' + stripTags(json.results[k].organization.trim()) + '</span>' : '',
 										resultUrl = self.searchAction + encodeURIComponent(name);
 
 									var listItem = document.createElement('li');

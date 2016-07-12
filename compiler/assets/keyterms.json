@@ -161,11 +161,6 @@
 			"matches": ["undergraduate studies"]
 		},
 		{
-			"name": "Undergraduate Catalog",
-			"url": "http://catalog.ucf.edu/programs",
-			"matches": ["degrees", "programs", "degree programs", "undergraduate catalog"]
-		},
-		{
 			"name": "Campus Visit",
 			"url": "http://admissions.ucf.edu/visit/",
 			"matches": ["tours", "open house", "visit", "campus tour", "campus visit"]
@@ -188,17 +183,17 @@
 		{
 			"name": "Student Government",
 			"url": "http://sga.ucf.edu",
-			"matches": ["sga", "government", "student government association"]
+			"matches": ["sga", "student government association"]
 		},
 		{
 			"name": "Undergraduate Catalog",
 			"url": "http://catalog.ucf.edu/programs",
-			"matches": ["courses", "undergrauate course catalog", "undergraduate catalog"]
+			"matches": ["courses", "undergrauate course catalog", "undergraduate catalog", "degrees", "degree programs"]
 		},
 		{
 			"name": "Graduate Catalog",
 			"url": "http://www.graduatecatalog.ucf.edu/programs/",
-			"matches": ["courses", "graduate course catalog", "graduate catalog"]
+			"matches": ["courses", "graduate course catalog", "graduate catalog", "degrees", "degree programs"]
 		},
 		{
 			"name": "Graduate Admissions",
@@ -228,17 +223,17 @@
 		{
 			"name": "UCF Majors",
 			"url": "http://www.ucf.edu/degree-search/majors",
-			"matches": ["majors", "ucf majors"]
+			"matches": ["majors"]
 		},
 		{
 			"name": "UCF Masters",
 			"url": "http://www.ucf.edu/degree-search/masters",
-			"matches": ["masters", "ucf masters"]
+			"matches": ["masters"]
 		},
 		{
 			"name": "UCF Minors",
 			"url": "http://www.ucf.edu/degree-search/minors",
-			"matches": ["minors", "ucf minors"]
+			"matches": ["minors"]
 		},
 		{
 			"name": "The Burnett Honors College",

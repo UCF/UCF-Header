@@ -476,6 +476,11 @@ function ucfhbSetJsonp(json) {
                 break;
               }
             }
+
+            // Don't allow more than 5 autocomplete results to be returned
+            if (matchesFound > 4) {
+              break;
+            }
 					}
 					if (matchesFound > 0) {
 						self.toggleAutocompleteList(true);

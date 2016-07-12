@@ -455,7 +455,7 @@ function ucfhbSetJsonp(json) {
         urlq = encodeURIComponent(safeq); // URL-safe Query
 
       // Make sure there is actually a query to search for
-      if (safeq !== '' && safeq.length > 1) {
+      if (safeq.length > 1) {
 
         // Search against keyterm list first.
         if (self.keyterms.keyterms) {

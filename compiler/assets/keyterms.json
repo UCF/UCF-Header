@@ -1,29 +1,29 @@
 {
 	"terms": {
-		"t_1": ["hous","housing", "dorm", "apartment", "on-campus living", "residence", "nike", "apollo", "libra", "tower", "neptune", "lake claire"],
+		"t_1": ["hous", "housing", "dorm", "apartment", "on-campus living", "residence", "residency", "nike", "apollo", "libra", "tower", "neptune", "lake claire"],
 		"t_2": ["cal", "calendar", "acad", "academic calendar", "fall", "spring", "summer", "sched", "schedule", "deadline", "deadlines", "drop"],
-		"t_3": ["lib", "library", "libraries"],
+		"t_3": ["lib", "library", "libraries", "ucf library"],
 		"t_4": ["email", "knights", "mail"],
-		"t_5": ["email", "outlook"],
+		"t_5": ["email", "outlook", "faculty", "faculty email", "faculty mail"],
 		"t_6": ["giv", "giving", "gift", "donate", "donation", "giving to UCF", "give to UCF"],
 		"t_7": ["schola", "scholarship", "scholarships"],
 		"t_8": ["aid", "finan", "financial", "financial aid"],
 		"t_9": ["web", "online", "webcourses"],
 		"t_10": ["book", "bookstore"],
-		"t_11": ["tuit", "tuition", "cost"],
+		"t_11": ["tuit", "tuition", "cost", "tuition and fees", "fees"],
 		"t_12": ["orien", "orientation"],
 		"t_13": ["job", "jobs", "employment", "employ", "career", "careers"],
-		"t_14": ["career", "careers", "intern"],
-		"t_15": ["park", "parking"],
+		"t_14": ["career", "careers", "intern", "career services"],
+		"t_15": ["park", "parking", "parking services"],
 		"t_16": ["map", "campus", "campus map"],
 		"t_17": ["regist", "registrar"],
-		"t_18": ["transc", "transcript"],
+		"t_18": ["transc", "transcript", "transcripts"],
 		"t_19": ["nurs", "nursing", "college"],
 		"t_20": ["educ", "education", "college"],
 		"t_21": ["art", "arts", "humanities", "college", "cah"],
 		"t_22": ["scien", "science", "college", "cos"],
 		"t_23": ["psy", "psych", "psychology"],
-		"t_24": ["heal", "health", "service", "well"],
+		"t_24": ["heal", "health", "service", "well", "immunization", "immunizations"],
 		"t_25": ["heal", "health", "public", "affairs", "college"],
 		"t_26": ["hosp", "hospitality", "rosen", "college"],
 		"t_27": ["busi", "business", "college", "coba"],
@@ -33,13 +33,13 @@
 		"t_31": ["phon", "phone", "phonebook", "dir", "directory"],
 		"t_32": ["under", "undergrad", "undergraduate", "stud", "studies"],
 		"t_33": ["degree", "prog", "program", "undergraduate catalog"],
-		"t_34": ["tour", "tours", "campus", "open", "open house", "visit"],
+		"t_34": ["tour", "tours", "campus", "open", "open house", "visit", "campus tour", "campus visit"],
 		"t_35": ["stud", "student", "student union", "union", "food"],
 		"t_36": ["foot", "football", "athlet", "athletic"],
 		"t_37": ["under", "undergrad", "undergraduate", "admis", "admissions"],
 		"t_38": ["sga", "stud", "student", "gov", "govern"],
-		"t_39": ["cat", "catal", "catalog", "cour", "course", "under", "undergrad"],
-		"t_40": ["cat", "catal", "catalog", "cour", "course", "grad", "graduate"],
+		"t_39": ["cat", "catal", "catalog", "cour", "course", "under", "undergrad", "course catalog"],
+		"t_40": ["cat", "catal", "catalog", "cour", "course", "grad", "graduate", "course catalog"],
 		"t_41": ["grad", "graduate", "master", "college", "admis", "admissions"],
 		"t_42": ["nid", "login", "pass", "password"],
 		"t_43": ["my ucf", "myucf"],
@@ -51,7 +51,20 @@
 		"t_49": ["honors"],
 		"t_50": ["online"],
 		"t_51": ["grad", "graduation", "graduate"],
-		"t_52": ["transfer"]
+		"t_52": ["transfer", "transfer to ucf", "transfer and transition services", "transfer & transition services"],
+		"t_53": ["osi", "student involvement", "office of student involvement"],
+		"t_54": ["sas", "accessibility", "accessibility services", "student accessibility", "student accessibility services"],
+		"t_55": ["club", "clubs", "organizations", "directory", "clubs and organizations", "organization directory", "organizations directory", "club directory", "clubs directory"],
+		"t_56": ["directconnect", "direct connect", "direct connect to ucf", "direct connect ucf", "directconnect ucf", "directconnect to ucf", "admissions"],
+		"t_57": ["greek life", "greek", "frat", "fraternity", "fraternity", "sorority", "sororities", "fraternity and sorority life", "fraternity sorority life", "fraternity & sorority life"],
+		"t_58": ["where to stay near ucf", "hotel", "hotels", "hotel accomodations", "area hotels", "nearby hotels", "hotels near ucf", "hotels around ucf", "visit", "tour", "tours", "campus visit", "campus tour"],
+		"t_59": ["international", "international student", "international students", "international admission", "abroad", "ucf abroad", "study abroad", "international scholars", "international affairs", "international affairs and global strategies", "iags"],
+		"t_60": ["gta", "gta training"],
+		"t_61": ["application", "apply", "application deadline", "undergraduate application"],
+		"t_62": ["application", "apply", "application deadline", "graduate application"],
+		"t_63": ["application", "application status", "apply"],
+		"t_64": ["careers", "jobs", "student jobs", "knightlink", "knight link", "career services"],
+		"t_65": ["rwc", "rec", "recreation", "wellness", "recreation and wellness", "recreation and wellness center", "recreation & wellness center", "intramural", "intramural sports", "sports"]
 	},
 	"matches": {
 		"m_1": {
@@ -147,8 +160,8 @@
 			"url": "http://psychology.cos.ucf.edu/"
 		},
 		"m_24": {
-			"name": "Health Services",
-			"url": "http://hs.ucf.edu/"
+			"name": "Student Health Services",
+			"url": "http://shs.sdes.ucf.edu/"
 		},
 		"m_25": {
 			"name": "College of Health and Public Affairs",
@@ -261,6 +274,58 @@
 		"m_52": {
 			"name": "Transfer &amp; Transition Services",
 			"url": "http://transfer.sdes.ucf.edu/"
+		},
+		"m_53": {
+			"name": "Office of Student Involvement",
+			"url": "http://osi.ucf.edu/"
+		},
+		"m_54": {
+			"name": "Student Accessibility Services",
+			"url": "http://sas.sdes.ucf.edu/"
+		},
+		"m_55": {
+			"name": "Clubs and Organizations",
+			"url": "https://ucf.collegiatelink.net/Organizations"
+		},
+		"m_56": {
+			"name": "DirectConnect to UCF",
+			"url": "http://regionalcampuses.ucf.edu/directconnect-to-ucf/"
+		},
+		"m_57": {
+			"name": "Fraternity &amp; Sorority Life",
+			"url": "http://fsl.sdes.ucf.edu/"
+		},
+		"m_58": {
+			"name": "Hotels near UCF",
+			"url": "http://www.ucfalumni.com/alumnicenter/areahotels"
+		},
+		"m_59": {
+			"name": "International Affairs and Global Strategies",
+			"url": "https://www.international.ucf.edu/"
+		},
+		"m_60": {
+			"name": "Graduate Teaching (GTA) Training",
+			"url": "http://www.students.graduate.ucf.edu/GTA_Training_Requirements/"
+		},
+		"m_61": {
+			"name": "Undergraduate Admissions and Application Information",
+			"url": "http://admissions.ucf.edu/"
+		},
+		"m_62": {
+			"name": "Graduate Admissions and Application Information",
+			"url": "http://www.admissions.graduate.ucf.edu/"
+		},
+		"m_63": {
+			"name": "Check Application Status",
+			"url": "https://my.ucf.edu"
+		},
+		"m_64": {
+			"name": "KnightLink",
+			"url": "http://career.ucf.edu/knightlink"
+		},
+		"m_65": {
+			"name": "Recreation and Wellness Center",
+			"url": "http://rwc.sdes.ucf.edu/"
 		}
 	}
 }

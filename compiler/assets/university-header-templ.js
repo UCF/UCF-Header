@@ -337,7 +337,7 @@ function ucfhbSetJsonp(json) {
     this.searchForm       = document.getElementById('ucfhb-search-form');         // Search <form> element
     this.searchField      = document.getElementById('ucfhb-search-field');        // Search <input> element
     this.searchSubmit     = document.getElementById('ucfhb-search-submit');       // Search submit button element
-    this.searchAction     = this.searchForm.getAttribute('data-action-url');        // 'data-action-url' attr of search <form> element; should match form 'action' attr. (URL to Google Search Appliance)
+    this.searchAction     = this.searchForm.getAttribute('data-action-url');        // 'data-action-url' attr of search <form> element; should match form 'action' attr. (URL to UCF Search frontend)
     this.searchActiveClass    = 'search-is-active';                     // Class assigned to an active (visible) autocomplete <ul>
     this.searchKeytermLinkClass = 'search-autocomplete-keyterm';                // Class assigned to an autocomplete <a> element that links to a keyterm's URL
     this.searchResultsLinkClass = 'search-autocomplete-result';                 // Class assigned to an autocomplete <a> elements that links to a non-keyterm's URL (generic search result)

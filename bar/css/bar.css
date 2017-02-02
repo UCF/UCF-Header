@@ -40,12 +40,18 @@
 
 /* Main wrapper */
 #ucfhb {
+  display: block !important;
   height: 50px;
   width: 100%;
   margin: auto;
   background: #000;
   position: relative;
   z-index: 10000;
+
+  /* Flexbox-specific styles */
+  align-self: flex-start !important;
+  flex: 0 0 auto !important;
+  order: 0 !important;
 }
 
 /* Foundation CSS Framework overrides */

@@ -2,7 +2,7 @@
 	'<div id="ucfhb-inner" style="display: none;">',
 		'<div id="ucfhb-left">',
 			'<div id="ucfhb-logo">',
-				'<a href="http://www.ucf.edu">University of Central Florida</a>',
+				'<a href="https://www.ucf.edu">University of Central Florida</a>',
 			'</div>',
 			'<a id="ucfhb-mobile-toggle" href="#">Open Mobile Menu</a>',
 		'</div>',

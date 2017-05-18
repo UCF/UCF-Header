@@ -27,7 +27,7 @@
 		},
 		{
 			"name": "Giving to UCF",
-			"url": "https://giving.ucffoundation.org/ucffoundation",
+			"url": "https://www.ucffoundation.org/givenow",
 			"matches": ["giving", "gift", "donate", "donation", "giving to UCF", "give to UCF"]
 		},
 		{
@@ -37,7 +37,7 @@
 		},
 		{
 			"name": "Financial Aid",
-			"url": "http://finaid.ucf.edu/general/",
+			"url": "http://finaid.ucf.edu/",
 			"matches": ["aid", "financial", "financial aid"]
 		},
 		{
@@ -52,7 +52,7 @@
 		},
 		{
 			"name": "Tuition and Fees",
-			"url": "http://tuitionfees.smca.ucf.edu/",
+			"url": "http://www.studentaccounts.ucf.edu/TuitionFees.cfm",
 			"matches": ["tuition", "cost", "tuition and fees", "fees"]
 		},
 		{
@@ -67,7 +67,7 @@
 		},
 		{
 			"name": "Career Services",
-			"url": "http://career.sdes.ucf.edu/",
+			"url": "http://career.ucf.edu/",
 			"matches": ["careers", "intern", "career services"]
 		},
 		{
@@ -107,12 +107,12 @@
 		},
 		{
 			"name": "College of Science",
-			"url": "http://www.cos.ucf.edu/",
+			"url": "http://sciences.ucf.edu/",
 			"matches": ["cos", "college of sciences"]
 		},
 		{
 			"name": "Department of Psychology",
-			"url": "http://psychology.cos.ucf.edu/",
+			"url": "http://sciences.ucf.edu/psychology/",
 			"matches": ["department of psychology"]
 		},
 		{
@@ -272,7 +272,7 @@
 		},
 		{
 			"name": "DirectConnect to UCF",
-			"url": "http://regionalcampuses.ucf.edu/directconnect-to-ucf/",
+			"url": "http://directconnect.ucf.edu/",
 			"matches": ["directconnect", "direct connect", "direct connect to ucf", "direct connect ucf", "directconnect ucf", "directconnect to ucf", "admissions"]
 		},
 		{
@@ -281,18 +281,13 @@
 			"matches": ["greek life", "fraternity", "fraternities", "sorority", "sororities", "fraternity and sorority life", "fraternity sorority life", "fraternity & sorority life"]
 		},
 		{
-			"name": "Hotels near UCF",
-			"url": "http://www.ucfalumni.com/alumnicenter/areahotels",
-			"matches": ["where to stay near ucf", "hotel accomodations", "area hotels", "nearby hotels", "hotels near ucf", "hotels around ucf", "tours", "campus visit", "campus tour"]
-		},
-		{
 			"name": "International Affairs and Global Strategies",
 			"url": "https://www.international.ucf.edu/",
 			"matches": ["international students", "international admission", "ucf abroad", "study abroad", "international scholars", "international affairs", "international affairs and global strategies", "iags"]
 		},
 		{
 			"name": "Graduate Teaching (GTA) Training",
-			"url": "http://www.students.graduate.ucf.edu/GTA_Training_Requirements/",
+			"url": "https://funding.graduate.ucf.edu/Graduate_Teaching/",
 			"matches": ["gta training"]
 		},
 		{

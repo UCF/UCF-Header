@@ -52,7 +52,7 @@
 		},
 		{
 			"name": "Tuition and Fees",
-			"url": "http://tuitionfees.smca.ucf.edu/",
+			"url": "http://www.studentaccounts.ucf.edu/TuitionFees.cfm",
 			"matches": ["tuition", "cost", "tuition and fees", "fees"]
 		},
 		{

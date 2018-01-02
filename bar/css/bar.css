@@ -54,6 +54,12 @@
   order: 0 !important;
 }
 
+@media print {
+  #ucfhb {
+    display: none !important;
+  }
+}
+
 /* Foundation CSS Framework overrides */
 #ucfhb,
 #ucfhb:before,

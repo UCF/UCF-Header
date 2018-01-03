@@ -1,137 +1,188 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<title>UCF University Header</title>
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<meta charset="utf-8">
-		<link media="all" type="text/css" href="//www.ucf.edu/wp-content/themes/Main-Site-Theme/static/css/style.min.css" rel="stylesheet">
-		<script type="text/javascript" id="ucfhb-script" src="bar/js/university-header.js"></script>
-		<style type="text/css">
-			h1 { padding-top: 20px; }
-			h3 { padding-top: 10px; }
-		</style>
-	</head>
-	<body>
-		<div class="container">
-			<div class="row">
-				<div class="col-md-12">
-					<h1>University Header</h1>
-					<p>
-						The UCF University Header is a cohesive marketing and branding tool for the entire university. It provides consistent
-						navigational elements and a universal search feature with search suggestions.
-					</p>
-					<p>
-						The University Header has a responsive option and will adapt to various screen sizes as necessary. Responsiveness follows
-						<a href="http://getbootstrap.com"><strong>Twitter Bootstrap's</strong></a> breakpoint standards.
-					</p>
+  <head>
+    <title>UCF University Header</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="https://cdn.ucf.edu/athena-framework/latest/css/framework.min.css">
+    <script type="text/javascript" id="ucfhb-script" src="bar/js/university-header.js"></script>
+  </head>
+  <body>
+    <div class="container mt-3 mt-sm-5 mb-sm-3">
+      <div class="row">
+        <div class="col-xl-10 offset-xl-1">
+          <h1>University Header</h1>
+          <p class="lead">
+            The UCF University Header is a cohesive marketing and branding tool for the entire university. It provides consistent
+            navigational elements and a universal search feature with search suggestions.
+          </p>
+          <p class="lead">
+            The University Header has a responsive option and will adapt to various screen sizes as necessary. Responsiveness follows
+            <a href="http://getbootstrap.com"><strong>Twitter Bootstrap's</strong></a> breakpoint standards.
+          </p>
+        </div>
+      </div>
+    </div>
 
-					<div class="jumbotron">
-						<h2>Installation</h2>
-						<p>
-							To add the University Header to your website, add this script tag to your document.
-						</p>
-						<pre>&lt;script type="text/javascript" id="ucfhb-script" src="//universityheader.ucf.edu/bar/js/university-header.js"&gt;&lt;/script&gt;</pre>
-					</div>
+    <div class="jumbotron jumbotron-fluid bg-faded mt-3 mt-sm-4 mb-sm-5">
+      <div class="container">
+        <div class="row">
+          <div class="col-xl-10 offset-xl-1">
+            <h2 class="heading-underline h3 mb-4">Installation</h2>
+            <p>
+              To add the University Header to your website, add this script tag to your document.
+            </p>
+            <div class="card">
+              <div class="card-block">
+                <pre class="mb-0">&lt;script type="text/javascript" id="ucfhb-script" src="//universityheader.ucf.edu/bar/js/university-header.js"&gt;&lt;/script&gt;</pre>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
 
-					<h2>Usage</h2>
-					<p>
-						The University Header is a "plug-and-go" solution. Please keep the following in mind when including it on your site:
-					</p>
-					<ol>
-						<li>
-							<h3>The University Header should be consistent visually and functionally across all UCF websites.</h3>
-							Please do not modify the bar's existing appearance or functionality, such as modifying graphics/colors associated with the bar,
-							links included within the bar, markup associated with the bar or the search and autocomplete functionality.
-						</li>
-						<li>
-							<h3>The University Header should always be at the top of each page.</h3>
-							Do not modify where the bar is intended to render. The bar should always be the first element on the page.
-						</li>
-						<li>
-							<h3>The University Header should not present any other content beyond its default content.</h3>
-							The bar should not be given the appearance of an "attachment" of the default bar on your site, and should not include extra
-							links or graphics beyond what the default bar provides.
-							<em>Your site's navigation should not be displayed as an extension or piece of the University Header.</em>
-						</li>
-					</ol>
+    <div class="container mt-sm-3 mb-5">
+      <div class="row">
+        <div class="col-xl-10 offset-xl-1">
+          <h2 class="heading-underline h3 mb-4">Usage</h2>
+          <p>
+            The University Header is a "plug-and-go" solution. Please keep the following in mind when including it on your site:
+          </p>
 
-					<hr/>
+          <h3 class="h4 media align-items-center mt-4 mt-sm-5 mb-3">
+            <span class="d-flex text-center bg-primary text-inverse rounded-circle mr-3" style="padding: .25em .375em .275em;">1.</span>
+            <span class="media-body">The University Header should be consistent visually and functionally across all UCF websites.</span>
+          </h3>
+          <p>
+            Please do not modify the bar's existing appearance or functionality, such as modifying graphics/colors associated with the bar, links included within the bar, markup associated with the bar or the search and autocomplete functionality.
+          </p>
 
-					<h2>Options</h2>
-					<h3>Responsiveness</h3>
-					<p>
-						To utilize a responsive bar, simply make sure your site's <code>&lt;head&gt;</code> includes the following <code>&lt;meta&gt;</code> tag:
-					</p>
-					<pre>&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;</pre>
+          <h3 class="h4 media align-items-center mt-4 mt-md-5 mb-3">
+            <span class="d-flex text-center bg-primary text-inverse rounded-circle mr-3" style="padding: .25em .375em .275em;">2.</span>
+            <span class="media-body">The University Header should always be at the top of each page.</span>
+          </h3>
+          <p>
+            Do not modify where the bar is intended to render. The bar should always be the first visible element on the page.
+          </p>
 
-					<h3>Bootstrap 2.x overrides</h3>
-					<p>
-						Due to the way that some older versions of the Bootstrap CSS framework apply left- and right-hand padding to elements at screen sizes less than 768px wide,
-						a style override is necessary for sites using these versions of Bootstrap if they utilize responsive styles.
-					</p>
-					<pre>&lt;script type="text/javascript" id="ucfhb-script" src="//universityheader.ucf.edu/bar/js/university-header.js?use-bootstrap-overrides=1"&gt;&lt;/script&gt;</pre>
+          <h3 class="h4 media align-items-center mt-4 mt-md-5 mb-3">
+            <span class="d-flex text-center bg-primary text-inverse rounded-circle mr-3" style="padding: .25em .375em .275em;">3.</span>
+            <span class="media-body">The University Header should not present any other content beyond its default content.</span>
+          </h3>
+          <p>
+            The bar should not be given the appearance of an "attachment" of the default bar on your site, and should not include extra links or graphics beyond what the default bar provides.
+          </p>
+          <p>
+            <em>Your site's navigation should not be displayed as an extension or piece of the University Header.</em>
+          </p>
 
-					<h3>For sites with a max-width greater than 1200px</h3>
-					<p>
-						A "use-1200-breakpoint" parameter can be added to display a wider version of the header.
-					</p>
-					<pre>&lt;script type="text/javascript" id="ucfhb-script" src="//universityheader.ucf.edu/bar/js/university-header.js?use-1200-breakpoint=1"&gt;&lt;/script&gt;</pre>
-					<div class="alert alert-info">
-						<p>
-							<i class="icon-info-sign"></i> <strong>Note:</strong> These options require that the <code>&lt;script&gt;</code> tag has an ID of <code>ucfhb-script</code>.
-							If your site runs on WordPress, uses <code><a href="http://codex.wordpress.org/Function_Reference/wp_enqueue_script">wp_enqueue_script()</a></code> to enqueue scripts, and requires these overrides, enqueue the University Header script with <code>wp_enqueue_script()</code> using the parameter(s) above, and add the following snippet to your theme's functions.php file:</p>
-							<pre>/**
+
+          <hr class="my-5">
+
+          <h2 class="heading-underline h3 mb-4">Options</h2>
+          <h3 class="h4 mt-4">Responsiveness</h3>
+          <p>
+            To utilize a responsive bar, simply make sure your site's <code>&lt;head&gt;</code> includes the following <code>&lt;meta&gt;</code> tag:
+          </p>
+          <div class="card mb-4">
+            <div class="card-block">
+              <pre class="mb-0">&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;</pre>
+            </div>
+          </div>
+
+          <h3 class="h4 mt-4">Using a placeholder element (Skip Navigation link support)</h3>
+          <p>
+            If for technical or accessibility-related reasons, you need to place some element(s) before the header (e.g. for implementing a Skip Navigation link), you can include a placeholder element in your page markup for where the header will be placed.
+          </p>
+          <p>
+            We recommend absolutely-positioning and/or using a "visible-on-focus" technique for Skip Navigation links to ensure the header is still the first visible element on the page.  For more information on Skip Navigation techniques, see <a href="https://webaim.org/techniques/skipnav/" target="_blank">this WebAIM article on Skip Navigation links</a>.
+          </p>
+          <p>
+            Do not use a header placeholder to insert any other types of content or stylistic adjustments before the header.
+          </p>
+          <div class="card mb-4">
+            <div class="card-block">
+              <pre class="mb-0">&lt;body&gt;
+  &lt;a href="#content"&gt;Skip Navigation&lt;/a&gt;
+  &lt;div id="ucfhb"&gt;&lt;/div&gt;
+  ...
+</pre>
+            </div>
+          </div>
+
+          <h3 class="h4 mt-4">Bootstrap 2.x overrides</h3>
+          <p>
+            Due to the way that some older versions of the Bootstrap CSS framework apply left- and right-hand padding to elements at screen sizes less than 768px wide,
+            a style override is necessary for sites using these versions of Bootstrap if they utilize responsive styles.
+          </p>
+          <div class="card mb-4">
+            <div class="card-block">
+              <pre class="mb-0">&lt;script type="text/javascript" id="ucfhb-script" src="//universityheader.ucf.edu/bar/js/university-header.js?use-bootstrap-overrides=1"&gt;&lt;/script&gt;</pre>
+            </div>
+          </div>
+
+          <h3 class="h4 mt-4">For sites with a max-width greater than 1200px</h3>
+          <p>
+            A <code>use-1200-breakpoint</code> parameter can be added to display a wider version of the header.
+          </p>
+          <div class="card mb-4">
+            <div class="card-block">
+              <pre class="mb-0">&lt;script type="text/javascript" id="ucfhb-script" src="//universityheader.ucf.edu/bar/js/university-header.js?use-1200-breakpoint=1"&gt;&lt;/script&gt;</pre>
+            </div>
+          </div>
+
+          <div class="alert alert-info my-4">
+            <p>
+              <strong>Note:</strong> These parameter-based options require that the <code>&lt;script&gt;</code> tag has an ID of <code>ucfhb-script</code>.
+              If your site runs on WordPress, uses <code><a href="http://codex.wordpress.org/Function_Reference/wp_enqueue_script">wp_enqueue_script()</a></code> to enqueue scripts, and requires these overrides, enqueue the University Header script with <code>wp_enqueue_script()</code> using the parameter(s) above, and add the following snippet to your theme's functions.php file:
+            </p>
+            <div class="card mb-4">
+              <div class="card-block">
+                <pre class="mb-0">/**
  * Add ID attribute to registered University Header script.
  **/
-function add_id_to_ucfhb($url) {
-    if ( (false !== strpos($url, 'bar/js/university-header.js')) || (false !== strpos($url, 'bar/js/university-header-full.js')) ) {
-      remove_filter('clean_url', 'add_id_to_ucfhb', 10, 3);
-      return "$url' id='ucfhb-script";
-    }
-    return $url;
+function add_id_to_ucfhb( $url ) {
+  if ( ( false !== strpos( $url, 'bar/js/university-header.js' ) ) || ( false !== strpos( $url, 'bar/js/university-header-full.js' ) ) ) {
+    remove_filter( 'clean_url', 'add_id_to_ucfhb', 10, 3 );
+    return "$url' id='ucfhb-script";
+  }
+  return $url;
 }
-add_filter('clean_url', 'add_id_to_ucfhb', 10, 3);
+add_filter( 'clean_url', 'add_id_to_ucfhb', 10, 3 );
 </pre>
-					</div>
+              </div>
+            </div>
+          </div>
 
-					<h3>Protocol-relative script source in WordPress</h3>
-					<p>
-						Keep in mind that protocol-agnostic URLs ('//universityheader.ucf.edu...' vs 'http://universityheader.ucf.edu...') can only be
-						<a href="http://codex.wordpress.org/Function_Reference/wp_register_script">registered</a> via WordPress in version 3.5 or above.
-						Older version of WordPress that enqueue scripts must specify a protocol at the beginning of the script source; this can be done explicitly
-						or can be grabbed on the fly, using PHP.
-					</p>
+          <hr class="my-5">
 
-					<hr/>
+          <h2 class="heading-underline h3 mb-4">Browser Compatibility</h2>
 
-					<h2>Browser Compatibility</h2>
+          <h3 class="h4 mt-4">Desktop</h3>
+          <p>
+            The University Header is compatible with IE7 and greater and works in any other modern browser.<br/>
+            Note that some features, such as CSS3 animations on the UCF Login toggle, are not available on older browsers.  Responsiveness is
+            nonfunctional in IE8 and older due to lack of support for CSS media queries; functionality can be added with additional libraries such as
+            <a href="https://github.com/scottjehl/Respond">respond.js</a> if necessary.  The UCF Header has not been tested with these libraries
+            and support with these libraries is not guaranteed.
+          </p>
 
-					<h3>Desktop</h3>
-					<p>
-						The University Header is compatible with IE7 and greater and works in any other modern browser.<br/>
-						Note that some features, such as CSS3 animations on the UCF Login toggle, are not available on older browsers.  Responsiveness is
-						nonfunctional in IE8 and older due to lack of support for CSS media queries; functionality can be added with additional libraries such as
-						<a href="https://github.com/scottjehl/Respond">respond.js</a> if necessary.  The UCF Header has not been tested with these libraries
-						and support with these libraries is not guaranteed.
-					</p>
+          <h3 class="h4 mt-4">Mobile</h3>
+          <p>
+            The University Header has been tested in iOS 6.0+ and stock Android browser emulators running Android v1.5+, as well as the latest
+            version of Opera Mobile.
+          </p>
 
-					<h3>Mobile</h3>
-					<p>
-						The University Header has been tested in iOS 6.0+ and stock Android browser emulators running Android v1.5+, as well as the latest
-						version of Opera Mobile.
-					</p>
-
-					<div class="alert alert-info">
-						<p>
-							<i class="icon-info-sign"></i> <strong>Note:</strong> The University Header may not render properly if the <code>&lt;body&gt;</code>
-							tag on your site has margins, padding, or other non-standard styles applied to it.  Use a CSS Reset, CSS framework, or your own
-							<code>&lt;body&gt;</code> tag styles to ensure consistent rendering across all browsers.
-						</p>
-					</div>
-
-					<br/><br/>
-				</div>
-			</div>
-		</div>
-	</body>
+          <div class="alert alert-info my-4">
+            <p>
+              <strong>Note:</strong> The University Header may not render properly if the <code>&lt;body&gt;</code>
+              tag on your site has margins, padding, or other non-standard styles applied to it.  Use a CSS Reset, CSS framework, or your own
+              <code>&lt;body&gt;</code> tag styles to ensure consistent rendering across all browsers.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
 </html>

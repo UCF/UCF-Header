@@ -1,14 +1,14 @@
 <!DOCTYPE html>
-<html>
-	<head>
-		<title>UCF University Header</title>
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<meta charset="utf-8">
+<html lang="en">
+  <head>
+    <title>UCF University Header</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8">
     <link rel="stylesheet" href="https://cdn.ucf.edu/athena-framework/latest/css/framework.min.css">
-		<script type="text/javascript" id="ucfhb-script" src="bar/js/university-header.js"></script>
-	</head>
-	<body>
-		<div class="container mt-3 mt-sm-5 mb-sm-3">
+    <script type="text/javascript" id="ucfhb-script" src="bar/js/university-header.js"></script>
+  </head>
+  <body>
+    <div class="container mt-3 mt-sm-5 mb-sm-3">
       <div class="row">
         <div class="col-xl-10 offset-xl-1">
           <h1>University Header</h1>
@@ -22,7 +22,7 @@
           </p>
         </div>
       </div>
-		</div>
+    </div>
 
     <div class="jumbotron jumbotron-fluid bg-faded mt-3 mt-sm-4 mb-sm-5">
       <div class="container">
@@ -135,7 +135,7 @@
           <div class="alert alert-info my-4">
             <p>
               <strong>Note:</strong> These parameter-based options require that the <code>&lt;script&gt;</code> tag has an ID of <code>ucfhb-script</code>.
-              If your site runs on WordPress, uses <code><a href="http://codex.wordpress.org/Function_Reference/wp_enqueue_script">wp_enqueue_script()</a></code> to enqueue scripts, and requires these overrides, enqueue the University Header script with <code><a href="http://codex.wordpress.org/Function_Reference/wp_enqueue_script">wp_enqueue_script()</a></code> using the parameter(s) above, and add the following snippet to your theme's functions.php file:
+              If your site runs on WordPress, uses <code><a href="http://codex.wordpress.org/Function_Reference/wp_enqueue_script">wp_enqueue_script()</a></code> to enqueue scripts, and requires these overrides, enqueue the University Header script with <code>wp_enqueue_script()</code> using the parameter(s) above, and add the following snippet to your theme's functions.php file:
             </p>
             <div class="card mb-4">
               <div class="card-block">
@@ -184,5 +184,5 @@ add_filter( 'clean_url', 'add_id_to_ucfhb', 10, 3 );
         </div>
       </div>
     </div>
-	</body>
+  </body>
 </html>

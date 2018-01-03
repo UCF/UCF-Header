@@ -258,15 +258,18 @@
   text-align: left;
 }
 #ucfhb-search form label {
+  border: 0;
+  clip: rect(0, 0, 0, 0);
+  color: #fff; /* Suppresses contrast warnings in WAVE */
   display: block;
+  font-size: 0;
+  line-height: 0 !important;
   position: absolute;
   width: 1px;
   height: 1px;
-  text-indent: -9999px;
-  margin: 0;
+  margin: -1px;
+  overflow: hidden;
   padding: 0;
-  line-height: 0 !important;
-  font-size: 0;
 }
 #ucfhb-search-field {
   width: 148px !important;
@@ -343,12 +346,14 @@
 }
 
 #ucfhb-search-autocomplete-srhelp {
+  border: 0;
+  clip: rect(0, 0, 0, 0);
   display: block;
-  text-indent: -9999px;
   position: absolute;
   width: 1px;
   height: 1px;
-  margin: 0;
+  margin: -1px;
+  overflow: hidden;
   padding: 0;
 }
 

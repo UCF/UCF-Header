@@ -63,7 +63,7 @@
             <span class="media-body">The University Header should always be at the top of each page.</span>
           </h3>
           <p>
-            Do not modify where the bar is intended to render. The bar should always be the first element on the page.
+            Do not modify where the bar is intended to render. The bar should always be the first visible element on the page.
           </p>
 
           <h3 class="h4 media align-items-center mt-4 mt-md-5 mb-3">
@@ -88,6 +88,26 @@
           <div class="card mb-4">
             <div class="card-block">
               <pre class="mb-0">&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;</pre>
+            </div>
+          </div>
+
+          <h3 class="h4 mt-4">Using a placeholder element (Skip Navigation link support)</h3>
+          <p>
+            If for technical or accessibility-related reasons, you need to place some element(s) before the header (e.g. for implementing a Skip Navigation link), you can include a placeholder element in your page markup for where the header will be placed.
+          </p>
+          <p>
+            We recommend absolutely-positioning and/or using a "visible-on-focus" technique for Skip Navigation links to ensure the header is still the first visible element on the page.  For more information on Skip Navigation techniques, see <a href="https://webaim.org/techniques/skipnav/" target="_blank">this WebAIM article on Skip Navigation links</a>.
+          </p>
+          <p>
+            Do not use a header placeholder to insert any other types of content or stylistic adjustments before the header.
+          </p>
+          <div class="card mb-4">
+            <div class="card-block">
+              <pre class="mb-0">&lt;body&gt;
+  &lt;a href="#content"&gt;Skip Navigation&lt;/a&gt;
+  &lt;div id="ucfhb"&gt;&lt;/div&gt;
+  ...
+</pre>
             </div>
           </div>
 

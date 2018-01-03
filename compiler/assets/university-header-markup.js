@@ -27,6 +27,6 @@
 				'<a id="ucfhb-search-minimal" href="#">Search</a>',
 			'</div>',
 		'</div>',
-		'<ul id="ucfhb-search-autocomplete" tabindex="1" aria-hidden="true" aria-label="Search Results" role="listbox"></ul>',
+		'<ul id="ucfhb-search-autocomplete" aria-hidden="true" role="listbox"></ul>',
 	'</div>'
 ]

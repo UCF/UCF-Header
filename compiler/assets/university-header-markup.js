@@ -20,13 +20,13 @@
 			'<div id="ucfhb-search">',
 				'<form action="//search.ucf.edu/" data-action-url="//search.ucf.edu#?q=" data-autosearch-url="'+ ucfhbJsonpScript +'" method="get" name="ucfhb-search-form" id="ucfhb-search-form" autocomplete="off">',
 					'<label for="ucfhb-search-field">Search UCF</label>',
-					'<input type="text" name="#q" id="ucfhb-search-field" placeholder="Search UCF" autocomplete="off" autocapitalize="off" aria-autocomplete="list" aria-owns="ucfhb-search-autocomplete" aria-activedescendant="ucfhb-autocomplete-selected" aria-haspopup="true" role="search" />',
+					'<input type="text" name="#q" id="ucfhb-search-field" placeholder="Search UCF" autocomplete="off" autocapitalize="off" aria-autocomplete="list" aria-owns="ucfhb-search-autocomplete" aria-activedescendant="ucfhb-autocomplete-selected" aria-haspopup="true" role="searchbox" />',
 					'<input type="submit" value="Search" id="ucfhb-search-submit" />',
 				'</form>',
 				'<span id="ucfhb-search-autocomplete-srhelp" role="status" aria-live="polite"></span>',
 				'<a id="ucfhb-search-minimal" href="#">Search</a>',
 			'</div>',
 		'</div>',
-		'<ul id="ucfhb-search-autocomplete" tabindex="1" aria-hidden="true" role="listbox"></ul>',
+		'<ul id="ucfhb-search-autocomplete" tabindex="1" aria-hidden="true" aria-label="Search Results" role="listbox"></ul>',
 	'</div>'
 ]

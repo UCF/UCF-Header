@@ -28,15 +28,31 @@
       <div class="container">
         <div class="row">
           <div class="col-xl-10 offset-xl-1">
-            <h2 class="heading-underline h3 mb-4">Installation</h2>
+            <h2 class="heading-underline h3 mb-4 mb-sm-5" id="installation">Installation</h2>
+
+            <h3 class="h4 mt-4">Standard</h3>
             <p>
-              To add the University Header to your website, add this script tag to your document.
+              To add the standard University Header to your website, add this script tag to your document.
             </p>
             <div class="card">
               <div class="card-block">
                 <pre class="mb-0">&lt;script type="text/javascript" id="ucfhb-script" src="//universityheader.ucf.edu/bar/js/university-header.js"&gt;&lt;/script&gt;</pre>
               </div>
             </div>
+
+            <h3 class="h4 mt-4 mt-sm-5">Wide Version</h3>
+            <p>
+              The header shown on this page is the standard, default width provided. A <code>use-1200-breakpoint</code> parameter can be added to display a wider version of the header:
+            </p>
+            <div class="card mb-4">
+              <div class="card-block">
+                <pre class="mb-0">&lt;script type="text/javascript" id="ucfhb-script" src="//universityheader.ucf.edu/bar/js/university-header.js?use-1200-breakpoint=1"&gt;&lt;/script&gt;</pre>
+              </div>
+            </div>
+
+            <p>
+              See the <a href="#options">Options section</a> for more available configuration options.
+            </p>
           </div>
         </div>
       </div>
@@ -45,7 +61,7 @@
     <div class="container mt-sm-3 mb-5">
       <div class="row">
         <div class="col-xl-10 offset-xl-1">
-          <h2 class="heading-underline h3 mb-4">Usage</h2>
+          <h2 class="heading-underline h3 mb-4" id="usage">Usage</h2>
           <p>
             The University Header is a "plug-and-go" solution. Please keep the following in mind when including it on your site:
           </p>
@@ -80,7 +96,7 @@
 
           <hr class="my-5">
 
-          <h2 class="heading-underline h3 mb-4">Options</h2>
+          <h2 class="heading-underline h3 mb-4" id="options">Options</h2>
           <h3 class="h4 mt-4">Responsiveness</h3>
           <p>
             To utilize a responsive bar, simply make sure your site's <code>&lt;head&gt;</code> includes the following <code>&lt;meta&gt;</code> tag:
@@ -122,19 +138,9 @@
             </div>
           </div>
 
-          <h3 class="h4 mt-4">For sites with a max-width greater than 1200px</h3>
-          <p>
-            A <code>use-1200-breakpoint</code> parameter can be added to display a wider version of the header.
-          </p>
-          <div class="card mb-4">
-            <div class="card-block">
-              <pre class="mb-0">&lt;script type="text/javascript" id="ucfhb-script" src="//universityheader.ucf.edu/bar/js/university-header.js?use-1200-breakpoint=1"&gt;&lt;/script&gt;</pre>
-            </div>
-          </div>
-
           <div class="alert alert-info my-4">
             <p>
-              <strong>Note:</strong> These parameter-based options require that the <code>&lt;script&gt;</code> tag has an ID of <code>ucfhb-script</code>.
+              <strong>Note:</strong> Parameter-based options such as <code>use-1200-breakpoint</code> and <code>use-bootstrap-overrides</code> require that the <code>&lt;script&gt;</code> tag has an ID of <code>ucfhb-script</code>.
               If your site runs on WordPress, uses <code><a href="http://codex.wordpress.org/Function_Reference/wp_enqueue_script">wp_enqueue_script()</a></code> to enqueue scripts, and requires these overrides, enqueue the University Header script with <code>wp_enqueue_script()</code> using the parameter(s) above, and add the following snippet to your theme's functions.php file:
             </p>
             <div class="card mb-4">
@@ -157,7 +163,7 @@ add_filter( 'clean_url', 'add_id_to_ucfhb', 10, 3 );
 
           <hr class="my-5">
 
-          <h2 class="heading-underline h3 mb-4">Browser Compatibility</h2>
+          <h2 class="heading-underline h3 mb-4" id="browser-compatibility">Browser Compatibility</h2>
 
           <h3 class="h4 mt-4">Desktop</h3>
           <p>

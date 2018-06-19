@@ -228,9 +228,20 @@ function ucfhbSetJsonp(json) {
     // is clicked (and this class is replaced/removed.)
     ucfhbBar.className += ' preload';
 
+    // Add role="complementary" with label to #ucfhb.
+    ucfhbBar.setAttribute('role', 'complementary');
+    ucfhbBar.setAttribute('aria-label', 'University of Central Florida navbar');
+
     // Add the bar's markup; initialize autocomplete + event listeners
     var markup = @!@MARKUP@!@;
     ucfhbBar.innerHTML = markup.join('\n');
+
+    // Add screenreader helper element to the bottom of the document.
+    var ucfhbAutocompleteHelp = document.createElement('span');
+    ucfhbAutocompleteHelp.id = 'ucfhb-search-autocomplete-srhelp';
+    ucfhbAutocompleteHelp.setAttribute('role', 'status');
+    ucfhbAutocompleteHelp.setAttribute('aria-live', 'polite');
+    document.body.appendChild(ucfhbAutocompleteHelp);
 
     callback();
   }
@@ -419,6 +430,7 @@ function ucfhbSetJsonp(json) {
       else {
         self.autocompleteList.className = '';
         self.autocompleteList.setAttribute('aria-hidden', 'true');
+        self.searchField.setAttribute('aria-activedescendant', '');
       }
     };
 
@@ -587,6 +599,9 @@ function ucfhbSetJsonp(json) {
 
         // Assign new search field value
         self.searchField.value = newSearchVal.replace(/&#39;/g,"'");
+
+        // Update aria-activedescendant attr on searchField
+        self.searchField.setAttribute('aria-activedescendant', selectedId);
 
         // Simulate a right-arrow keystroke to force a re-read of
         // search field val for screenreaders.

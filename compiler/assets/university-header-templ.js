@@ -430,6 +430,7 @@ function ucfhbSetJsonp(json) {
       else {
         self.autocompleteList.className = '';
         self.autocompleteList.setAttribute('aria-hidden', 'true');
+        self.searchField.setAttribute('aria-activedescendant', '');
       }
     };
 
@@ -598,6 +599,9 @@ function ucfhbSetJsonp(json) {
 
         // Assign new search field value
         self.searchField.value = newSearchVal.replace(/&#39;/g,"'");
+
+        // Update aria-activedescendant attr on searchField
+        self.searchField.setAttribute('aria-activedescendant', selectedId);
 
         // Simulate a right-arrow keystroke to force a re-read of
         // search field val for screenreaders.

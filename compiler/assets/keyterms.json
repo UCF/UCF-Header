@@ -98,7 +98,7 @@
 		{
 			"name": "College of Community Innovation and Education",
 			"url": "https://ccie.ucf.edu/",
-			"matches": ["education", "community", "innovation", "college", "college of community innovation and education"]
+			"matches": ["education", "community", "innovation", "college", "college of community innovation and education", "ccie"]
 		},
 		{
 			"name": "College of Arts and Humanities",
@@ -123,7 +123,7 @@
 		{
 			"name": "College of Health Professions and Sciences",
 			"url": "https://healthprofessions.ucf.edu/",
-			"matches": ["health", "professions", "sciences", "college of health professions and sciences"]
+			"matches": ["health", "professions", "sciences", "college of health professions and sciences", "chps"]
 		},
 		{
 			"name": "Rosen College of Hospitality Management",

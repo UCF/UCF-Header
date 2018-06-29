@@ -1,0 +1,41 @@
+@import 'variables';
+@import 'mixins';
+
+
+// scss-lint:disable ImportantRule IdSelector
+
+//
+// Opt-in css to include Bootstrap's 1200px breakpoint
+//
+
+ @media (min-width: 1200px) {
+  #ucfhb-inner {
+    width: 1140px;
+  }
+
+  #ucfhb-logo a {
+    background-position: 0 -131px;
+    width: 322px;
+  }
+
+  #ucfhb-right {
+    width: 460px;
+  }
+
+  #ucfhb-signon-logo {
+    right: 238px;
+  }
+
+  #ucfhb-search,
+  #ucfhb-search form {
+    width: 270px;
+  }
+
+  #ucfhb-search-field {
+    width: 208px !important;
+  }
+
+  #ucfhb-search-autocomplete {
+    width: 320px;
+  }
+}

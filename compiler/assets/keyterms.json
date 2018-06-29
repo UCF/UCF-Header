@@ -96,9 +96,9 @@
 			"matches": ["nursing", "college", "college of nursing"]
 		},
 		{
-			"name": "College of Education and Human Performance",
-			"url": "http://education.ucf.edu/",
-			"matches": ["education", "college", "college of education and human performance"]
+			"name": "College of Community Innovation and Education",
+			"url": "https://ccie.ucf.edu/",
+			"matches": ["education", "community", "innovation", "college", "college of community innovation and education"]
 		},
 		{
 			"name": "College of Arts and Humanities",
@@ -121,9 +121,9 @@
 			"matches": ["health", "services", "wellness", "immunizations", "student health services"]
 		},
 		{
-			"name": "College of Health and Public Affairs",
-			"url": "http://cohpa.ucf.edu/",
-			"matches": ["health", "public", "affairs", "college of health and public affairs"]
+			"name": "College of Health Professions and Sciences",
+			"url": "https://healthprofessions.ucf.edu/",
+			"matches": ["health", "professions", "sciences", "college of health professions and sciences"]
 		},
 		{
 			"name": "Rosen College of Hospitality Management",

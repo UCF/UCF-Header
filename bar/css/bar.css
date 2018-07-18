@@ -73,6 +73,17 @@
 }
 /* Common miscellaneous overrides */
 #ucfhb a { border: 0; }
+#ucfhb a:hover { opacity: 1; }
+#ucfhb button {
+  -webkit-box-shadow: 0 0 transparent;
+  -moz-box-shadow: 0 0 transparent;
+  box-shadow: 0 0 transparent;
+}
+#ucfhb button:hover,
+#ucfhb button:active,
+#ucfhb button:focus {
+  top: 0;
+}
 
 /* Inner wrap (fixed 940px width) */
 /* display: block is added to override display:none inline styles, which prevent
@@ -404,6 +415,11 @@
   -ms-transition: all 0.2s ease-in 0.4s;
   transition: all 0.2s ease-in 0.4s;
   width: 29px;
+}
+#ucfhb-search-minimal:hover,
+#ucfhb-search-minimal:active,
+#ucfhb-search-minimal:focus {
+  top: 2px !important;
 }
 #ucfhb-search form #ucfhb-search-submit:hover,
 #ucfhb-search-minimal:hover {

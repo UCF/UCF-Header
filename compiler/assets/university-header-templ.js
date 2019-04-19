@@ -345,6 +345,7 @@ function ucfhbSetJsonp(json) {
     this.autocompleteHelp   = document.getElementById('ucfhb-search-autocomplete-srhelp');  // Help text for screenreaders
     this.autocompleteList   = document.getElementById('ucfhb-search-autocomplete');     // Autocomplete <ul> element
     this.autocompleteSelectedId = 'ucfhb-autocomplete-selected';                // ID assigned to a selected autocomplete <li>
+    this.searchBar        = document.getElementById('ucfhb-search'),            // Wrapper combobox element around the search form
     this.searchForm       = document.getElementById('ucfhb-search-form');         // Search <form> element
     this.searchField      = document.getElementById('ucfhb-search-field');        // Search <input> element
     this.searchSubmit     = document.getElementById('ucfhb-search-submit');       // Search submit button element
@@ -412,6 +413,8 @@ function ucfhbSetJsonp(json) {
       while (self.autocompleteList.hasChildNodes()) {
         self.autocompleteList.removeChild(self.autocompleteList.lastChild);
       }
+      // Wipe out any existing activedescendant value on the search input
+      self.searchField.removeAttribute('aria-activedescendant');
     };
 
     // Returns true or false if an autocomplete list is visible
@@ -425,11 +428,11 @@ function ucfhbSetJsonp(json) {
       self.clearAutocompleteResults();
       if (toggleVal === true) {
         self.autocompleteList.className = self.searchActiveClass;
-        self.autocompleteList.setAttribute('aria-hidden', 'false');
+        self.searchBar.setAttribute('aria-expanded', 'true');
       }
       else {
         self.autocompleteList.className = '';
-        self.autocompleteList.setAttribute('aria-hidden', 'true');
+        self.searchBar.setAttribute('aria-expanded', 'false');
       }
     };
 
@@ -530,6 +533,7 @@ function ucfhbSetJsonp(json) {
                   var listItem = document.createElement('li');
                   listItem.innerHTML = '<a class="'+ self.searchResultsLinkClass +'" href="' + resultUrl + '" tabindex="0" >' + nameSpan + orgSpan + '</a>';
                   listItem.setAttribute('data-name-val', name);
+                  listItem.setAttribute('role', 'option');
 
                   var link = listItem.getElementsByTagName('a')[0];
                   ucfhbAssignTrackingListener(link, 'click', new String(resultUrl), ucfhbTrackingActionACSearch, '' + name);
@@ -585,48 +589,28 @@ function ucfhbSetJsonp(json) {
         listFirstChild.id = '';
         listLastChild.id = '';
 
+        // Unset any existing aria-selected attribute
+        oldLi.removeAttribute('aria-selected');
+        listFirstChild.removeAttribute('aria-selected');
+        listLastChild.removeAttribute('aria-selected');
+
         // previous/nextSibling returns null when sibling is not found
         if (newLi !== null) {
           defaultLi.id = '';
           newLi.id = selectedId;
+          newLi.setAttribute('aria-selected', 'true');
+          this.searchField.setAttribute('aria-activedescendant', selectedId);
           newSearchVal = newLi.getAttribute('data-name-val');
         }
         else {
           defaultLi.id = selectedId;
+          defaultLi.setAttribute('aria-selected', 'true');
+          this.searchField.setAttribute('aria-activedescendant', selectedId);
           newSearchVal = defaultLi.getAttribute('data-name-val');
         }
 
         // Assign new search field value
-        self.searchField.value = newSearchVal.replace(/&#39;/g,"'");
-
-        // Simulate a right-arrow keystroke to force a re-read of
-        // search field val for screenreaders.
-        // Fall back to document.createEventObject for <IE9
-        // http://stackoverflow.com/a/12187302
-        // http://stackoverflow.com/a/827793
-        var srEvent = null;
-        if (document.createEvent) {
-          srEvent = document.createEvent('KeyboardEvent');
-          var initMethod = typeof srEvent.initKeyboardEvent !== 'undefined' ? 'initKeyboardEvent' : 'initKeyEvent';
-          srEvent[initMethod](
-            'keydown', // event type : keydown, keyup, keypress
-            true, // bubbles
-            true, // cancelable
-            window, // viewArg: should be window
-            false, // ctrlKeyArg
-            false, // altKeyArg
-            false, // shiftKeyArg
-            false, // metaKeyArg
-            39, // keyCodeArg : unsigned long the virtual key code, else 0
-            0 // charCodeArgs : unsigned long the Unicode character associated with the depressed key, else 0
-          );
-          document.dispatchEvent(srEvent);
-        }
-        else if (document.createEventObject) {
-          srEvent = document.createEventObject('KeyboardEvent');
-          srEvent.keyCode = 39;
-          self.searchField.fireEvent('onkeydown', srEvent);
-        }
+        self.searchField.value = newSearchVal.replace(/&#39;/g, "'");
       };
 
       // Detect an up/down keypress

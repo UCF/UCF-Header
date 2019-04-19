@@ -295,12 +295,18 @@ function ucfhbSetJsonp(json) {
           // Re-enable tabbing for previously disabled elements
           searchField.removeAttribute('tabindex');
           searchBtn.removeAttribute('tabindex');
+          // Adjust aria-expanded attributes on sign-in and search togglers
+          myUCFBtn.setAttribute('aria-expanded', 'false');
+          searchMinimal.setAttribute('aria-expanded', 'true');
         }
         else {
           toggleClasses(shiftLeftElems, 'ucfhb-shiftleft');
           // Disable tabbing on hidden elements
           searchField.setAttribute('tabindex', '-1');
           searchBtn.setAttribute('tabindex', '-1');
+          // Adjust aria-expanded attributes on sign-in and search togglers
+          myUCFBtn.setAttribute('aria-expanded', 'true');
+          searchMinimal.setAttribute('aria-expanded', 'false');
         }
       };
       searchMinimal.onclick = function() {
@@ -308,14 +314,21 @@ function ucfhbSetJsonp(json) {
         searchField.focus();
         searchField.removeAttribute('tabindex');
         searchBtn.removeAttribute('tabindex');
+        // Adjust aria-expanded attributes on sign-in and search togglers
+        myUCFBtn.setAttribute('aria-expanded', 'false');
+        searchMinimal.setAttribute('aria-expanded', 'true');
       };
       // Mobile show/hide functionality
       mobileToggle.onclick = function() {
         if (mobileToggle.className == 'ucfhb-mobileslide') {
           toggleClasses(mobileToggleElems, '');
+          // Adjust aria-expanded attribute on mobile toggler
+          mobileToggle.setAttribute('aria-expanded', 'false');
         }
         else {
           toggleClasses(mobileToggleElems, 'ucfhb-mobileslide');
+          // Adjust aria-expanded attribute on mobile toggler
+          mobileToggle.setAttribute('aria-expanded', 'true');
         }
       };
 
@@ -345,8 +358,8 @@ function ucfhbSetJsonp(json) {
     this.autocompleteHelp   = document.getElementById('ucfhb-search-autocomplete-srhelp');  // Help text for screenreaders
     this.autocompleteList   = document.getElementById('ucfhb-search-autocomplete');     // Autocomplete <ul> element
     this.autocompleteSelectedId = 'ucfhb-autocomplete-selected';                // ID assigned to a selected autocomplete <li>
-    this.searchBar        = document.getElementById('ucfhb-search'),            // Wrapper combobox element around the search form
     this.searchForm       = document.getElementById('ucfhb-search-form');         // Search <form> element
+    this.searchCombobox   = document.getElementById('ucfhb-search-combobox'),     // Wrapper combobox element around the search <input>
     this.searchField      = document.getElementById('ucfhb-search-field');        // Search <input> element
     this.searchSubmit     = document.getElementById('ucfhb-search-submit');       // Search submit button element
     this.searchAction     = this.searchForm.getAttribute('data-action-url');        // 'data-action-url' attr of search <form> element; should match form 'action' attr. (URL to UCF Search frontend)
@@ -428,11 +441,11 @@ function ucfhbSetJsonp(json) {
       self.clearAutocompleteResults();
       if (toggleVal === true) {
         self.autocompleteList.className = self.searchActiveClass;
-        self.searchBar.setAttribute('aria-expanded', 'true');
+        self.searchCombobox.setAttribute('aria-expanded', 'true');
       }
       else {
         self.autocompleteList.className = '';
-        self.searchBar.setAttribute('aria-expanded', 'false');
+        self.searchCombobox.setAttribute('aria-expanded', 'false');
       }
     };
 

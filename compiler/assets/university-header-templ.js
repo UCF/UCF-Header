@@ -693,6 +693,18 @@ function ucfhbSetJsonp(json) {
         ) {
           self.searchOnKeyUp(q, query);
         }
+        // Add support for Escape key:
+        else if (
+          typeof keycode == 'number' &&
+          keycode == 27
+        ) {
+          self.toggleAutocompleteList(false); // Close the autosuggestion listbox
+          setTimeout((function () {
+            // On Firefox, input does not get cleared here unless wrapped in
+            // a setTimeout
+            self.searchField.value = ''; // Clear search input
+          }).bind(self), 1);
+        }
         // Otherwise, check for up/down arrow keystrokes on an
         // active search:
         else {

@@ -544,7 +544,7 @@ function ucfhbSetJsonp(json) {
                     resultUrl = self.searchAction + encodeURIComponent(name);
 
                   var listItem = document.createElement('li');
-                  listItem.innerHTML = '<a class="'+ self.searchResultsLinkClass +'" href="' + resultUrl + '" tabindex="0" >' + nameSpan + orgSpan + '</a>';
+                  listItem.innerHTML = '<a class="'+ self.searchResultsLinkClass +'" href="' + resultUrl + '" tabindex="-1">' + nameSpan + orgSpan + '</a>';
                   listItem.setAttribute('data-name-val', name);
                   listItem.setAttribute('role', 'option');
 

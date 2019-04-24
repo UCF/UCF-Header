@@ -512,18 +512,32 @@ function ucfhbSetJsonp(json) {
             self.toggleAutocompleteList(true);
 
             for (var k = 0; k < matchesFound; k++) {
-              var name = stripTags(results[k].name.trim()),
-                nameSpan = '<span class="ucfhb-search-autocomplete-name">' + name + '</span>',
-                resultUrl = results[k].url !== '' ? stripTags(results[k].url.trim()) : self.searchAction + urlq;
+              var name = stripTags(results[k].name.trim());
+              var nameID = 'ucfhb-search-autocomplete-name-' + k;
+
+              var nameSpan = document.createElement('span');
+              nameSpan.setAttribute('class', 'ucfhb-search-autocomplete-name');
+              nameSpan.setAttribute('id', nameID);
+              nameSpan.innerHTML = name;
+
+              var resultUrl = results[k].url !== '' ? stripTags(results[k].url.trim()) : self.searchAction + urlq;
+              var listItemLink = document.createElement('a');
+              listItemLink.setAttribute('class', self.searchKeytermLinkClass);
+              listItemLink.setAttribute('href', resultUrl);
+              listItemLink.setAttribute('tabindex', '-1');
+
+              listItemLink.appendChild(nameSpan);
+
+              ucfhbAssignTrackingListener(listItemLink, 'click', new String(resultUrl), ucfhbTrackingActionACKeyterm, '' + name);
 
               var listItem = document.createElement('li');
-              listItem.innerHTML = '<a class="' + self.searchKeytermLinkClass + '" href="' + resultUrl + '" tabindex="0">' + nameSpan + '</a>';
               listItem.setAttribute('data-name-val', name);
+              listItem.setAttribute('role', 'option');
+              listItem.setAttribute('aria-labelledby', nameID);
+
+              listItem.appendChild(listItemLink);
 
               self.autocompleteList.appendChild(listItem);
-
-              var link = listItem.getElementsByTagName('a')[0];
-              ucfhbAssignTrackingListener(link, 'click', new String(resultUrl), ucfhbTrackingActionACKeyterm, '' + name);
             }
 
             // Add 'View More Results link'; update screenreader help text
@@ -538,18 +552,40 @@ function ucfhbSetJsonp(json) {
                 for (var l = 0; l < json.results.length; l++) {
                   matchesFound++;
 
-                  var name = json.results[l].name !== null ? stripTags(json.results[l].name.trim()) : '',
-                    nameSpan = '<span class="ucfhb-search-autocomplete-name">' + name + '</span>',
-                    orgSpan = json.results[l].organization !== null ? '<span class="ucfhb-search-autocomplete-org">' + stripTags(json.results[l].organization.trim()) + '</span>' : '',
-                    resultUrl = self.searchAction + encodeURIComponent(name);
+                  var name = json.results[l].name !== null ? stripTags(json.results[l].name.trim()) : '';
+                  var nameID = 'ucfhb-search-autocomplete-name-' + l;
+
+                  var nameSpan = document.createElement('span');
+                  nameSpan.setAttribute('class', 'ucfhb-search-autocomplete-name');
+                  nameSpan.setAttribute('id', nameID);
+                  nameSpan.innerHTML = name;
+
+                  var orgSpan = json.results[l].organization !== null ? document.createElement('span') : null;
+                  if (orgSpan) {
+                    orgSpan.setAttribute('class', 'ucfhb-search-autocomplete-org');
+                    orgSpan.innerHTML = stripTags(json.results[l].organization.trim());
+                  }
+
+                  var resultUrl = self.searchAction + encodeURIComponent(name);
+                  var listItemLink = document.createElement('a');
+                  listItemLink.setAttribute('class', self.searchResultsLinkClass);
+                  listItemLink.setAttribute('href', resultUrl);
+                  listItemLink.setAttribute('tabindex', '-1');
+
+                  listItemLink.appendChild(nameSpan);
+                  if (orgSpan) {
+                    listItemLink.appendChild(orgSpan);
+                  }
+
+                  ucfhbAssignTrackingListener(listItemLink, 'click', new String(resultUrl), ucfhbTrackingActionACSearch, '' + name);
 
                   var listItem = document.createElement('li');
-                  listItem.innerHTML = '<a class="'+ self.searchResultsLinkClass +'" href="' + resultUrl + '" tabindex="-1">' + nameSpan + orgSpan + '</a>';
+
                   listItem.setAttribute('data-name-val', name);
                   listItem.setAttribute('role', 'option');
+                  listItem.setAttribute('aria-labelledby', nameID);
 
-                  var link = listItem.getElementsByTagName('a')[0];
-                  ucfhbAssignTrackingListener(link, 'click', new String(resultUrl), ucfhbTrackingActionACSearch, '' + name);
+                  listItem.appendChild(listItemLink);
 
                   self.autocompleteList.appendChild(listItem);
                 }

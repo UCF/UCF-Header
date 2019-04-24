@@ -120,10 +120,8 @@
 }
 #ucfhb-mobile-toggle:hover,
 #ucfhb-mobile-toggle:active,
-#ucfhb-mobile-toggle:focus,
 #ucfhb-signon-logo:hover,
-#ucfhb-signon-logo:active,
-#ucfhb-signon-logo:focus {
+#ucfhb-signon-logo:active {
   outline: 0;
 }
 #ucfhb-logo a {
@@ -174,9 +172,6 @@
 #ucfhb-signon-logo:focus {
   background-position: -149px -34px;
   cursor: pointer;
-}
-#ucfhb-signon-logo:focus {
-  outline: 1px dotted #787878;
 }
 #ucfhb-signon-logo.ucfhb-shiftleft {
   background-position: 0 0;
@@ -319,7 +314,6 @@
 }
 #ucfhb-search-field:focus {
   border: solid 1px #ffc904;
-  outline: 0;
 }
 
 /* Can't comma-separate these... */
@@ -505,6 +499,19 @@
   line-height: 15px;
   margin-bottom: 0;
   margin-top: 2px;
+}
+
+/* Focus states */
+#ucfhb-logo:focus,
+#ucfhb-mobile-toggle:focus,
+#ucfhb-signon-logo:focus,
+#ucfhb-myucf:focus,
+#ucfhb-knightsmail:focus,
+#ucfhb-webcourses:focus,
+#ucfhb-search-field:focus,
+#ucfhb-search-minimal:focus,
+#ucfhb-search-submit:focus {
+  outline: 3px solid #0262B6;
 }
 
 /* Tablet size (768-979px) */

@@ -699,6 +699,7 @@ function ucfhbSetJsonp(json) {
           keycode == 27
         ) {
           self.toggleAutocompleteList(false); // Close the autosuggestion listbox
+          self.updateAutocompleteHelp(0, null); // Wipe out existing screenreader text
           setTimeout((function () {
             // On Firefox, input does not get cleared here unless wrapped in
             // a setTimeout

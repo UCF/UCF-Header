@@ -21,7 +21,7 @@
 				'<form action="//search.ucf.edu/" data-action-url="//search.ucf.edu#?q=" data-autosearch-url="'+ ucfhbJsonpScript +'" method="get" name="ucfhb-search-form" id="ucfhb-search-form" autocomplete="off">',
           '<label for="ucfhb-search-field" id="ucfhb-search-field-label">Search UCF</label>',
           '<div id="ucfhb-search-combobox" role="combobox" aria-owns="ucfhb-search-autocomplete" aria-haspopup="listbox" aria-expanded="false">',
-            '<input type="text" name="#q" id="ucfhb-search-field" placeholder="Search UCF" autocomplete="off" autocapitalize="off" aria-autocomplete="list" aria-controls="ucfhb-search-autocomplete" />',
+            '<input type="text" name="#q" id="ucfhb-search-field" placeholder="Search UCF" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" aria-autocomplete="both" aria-controls="ucfhb-search-autocomplete" />',
           '</div>',
 					'<input type="submit" value="Search" id="ucfhb-search-submit" />',
 				'</form>',

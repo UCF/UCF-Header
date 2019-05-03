@@ -306,9 +306,9 @@
 			"matches": ["application status", "apply"]
 		},
 		{
-			"name": "KnightLink",
-			"url": "http://career.ucf.edu/knightlink",
-			"matches": ["careers", "student jobs", "knightlink", "knight link", "career services"]
+			"name": "Handshake",
+			"url": "https://csel.ucf.edu/",
+			"matches": ["careers", "student jobs", "knightlink", "knight link", "career services", "handshake"]
 		},
 		{
 			"name": "Recreation and Wellness Center",

@@ -1,6 +1,6 @@
 <?php
-header('Content-Type: application/javascript');
-$query = urlencode(strip_tags($_GET['search']));
+header( 'Content-Type: application/javascript' );
+$query = urlencode( strip_tags( isset( $_GET['search'] ) ? $_GET['search'] : '' ) );
 
 /**
  * Given a URL, returns the contents of that location as a string.
@@ -33,5 +33,5 @@ function fetch_external_contents( $url, $curl_args=array() ) {
 	return $retval;
 }
 
-echo 'ucfhbSetJsonp(\''.str_replace("'", "&#39;", fetch_external_contents('@!@SEARCH_SERVICE@!@'.$query)).'\');';
+echo 'ucfhbSetJsonp(\'' . str_replace( "'", "&#39;", fetch_external_contents( '@!@SEARCH_SERVICE@!@' . $query ) ) . '\');';
 ?>

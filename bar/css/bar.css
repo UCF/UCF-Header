@@ -16,6 +16,7 @@
 #ucfhb-search-minimal {
   background-image: url('../img/spritesheet-v1.png');
   background-repeat: no-repeat;
+  line-height: 1;
   text-indent: -9999px;
 }
 @media

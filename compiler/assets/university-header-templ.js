@@ -45,28 +45,12 @@ var ucfhbAssignTrackingListener = function(elem, eventType, link, action, label)
 };
 
 
-/**
- * JSONP implementation for search service proxy results
- **/
-var ucfhbJsonp = null;
-function ucfhbSetJsonp(json) {
-  if (json) {
-    ucfhbJsonp = json;
-  }
-  else {
-    ucfhbJsonp = null;
-  }
-}
-
-
 (function() {
   /**
    * Define GA tracking actions
    **/
   var ucfhbTrackingActionSignon = 'signon',               // When a UCF Login button is clicked
-    ucfhbTrackingActionSearch = 'search',               // When the search form is submitted (no autocomplete results were selected)
-    ucfhbTrackingActionACKeyterm = 'autocomplete-keyterm-search',   // When an autocomplete keyterm suggestion is clicked or submitted
-    ucfhbTrackingActionACSearch = 'autocomplete-search',      // When a non-keyterm autocomplete suggestion is clicked or submitted
+    ucfhbTrackingActionSearch = 'search',               // When the search form is submitted
     ucfhbTrackingActionLogoClick = 'ucf-logo';            // When the UCF logo is clicked
 
   /**
@@ -76,8 +60,7 @@ function ucfhbSetJsonp(json) {
    **/
   var ucfhbStylesheet = window.location.protocol + '//@!@ROOT_URL@!@/bar/css/bar.css?@!@VERSION@!@',
     ucfhbBsStylesheet = window.location.protocol + '//@!@ROOT_URL@!@/bar/css/bar-bootstrap.css?@!@VERSION@!@',
-    ucfhb1200BpStylesheet = window.location.protocol + '//@!@ROOT_URL@!@/bar/css/1200-breakpoint.css?@!@VERSION@!@',
-    ucfhbJsonpScript = window.location.protocol + '//@!@ROOT_URL@!@/bar/data/?search=';
+    ucfhb1200BpStylesheet = window.location.protocol + '//@!@ROOT_URL@!@/bar/css/1200-breakpoint.css?@!@VERSION@!@';
 
 
   /**
@@ -165,23 +148,6 @@ function ucfhbSetJsonp(json) {
 
 
   /**
-   * Generate a script tag for autocomplete search results (JSONP)
-   **/
-  var ucfhbCreateJsonpScript = function(query, callback, timeout) {
-    var head = document.getElementsByTagName('head')[0];
-    var script = document.createElement('script');
-    script.setAttribute('src', ucfhbJsonpScript + query);
-    script.setAttribute('type', 'text/javascript');
-    script.id = 'ucfhb-json';
-    head.appendChild(script);
-
-    if (typeof callback !== 'undefined' && callback !== null) {
-      setTimeout(function() { callback(); }, timeout);
-    }
-  }
-
-
-  /**
    * Insert the bar into the DOM; start listening for events.
    * Uses contentLoaded.js to determine when the DOM is ready.
    **/
@@ -232,24 +198,14 @@ function ucfhbSetJsonp(json) {
     ucfhbBar.setAttribute('role', 'complementary');
     ucfhbBar.setAttribute('aria-label', 'University of Central Florida navbar');
 
-    // Add the bar's markup; initialize autocomplete + event listeners
+    // Add the bar's markup; initialize event listeners
     var markup = @!@MARKUP@!@;
     ucfhbBar.innerHTML = markup.join('\n');
-
-    // Add screenreader helper element to the bottom of the document.
-    var ucfhbAutocompleteHelp = document.createElement('span');
-    ucfhbAutocompleteHelp.id = 'ucfhb-search-autocomplete-srhelp';
-    ucfhbAutocompleteHelp.setAttribute('role', 'status');
-    ucfhbAutocompleteHelp.setAttribute('aria-live', 'polite');
-    document.body.appendChild(ucfhbAutocompleteHelp);
 
     callback();
   }
 
   var ucfhbInitialize = function() {
-    var ucfhbAutocomplete = new ucfhbAutocompleteSearch();
-    ucfhbAutocomplete.initialize();
-
     /* Define listeners */
     var ucfhbEventListener = function() {
       // Fetch inserted DOM elements
@@ -265,13 +221,12 @@ function ucfhbSetJsonp(json) {
         searchField     = document.getElementById('ucfhb-search-field'),
         searchBtn       = document.getElementById('ucfhb-search-submit'),
         searchMinimal     = document.getElementById('ucfhb-search-minimal'),
-        searchAutocomplete  = document.getElementById('ucfhb-search-autocomplete'),
         linkMyucf       = document.getElementById('ucfhb-myucf'),
         linkKnightsmail   = document.getElementById('ucfhb-knightsmail'),
         linkWebcourses    = document.getElementById('ucfhb-webcourses'),
 
-        shiftLeftElems    = [myUCFBtn, searchbar, searchMinimal, searchAutocomplete],
-        mobileToggleElems   = [ucfhbBar, mobileToggle, ucfLogo, barRight, searchAutocomplete];
+        shiftLeftElems    = [myUCFBtn, searchbar, searchMinimal],
+        mobileToggleElems   = [ucfhbBar, mobileToggle, ucfLogo, barRight];
 
       var goldBarClass = 'ucfhb-gold';
 
@@ -332,12 +287,23 @@ function ucfhbSetJsonp(json) {
         }
       };
 
-      // Analytics tracking (this functionality is also added to
-      // all links in autocomplete list items and for form submissions)
+      // Analytics tracking
       ucfhbAssignTrackingListener(linkMyucf, 'click', linkMyucf.getAttribute('href'), ucfhbTrackingActionSignon, 'MyUCF');
       ucfhbAssignTrackingListener(linkKnightsmail, 'click', linkKnightsmail.getAttribute('href'), ucfhbTrackingActionSignon, 'Knightsmail');
       ucfhbAssignTrackingListener(linkWebcourses, 'click', linkWebcourses.getAttribute('href'), ucfhbTrackingActionSignon, 'Webcourses');
       ucfhbAssignTrackingListener(ucfLogoLink, 'click', ucfLogoLink.getAttribute('href'), ucfhbTrackingActionLogoClick, 'UCF Logo');
+
+      var handleSearchSubmit = function(e) {
+        e.preventDefault();
+        var searchURL = searchForm.getAttribute('data-action-url') + encodeURIComponent(searchField.value);
+        ucfhbTrackAction(searchURL, ucfhbTrackingActionSearch, searchField.value);
+      };
+
+      if (searchForm.addEventListener) {
+        searchForm.addEventListener('submit', handleSearchSubmit, false);
+      } else if (searchForm.attachEvent) {
+        searchForm.attachEvent('onsubmit', handleSearchSubmit);
+      }
     };
     ucfhbEventListener();
   }
@@ -345,424 +311,4 @@ function ucfhbSetJsonp(json) {
   contentLoaded(window, function() {
     ucfhbCreateBar(ucfhbInitialize);
   });
-
-
-  /**
-   * University Header Auto-Suggest Search Result functionality
-   **/
-  function ucfhbAutocompleteSearch() {
-    var self = this;
-
-    this.searchService      = ucfhbJsonpScript; // URL of the search service queried for autocomplete results (URL to UCF search service proxy)
-
-    this.autocompleteHelp   = document.getElementById('ucfhb-search-autocomplete-srhelp');  // Help text for screenreaders
-    this.autocompleteList   = document.getElementById('ucfhb-search-autocomplete');     // Autocomplete <ul> element
-    this.autocompleteSelectedId = 'ucfhb-autocomplete-selected';                // ID assigned to a selected autocomplete <li>
-    this.searchForm       = document.getElementById('ucfhb-search-form');         // Search <form> element
-    this.searchCombobox   = document.getElementById('ucfhb-search-combobox'),     // Wrapper combobox element around the search <input>
-    this.searchField      = document.getElementById('ucfhb-search-field');        // Search <input> element
-    this.searchSubmit     = document.getElementById('ucfhb-search-submit');       // Search submit button element
-    this.searchAction     = this.searchForm.getAttribute('data-action-url');        // 'data-action-url' attr of search <form> element; should match form 'action' attr. (URL to UCF Search frontend)
-    this.searchActiveClass    = 'search-is-active';                     // Class assigned to an active (visible) autocomplete <ul>
-    this.searchKeytermLinkClass = 'search-autocomplete-keyterm';                // Class assigned to an autocomplete <a> element that links to a keyterm's URL
-    this.searchResultsLinkClass = 'search-autocomplete-result';                 // Class assigned to an autocomplete <a> elements that links to a non-keyterm's URL (generic search result)
-
-    var timer;  // setTimeout timer value used by self.searchOnKeyUp
-
-
-    // Strip HTML tags from a string.
-    function stripTags(str) {
-      return str.replace(/(<([^>]+)>)/ig, '');
-    }
-
-    // Detect whether a click event occurred within the boundaries
-    // of a given element.
-    // http://stackoverflow.com/a/1278068
-    function outsideElementClick(objEvent, objElement) {
-      var objCurrentElement = objEvent.target || objEvent.srcElement;
-      var blnInsideX = false;
-      var blnInsideY = false;
-
-      if (
-        objCurrentElement.getBoundingClientRect().left >= objElement.getBoundingClientRect().left &&
-        objCurrentElement.getBoundingClientRect().right <= objElement.getBoundingClientRect().right
-      ) {
-        blnInsideX = true;
-      }
-
-      if (
-        objCurrentElement.getBoundingClientRect().top >= objElement.getBoundingClientRect().top &&
-        objCurrentElement.getBoundingClientRect().bottom <= objElement.getBoundingClientRect().bottom
-      ) {
-        blnInsideY = true;
-      }
-
-      if (blnInsideX && blnInsideY) {
-        return false;
-      }
-      else {
-        return true;
-      }
-    }
-
-    // Retrieve JSONP results from search service proxy
-    function ucfhbGetJsonp(query, callback) {
-      var script = document.getElementById('ucfhb-json');
-      if (script) {
-        script.parentNode.removeChild(script);
-      }
-      ucfhbCreateJsonpScript(query, function() {
-        var json = JSON.parse(ucfhbJsonp);
-        callback(json);
-      }, 600); // Give Javascript time to rebuild the script tag value
-    }
-
-
-    // Delete existing results in an autocomplete list
-    this.clearAutocompleteResults = function() {
-      while (self.autocompleteList.hasChildNodes()) {
-        self.autocompleteList.removeChild(self.autocompleteList.lastChild);
-      }
-      // Wipe out any existing activedescendant value on the search input
-      self.searchField.removeAttribute('aria-activedescendant');
-    };
-
-    // Returns true or false if an autocomplete list is visible
-    this.isSearchActive = function() {
-      return self.autocompleteList.className == self.searchActiveClass;
-    };
-
-    // Show/hide the autocomplete list and adjust ARIA landmarks as necessary
-    this.toggleAutocompleteList = function(toggleVal) {
-      // Always make sure any previous results are cleared
-      self.clearAutocompleteResults();
-      if (toggleVal === true) {
-        self.autocompleteList.className = self.searchActiveClass;
-        self.searchCombobox.setAttribute('aria-expanded', 'true');
-      }
-      else {
-        self.autocompleteList.className = '';
-        self.searchCombobox.setAttribute('aria-expanded', 'false');
-      }
-    };
-
-    // Update the autocomplete help text for screenreaders
-    this.updateAutocompleteHelp = function(resultCount, q) {
-      var helpText = '';
-      if (resultCount === 0 && q === null) {
-        helpText = 'Search field is empty.';
-      }
-      else {
-        helpText = resultCount;
-        if (resultCount === 1) {
-          helpText += ' suggestion found';
-        }
-        else {
-          helpText += ' suggestions found';
-        }
-
-        if (q !== null) {
-          helpText += ' for "' + q + '"';
-        }
-
-        if (resultCount > 0) {
-          helpText += '. Use up and down arrow keys to select a suggestion.';
-        }
-      }
-      self.autocompleteHelp.innerHTML = helpText;
-    };
-
-    // Output a search query's results:
-    this.outputResults = function(q, url) {
-      var safeq = stripTags(q),       // Query with tags stripped
-        matchq = safeq.toLowerCase(),   // Query made lowercase for matching against JSON vals
-        urlq = encodeURIComponent(safeq); // URL-safe Query
-
-      // Make sure there is actually a query to search for
-      if (safeq.length > 1) {
-        var matchesFound = 0;
-
-        ucfhbGetJsonp(urlq, function(json) {
-          if (json && json.results !== null && json.results.length > 0) {
-            self.toggleAutocompleteList(true);
-
-            for (var l = 0; l < json.results.length; l++) {
-              matchesFound++;
-
-              var name = json.results[l].name !== null ? stripTags(json.results[l].name.trim()) : '';
-              var nameID = 'ucfhb-search-autocomplete-name-' + l;
-
-              var nameSpan = document.createElement('span');
-              nameSpan.setAttribute('class', 'ucfhb-search-autocomplete-name');
-              nameSpan.setAttribute('id', nameID);
-              nameSpan.innerHTML = name;
-
-              var orgSpan = json.results[l].organization !== null ? document.createElement('span') : null;
-              if (orgSpan) {
-                orgSpan.setAttribute('class', 'ucfhb-search-autocomplete-org');
-                orgSpan.innerHTML = stripTags(json.results[l].organization.trim());
-              }
-
-              var resultUrl = self.searchAction + encodeURIComponent(name);
-              var listItemLink = document.createElement('a');
-              listItemLink.setAttribute('class', self.searchResultsLinkClass);
-              listItemLink.setAttribute('href', resultUrl);
-              listItemLink.setAttribute('tabindex', '-1');
-
-              listItemLink.appendChild(nameSpan);
-              if (orgSpan) {
-                listItemLink.appendChild(orgSpan);
-              }
-
-              ucfhbAssignTrackingListener(listItemLink, 'click', new String(resultUrl), ucfhbTrackingActionACSearch, '' + name);
-
-              var listItem = document.createElement('li');
-
-              listItem.setAttribute('data-name-val', name);
-              listItem.setAttribute('role', 'option');
-              listItem.setAttribute('aria-labelledby', nameID);
-
-              listItem.appendChild(listItemLink);
-
-              self.autocompleteList.appendChild(listItem);
-            }
-            // Add 'View More Results link'; update screenreader help text
-            self.updateAutocompleteHelp(matchesFound, safeq);
-          }
-          else {
-            // Make sure we hide the list if it's already visible and no
-            // results are returned
-            self.toggleAutocompleteList(false);
-            self.updateAutocompleteHelp(0, safeq);
-          }
-        });
-
-      }
-      // If there is no query, make sure the autocomplete
-      // list is not visible
-      else {
-        self.toggleAutocompleteList(false);
-        self.updateAutocompleteHelp(0, null);
-      }
-    };
-
-    // Navigate an autocomplete <ul>'s list items with up- and
-    // down-arrow keystrokes
-    this.acListKeystrokeSelect = function(keycode) {
-      var list = self.autocompleteList,
-        listFirstChild = list.firstChild,
-        listLastChild = list.lastChild,
-        selectedId = self.autocompleteSelectedId,
-        selectedLi = null,
-        listNextSibling = null,
-        listPrevSibling = null;
-
-      if (document.getElementById(selectedId)) {
-        selectedLi = document.getElementById(selectedId);
-      }
-      else {
-        selectedLi = listFirstChild;
-      }
-
-      // Function to 'select' a list item in an autocomplete list
-      var selectNewResult = function(oldLi, newLi, defaultLi) {
-        var newSearchVal = '';
-
-        // Unset any previously set ID
-        oldLi.id = '';
-        listFirstChild.id = '';
-        listLastChild.id = '';
-
-        // Unset any existing aria-selected attribute
-        oldLi.removeAttribute('aria-selected');
-        listFirstChild.removeAttribute('aria-selected');
-        listLastChild.removeAttribute('aria-selected');
-
-        // previous/nextSibling returns null when sibling is not found
-        if (newLi !== null) {
-          defaultLi.id = '';
-          newLi.id = selectedId;
-          newLi.setAttribute('aria-selected', 'true');
-          this.searchField.setAttribute('aria-activedescendant', selectedId);
-          newSearchVal = newLi.getAttribute('data-name-val');
-        }
-        else {
-          defaultLi.id = selectedId;
-          defaultLi.setAttribute('aria-selected', 'true');
-          this.searchField.setAttribute('aria-activedescendant', selectedId);
-          newSearchVal = defaultLi.getAttribute('data-name-val');
-        }
-
-        // Assign new search field value
-        self.searchField.value = newSearchVal.replace(/&#39;/g, "'");
-      };
-
-      // Detect an up/down keypress
-      // (when search field is focused + autocomplete is visible)
-      if (self.isSearchActive() && document.activeElement == self.searchField) {
-        if (keycode == 40) {
-          // Move down one list item. Check if a list item is highlighted yet or not
-          if (document.getElementById(selectedId)) {
-            listNextSibling = selectedLi.nextSibling;
-          }
-          else {
-            listNextSibling = listFirstChild;
-          }
-          selectNewResult(selectedLi, listNextSibling, listFirstChild);
-        }
-        else if (keycode == 38) {
-          // Move up one list item
-          listPrevSibling = selectedLi.previousSibling;
-          selectNewResult(selectedLi, listPrevSibling, listLastChild);
-        }
-        else if (keycode == 39 || keycode == 37 || keycode == 13) {
-          // Left or right arrow keypress or enter key; do nothing
-          return;
-        }
-      }
-    };
-
-    // Perform outputResults() when a query is
-    // being typed in the search bar:
-    this.searchOnKeyUp = function(q, query) {
-      clearTimeout(timer);
-      timer = setTimeout(function () {
-        self.outputResults(q, query);
-      }, 550);
-    };
-
-    // On load + listen for events
-    this.initialize = function() {
-      var q = null,
-        query = null;
-
-      // Handle the onkeyup event for autosearching:
-      self.searchField.onkeyup = function(e) {
-        // Make <IE9 behave
-        e = e || window.event;
-        keycode = e.which || e.keyCode;
-
-        q = stripTags(self.searchField.value);
-        query = self.searchService + q;
-
-        // If this keystroke is a backspace or other alphabetic character,
-        // or if this is specifically an arrow-down keystroke when
-        // the search field is already populated:
-        if (
-          (
-            typeof keycode == 'number' && (
-            keycode == 8 || // Detect backspaces
-            keycode > 44 // And alphanumeric characters
-            )
-          ) ||
-          (
-            self.isSearchActive() === false &&
-            self.searchField.value !== null &&
-            self.searchField.value !== '' &&
-            keycode === 40
-          )
-        ) {
-          self.searchOnKeyUp(q, query);
-        }
-        // Add support for Escape key:
-        else if (
-          typeof keycode == 'number' &&
-          keycode == 27
-        ) {
-          self.toggleAutocompleteList(false); // Close the autosuggestion listbox
-          self.updateAutocompleteHelp(0, null); // Wipe out existing screenreader text
-          setTimeout((function () {
-            // On Firefox, input does not get cleared here unless wrapped in
-            // a setTimeout
-            self.searchField.value = ''; // Clear search input
-          }).bind(self), 1);
-        }
-        // Otherwise, check for up/down arrow keystrokes on an
-        // active search:
-        else {
-          self.acListKeystrokeSelect(keycode);
-        }
-      };
-
-      // Handle a re-focus of the search field when search is not active
-      self.searchField.onfocus = function() {
-        q = stripTags(self.searchField.value);
-        query = self.searchService + q;
-
-        if (
-          self.isSearchActive() === false &&
-          self.searchField.value !== '' &&
-          self.searchField.value !== null
-        ) {
-          self.searchOnKeyUp(q, query);
-        }
-      };
-
-      // Handle search form submission; intercept and redirect to a
-      // provided URL instead of search results if necessary.
-      // Checks for standard addEventListener, falls back to attachEvent
-      var handleAutocompleteSelect = function(event) {
-        if (event.preventDefault) {
-          event.preventDefault();
-        }
-        else {
-          event.returnValue = false;
-        }
-
-        var selectedLi = document.getElementById(self.autocompleteSelectedId);
-
-        // If an autocomplete list item is highlighted and is 'submitted'
-        // with the enter key, redirect the user to the URL provided
-        // in the list item instead of to search results
-        if (
-          selectedLi &&
-          self.isSearchActive() === true
-        ) {
-          var selectedLink = selectedLi.getElementsByTagName('a')[0];
-
-          // Distinguish between keyterm searches and other generic searches
-          if (selectedLink) {
-            if (selectedLink.className.indexOf(self.searchKeytermLinkClass) > -1) {
-              ucfhbTrackAction(selectedLink.getAttribute('href'), ucfhbTrackingActionACKeyterm, self.searchField.value);
-            }
-            else if (selectedLink.className.indexOf(self.searchResultsLinkClass) > -1) {
-              ucfhbTrackAction(selectedLink.getAttribute('href'), ucfhbTrackingActionACSearch, self.searchField.value);
-            }
-          }
-        }
-        else {
-          var searchURL = self.searchForm.getAttribute('data-action-url') + encodeURIComponent(self.searchField.value);
-          ucfhbTrackAction(searchURL, ucfhbTrackingActionSearch, self.searchField.value);
-        }
-      }
-      if (self.searchForm.addEventListener) {
-          self.searchForm.addEventListener('submit', handleAutocompleteSelect, false);
-      }
-      else if (self.searchForm.attachEvent) {
-          self.searchForm.attachEvent('onsubmit', handleAutocompleteSelect);
-      }
-
-      // Handle autocomplete close w/btn click or click outside list.
-      // Make sure to avoid tracking form submissions as outer element clicks;
-      // search form submission is detected as a 'click' here on the form submit btn.
-      // Checks for standard addEventListener, falls back to attachEvent.
-      if (document.addEventListener) {
-        document.addEventListener('click', function(e) {
-          var target = e.target || e.srcElement;
-          if ( target && e.target.getAttribute('id') !== self.searchSubmit.getAttribute('id') ) {
-            if (outsideElementClick(e, self.autocompleteList) && self.isSearchActive()) {
-              self.toggleAutocompleteList(false);
-            }
-          }
-        });
-      }
-      else {
-        document.attachEvent('onclick', function(e) {
-          if (outsideElementClick(e, self.autocompleteList) && self.isSearchActive()) {
-            self.toggleAutocompleteList(false);
-          }
-        });
-      }
-    };
-  }
 })();

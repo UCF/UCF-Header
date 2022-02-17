@@ -15,11 +15,13 @@
             <h1>University Header</h1>
             <p class="lead">
               The UCF University Header is a cohesive marketing and branding tool for the entire university. It provides consistent
-              navigational elements and a universal search feature with search suggestions.
+              navigational elements and a universal search feature.
             </p>
             <p class="lead">
-              The University Header has a responsive option and will adapt to various screen sizes as necessary. Responsiveness follows
-              <a href="http://getbootstrap.com"><strong>Twitter Bootstrap's</strong></a> breakpoint standards.
+              The University Header is responsive and will adapt to various screen sizes as necessary. Responsive
+              breakpoints mirror those used in the
+              <a href="https://ucf.github.io/Athena-Framework/">Athena Framework</a> and
+              <a href="https://getbootstrap.com/">Bootstrap</a>.
             </p>
           </div>
         </div>
@@ -31,7 +33,7 @@
             <div class="col-xl-10 offset-xl-1">
               <h2 class="heading-underline h3 mb-4 mb-sm-5" id="installation">Installation</h2>
 
-              <h3 class="h4 mt-4">Standard</h3>
+              <h3 class="h4 mt-4">Default</h3>
               <p>
                 To add the standard University Header to your website, add this script tag to your document.
               </p>
@@ -41,7 +43,7 @@
                 </div>
               </div>
 
-              <h3 class="h4 mt-4 mt-sm-5">Wide Version</h3>
+              <h3 class="h4 mt-4 mt-sm-5">Wide Version (Recommended)</h3>
               <p>
                 The header shown on this page is the standard, default width provided. A <code>use-1200-breakpoint</code> parameter can be added to display a wider version of the header:
               </p>
@@ -72,7 +74,7 @@
               <span class="media-body">The University Header should be consistent visually and functionally across all UCF websites.</span>
             </h3>
             <p>
-              Please do not modify the bar's existing appearance or functionality, such as modifying graphics/colors associated with the bar, links included within the bar, markup associated with the bar or the search and autocomplete functionality.
+              Please do not modify the bar's existing appearance or functionality, such as modifying graphics/colors associated with the bar, links included within the bar, markup associated with the bar or the search functionality.
             </p>
 
             <h3 class="h4 media align-items-center mt-4 mt-md-5 mb-3">
@@ -144,8 +146,9 @@
             </div>
 
             <div class="alert alert-info my-4">
+              <h3 class="h4 alert-heading">Setting Options for WordPress Sites</h3>
               <p>
-                <strong>Note:</strong> Parameter-based options such as <code>use-1200-breakpoint</code> and <code>use-bootstrap-overrides</code> require that the <code>&lt;script&gt;</code> tag has an ID of <code>ucfhb-script</code>.
+                Parameter-based options such as <code>use-1200-breakpoint</code> and <code>use-bootstrap-overrides</code> require that the <code>&lt;script&gt;</code> tag has an ID of <code>ucfhb-script</code>.
                 If your site runs on WordPress, uses <code><a href="http://codex.wordpress.org/Function_Reference/wp_enqueue_script">wp_enqueue_script()</a></code> to enqueue scripts, and requires these overrides, enqueue the University Header script with <code>wp_enqueue_script()</code> using the parameter(s) above, and add the following snippet to your theme's functions.php file:
               </p>
               <div class="card mb-4">

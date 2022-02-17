@@ -367,9 +367,6 @@ function ucfhbSetJsonp(json) {
     this.searchKeytermLinkClass = 'search-autocomplete-keyterm';                // Class assigned to an autocomplete <a> element that links to a keyterm's URL
     this.searchResultsLinkClass = 'search-autocomplete-result';                 // Class assigned to an autocomplete <a> elements that links to a non-keyterm's URL (generic search result)
 
-    // this.keyterms contains all autocomplete keyterms + matches that are attempted before attempting a search service request.
-    this.keyterms = @!@KEYTERMS@!@;
-
     var timer;  // setTimeout timer value used by self.searchOnKeyUp
 
 
@@ -483,54 +480,44 @@ function ucfhbSetJsonp(json) {
 
       // Make sure there is actually a query to search for
       if (safeq.length > 1) {
+        var matchesFound = 0;
 
-        // Search against keyterm list first.
-        if (self.keyterms.keyterms) {
-          var matchesFound = 0;
-              results = [];
-
-          for (var i = 0; i < self.keyterms.keyterms.length; i++) {
-            var keyterm = self.keyterms.keyterms[i];
-
-            // Search each value in keyterm.matches for a match until one is found
-            for (var j = 0; j < keyterm.matches.length; j++) {
-              var match = keyterm.matches[j];
-              if (match.indexOf(matchq) > -1) {
-                matchesFound++;
-                results.push(keyterm);
-                break;
-              }
-            }
-
-            // Don't allow more than 5 autocomplete results to be returned
-            if (matchesFound > 4) {
-              break;
-            }
-          }
-
-          if (matchesFound > 0) {
+        ucfhbGetJsonp(urlq, function(json) {
+          if (json && json.results !== null && json.results.length > 0) {
             self.toggleAutocompleteList(true);
 
-            for (var k = 0; k < matchesFound; k++) {
-              var name = stripTags(results[k].name.trim());
-              var nameID = 'ucfhb-search-autocomplete-name-' + k;
+            for (var l = 0; l < json.results.length; l++) {
+              matchesFound++;
+
+              var name = json.results[l].name !== null ? stripTags(json.results[l].name.trim()) : '';
+              var nameID = 'ucfhb-search-autocomplete-name-' + l;
 
               var nameSpan = document.createElement('span');
               nameSpan.setAttribute('class', 'ucfhb-search-autocomplete-name');
               nameSpan.setAttribute('id', nameID);
               nameSpan.innerHTML = name;
 
-              var resultUrl = results[k].url !== '' ? stripTags(results[k].url.trim()) : self.searchAction + urlq;
+              var orgSpan = json.results[l].organization !== null ? document.createElement('span') : null;
+              if (orgSpan) {
+                orgSpan.setAttribute('class', 'ucfhb-search-autocomplete-org');
+                orgSpan.innerHTML = stripTags(json.results[l].organization.trim());
+              }
+
+              var resultUrl = self.searchAction + encodeURIComponent(name);
               var listItemLink = document.createElement('a');
-              listItemLink.setAttribute('class', self.searchKeytermLinkClass);
+              listItemLink.setAttribute('class', self.searchResultsLinkClass);
               listItemLink.setAttribute('href', resultUrl);
               listItemLink.setAttribute('tabindex', '-1');
 
               listItemLink.appendChild(nameSpan);
+              if (orgSpan) {
+                listItemLink.appendChild(orgSpan);
+              }
 
-              ucfhbAssignTrackingListener(listItemLink, 'click', new String(resultUrl), ucfhbTrackingActionACKeyterm, '' + name);
+              ucfhbAssignTrackingListener(listItemLink, 'click', new String(resultUrl), ucfhbTrackingActionACSearch, '' + name);
 
               var listItem = document.createElement('li');
+
               listItem.setAttribute('data-name-val', name);
               listItem.setAttribute('role', 'option');
               listItem.setAttribute('aria-labelledby', nameID);
@@ -539,68 +526,16 @@ function ucfhbSetJsonp(json) {
 
               self.autocompleteList.appendChild(listItem);
             }
-
             // Add 'View More Results link'; update screenreader help text
             self.updateAutocompleteHelp(matchesFound, safeq);
           }
-          // Try search service results if no keyterms are found
           else {
-            ucfhbGetJsonp(urlq, function(json) {
-              if (json && json.results !== null && json.results.length > 0) {
-                self.toggleAutocompleteList(true);
-
-                for (var l = 0; l < json.results.length; l++) {
-                  matchesFound++;
-
-                  var name = json.results[l].name !== null ? stripTags(json.results[l].name.trim()) : '';
-                  var nameID = 'ucfhb-search-autocomplete-name-' + l;
-
-                  var nameSpan = document.createElement('span');
-                  nameSpan.setAttribute('class', 'ucfhb-search-autocomplete-name');
-                  nameSpan.setAttribute('id', nameID);
-                  nameSpan.innerHTML = name;
-
-                  var orgSpan = json.results[l].organization !== null ? document.createElement('span') : null;
-                  if (orgSpan) {
-                    orgSpan.setAttribute('class', 'ucfhb-search-autocomplete-org');
-                    orgSpan.innerHTML = stripTags(json.results[l].organization.trim());
-                  }
-
-                  var resultUrl = self.searchAction + encodeURIComponent(name);
-                  var listItemLink = document.createElement('a');
-                  listItemLink.setAttribute('class', self.searchResultsLinkClass);
-                  listItemLink.setAttribute('href', resultUrl);
-                  listItemLink.setAttribute('tabindex', '-1');
-
-                  listItemLink.appendChild(nameSpan);
-                  if (orgSpan) {
-                    listItemLink.appendChild(orgSpan);
-                  }
-
-                  ucfhbAssignTrackingListener(listItemLink, 'click', new String(resultUrl), ucfhbTrackingActionACSearch, '' + name);
-
-                  var listItem = document.createElement('li');
-
-                  listItem.setAttribute('data-name-val', name);
-                  listItem.setAttribute('role', 'option');
-                  listItem.setAttribute('aria-labelledby', nameID);
-
-                  listItem.appendChild(listItemLink);
-
-                  self.autocompleteList.appendChild(listItem);
-                }
-                // Add 'View More Results link'; update screenreader help text
-                self.updateAutocompleteHelp(matchesFound, safeq);
-              }
-              else {
-                // Make sure we hide the list if it's already visible and no
-                // results are returned
-                self.toggleAutocompleteList(false);
-                self.updateAutocompleteHelp(0, safeq);
-              }
-            });
+            // Make sure we hide the list if it's already visible and no
+            // results are returned
+            self.toggleAutocompleteList(false);
+            self.updateAutocompleteHelp(0, safeq);
           }
-        }
+        });
 
       }
       // If there is no query, make sure the autocomplete

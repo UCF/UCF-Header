@@ -6,9 +6,8 @@ cd "$(dirname "$0")"
 source config.conf
 NOW=$(date +"%s")
 
-# Find/replace content from keyterms, markup template files into header template
+# Find/replace content from markup template file into header template
 cp assets/university-header-templ.js assets/university-header-templ.js.tmp
-perl -i -ne 's/\@\!\@KEYTERMS\@\!\@/`cat assets\/keyterms.json`/e;print' assets/university-header-templ.js.tmp
 perl -i -ne 's/\@\!\@MARKUP\@\!\@/`cat assets\/university-header-markup.js`/e;print' assets/university-header-templ.js.tmp
 # Find/replace config variables in header template
 sed -i -e "s|@!@GA@!@|$GA|g" assets/university-header-templ.js.tmp

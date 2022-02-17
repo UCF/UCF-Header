@@ -294,7 +294,8 @@ var ucfhbAssignTrackingListener = function(elem, eventType, link, action, label)
       ucfhbAssignTrackingListener(ucfLogoLink, 'click', ucfLogoLink.getAttribute('href'), ucfhbTrackingActionLogoClick, 'UCF Logo');
 
       var handleSearchSubmit = function(e) {
-        ucfhbAssignTrackingListener(searchForm, 'submit', searchForm.getAttribute('data-action-url') + encodeURIComponent(searchField.value), ucfhbTrackingActionSearch, 'Search');
+        var searchURL = searchForm.getAttribute('data-action-url') + encodeURIComponent(searchField.value);
+        ucfhbTrackAction(searchURL, ucfhbTrackingActionSearch, self.searchField.value);
       };
 
       if (searchForm.addEventListener) {

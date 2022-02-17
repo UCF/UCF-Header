@@ -292,7 +292,16 @@ var ucfhbAssignTrackingListener = function(elem, eventType, link, action, label)
       ucfhbAssignTrackingListener(linkKnightsmail, 'click', linkKnightsmail.getAttribute('href'), ucfhbTrackingActionSignon, 'Knightsmail');
       ucfhbAssignTrackingListener(linkWebcourses, 'click', linkWebcourses.getAttribute('href'), ucfhbTrackingActionSignon, 'Webcourses');
       ucfhbAssignTrackingListener(ucfLogoLink, 'click', ucfLogoLink.getAttribute('href'), ucfhbTrackingActionLogoClick, 'UCF Logo');
-      ucfhbAssignTrackingListener(searchForm, 'submit', searchForm.getAttribute('data-action-url') + encodeURIComponent(searchField.value), ucfhbTrackingActionSearch, 'Search');
+
+      var handleSearchSubmit = function(e) {
+        ucfhbAssignTrackingListener(searchForm, 'submit', searchForm.getAttribute('data-action-url') + encodeURIComponent(searchField.value), ucfhbTrackingActionSearch, 'Search');
+      };
+
+      if (searchForm.addEventListener) {
+        searchForm.addEventListener('submit', handleSearchSubmit, false);
+      } else if (searchForm.attachEvent) {
+        searchForm.attachEvent('onsubmit', handleSearchSubmit);
+      }
     };
     ucfhbEventListener();
   }

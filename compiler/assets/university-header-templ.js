@@ -367,8 +367,8 @@ function ucfhbSetJsonp(json) {
     this.searchKeytermLinkClass = 'search-autocomplete-keyterm';                // Class assigned to an autocomplete <a> element that links to a keyterm's URL
     this.searchResultsLinkClass = 'search-autocomplete-result';                 // Class assigned to an autocomplete <a> elements that links to a non-keyterm's URL (generic search result)
 
-    // this.keyterms contains all autocomplete keyterms + matches that are attempted before attempting a search service request.
-    this.keyterms = @!@KEYTERMS@!@;
+    // REMOVED in v3.0.0
+    this.keyterms = { "keyterms": [] }
 
     var timer;  // setTimeout timer value used by self.searchOnKeyUp
 

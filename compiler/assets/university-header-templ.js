@@ -295,7 +295,7 @@ var ucfhbAssignTrackingListener = function(elem, eventType, link, action, label)
 
       var handleSearchSubmit = function(e) {
         var searchURL = searchForm.getAttribute('data-action-url') + encodeURIComponent(searchField.value);
-        ucfhbTrackAction(searchURL, ucfhbTrackingActionSearch, self.searchField.value);
+        ucfhbTrackAction(searchURL, ucfhbTrackingActionSearch, searchField.value);
       };
 
       if (searchForm.addEventListener) {

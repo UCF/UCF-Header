@@ -18,8 +18,3 @@ mv assets/university-header-templ.js.tmp ../bar/js/university-header-full.js
 
 # Minify university-header-full.js
 java -jar compiler.jar --js ../bar/js/university-header-full.js --js_output_file ../bar/js/university-header.js
-
-# Find/replace search service url in proxy template; save out as bar/data/index.php
-cp assets/search-proxy-templ.php assets/search-proxy-templ.php.tmp
-sed -i -e "s|@!@SEARCH_SERVICE@!@|$SEARCH_SERVICE|g" assets/search-proxy-templ.php.tmp
-mv assets/search-proxy-templ.php.tmp ../bar/data/index.php

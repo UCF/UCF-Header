@@ -2,7 +2,7 @@
  * Opt in css to include Bootstrap's 1200 breakpoint
  **/
 
- @media (min-width: 1200px) {
+@media (min-width: 1200px) {
   #ucfhb-inner { width: 1140px; }
   #ucfhb-logo a {
     background-position: 0 -131px;
@@ -21,7 +21,4 @@
   #ucfhb-search-field {
     width: 208px !important;
   }
-  #ucfhb-search-autocomplete {
-    width: 320px;
-  }
- }
+}

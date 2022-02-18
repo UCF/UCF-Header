@@ -13,3 +13,4 @@ compiler/config.conf
 node_modules
 npm-debug.log
 gulp-config.json
+node_modules

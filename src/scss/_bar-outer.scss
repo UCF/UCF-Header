@@ -4,90 +4,90 @@
 // Styles for the outermost wrapper elements of the bar.
 //
 
-// The outermost wrapper element for the bar
-#ucfhb {
-  align-self: flex-start !important;
-  background: $black;
-  display: block !important;
-  flex: 0 0 auto !important;
-  height: $header-height;
-  margin: auto;
-  order: 0 !important;
-  position: relative;
-  width: 100%;
-  z-index: 10000;
+// // The outermost wrapper element for the bar
+// #ucfhb {
+//   align-self: flex-start !important;
+//   background: $black;
+//   display: block !important;
+//   flex: 0 0 auto !important;
+//   height: $header-height;
+//   margin: auto;
+//   order: 0 !important;
+//   position: relative;
+//   width: 100%;
+//   z-index: 10000;
 
-  @media print {
-    display: none !important;
-  }
+//   @media print {
+//     display: none !important;
+//   }
 
-  @media (max-width: 979px) {
-    height: $header-height * 2;
-    margin-top: -$header-height;
-    transition: margin .4s ease-in-out; // expand down
-  }
+//   @media (max-width: 979px) {
+//     height: $header-height * 2;
+//     margin-top: -$header-height;
+//     transition: margin .4s ease-in-out; // expand down
+//   }
 
-  @media (max-width: 640px) {
-    height: $header-height * 3;
-    margin-top: -($header-height * 2);
-  }
+//   @media (max-width: 640px) {
+//     height: $header-height * 3;
+//     margin-top: -($header-height * 2);
+//   }
 
-  // Foundation CSS Framework Overrides
-  &,
-  &::before,
-  &::after,
-  *,
-  *::before,
-  *::after {
-    box-sizing: content-box !important;
-  }
+//   // Foundation CSS Framework Overrides
+//   &,
+//   &::before,
+//   &::after,
+//   *,
+//   *::before,
+//   *::after {
+//     box-sizing: content-box !important;
+//   }
 
-  // Prevent transition animations onload until .preload class is removed.
-  &.preload {
-    @media (max-width: 979px) {
-      transition: none !important;
-    }
-  }
+//   // Prevent transition animations onload until .preload class is removed.
+//   &.preload {
+//     @media (max-width: 979px) {
+//       transition: none !important;
+//     }
+//   }
 
-  &.ucfhb-mobileslide {
-    @media (max-width: 979px) {
-      margin-top: 0;
-    }
-  }
+//   &.ucfhb-mobileslide {
+//     @media (max-width: 979px) {
+//       margin-top: 0;
+//     }
+//   }
 
-  // Common miscellaneous overrides
-  a {
-    border: 0;
-  }
+//   // Common miscellaneous overrides
+//   a {
+//     border: 0;
+//   }
 
-  .ucfhb-icon {
-    font-family: 'Helvetica-Neue', sans-serif;
-    line-height: 14px;
-  }
-}
+//   .ucfhb-icon {
+//     font-family: 'Helvetica-Neue', sans-serif;
+//     line-height: 14px;
+//   }
+// }
 
-// Inner wrap (fixed 940px width)
-// display: block is added to override display:none inline styles, which
-// prevent plaintext content flicker if the header css hasn't appended
-// before the bar content.
-#ucfhb-inner {
-  display: block !important;
-  height: $header-height;
-  margin: auto;
-  position: relative;
-  width: 940px;
-  z-index: 1000;
+// // Inner wrap (fixed 940px width)
+// // display: block is added to override display:none inline styles, which
+// // prevent plaintext content flicker if the header css hasn't appended
+// // before the bar content.
+// #ucfhb-inner {
+//   display: block !important;
+//   height: $header-height;
+//   margin: auto;
+//   position: relative;
+//   width: 940px;
+//   z-index: 1000;
 
-  @media (max-width: 979px) {
-    height: $header-height;
-    width: 720px;
-  }
+//   @media (max-width: 979px) {
+//     height: $header-height;
+//     width: 720px;
+//   }
 
-  @media (max-width: 767px) {
-    width: 100%;
-  }
+//   @media (max-width: 767px) {
+//     width: 100%;
+//   }
 
-  @media (max-width: 640px) {
-    height: $header-height * 2;
-  }
-}
+//   @media (max-width: 640px) {
+//     height: $header-height * 2;
+//   }
+// }

@@ -1,48 +1,48 @@
-var autoprefixer = require('gulp-autoprefixer'),
-    browserSync = require('browser-sync').create(),
-    cleanCSS = require('gulp-clean-css'),
-    gulp = require('gulp'),
-    merge = require('merge')
-    rename = require('gulp-rename'),
-    sass = require('gulp-sass'),
-    scsslint = require('gulp-scss-lint'),
-    shelljs = require('shelljs');
+const fs = require('fs');
+const browserSync = require('browser-sync').create();
+const gulp = require('gulp');
+const autoprefixer = require('gulp-autoprefixer');
+const cleanCSS = require('gulp-clean-css');
+const sass = require('gulp-sass')(require('sass'));
+const sassLint = require('gulp-sass-lint');
+const exec = require('child_process').exec;
+const merge = require('merge');
 
 
-var configLocal = require('./gulp-config.json'),
-    configDefault = {
-      src: {
-        scssPath: './src/scss',
-        jsPath:   './compiler/assets/js'
-      },
-      dist: {
-        cssPath:  './bar/css',
-        jsPath:   './bar/js'
-      },
-      compilerPath: './compiler/',
-      packagesPath: './node_modules',
-      sync: false,
-      syncTarget: 'http://localhost/'
-    },
-    config = merge(configDefault, configLocal);
+let config = {
+  src: {
+    scssPath: './src/scss',
+    jsPath: './compiler/assets'
+  },
+  dist: {
+    cssPath: './bar/css',
+    jsPath: './bar/js'
+  },
+  compilerPath: './compiler/',
+  packagesPath: './node_modules',
+  sync: false,
+  syncTarget: 'http://localhost/'
+};
+
+/* eslint-disable no-sync */
+if (fs.existsSync('./gulp-config.json')) {
+  const overrides = JSON.parse(fs.readFileSync('./gulp-config.json'));
+  config = merge(config, overrides);
+}
+/* eslint-enable no-sync */
 
 
 //
-// CSS
+// Helper functions
 //
 
-// Base linting function
+// Base SCSS linting function
 function lintSCSS(src) {
   return gulp.src(src)
-    .pipe(scsslint({
-      'maxBuffer': 400 * 1024  // default: 300 * 1024
-    }));
+    .pipe(sassLint())
+    .pipe(sassLint.format())
+    .pipe(sassLint.failOnError());
 }
-
-// Lint all scss files
-gulp.task('scss-lint-all', function() {
-  return lintSCSS(config.src.scssPath + '/*.scss');
-});
 
 // Base SCSS compile function
 function buildCSS(src, dest) {
@@ -58,72 +58,130 @@ function buildCSS(src, dest) {
       // Supported browsers added in package.json ("browserslist")
       cascade: false
     }))
-    .pipe(rename({
-      extname: '.css'
-    }))
-    .pipe(gulp.dest(dest))
-    .pipe(browserSync.stream());
+    .pipe(gulp.dest(dest));
 }
 
+// Base JS linting function (with eslint). Fixes problems in-place.
+// function lintJS(src, dest) {
+//   dest = dest || config.src.jsPath;
+
+//   return gulp.src(src)
+//     .pipe(eslint({
+//       fix: true
+//     }))
+//     .pipe(eslint.format())
+//     .pipe(isFixed(dest));
+// }
+
+// // Base JS compile function
+// function buildJS(src, dest) {
+//   dest = dest || config.dist.jsPath;
+
+//   return gulp.src(src)
+//     .pipe(include({
+//       includePaths: [config.packagesPath, config.src.jsPath]
+//     }))
+//     .on('error', console.log) // eslint-disable-line no-console
+//     .pipe(babel())
+//     .pipe(uglify())
+//     .pipe(rename({
+//       extname: '.min.js'
+//     }))
+//     .pipe(gulp.dest(dest));
+// }
+
+// BrowserSync reload function
+function serverReload(done) {
+  if (config.sync) {
+    browserSync.reload();
+  }
+  done();
+}
+
+// BrowserSync serve function
+function serverServe(done) {
+  if (config.sync) {
+    browserSync.init({
+      proxy: {
+        target: config.syncTarget
+      }
+    });
+  }
+  done();
+}
+
+
+//
+// CSS
+//
+
+// Lint all scss files
+gulp.task('scss-lint', () => {
+  return lintSCSS(`${config.src.scssPath}/*.scss`);
+});
+
 // Compile main bar stylesheet
-gulp.task('scss-build-bar', function() {
-  return buildCSS(config.src.scssPath + '/bar.scss');
+gulp.task('scss-build-bar', function () {
+  return buildCSS(`${config.src.scssPath}/bar.scss`);
 });
 
 // Compile main bar stylesheet
 gulp.task('scss-build-bootstrap2', function () {
-  return buildCSS(config.src.scssPath + '/bar-bootstrap.scss');
+  return buildCSS(`${config.src.scssPath}/bar-bootstrap.scss`);
 });
 
 // Compile 1200px breakpoint stylesheet
 gulp.task('scss-build-1200bp', function () {
-  return buildCSS(config.src.scssPath + '/1200-breakpoint.scss');
+  return buildCSS(`${config.src.scssPath}/1200-breakpoint.scss`);
 });
 
 // All theme css-related tasks
-gulp.task('css', ['scss-lint-all', 'scss-build-bar', 'scss-build-bootstrap2', 'scss-built-1200bp']);
+gulp.task('css', gulp.series('scss-lint', 'scss-build-bar', 'scss-build-bootstrap2', 'scss-build-1200bp'));
 
 
 //
 // JavaScript
 //
 
-// Concat and uglify js files through babel
-gulp.task('js-build', function() {
-  shelljs.cd(config.compilerPath);
-  return shelljs.exec('./compile.sh', function (code, stdout, stderr) {
+// // Run eslint on js files in src.jsPath
+// gulp.task('es-lint', () => {
+//   return lintJS([`${config.src.jsPath}/*.js`], config.src.jsPath);
+// });
+
+// // Concat and uglify js files through babel
+// gulp.task('js-build', () => {
+//   return buildJS(`${config.src.jsPath}/script.js`, config.dist.jsPath);
+// });
+
+// // All js-related tasks
+// gulp.task('js', gulp.series('es-lint', 'js-build'));
+
+// Build js via compile.sh
+gulp.task('js-build', (done) => {
+  exec('./compile.sh', { cwd: config.compilerPath }, (code, stdout, stderr) => {
     console.log('Exit code:', code);
     console.log('Program output:', stdout);
     console.log('Program stderr:', stderr);
+    done(code);
   });
 });
 
-// All js-related tasks
-// gulp.task('js', function() {
-//   runSequence('es-lint', 'js-build');
-// });
-gulp.task('js', ['js-build']);
+gulp.task('js', gulp.series('js-build'))
 
 
 //
 // Rerun tasks when files change
 //
-gulp.task('watch', function() {
-  if (config.sync) {
-    browserSync.init({
-        proxy: {
-          target: config.syncTarget
-        }
-    });
-  }
+gulp.task('watch', (done) => {
+  serverServe(done);
 
-  gulp.watch(config.src.scssPath + '/**/*.scss', ['css']);
-  gulp.watch(config.src.jsPath + '/**/*.js', ['js']).on('change', browserSync.reload);
-  gulp.watch('./**/*.php').on('change', browserSync.reload);
+  gulp.watch(`${config.src.scssPath}/**/*.scss`, gulp.series('css', serverReload));
+  gulp.watch(`${config.src.jsPath}/**/*.js`, gulp.series('js', serverReload));
+  gulp.watch('./index.html', gulp.series(serverReload));
 });
 
 
 //
 // Default task
 //
-gulp.task('default', ['css', 'js']);
+gulp.task('default', gulp.series('css', 'js'));

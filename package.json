@@ -3,15 +3,15 @@
   "version": "2.1.11",
   "private": true,
   "devDependencies": {
-    "browser-sync": "^2.23.6",
-    "gulp": "~3.9.0",
-    "gulp-autoprefixer": "^5.0.0",
-    "gulp-clean-css": "^3.9.4",
-    "gulp-rename": "^1.2.2",
-    "gulp-sass": "~2.3.0",
-    "gulp-scss-lint": "^0.3.9",
-    "merge": "^1.2.0",
-    "shelljs": "^0.8.2"
+    "browser-sync": "^2.27.7",
+    "gulp": "^4.0.2",
+    "gulp-autoprefixer": "^8.0.0",
+    "gulp-clean-css": "^4.3.0",
+    "gulp-include": "^2.4.1",
+    "gulp-sass": "~5.1.0",
+    "gulp-sass-lint": "^1.4.0",
+    "merge": "^2.1.1",
+    "sass": "^1.49.8"
   },
   "browserslist": [
     "last 2 versions",

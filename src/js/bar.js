@@ -3,7 +3,8 @@
   //
   // Define constants
   //
-  let UCFHB_VERSION = '@!@VERSION@!@';
+  const _gaq           = _gaq || [];
+  let UCFHB_VERSION    = '@!@VERSION@!@';
   let UCFHB_GA_ACCOUNT = '@!@GA@!@';
   const UCFHB_ROOT_URL = '@!@ROOT_URL@!@';
 
@@ -24,14 +25,16 @@
   // Append analytics code
   //
   if (UCFHB_GA_ACCOUNT) {
-    var _gaq = _gaq || [];
     _gaq.push(['ucfhb._setAccount', UCFHB_GA_ACCOUNT]);
     _gaq.push(['ucfhb._setDomainName', 'none']);
     _gaq.push(['ucfhb._trackPageview']);
     (function () {
-      const ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-      ga.src = `${document.location.protocol == 'https:' ? 'https://ssl' : 'http://www'}.google-analytics.com/ga.js`;
-      const s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      const ga = document.createElement('script');
+      ga.type = 'text/javascript';
+      ga.async = true;
+      ga.src = `${document.location.protocol === 'https:' ? 'https://ssl' : 'http://www'}.google-analytics.com/ga.js`;
+      const s = document.getElementsByTagName('script')[0];
+      s.parentNode.insertBefore(ga, s);
     }());
   }
 
@@ -56,27 +59,19 @@
     action = action || null;
     label = label || null;
 
-    // Cross-browser addEventListener check.
-    if (elem.addEventListener) {
-      elem.addEventListener(eventType, (event) => {
-        event.preventDefault();
-        ucfhbTrackAction(link, action, label);
-      }, false);
-    } else {
-      elem.attachEvent(`on${eventType}`, (event) => {
-        ucfhbTrackAction(link, action, label);
-        return false;
-      });
-    }
+    elem.addEventListener(eventType, (event) => {
+      event.preventDefault();
+      ucfhbTrackAction(link, action, label);
+    }, false);
   };
 
 
   //
   // Define GA tracking actions
   //
-  const ucfhbTrackingActionLogoClick = 'ucf-logo', // When a UCF Login button is clicked
-    ucfhbTrackingActionSearch = 'search', // When the search form is submitted
-    ucfhbTrackingActionSignon = 'signon'; // When the UCF logo is clicked
+  const ucfhbTrackingActionLogoClick = 'ucf-logo'; // When a UCF Login button is clicked
+  const ucfhbTrackingActionSearch    = 'search'; // When the search form is submitted
+  const ucfhbTrackingActionSignon    = 'signon'; // When the UCF logo is clicked
 
 
   //
@@ -84,19 +79,20 @@
   // These resources should be protocol-agnostic and link to
   // an absolute URL.
   //
-  const ucfhbStylesheet = `${window.location.protocol}//${UCFHB_ROOT_URL}/bar/css/bar.css?${UCFHB_VERSION}`;
-  const ucfhbBsStylesheet = `${window.location.protocol}//${UCFHB_ROOT_URL}/bar/css/bar-bootstrap.css?${UCFHB_VERSION}`;
+  const ucfhbStylesheet       = `${window.location.protocol}//${UCFHB_ROOT_URL}/bar/css/bar.css?${UCFHB_VERSION}`;
+  const ucfhbBsStylesheet     = `${window.location.protocol}//${UCFHB_ROOT_URL}/bar/css/bar-bootstrap.css?${UCFHB_VERSION}`;
   const ucfhb1200BpStylesheet = `${window.location.protocol}//${UCFHB_ROOT_URL}/bar/css/1200-breakpoint.css?${UCFHB_VERSION}`;
 
 
-  /**
-   * Check if data-bootstrap-override has been passed to the
-   * university header script. Requires that the script tag
-   * has an ID of 'ucfhb-script'
-   **/
-  let ucfhbScript = null,
-    use1200Breakpoint = false,
-    useBsOverride = false;
+  //
+  // Check if data-bootstrap-override has been passed to the
+  // university header script. Requires that the script tag
+  // has an ID of 'ucfhb-script'
+  //
+  let ucfhbScript       = null;
+  let use1200Breakpoint = false;
+  let useBsOverride     = false;
+
   if (document.getElementById('ucfhb-script')) {
     ucfhbScript = document.getElementById('ucfhb-script');
     if (ucfhbScript.getAttribute('src').indexOf('use-bootstrap-overrides=1') > -1) {
@@ -109,77 +105,12 @@
   }
 
 
-  /**
-   * contentloaded.js
-   *
-   * Author: Diego Perini (diego.perini at gmail.com)
-   * Summary: cross-browser wrapper for DOMContentLoaded
-   * Updated: 20101020
-   * License: MIT
-   * Version: 1.2
-   *
-   * URL:
-   * http://javascript.nwbox.com/ContentLoaded/
-   * http://javascript.nwbox.com/ContentLoaded/MIT-LICENSE
-   *
-   **/
-
-  // @win window reference
-  // @fn function reference
-  function contentLoaded(win, fn) {
-
-    var done = false, top = true,
-
-      doc = win.document, root = doc.documentElement,
-
-      add = doc.addEventListener ? 'addEventListener' : 'attachEvent',
-      rem = doc.addEventListener ? 'removeEventListener' : 'detachEvent',
-      pre = doc.addEventListener ? '' : 'on',
-
-      init = function (e) {
-        if (e.type == 'readystatechange' && doc.readyState != 'complete') {
-          return;
-        }
-        (e.type == 'load' ? win : doc)[rem](pre + e.type, init, false);
-        if (!done && (done = true)) {
-          fn.call(win, e.type || e);
-        }
-      },
-
-      poll = function () {
-        try {
-          root.doScroll('left');
-        } catch (e) {
-          setTimeout(poll, 50); return;
-        }
-        init('poll');
-      };
-
-    if (doc.readyState == 'complete') {
-      fn.call(win, 'lazy');
-    } else {
-      if (doc.createEventObject && root.doScroll) {
-        try {
-          top = !win.frameElement;
-        } catch (e) { }
-        if (top) {
-          poll();
-        }
-      }
-      doc[add](`${pre}DOMContentLoaded`, init, false);
-      doc[add](`${pre}readystatechange`, init, false);
-      win[add](`${pre}load`, init, false);
-    }
-
-  }
-
-
-  /**
-   * Insert the bar into the DOM; start listening for events.
-   * Uses contentLoaded.js to determine when the DOM is ready.
-   **/
-  const ucfhbCreateBar = function (callback) {
-    /* Append stylesheet to head */
+  //
+  // Insert the bar and its stylesheets into the DOM;
+  // start listening for events.
+  //
+  const ucfhbCreateBar = function () {
+    // Append stylesheet to head
     const head = document.getElementsByTagName('head')[0];
     const stylesheet = document.createElement('link');
     stylesheet.setAttribute('href', ucfhbStylesheet);
@@ -187,7 +118,7 @@
     stylesheet.setAttribute('type', 'text/css');
     head.appendChild(stylesheet);
 
-    /* Append Bootstrap 2.x override stylesheet to head */
+    // Append Bootstrap 2.x override stylesheet to head
     if (useBsOverride === true) {
       const bsStylesheet = document.createElement('link');
       bsStylesheet.setAttribute('href', ucfhbBsStylesheet);
@@ -196,7 +127,7 @@
       head.appendChild(bsStylesheet);
     }
 
-    /* Append 1200 breakpoint stylesheet to head */
+    // Append 1200 breakpoint stylesheet to head
     if (use1200Breakpoint === true) {
       const bp1200Stylesheet = document.createElement('link');
       bp1200Stylesheet.setAttribute('href', ucfhb1200BpStylesheet);
@@ -205,7 +136,7 @@
       head.appendChild(bp1200Stylesheet);
     }
 
-    /* Create the outermost bar div, if necessary */
+    // Create the outermost bar div, if necessary
     let ucfhbBar = null;
     if (document.getElementById('ucfhb')) {
       ucfhbBar = document.getElementById('ucfhb');
@@ -256,111 +187,102 @@
 </div>
     `.trim();
 
-    callback();
+    ucfhbInitialize();
   };
 
   const ucfhbInitialize = function () {
-    /* Define listeners */
-    const ucfhbEventListener = function () {
-      // Fetch inserted DOM elements
-      const ucfhbBar      = document.getElementById('ucfhb'),
-        mobileToggle    = document.getElementById('ucfhb-mobile-toggle'),
-        ucfLogo       = document.getElementById('ucfhb-logo'),
-        ucfLogoLink     = ucfLogo.firstElementChild || ucfLogo.firstChild,
-        barRight      = document.getElementById('ucfhb-right'),
-        myUCFBtn      = document.getElementById('ucfhb-signon-logo'),
-        myUCFWrapper    = document.getElementById('ucfhb-signon'),
-        searchbar       = document.getElementById('ucfhb-search'),
-        searchForm      = document.getElementById('ucfhb-search-form');
-      searchField     = document.getElementById('ucfhb-search-field'),
-      searchBtn       = document.getElementById('ucfhb-search-submit'),
-      searchMinimal     = document.getElementById('ucfhb-search-minimal'),
-      linkMyucf       = document.getElementById('ucfhb-myucf'),
-      linkKnightsmail   = document.getElementById('ucfhb-knightsmail'),
-      linkWebcourses    = document.getElementById('ucfhb-webcourses'),
+    // Fetch inserted DOM elements
+    const ucfhbBar        = document.getElementById('ucfhb');
+    const mobileToggle    = document.getElementById('ucfhb-mobile-toggle');
+    const ucfLogo         = document.getElementById('ucfhb-logo');
+    const ucfLogoLink     = ucfLogo.firstElementChild || ucfLogo.firstChild;
+    const barRight        = document.getElementById('ucfhb-right');
+    const myUCFBtn        = document.getElementById('ucfhb-signon-logo');
+    const searchbar       = document.getElementById('ucfhb-search');
+    const searchForm      = document.getElementById('ucfhb-search-form');
+    const searchField     = document.getElementById('ucfhb-search-field');
+    const searchBtn       = document.getElementById('ucfhb-search-submit');
+    const searchMinimal   = document.getElementById('ucfhb-search-minimal');
+    const linkMyucf       = document.getElementById('ucfhb-myucf');
+    const linkKnightsmail = document.getElementById('ucfhb-knightsmail');
+    const linkWebcourses  = document.getElementById('ucfhb-webcourses');
 
-      shiftLeftElems    = [myUCFBtn, searchbar, searchMinimal],
-      mobileToggleElems   = [ucfhbBar, mobileToggle, ucfLogo, barRight];
+    const shiftLeftElems    = [myUCFBtn, searchbar, searchMinimal];
+    const mobileToggleElems = [ucfhbBar, mobileToggle, ucfLogo, barRight];
 
-      const goldBarClass = 'ucfhb-gold';
+    // Function to toggle classes on an array of elements
+    const toggleClasses = function (elems, newClassName) {
+      const length = elems.length;
+      for (let i = 0; i < length; i++) {
+        elems[i].className = newClassName;
+      }
+    };
 
-      // Function to toggle classes on an array of elements
-      const toggleClasses = function (elems, newClassName) {
-        const length = elems.length;
-        for (let i = 0; i < length; i++) {
-          // Maintain goldBarClass if it is assigned
-          if (elems[i].className.indexOf(goldBarClass) > -1) {
-            elems[i].className = `${goldBarClass} ${newClassName}`;
-          } else {
-            elems[i].className = newClassName;
-          }
-        }
-      };
-      // MyUCF Sliding functionality
-      myUCFBtn.onclick = function () {
-        if (myUCFBtn.className == 'ucfhb-shiftleft') {
-          toggleClasses(shiftLeftElems, '');
-          // Re-enable tabbing for previously disabled elements
-          searchField.removeAttribute('tabindex');
-          searchBtn.removeAttribute('tabindex');
-          // Adjust aria-expanded attributes on sign-in and search togglers
-          myUCFBtn.setAttribute('aria-expanded', 'false');
-          searchMinimal.setAttribute('aria-expanded', 'true');
-        } else {
-          toggleClasses(shiftLeftElems, 'ucfhb-shiftleft');
-          // Disable tabbing on hidden elements
-          searchField.setAttribute('tabindex', '-1');
-          searchBtn.setAttribute('tabindex', '-1');
-          // Adjust aria-expanded attributes on sign-in and search togglers
-          myUCFBtn.setAttribute('aria-expanded', 'true');
-          searchMinimal.setAttribute('aria-expanded', 'false');
-        }
-      };
-      searchMinimal.onclick = function () {
+    // MyUCF Sliding functionality
+    myUCFBtn.onclick = function () {
+      if (myUCFBtn.className === 'ucfhb-shiftleft') {
         toggleClasses(shiftLeftElems, '');
-        searchField.focus();
+        // Re-enable tabbing for previously disabled elements
         searchField.removeAttribute('tabindex');
         searchBtn.removeAttribute('tabindex');
         // Adjust aria-expanded attributes on sign-in and search togglers
         myUCFBtn.setAttribute('aria-expanded', 'false');
         searchMinimal.setAttribute('aria-expanded', 'true');
-      };
-      // Mobile show/hide functionality
-      mobileToggle.onclick = function () {
-        if (mobileToggle.className == 'ucfhb-mobileslide') {
-          toggleClasses(mobileToggleElems, '');
-          // Adjust aria-expanded attribute on mobile toggler
-          mobileToggle.setAttribute('aria-expanded', 'false');
-        } else {
-          toggleClasses(mobileToggleElems, 'ucfhb-mobileslide');
-          // Adjust aria-expanded attribute on mobile toggler
-          mobileToggle.setAttribute('aria-expanded', 'true');
-        }
-      };
-
-      // Analytics tracking
-      ucfhbAssignTrackingListener(linkMyucf, 'click', linkMyucf.getAttribute('href'), ucfhbTrackingActionSignon, 'MyUCF');
-      ucfhbAssignTrackingListener(linkKnightsmail, 'click', linkKnightsmail.getAttribute('href'), ucfhbTrackingActionSignon, 'Knightsmail');
-      ucfhbAssignTrackingListener(linkWebcourses, 'click', linkWebcourses.getAttribute('href'), ucfhbTrackingActionSignon, 'Webcourses');
-      ucfhbAssignTrackingListener(ucfLogoLink, 'click', ucfLogoLink.getAttribute('href'), ucfhbTrackingActionLogoClick, 'UCF Logo');
-
-      const handleSearchSubmit = function (e) {
-        e.preventDefault();
-        const searchURL = searchForm.getAttribute('data-action-url') + encodeURIComponent(searchField.value);
-        ucfhbTrackAction(searchURL, ucfhbTrackingActionSearch, searchField.value);
-      };
-
-      if (searchForm.addEventListener) {
-        searchForm.addEventListener('submit', handleSearchSubmit, false);
-      } else if (searchForm.attachEvent) {
-        searchForm.attachEvent('onsubmit', handleSearchSubmit);
+      } else {
+        toggleClasses(shiftLeftElems, 'ucfhb-shiftleft');
+        // Disable tabbing on hidden elements
+        searchField.setAttribute('tabindex', '-1');
+        searchBtn.setAttribute('tabindex', '-1');
+        // Adjust aria-expanded attributes on sign-in and search togglers
+        myUCFBtn.setAttribute('aria-expanded', 'true');
+        searchMinimal.setAttribute('aria-expanded', 'false');
       }
     };
-    ucfhbEventListener();
+
+    searchMinimal.onclick = function () {
+      toggleClasses(shiftLeftElems, '');
+      searchField.focus();
+      searchField.removeAttribute('tabindex');
+      searchBtn.removeAttribute('tabindex');
+      // Adjust aria-expanded attributes on sign-in and search togglers
+      myUCFBtn.setAttribute('aria-expanded', 'false');
+      searchMinimal.setAttribute('aria-expanded', 'true');
+    };
+
+    // Mobile show/hide functionality
+    mobileToggle.onclick = function () {
+      if (mobileToggle.className === 'ucfhb-mobileslide') {
+        toggleClasses(mobileToggleElems, '');
+        // Adjust aria-expanded attribute on mobile toggler
+        mobileToggle.setAttribute('aria-expanded', 'false');
+      } else {
+        toggleClasses(mobileToggleElems, 'ucfhb-mobileslide');
+        // Adjust aria-expanded attribute on mobile toggler
+        mobileToggle.setAttribute('aria-expanded', 'true');
+      }
+    };
+
+    // Analytics tracking
+    ucfhbAssignTrackingListener(linkMyucf, 'click', linkMyucf.getAttribute('href'), ucfhbTrackingActionSignon, 'MyUCF');
+    ucfhbAssignTrackingListener(linkKnightsmail, 'click', linkKnightsmail.getAttribute('href'), ucfhbTrackingActionSignon, 'Knightsmail');
+    ucfhbAssignTrackingListener(linkWebcourses, 'click', linkWebcourses.getAttribute('href'), ucfhbTrackingActionSignon, 'Webcourses');
+    ucfhbAssignTrackingListener(ucfLogoLink, 'click', ucfLogoLink.getAttribute('href'), ucfhbTrackingActionLogoClick, 'UCF Logo');
+
+    const handleSearchSubmit = function (e) {
+      e.preventDefault();
+      const searchURL = searchForm.getAttribute('data-action-url') + encodeURIComponent(searchField.value);
+      ucfhbTrackAction(searchURL, ucfhbTrackingActionSearch, searchField.value);
+    };
+
+    searchForm.addEventListener('submit', handleSearchSubmit, false);
   };
 
-  contentLoaded(window, () => {
-    ucfhbCreateBar(ucfhbInitialize);
-  });
+  if (document.readyState === 'loading') {
+    // Loading hasn't finished yet
+    document.addEventListener('DOMContentLoaded', ucfhbCreateBar);
+  } else {
+    // `DOMContentLoaded` has already fired
+    ucfhbCreateBar();
+  }
 
 }());

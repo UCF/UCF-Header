@@ -3,22 +3,29 @@ const browserSync = require('browser-sync').create();
 const gulp = require('gulp');
 const autoprefixer = require('gulp-autoprefixer');
 const cleanCSS = require('gulp-clean-css');
+const include = require('gulp-include');
+const eslint = require('gulp-eslint-new');
+const isFixed = require('gulp-eslint-if-fixed');
+const babel = require('gulp-babel');
+const rename = require('gulp-rename');
 const sass = require('gulp-sass')(require('sass'));
 const sassLint = require('gulp-sass-lint');
-const exec = require('child_process').exec;
+const gulpif = require('gulp-if');
+const uglify = require('gulp-uglify');
 const merge = require('merge');
+const exec = require('child_process').exec;
 
 
 let config = {
   src: {
     scssPath: './src/scss',
-    jsPath: './compiler/assets'
+    jsPath: './src/js'
   },
   dist: {
     cssPath: './bar/css',
     jsPath: './bar/js'
   },
-  compilerPath: './compiler/',
+  compilerPath: './src',
   packagesPath: './node_modules',
   sync: false,
   syncTarget: 'http://localhost/'
@@ -62,33 +69,35 @@ function buildCSS(src, dest) {
 }
 
 // Base JS linting function (with eslint). Fixes problems in-place.
-// function lintJS(src, dest) {
-//   dest = dest || config.src.jsPath;
+function lintJS(src, dest) {
+  dest = dest || config.src.jsPath;
 
-//   return gulp.src(src)
-//     .pipe(eslint({
-//       fix: true
-//     }))
-//     .pipe(eslint.format())
-//     .pipe(isFixed(dest));
-// }
+  return gulp.src(src)
+    .pipe(eslint({
+      fix: true
+    }))
+    .pipe(eslint.format())
+    .pipe(isFixed(dest));
+}
 
-// // Base JS compile function
-// function buildJS(src, dest) {
-//   dest = dest || config.dist.jsPath;
+// Base JS compile function
+function buildJS(src, dest, destName, minify = true) {
+  dest = dest || config.dist.jsPath;
 
-//   return gulp.src(src)
-//     .pipe(include({
-//       includePaths: [config.packagesPath, config.src.jsPath]
-//     }))
-//     .on('error', console.log) // eslint-disable-line no-console
-//     .pipe(babel())
-//     .pipe(uglify())
-//     .pipe(rename({
-//       extname: '.min.js'
-//     }))
-//     .pipe(gulp.dest(dest));
-// }
+  return gulp.src(src)
+    .pipe(include({
+      includePaths: [config.packagesPath, config.src.jsPath]
+    }))
+    .on('error', console.log) // eslint-disable-line no-console
+    .pipe(babel())
+    .pipe(gulpif(minify, uglify({
+      mangle: {
+        reserved: ['UCFHB_VERSION', 'UCFHB_GA_ACCOUNT', 'UCFHB_ROOT_URL']
+      }
+    })))
+    .pipe(rename(destName))
+    .pipe(gulp.dest(dest));
+}
 
 // BrowserSync reload function
 function serverReload(done) {
@@ -121,17 +130,17 @@ gulp.task('scss-lint', () => {
 });
 
 // Compile main bar stylesheet
-gulp.task('scss-build-bar', function () {
+gulp.task('scss-build-bar', () => {
   return buildCSS(`${config.src.scssPath}/bar.scss`);
 });
 
 // Compile main bar stylesheet
-gulp.task('scss-build-bootstrap2', function () {
+gulp.task('scss-build-bootstrap2', () => {
   return buildCSS(`${config.src.scssPath}/bar-bootstrap.scss`);
 });
 
 // Compile 1200px breakpoint stylesheet
-gulp.task('scss-build-1200bp', function () {
+gulp.task('scss-build-1200bp', () => {
   return buildCSS(`${config.src.scssPath}/1200-breakpoint.scss`);
 });
 
@@ -143,22 +152,24 @@ gulp.task('css', gulp.series('scss-lint', 'scss-build-bar', 'scss-build-bootstra
 // JavaScript
 //
 
-// // Run eslint on js files in src.jsPath
-// gulp.task('es-lint', () => {
-//   return lintJS([`${config.src.jsPath}/*.js`], config.src.jsPath);
-// });
+// Run eslint on the root bar.js file
+gulp.task('es-lint', () => {
+  return lintJS([`${config.src.jsPath}/bar.js`], config.src.jsPath);
+});
 
-// // Concat and uglify js files through babel
-// gulp.task('js-build', () => {
-//   return buildJS(`${config.src.jsPath}/script.js`, config.dist.jsPath);
-// });
+// Process js files (does not inject environment-specific variables)
+gulp.task('js-build-header', () => {
+  return buildJS(`${config.src.jsPath}/bar.js`, config.src.jsPath, 'university-header.js');
+});
 
-// // All js-related tasks
-// gulp.task('js', gulp.series('es-lint', 'js-build'));
+gulp.task('js-build-header-full', () => {
+  return buildJS(`${config.src.jsPath}/bar.js`, config.src.jsPath, 'university-header-full.js', false);
+});
 
-// Build js via compile.sh
-gulp.task('js-build', (done) => {
-  exec('./compile.sh', { cwd: config.compilerPath }, (code, stdout, stderr) => {
+// Inject environment-specific variables via compile.sh, and
+// save out finalized files to bar/js/
+gulp.task('js-inject-vars', (done) => {
+  exec(`${config.compilerPath}/compile.sh`, (code, stdout, stderr) => {
     console.log('Exit code:', code);
     console.log('Program output:', stdout);
     console.log('Program stderr:', stderr);
@@ -166,7 +177,8 @@ gulp.task('js-build', (done) => {
   });
 });
 
-gulp.task('js', gulp.series('js-build'))
+// All js-related tasks
+gulp.task('js', gulp.series('es-lint', 'js-build-header', 'js-build-header-full', 'js-inject-vars'));
 
 
 //

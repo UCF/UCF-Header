@@ -20,52 +20,6 @@
   if (!UCFHB_GA_ACCOUNT || UCFHB_GA_ACCOUNT.startsWith('@!@')) {
     UCFHB_GA_ACCOUNT = null;
   } //
-  // Append analytics code
-  //
-
-
-  if (UCFHB_GA_ACCOUNT) {
-    _gaq.push(['ucfhb._setAccount', UCFHB_GA_ACCOUNT]);
-
-    _gaq.push(['ucfhb._setDomainName', 'none']);
-
-    _gaq.push(['ucfhb._trackPageview']);
-
-    (function () {
-      var ga = document.createElement('script');
-      ga.type = 'text/javascript';
-      ga.async = true;
-      ga.src = (document.location.protocol === 'https:' ? 'https://ssl' : 'http://www') + ".google-analytics.com/ga.js";
-      var s = document.getElementsByTagName('script')[0];
-      s.parentNode.insertBefore(ga, s);
-    })();
-  } //
-  // Click tracking
-  //
-
-
-  var ucfhbTrackAction = function ucfhbTrackAction(link, action, label) {
-    // Only track actions w/valid values
-    if (UCFHB_GA_ACCOUNT && action !== null && label !== null) {
-      _gaq.push(['ucfhb._trackEvent', 'Header', action, label]);
-
-      window.setTimeout(function () {
-        document.location = link;
-      }, 200);
-    } else {
-      document.location = link;
-    }
-  };
-
-  var ucfhbAssignTrackingListener = function ucfhbAssignTrackingListener(elem, eventType, link, action, label) {
-    eventType = String(eventType);
-    action = action || null;
-    label = label || null;
-    elem.addEventListener(eventType, function (event) {
-      event.preventDefault();
-      ucfhbTrackAction(link, action, label);
-    }, false);
-  }; //
   // Define GA tracking actions
   //
 
@@ -104,8 +58,33 @@
       use1200Breakpoint = true;
     }
   } //
-  // Insert the bar and its stylesheets into the DOM;
-  // start listening for events.
+  // Click tracking
+  //
+
+
+  var ucfhbTrackAction = function ucfhbTrackAction(link, action, label) {
+    // Only track actions w/valid values
+    if (UCFHB_GA_ACCOUNT && action !== null && label !== null) {
+      _gaq.push(['ucfhb._trackEvent', 'Header', action, label]);
+
+      window.setTimeout(function () {
+        document.location = link;
+      }, 200);
+    } else {
+      document.location = link;
+    }
+  };
+
+  var ucfhbAssignTrackingListener = function ucfhbAssignTrackingListener(elem, eventType, link, action, label) {
+    eventType = String(eventType);
+    action = action || null;
+    label = label || null;
+    elem.addEventListener(eventType, function (event) {
+      event.preventDefault();
+      ucfhbTrackAction(link, action, label);
+    }, false);
+  }; //
+  // Insert the bar and its stylesheets into the DOM.
   //
 
 
@@ -152,11 +131,34 @@
     ucfhbBar.className += ' preload'; // Add role="complementary" with label to #ucfhb.
 
     ucfhbBar.setAttribute('role', 'complementary');
-    ucfhbBar.setAttribute('aria-label', 'University of Central Florida navbar'); // Add the bar's markup; initialize event listeners
+    ucfhbBar.setAttribute('aria-label', 'University of Central Florida navbar'); // Add the bar's markup
 
-    ucfhbBar.innerHTML = "\n<div id=\"ucfhb-inner\" style=\"display: none;\">\n  <div id=\"ucfhb-left\">\n    <div id=\"ucfhb-logo\">\n      <a href=\"https://www.ucf.edu\" aria-label=\"University of Central Florida\"></a>\n    </div>\n    <button id=\"ucfhb-mobile-toggle\" aria-controls=\"ucfhb-right\" aria-expanded=\"false\" aria-label=\"Toggle Mobile Menu\"></button>\n  </div>\n  <div id=\"ucfhb-right\">\n    <div id=\"ucfhb-signon\">\n      <button id=\"ucfhb-signon-logo\" aria-controls=\"ucfhb-services\" aria-expanded=\"false\" aria-label=\"UCF Sign In\"></button>\n      <div id=\"ucfhb-services\">\n        <div>\n          <a id=\"ucfhb-myucf\" class=\"ucfhb-service\" href=\"https://my.ucf.edu/psp/IHPROD/EMPLOYEE/EMPL/?cmd=login\" aria-label=\"myUCF\"></a>\n          <a id=\"ucfhb-knightsmail\" class=\"ucfhb-service\" href=\"http://knightsemail.ucf.edu\" aria-label=\"KnightsMail\"></a>\n          <a id=\"ucfhb-webcourses\" class=\"ucfhb-service\" href=\"https://webcourses.ucf.edu\" aria-label=\"Webcourses\"></a>\n        </div>\n      </div>\n    </div>\n    <div id=\"ucfhb-search\">\n      <form action=\"//search.ucf.edu/\" data-action-url=\"//search.ucf.edu#?q=\" method=\"get\" name=\"ucfhb-search-form\" id=\"ucfhb-search-form\">\n        <label for=\"ucfhb-search-field\" id=\"ucfhb-search-field-label\">Search UCF</label>\n        <input type=\"text\" name=\"#q\" id=\"ucfhb-search-field\" placeholder=\"Search UCF\" />\n        <button type=\"submit\" value=\"Search\" id=\"ucfhb-search-submit\" aria-label=\"Submit\"></button>\n      </form>\n      <button id=\"ucfhb-search-minimal\" aria-controls=\"ucfhb-search\" aria-expanded=\"true\" aria-label=\"Search\"></button>\n    </div>\n  </div>\n</div>\n    ".trim();
+    ucfhbBar.innerHTML = "\n<div id=\"ucfhb-inner\" style=\"display: none;\">\n  <div id=\"ucfhb-left\">\n    <div id=\"ucfhb-logo\">\n      <a href=\"https://www.ucf.edu\" aria-label=\"University of Central Florida\"></a>\n    </div>\n    <button id=\"ucfhb-mobile-toggle\" aria-controls=\"ucfhb-right\" aria-expanded=\"false\" aria-label=\"Toggle Mobile Menu\"></button>\n  </div>\n  <div id=\"ucfhb-right\">\n    <div id=\"ucfhb-signon\">\n      <button id=\"ucfhb-signon-logo\" aria-controls=\"ucfhb-services\" aria-expanded=\"false\" aria-label=\"UCF Sign In\"></button>\n      <div id=\"ucfhb-services\">\n        <div>\n          <a id=\"ucfhb-myucf\" class=\"ucfhb-service\" href=\"https://my.ucf.edu/psp/IHPROD/EMPLOYEE/EMPL/?cmd=login\" aria-label=\"myUCF\"></a>\n          <a id=\"ucfhb-knightsmail\" class=\"ucfhb-service\" href=\"http://knightsemail.ucf.edu\" aria-label=\"KnightsMail\"></a>\n          <a id=\"ucfhb-webcourses\" class=\"ucfhb-service\" href=\"https://webcourses.ucf.edu\" aria-label=\"Webcourses\"></a>\n        </div>\n      </div>\n    </div>\n    <div id=\"ucfhb-search\">\n      <form action=\"//search.ucf.edu/\" data-action-url=\"//search.ucf.edu#?q=\" method=\"get\" name=\"ucfhb-search-form\" id=\"ucfhb-search-form\">\n        <label for=\"ucfhb-search-field\" id=\"ucfhb-search-field-label\">Search UCF</label>\n        <input type=\"text\" name=\"#q\" id=\"ucfhb-search-field\" placeholder=\"Search UCF\" />\n        <button type=\"submit\" value=\"Search\" id=\"ucfhb-search-submit\" aria-label=\"Submit\"></button>\n      </form>\n      <button id=\"ucfhb-search-minimal\" aria-controls=\"ucfhb-search\" aria-expanded=\"true\" aria-label=\"Search\"></button>\n    </div>\n  </div>\n</div>\n    ".trim(); // Append analytics code
+
+    if (UCFHB_GA_ACCOUNT) {
+      _gaq.push(['ucfhb._setAccount', UCFHB_GA_ACCOUNT]);
+
+      _gaq.push(['ucfhb._setDomainName', 'none']);
+
+      _gaq.push(['ucfhb._trackPageview']);
+
+      (function () {
+        var ga = document.createElement('script');
+        ga.type = 'text/javascript';
+        ga.async = true;
+        ga.src = (document.location.protocol === 'https:' ? 'https://ssl' : 'http://www') + ".google-analytics.com/ga.js";
+        var s = document.getElementsByTagName('script')[0];
+        s.parentNode.insertBefore(ga, s);
+      })();
+    } // Initialize event listeners
+
+
     ucfhbInitialize();
-  };
+  }; //
+  // Initialize events and other behavior for the
+  // bar after it's been inserted into the DOM
+  //
+
 
   var ucfhbInitialize = function ucfhbInitialize() {
     // Fetch inserted DOM elements
@@ -242,7 +244,11 @@
     };
 
     searchForm.addEventListener('submit', handleSearchSubmit, false);
-  };
+  }; //
+  // Register the bar to populate in once DOMContentLoaded
+  // is dispatched:
+  //
+
 
   if (document.readyState === 'loading') {
     // Loading hasn't finished yet

@@ -22,51 +22,6 @@
 
 
   //
-  // Append analytics code
-  //
-  if (UCFHB_GA_ACCOUNT) {
-    _gaq.push(['ucfhb._setAccount', UCFHB_GA_ACCOUNT]);
-    _gaq.push(['ucfhb._setDomainName', 'none']);
-    _gaq.push(['ucfhb._trackPageview']);
-    (function () {
-      const ga = document.createElement('script');
-      ga.type = 'text/javascript';
-      ga.async = true;
-      ga.src = `${document.location.protocol === 'https:' ? 'https://ssl' : 'http://www'}.google-analytics.com/ga.js`;
-      const s = document.getElementsByTagName('script')[0];
-      s.parentNode.insertBefore(ga, s);
-    }());
-  }
-
-
-  //
-  // Click tracking
-  //
-  const ucfhbTrackAction = function (link, action, label) {
-    // Only track actions w/valid values
-    if (UCFHB_GA_ACCOUNT && action !== null && label !== null) {
-      _gaq.push(['ucfhb._trackEvent', 'Header', action, label]);
-      window.setTimeout(() => {
-        document.location = link;
-      }, 200);
-    } else {
-      document.location = link;
-    }
-  };
-
-  const ucfhbAssignTrackingListener = function (elem, eventType, link, action, label) {
-    eventType = String(eventType);
-    action = action || null;
-    label = label || null;
-
-    elem.addEventListener(eventType, (event) => {
-      event.preventDefault();
-      ucfhbTrackAction(link, action, label);
-    }, false);
-  };
-
-
-  //
   // Define GA tracking actions
   //
   const ucfhbTrackingActionLogoClick = 'ucf-logo'; // When a UCF Login button is clicked
@@ -106,8 +61,34 @@
 
 
   //
-  // Insert the bar and its stylesheets into the DOM;
-  // start listening for events.
+  // Click tracking
+  //
+  const ucfhbTrackAction = function (link, action, label) {
+    // Only track actions w/valid values
+    if (UCFHB_GA_ACCOUNT && action !== null && label !== null) {
+      _gaq.push(['ucfhb._trackEvent', 'Header', action, label]);
+      window.setTimeout(() => {
+        document.location = link;
+      }, 200);
+    } else {
+      document.location = link;
+    }
+  };
+
+  const ucfhbAssignTrackingListener = function (elem, eventType, link, action, label) {
+    eventType = String(eventType);
+    action = action || null;
+    label = label || null;
+
+    elem.addEventListener(eventType, (event) => {
+      event.preventDefault();
+      ucfhbTrackAction(link, action, label);
+    }, false);
+  };
+
+
+  //
+  // Insert the bar and its stylesheets into the DOM.
   //
   const ucfhbCreateBar = function () {
     // Append stylesheet to head
@@ -155,7 +136,7 @@
     ucfhbBar.setAttribute('role', 'complementary');
     ucfhbBar.setAttribute('aria-label', 'University of Central Florida navbar');
 
-    // Add the bar's markup; initialize event listeners
+    // Add the bar's markup
     ucfhbBar.innerHTML = `
 <div id="ucfhb-inner" style="display: none;">
   <div id="ucfhb-left">
@@ -187,9 +168,30 @@
 </div>
     `.trim();
 
+    // Append analytics code
+    if (UCFHB_GA_ACCOUNT) {
+      _gaq.push(['ucfhb._setAccount', UCFHB_GA_ACCOUNT]);
+      _gaq.push(['ucfhb._setDomainName', 'none']);
+      _gaq.push(['ucfhb._trackPageview']);
+      (function () {
+        const ga = document.createElement('script');
+        ga.type = 'text/javascript';
+        ga.async = true;
+        ga.src = `${document.location.protocol === 'https:' ? 'https://ssl' : 'http://www'}.google-analytics.com/ga.js`;
+        const s = document.getElementsByTagName('script')[0];
+        s.parentNode.insertBefore(ga, s);
+      }());
+    }
+
+    // Initialize event listeners
     ucfhbInitialize();
   };
 
+
+  //
+  // Initialize events and other behavior for the
+  // bar after it's been inserted into the DOM
+  //
   const ucfhbInitialize = function () {
     // Fetch inserted DOM elements
     const ucfhbBar        = document.getElementById('ucfhb');
@@ -277,6 +279,11 @@
     searchForm.addEventListener('submit', handleSearchSubmit, false);
   };
 
+
+  //
+  // Register the bar to populate in once DOMContentLoaded
+  // is dispatched:
+  //
   if (document.readyState === 'loading') {
     // Loading hasn't finished yet
     document.addEventListener('DOMContentLoaded', ucfhbCreateBar);

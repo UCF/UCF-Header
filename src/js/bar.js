@@ -1,10 +1,12 @@
+const _gaq = _gaq || [];
+
+
 (function () {
 
   //
   // Define constants
   //
 
-  const _gaq           = _gaq || [];
   let UCFHB_VERSION    = '@!@VERSION@!@';
   let UCFHB_GA_ACCOUNT = '@!@GA@!@';
   const UCFHB_ROOT_URL = '@!@ROOT_URL@!@';

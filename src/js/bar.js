@@ -1,9 +1,12 @@
+const _gaq = _gaq || [];
+
+
 (function () {
 
   //
   // Define constants
   //
-  const _gaq           = _gaq || [];
+
   let UCFHB_VERSION    = '@!@VERSION@!@';
   let UCFHB_GA_ACCOUNT = '@!@GA@!@';
   const UCFHB_ROOT_URL = '@!@ROOT_URL@!@';
@@ -20,30 +23,21 @@
     UCFHB_GA_ACCOUNT = null;
   }
 
-
-  //
   // Define GA tracking actions
-  //
   const ucfhbTrackingActionLogoClick = 'ucf-logo'; // When a UCF Login button is clicked
   const ucfhbTrackingActionSearch    = 'search'; // When the search form is submitted
   const ucfhbTrackingActionSignon    = 'signon'; // When the UCF logo is clicked
 
-
-  //
   // Locations of external CSS files.
   // These resources should be protocol-agnostic and link to
   // an absolute URL.
-  //
   const ucfhbStylesheet       = `${window.location.protocol}//${UCFHB_ROOT_URL}/bar/css/bar.css?${UCFHB_VERSION}`;
   const ucfhbBsStylesheet     = `${window.location.protocol}//${UCFHB_ROOT_URL}/bar/css/bar-bootstrap.css?${UCFHB_VERSION}`;
   const ucfhb1200BpStylesheet = `${window.location.protocol}//${UCFHB_ROOT_URL}/bar/css/1200-breakpoint.css?${UCFHB_VERSION}`;
 
-
-  //
   // Check if data-bootstrap-override has been passed to the
   // university header script. Requires that the script tag
   // has an ID of 'ucfhb-script'
-  //
   let ucfhbScript       = null;
   let use1200Breakpoint = false;
   let useBsOverride     = false;
@@ -63,7 +57,8 @@
   //
   // Click tracking
   //
-  const ucfhbTrackAction = function (link, action, label) {
+
+  function ucfhbTrackAction(link, action, label) {
     // Only track actions w/valid values
     if (UCFHB_GA_ACCOUNT && action !== null && label !== null) {
       _gaq.push(['ucfhb._trackEvent', 'Header', action, label]);
@@ -73,9 +68,9 @@
     } else {
       document.location = link;
     }
-  };
+  }
 
-  const ucfhbAssignTrackingListener = function (elem, eventType, link, action, label) {
+  function ucfhbAssignTrackingListener(elem, eventType, link, action, label) {
     eventType = String(eventType);
     action = action || null;
     label = label || null;
@@ -84,13 +79,14 @@
       event.preventDefault();
       ucfhbTrackAction(link, action, label);
     }, false);
-  };
+  }
 
 
   //
   // Insert the bar and its stylesheets into the DOM.
   //
-  const ucfhbCreateBar = function () {
+
+  function ucfhbCreateBar() {
     // Append stylesheet to head
     const head = document.getElementsByTagName('head')[0];
     const stylesheet = document.createElement('link');
@@ -185,14 +181,15 @@
 
     // Initialize event listeners
     ucfhbInitialize();
-  };
+  }
 
 
   //
   // Initialize events and other behavior for the
   // bar after it's been inserted into the DOM
   //
-  const ucfhbInitialize = function () {
+
+  function ucfhbInitialize() {
     // Fetch inserted DOM elements
     const ucfhbBar        = document.getElementById('ucfhb');
     const mobileToggle    = document.getElementById('ucfhb-mobile-toggle');
@@ -277,13 +274,14 @@
     };
 
     searchForm.addEventListener('submit', handleSearchSubmit, false);
-  };
+  }
 
 
   //
   // Register the bar to populate in once DOMContentLoaded
   // is dispatched:
   //
+
   if (document.readyState === 'loading') {
     // Loading hasn't finished yet
     document.addEventListener('DOMContentLoaded', ucfhbCreateBar);

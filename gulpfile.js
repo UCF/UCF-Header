@@ -92,7 +92,7 @@ function buildJS(src, dest, destName, minify = true) {
     .pipe(babel())
     .pipe(gulpif(minify, uglify({
       mangle: {
-        reserved: ['UCFHB_VERSION', 'UCFHB_GA_ACCOUNT', 'UCFHB_ROOT_URL']
+        reserved: ['UCFHB_VERSION', 'UCFHB_GA_ACCOUNT', 'UCFHB_ROOT_URL', '_gaq']
       }
     })))
     .pipe(rename(destName))

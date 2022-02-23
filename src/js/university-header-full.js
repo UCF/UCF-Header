@@ -1,9 +1,9 @@
+var _gaq = _gaq || [];
+
 (function () {
   //
   // Define constants
   //
-  var _gaq = _gaq || [];
-
   var UCFHB_VERSION = '@!@VERSION@!@';
   var UCFHB_GA_ACCOUNT = '@!@GA@!@';
   var UCFHB_ROOT_URL = '@!@ROOT_URL@!@';

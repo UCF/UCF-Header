@@ -1,0 +1,103 @@
+// sass-lint:disable no-important no-ids
+
+//
+// The main wrapper element for the bar.
+// Perform all required CSS resets here.
+//
+#ucfhb {
+  align-self: flex-start !important;
+  background: #000;
+  display: block !important;
+  flex: 0 0 auto !important;
+  height: 50px;
+  margin: auto;
+  order: 0 !important;
+  position: relative;
+  width: 100%;
+  z-index: 10000;
+
+  @media print {
+    display: none !important;
+  }
+
+  @media (max-width: 979px) {
+    height: 100px;
+    margin-top: -50px;
+    transition: margin .4s ease-in-out; // expand down
+  }
+
+  @media (max-width: 640px) {
+    height: 150px;
+    margin-top: -100px;
+  }
+
+  &,
+  &::before,
+  &::after,
+  & *,
+  & *::before,
+  & *::after {
+    // Required for Foundation CSS compatibility
+    box-sizing: content-box !important;
+  }
+
+  &.preload {
+    @media (max-width: 979px) {
+      // Prevent transition animations onload until .preload class is removed.
+      transition: none !important;
+    }
+  }
+
+  &.ucfhb-mobileslide {
+    @media (max-width: 979px) {
+      margin-top: 0;
+    }
+  }
+
+  // Common miscellaneous overrides
+  a {
+    border: 0;
+
+    &:hover {
+      opacity: 1;
+    }
+  }
+
+  button {
+    box-shadow: 0 0 transparent;
+
+    &:hover,
+    &:active,
+    &:focus {
+      top: 0;
+    }
+  }
+}
+
+//
+// The first inner wrapper element within the bar.
+// `display: block` is added to override `display: none` inline styles, which
+// prevent plaintext content flicker if the header css hasn't appended
+// before the bar content.
+//
+#ucfhb-inner {
+  display: block !important;
+  height: 50px;
+  margin: auto;
+  position: relative;
+  width: 940px;
+  z-index: 1000;
+
+  @media (max-width: 979px) {
+    height: 50px;
+    width: 720px;
+  }
+
+  @media (max-width: 767px) {
+    width: 100%;
+  }
+
+  @media (max-width: 640px) {
+    height: 100px;
+  }
+}

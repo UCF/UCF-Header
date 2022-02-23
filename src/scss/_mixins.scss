@@ -1,0 +1,22 @@
+//
+// Assign spritesheet.png backgrounds to an element.
+// Background-positions should be assigned per element.
+//
+@mixin sprite() {
+  background-image: url('../img/spritesheet-v1.png');
+  background-repeat: no-repeat;
+
+  @media (min-resolution: 2dppx) {
+    background-image: url('../img/spritesheet-r-v1.png');
+    background-size: 326px 190px;
+  }
+}
+
+//
+// Assign consistent focus state styles to an element on-focus.
+//
+@mixin focus-styles() {
+  &:focus {
+    outline: 3px solid #0262B6;
+  }
+}

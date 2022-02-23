@@ -1,101 +1,43 @@
-/**
- * SPRITESHEET DEFINITIONS
- * Assign spritesheet.png backgrounds in bulk.
- * Background-positions should be assigned per ID
- **/
+// sass-lint:disable no-important no-ids
 
-/* Icons */
 
+@import 'variables';
+@import 'mixins';
+
+@import 'ucfhb';
+@import 'ucfhb-left';
+
+
+// Icons
 #ucfhb-mobile-toggle,
-#ucfhb-logo a,
+// #ucfhb-logo a,
 #ucfhb-signon-logo,
 #ucfhb-search form #ucfhb-search-submit,
 #ucfhb-search-minimal,
 #ucfhb-services a {
-  background-image: url('../img/spritesheet-v1.png');
-  background-repeat: no-repeat;
-}
-@media
-  (-webkit-min-device-pixel-ratio: 2),
-  (min-resolution: 192dpi) {
-    #ucfhb-mobile-toggle,
-    #ucfhb-logo a,
-    #ucfhb-signon-logo,
-    #ucfhb-search form #ucfhb-search-submit,
-    #ucfhb-search-minimal,
-    #ucfhb-services a {
-      background-image: url('../img/spritesheet-r-v1.png');
-      background-size: 326px 190px;
-    }
+  @include sprite();
 }
 
 /**
  * FULL-WIDTH STYLING
  **
 
-/* Main wrapper */
-#ucfhb {
-  display: block !important;
-  height: 50px;
-  width: 100%;
-  margin: auto;
-  background: #000;
-  position: relative;
-  z-index: 10000;
-
-  /* Flexbox-specific styles */
-  align-self: flex-start !important;
-  flex: 0 0 auto !important;
-  order: 0 !important;
-}
-
-@media print {
-  #ucfhb {
-    display: none !important;
-  }
-}
-
-/* Foundation CSS Framework overrides */
-#ucfhb,
-#ucfhb:before,
-#ucfhb:after,
-#ucfhb *,
-#ucfhb *:before,
-#ucfhb *:after {
-  box-sizing: content-box !important;
-  -moz-box-sizing: content-box !important;
-  -webkit-box-sizing: content-box !important;
-}
-/* Common miscellaneous overrides */
-#ucfhb a { border: 0; }
-#ucfhb a:hover { opacity: 1; }
-#ucfhb button {
-  -webkit-box-shadow: 0 0 transparent;
-  -moz-box-shadow: 0 0 transparent;
-  box-shadow: 0 0 transparent;
-}
-#ucfhb button:hover,
-#ucfhb button:active,
-#ucfhb button:focus {
-  top: 0;
-}
-
 /* Inner wrap (fixed 940px width) */
 /* display: block is added to override display:none inline styles, which prevent
  * plaintext content flicker if the header css hasn't appended before the bar content. */
-#ucfhb-inner {
-  display: block !important;
-  width: 940px;
-  margin: auto;
-  height: 50px;
-  position: relative;
-  z-index: 1000;
-}
+// #ucfhb-inner {
+//   display: block !important;
+//   width: 940px;
+//   margin: auto;
+//   height: 50px;
+//   position: relative;
+//   z-index: 1000;
+// }
 
 /* The left-hand portion of the header */
-#ucfhb-left {
-  float: left;
-}
+// #ucfhb-left {
+//   float: left;
+// }
 #ucfhb-mobile-toggle {
   background-color: transparent;
   background-position: -36px 8px;
@@ -407,7 +349,7 @@
 
 
 /* Focus states */
-#ucfhb-logo:focus,
+// #ucfhb-logo:focus,
 #ucfhb-mobile-toggle:focus,
 #ucfhb-signon-logo:focus,
 #ucfhb-myucf:focus,
@@ -416,32 +358,32 @@
 #ucfhb-search-field:focus,
 #ucfhb-search-minimal:focus,
 #ucfhb-search-submit:focus {
-  outline: 3px solid #0262B6;
+  @include focus-styles();
 }
 
 /* Tablet size (768-979px) */
 @media (max-width: 979px) {
-  #ucfhb {
-    height: 100px;
-    margin-top: -50px;
-    transition: margin 0.4s ease-in-out; /* expand down */
-    -webkit-transition: margin 0.4s ease-in-out;
-    -ms-transition: margin 0.4s ease-in-out;
-  }
-  /* Prevent transition animations onload until .preload class is removed. */
-  #ucfhb.preload {
-    transition: none !important;
-    -webkit-transition: none !important;
-    -ms-transition: none !important;
-  }
-  #ucfhb.ucfhb-mobileslide {
-    margin-top: 0;
-  }
-  #ucfhb-inner {
-    width: 720px;
-    height: 50px;
-  }
-  #ucfhb-left { width: 100%; height: 39px; position: absolute; top: 50px; float: none; } /* height accounts for padding-top */
+  // #ucfhb {
+  //   height: 100px;
+  //   margin-top: -50px;
+  //   transition: margin 0.4s ease-in-out; /* expand down */
+  //   -webkit-transition: margin 0.4s ease-in-out;
+  //   -ms-transition: margin 0.4s ease-in-out;
+  // }
+  // /* Prevent transition animations onload until .preload class is removed. */
+  // #ucfhb.preload {
+  //   transition: none !important;
+  //   -webkit-transition: none !important;
+  //   -ms-transition: none !important;
+  // }
+  // #ucfhb.ucfhb-mobileslide {
+  //   margin-top: 0;
+  // }
+  // #ucfhb-inner {
+  //   width: 720px;
+  //   height: 50px;
+  // }
+  // #ucfhb-left { width: 100%; height: 39px; position: absolute; top: 50px; float: none; } /* height accounts for padding-top */
   #ucfhb-mobile-toggle {
     display: block;
   }
@@ -535,23 +477,23 @@
   #ucfhb-search-minimal.ucfhb-shiftleft { display: none; }
 }
 
-@media (max-width: 767px) {
-  #ucfhb-inner {
-    width: 100%;
-  }
-  #ucfhb-logo a {
-    margin-left: 4px;
-  }
-}
+// @media (max-width: 767px) {
+  // #ucfhb-inner {
+  //   width: 100%;
+  // }
+  // #ucfhb-logo a {
+  //   margin-left: 4px;
+  // }
+// }
 
 /* Phone size (>=640px) */
 @media (max-width: 640px) {
-  #ucfhb {
-    height: 150px;
-    margin-top: -100px;
-  }
-  #ucfhb-inner { height: 100px; }
-  #ucfhb-left { top: 100px; } /* height accounts for padding-top */
+  // #ucfhb {
+  //   height: 150px;
+  //   margin-top: -100px;
+  // }
+  // #ucfhb-inner { height: 100px; }
+  // #ucfhb-left { top: 100px; } /* height accounts for padding-top */
   #ucfhb-right { height: 99px; } /* Accounts for border-bottom */
   #ucfhb-signon,
   #ucfhb-search {
@@ -566,8 +508,8 @@
 }
 
 /* Small Phone size (>=350px) */
-@media (max-width: 350px) {
-  #ucfhb-logo a {
-    background-position: 0 -162px;
-  }
-}
+// @media (max-width: 350px) {
+//   #ucfhb-logo a {
+//     background-position: 0 -162px;
+//   }
+// }

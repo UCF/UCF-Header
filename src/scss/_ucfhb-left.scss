@@ -1,0 +1,45 @@
+// sass-lint:disable no-important no-ids
+
+//
+// The left-hand portion of the bar (on desktop).
+// Contains the pegasus and UCF signature.
+//
+#ucfhb-left {
+  float: left;
+
+  @media (max-width: 979px) {
+    float: none;
+    height: 39px; // height accounts for padding-top
+    position: absolute;
+    top: 50px;
+    width: 100%;
+  }
+
+  @media (max-width: 640px) {
+    top: 100px; // height accounts for padding-top
+  }
+}
+
+//
+// Wrapper surrounding the link back to ucf.edu.
+//
+#ucfhb-logo {
+  @include focus-styles();
+
+  a {
+    @include sprite();
+    background-position: 0 -100px;
+    display: block;
+    margin: 9px 0 0 0;
+    min-height: 31px;
+    width: 296px;
+
+    @media (max-width: 767px) {
+      margin-left: 4px;
+    }
+
+    @media (max-width: 350px) {
+      background-position: 0 -162px;
+    }
+  }
+}

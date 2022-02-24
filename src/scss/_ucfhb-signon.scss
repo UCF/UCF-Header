@@ -1,0 +1,163 @@
+// sass-lint:disable no-important no-ids
+
+//
+// Wrapper that contains all "UCF Sign In" service links
+// and the "UCF Sign In" button.
+//
+#ucfhb-signon {
+  float: left;
+  position: absolute;
+  right: 62px;
+  top: 0;
+
+  @media (max-width: 979px) {
+    border: 0;
+    float: left;
+    height: auto;
+    left: 0;
+    margin: 3px 0 0;
+    padding: 0;
+    position: static;
+    right: 0;
+    width: 50%;
+  }
+
+  @media (max-width: 640px) {
+    width: 100% !important;
+  }
+}
+
+//
+// The "UCF Sign In" button.
+//
+#ucfhb-signon-logo {
+  @include focus-styles();
+  @include sprite();
+  background-color: transparent;
+  background-position: 0 -34px;
+  border: 0;
+  display: block;
+  height: 34px;
+  margin: 9px 0 0;
+  padding: 0;
+  position: absolute;
+  right: 178px;
+  transition: right .4s ease-in-out; // 'move' left
+  width: 125px;
+  z-index: 2;
+
+  @media (max-width: 979px) {
+    display: none;
+  }
+
+  &:hover,
+  &:focus {
+    background-position: -149px -34px;
+    cursor: pointer;
+  }
+
+  &.ucfhb-shiftleft {
+    background-position: 0 0;
+    right: 315px;
+    width: 44px;
+  }
+}
+
+//
+// Container for all sign in service links.
+//
+#ucfhb-services {
+  width: 321px;
+  z-index: 1;
+
+  @media (max-width: 979px) {
+    height: auto;
+    padding: 0;
+    position: static;
+    text-align: center;
+    width: auto;
+  }
+
+  a {
+    @include sprite();
+  }
+
+  div:hover > a {
+    opacity: .7;
+
+    &:hover {
+      opacity: 1;
+    }
+  }
+
+  > div {
+    display: block;
+    opacity: 0;
+    transition: all 0s linear 0s;
+    visibility: hidden;
+
+    @media (max-width: 979px) {
+      height: auto;
+      left: auto;
+      margin: auto;
+      opacity: 1;
+      overflow: auto;
+      position: static;
+      right: auto;
+      visibility: visible;
+      width: 319px;
+    }
+
+    > a {
+      @media (max-width: 979px) {
+        line-height: 30px;
+        margin: 0;
+      }
+    }
+  }
+
+  .ucfhb-shiftleft + & > div {
+    opacity: 1;
+    transition: opacity .2s ease-in .4s;
+    visibility: visible;
+
+    @media (max-width: 979px) {
+      margin: auto;
+    }
+  }
+
+  // Shared class for all sign in service links
+  .ucfhb-service {
+    display: block;
+    float: left;
+    margin: 11px 0;
+
+    @media (max-width: 640px) {
+      margin: 6px 0;
+    }
+  }
+
+  // myUCF link
+  #ucfhb-myucf {
+    @include focus-styles();
+    background-position: -264px -70px;
+    height: 25px;
+    width: 66px;
+  }
+
+  // Knightsemail link
+  #ucfhb-knightsmail {
+    @include focus-styles();
+    background-position: 8px -70px;
+    height: 25px;
+    width: 128px;
+  }
+
+  // Webcourses link
+  #ucfhb-webcourses {
+    @include focus-styles();
+    background-position: -124px -70px;
+    height: 25px;
+    width: 124px;
+  }
+}

@@ -1,0 +1,28 @@
+// sass-lint:disable no-important no-ids
+
+//
+// The right-hand portion of the bar (on desktop).
+// Contains the "UCF Sign In" service links and search bar.
+//
+#ucfhb-right {
+  float: right;
+  height: 50px;
+  overflow: hidden;
+  position: relative;
+  width: 420px;
+
+  @media (max-width: 979px) {
+    // Shift the right-hand portion to the top of ucfhb-inner
+    border-bottom: 1px solid #454545;
+    float: none;
+    height: 49px; // Accomodate for border-bottom
+    position: absolute;
+    top: 0;
+    visibility: visible;
+    width: 100%;
+  }
+
+  @media (max-width: 640px) {
+    height: 99px; // Accounts for border-bottom
+  }
+}

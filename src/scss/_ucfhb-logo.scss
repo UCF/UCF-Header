@@ -1,0 +1,25 @@
+// sass-lint:disable no-important no-ids
+
+//
+// Wrapper surrounding the link back to ucf.edu.
+//
+#ucfhb-logo {
+  @include focus-styles();
+
+  a {
+    @include sprite();
+    background-position: 0 -100px;
+    display: block;
+    margin: 9px 0 0;
+    min-height: 31px;
+    width: 296px;
+
+    @media (max-width: 767px) {
+      margin-left: 4px;
+    }
+
+    @media (max-width: 350px) {
+      background-position: 0 -162px;
+    }
+  }
+}

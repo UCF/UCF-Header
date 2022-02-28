@@ -1,26 +1,35 @@
-# New University Header
+# University Header
+**Visit https://universityheader.ucf.edu for usage instructions and guidelines.**  Instructions below are for working with the header's source code.
 
-Visit http://universityheader.ucf.edu for usage instructions and guidelines.
-
-## Requirements
-- PHP
-- Java Runtime Environment version 6 (required for Google Closure compiler application)
+----------
 
 ## Installation
+1. Clone this repository and place it in a web-accessible location.
+2. If this is a first-time install, copy `config.templ.conf`, update config values as necessary for your environment, and save as `config.conf`.
+3. `cd` to the `src/` subdirectory, and run `./compile.sh`
+5. Load `index.html` (in repo's root directory) in your browser; make sure all assets are loaded in correctly.
+6. Repeat Step 3 after all subsequent deployments.
 
-- Clone this repository and place it in a web-accessible location.
-- `$ cd UCF-Header/compiler/`
-- If this is a first-time install, copy `config.templ.conf`, update config values as necessary for your environment, and save as `config.conf`.
-- `$ ./compile.sh`
-- Load `index.html` (in repo's root directory) in your browser; make sure all assets are loaded in correctly.  Purge files in cache if necessary.
 
-## Updating Content
+## Development
 
-Do NOT update content in either of the university-header.js files in `/bar/js`. 
-Update keyterms in `compiler/assets/keyterms.js` and bar markup in 
-`compiler/assets/university-header-markup.js`, then recompile.
+### Requirements
+- node v16+
+- gulp-cli
 
-*Note:  When updating keyterms, check to make sure the json file is completely valid.  Run the entire file through jsonlint.com.
-Broken json will cause the compiler to fail.*
+### Instructions
+1. Follow all [installation steps](#installation) outlined above.
+2. If you'd like to enable [BrowserSync](https://browsersync.io) for local development, or make other changes to this project's default gulp configuration, copy `gulp-config.template.json`, make any desired changes, and save as `gulp-config.json`.
 
-To compile and test changes to asset files, ssh into your environment and execute `$ ./compile.sh` from the `UCF-Header/compiler/` directory.
+    To enable BrowserSync, set `sync` to `true` and adjust your `syncTarget` value as necessary for your local host setup.
+
+    The full list of modifiable config values can be viewed in `gulpfile.js` (see `config` variable).
+4. Make changes as desired to files in `src/scss/` or to `src/js/bar.js`.  Image assets should be added/adjusted as needed directly in `bar/img/`.
+
+    **Do not make changes to `src/js/university-header.js`, `src/js/university-header-full.js`, or files in `bar/css/` directly.**
+3. Run `gulp default` to process assets.  This task will also run `src/compile.sh` for convenience.
+4. Run `gulp watch` to continuously watch changes to scss and js files.  If you enabled BrowserSync in `gulp-config.json`, it will also reload your browser when scss or js files change.  `gulp watch` will also run `src/compile.sh` for convenience.
+5. Review your changes against `index.html`.
+
+## Contributing
+Want to submit a bug report or feature request?  Check out our [contributing guidelines](https://github.com/UCF/UCF-Header/blob/master/CONTRIBUTING.md) for more information.  We'd love to hear from you!

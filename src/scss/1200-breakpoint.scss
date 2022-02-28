@@ -1,0 +1,49 @@
+// sass-lint:disable no-important no-ids
+
+//
+// Opt-in css to include Bootstrap's/Athena's 1200px breakpoint
+//
+
+#ucfhb-inner {
+  @media (min-width: 1200px) {
+    width: 1140px;
+  }
+}
+
+#ucfhb-logo a {
+  @media (min-width: 1200px) {
+    background-position: 0 -131px;
+    width: 322px;
+  }
+}
+
+#ucfhb-right {
+  @media (min-width: 1200px) {
+    width: 460px;
+  }
+}
+
+#ucfhb-signon-logo {
+  @media (min-width: 1200px) {
+    right: 238px;
+  }
+}
+
+#ucfhb-search,
+#ucfhb-search form {
+  @media (min-width: 1200px) {
+    width: 270px;
+  }
+}
+
+#ucfhb-search-field {
+  @media (min-width: 1200px) {
+    width: 208px !important;
+  }
+}
+
+#ucfhb-search-autocomplete {
+  @media (min-width: 1200px) {
+    width: 320px;
+  }
+}

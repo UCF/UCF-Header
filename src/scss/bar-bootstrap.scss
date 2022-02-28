@@ -1,0 +1,24 @@
+// sass-lint:disable no-important no-ids
+
+//
+// Opt-in CSS for Bootstrap 2.x support
+//
+
+#ucfhb {
+  @media (max-width: 767px) {
+    height: 100px !important;
+    margin: -50px 0 0 -20px;
+    padding-right: 40px;
+  }
+
+  @media (max-width: 640px) {
+    height: 150px !important;
+    margin-top: -100px;
+  }
+}
+
+#ucfhb-inner {
+  @media (max-width: 767px) {
+    padding-right: 40px;
+  }
+}

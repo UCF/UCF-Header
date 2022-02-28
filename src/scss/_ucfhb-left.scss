@@ -1,0 +1,23 @@
+// sass-lint:disable no-important no-ids
+
+//
+// The left-hand portion of the bar (on desktop).
+// Contains the pegasus + UCF signature, as well as
+// the mobile nav toggle button.
+//
+#ucfhb-left {
+  float: left;
+
+  @media (max-width: 979px) {
+    float: none;
+    height: 39px; // height accounts for padding-top
+    position: absolute;
+    top: 50px;
+    width: 100%;
+  }
+
+  @media (max-width: 640px) {
+    top: 100px; // height accounts for padding-top
+  }
+}
+

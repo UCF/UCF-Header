@@ -1,0 +1,29 @@
+// sass-lint:disable no-important no-ids
+
+//
+// Toggle button for mobile that shows/hides content in
+// #ucfhb-right ("UCF Sign In" service links, search bar)
+//
+#ucfhb-mobile-toggle {
+  @include focus-styles();
+  @include sprite();
+  background-color: transparent;
+  background-position: -36px 8px;
+  border: 0;
+  display: none;
+  height: 45px;
+  margin: 0;
+  padding: 0;
+  position: absolute;
+  right: 5px;
+  top: 1px;
+  width: 30px;
+
+  @media (max-width: 979px) {
+    display: block;
+  }
+
+  &.ucfhb-mobileslide {
+    background-position: -69px 9px;
+  }
+}

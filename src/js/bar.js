@@ -11,15 +11,15 @@ const _gaq = _gaq || [];
   let UCFHB_GA_ACCOUNT = '@!@GA@!@';
   const UCFHB_ROOT_URL = '@!@ROOT_URL@!@';
 
-  if (!UCFHB_ROOT_URL || UCFHB_ROOT_URL.startsWith('@!@')) {
+  if (!UCFHB_ROOT_URL || UCFHB_ROOT_URL.substring(0, 3) === '@!@') {
     // Back out early if this is missing
     return;
   }
 
-  if (!UCFHB_VERSION || UCFHB_VERSION.startsWith('@!@')) {
+  if (!UCFHB_VERSION || UCFHB_VERSION.substring(0, 3) === '@!@') {
     UCFHB_VERSION = Date.now().toString(10);
   }
-  if (!UCFHB_GA_ACCOUNT || UCFHB_GA_ACCOUNT.startsWith('@!@')) {
+  if (!UCFHB_GA_ACCOUNT || UCFHB_GA_ACCOUNT.substring(0, 3) === '@!@') {
     UCFHB_GA_ACCOUNT = null;
   }
 

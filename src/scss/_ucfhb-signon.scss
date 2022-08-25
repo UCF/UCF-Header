@@ -58,7 +58,7 @@
 
   &.ucfhb-shiftleft {
     background-position: 0 0;
-    right: 315px;
+    right: 375px;
     width: 44px;
   }
 }
@@ -67,7 +67,7 @@
 // Container for all sign in service links.
 //
 #ucfhb-services {
-  width: 321px;
+  width: 390px;
   z-index: 1;
 
   @media (max-width: 979px) {
@@ -105,7 +105,7 @@
       position: static;
       right: auto;
       visibility: visible;
-      width: 319px;
+      width: 388px;
     }
 
     > a {
@@ -159,5 +159,12 @@
     background-position: -124px -70px;
     height: 25px;
     width: 124px;
+  }
+
+  #ucfhb-workday {
+    @include focus-styles();
+    background-position: -145px -3px;
+    height: 25px;
+    width: 70px;
   }
 }

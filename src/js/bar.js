@@ -146,8 +146,8 @@ const _gaq = _gaq || [];
       <button id="ucfhb-signon-logo" aria-controls="ucfhb-services" aria-expanded="false" aria-label="UCF Sign In"></button>
       <div id="ucfhb-services">
         <div>
-          <a id="ucfhb-myucf" class="ucfhb-service" href="https://my.ucf.edu/psp/IHPROD/EMPLOYEE/EMPL/?cmd=login" aria-label="myUCF"></a>
           <a id="ucfhb-workday" class="ucfhb-service" href="https://workday.ucf.edu/" aria-label="Workday"></a>
+          <a id="ucfhb-myucf" class="ucfhb-service" href="https://my.ucf.edu/psp/IHPROD/EMPLOYEE/EMPL/?cmd=login" aria-label="myUCF"></a>
           <a id="ucfhb-knightsmail" class="ucfhb-service" href="http://knightsemail.ucf.edu" aria-label="KnightsMail"></a>
           <a id="ucfhb-webcourses" class="ucfhb-service" href="https://webcourses.ucf.edu" aria-label="Webcourses"></a>
         </div>

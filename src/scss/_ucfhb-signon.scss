@@ -58,7 +58,7 @@
 
   &.ucfhb-shiftleft {
     background-position: 0 0;
-    right: 375px;
+    right: 385px;
     width: 44px;
   }
 }
@@ -68,10 +68,12 @@
 //
 #ucfhb-services {
   width: 390px;
+  margin-left: 0;
   z-index: 1;
 
   @media (max-width: 979px) {
     height: auto;
+    margin-left: 8px;
     padding: 0;
     position: static;
     text-align: center;

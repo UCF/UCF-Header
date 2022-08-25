@@ -41,7 +41,7 @@
   margin: 9px 0 0;
   padding: 0;
   position: absolute;
-  right: 178px;
+  right: 218px;
   transition: right .4s ease-in-out; // 'move' left
   width: 125px;
   z-index: 2;
@@ -58,7 +58,7 @@
 
   &.ucfhb-shiftleft {
     background-position: 0 0;
-    right: 315px;
+    right: 385px;
     width: 44px;
   }
 }
@@ -67,11 +67,13 @@
 // Container for all sign in service links.
 //
 #ucfhb-services {
-  width: 321px;
+  width: 390px;
+  margin-left: 0;
   z-index: 1;
 
   @media (max-width: 979px) {
     height: auto;
+    margin-left: 8px;
     padding: 0;
     position: static;
     text-align: center;
@@ -105,7 +107,7 @@
       position: static;
       right: auto;
       visibility: visible;
-      width: 319px;
+      width: 388px;
     }
 
     > a {
@@ -159,5 +161,12 @@
     background-position: -124px -70px;
     height: 25px;
     width: 124px;
+  }
+
+  #ucfhb-workday {
+    @include focus-styles();
+    background-position: -148px -4px;
+    height: 25px;
+    width: 70px;
   }
 }

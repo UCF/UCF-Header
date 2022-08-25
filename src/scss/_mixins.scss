@@ -3,11 +3,11 @@
 // Background-positions should be assigned per element.
 //
 @mixin sprite() {
-  background-image: url('../img/spritesheet-v1.png');
+  background-image: url('../img/spritesheet-v2.png');
   background-repeat: no-repeat;
 
   @media (min-resolution: 2dppx) {
-    background-image: url('../img/spritesheet-r-v1.png');
+    background-image: url('../img/spritesheet-r-v2.png');
     background-size: 326px 190px;
   }
 }

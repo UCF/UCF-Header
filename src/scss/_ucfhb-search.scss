@@ -14,7 +14,7 @@
   right: 0;
   top: 0;
   transition: width .4s ease-in-out; // shrink to the right
-  width: 210px;
+  width: 250px;
   z-index: 2;
 
   @media (max-width: 979px) {
@@ -57,7 +57,7 @@
         opacity: 1;
         overflow: visible;
         right: auto;
-        width: 220px !important;
+        width: 250px !important;
       }
     }
   }
@@ -69,7 +69,7 @@
     margin-top: 0;
     position: relative;
     text-align: left;
-    width: 210px;
+    width: 250px;
 
     @media (max-width: 979px) {
       height: 38px;
@@ -146,7 +146,7 @@
   padding: 2px 40px 2px 15px;
   position: absolute;
   top: 2px;
-  width: 148px !important;
+  width: 168px !important;
 
   @media (max-width: 979px) {
     font-size: 16px;

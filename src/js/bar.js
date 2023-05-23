@@ -25,11 +25,6 @@ function gtag() {
     UCFHB_GA_ACCOUNT = null;
   }
 
-  // Define GA tracking actions
-  const ucfhbTrackingActionLogoClick = 'ucf-logo'; // When a UCF Login button is clicked
-  const ucfhbTrackingActionSearch    = 'search'; // When the search form is submitted
-  const ucfhbTrackingActionSignon    = 'signon'; // When the UCF logo is clicked
-
   // Locations of external CSS files.
   // These resources should be protocol-agnostic and link to
   // an absolute URL.
@@ -54,35 +49,6 @@ function gtag() {
       use1200Breakpoint = true;
     }
   }
-
-
-  //
-  // Click tracking
-  //
-
-  function ucfhbTrackAction(link, action, label) {
-    // Only track actions w/valid values
-    if (UCFHB_GA_ACCOUNT && action !== null && label !== null) {
-      gtag(['ucfhb._trackEvent', 'Header', action, label]);
-      window.setTimeout(() => {
-        document.location = link;
-      }, 200);
-    } else {
-      document.location = link;
-    }
-  }
-
-  function ucfhbAssignTrackingListener(elem, eventType, link, action, label) {
-    eventType = String(eventType);
-    action = action || null;
-    label = label || null;
-
-    elem.addEventListener(eventType, (event) => {
-      event.preventDefault();
-      ucfhbTrackAction(link, action, label);
-    }, false);
-  }
-
 
   //
   // Insert the bar and its stylesheets into the DOM.
@@ -262,20 +228,6 @@ function gtag() {
         mobileToggle.setAttribute('aria-expanded', 'true');
       }
     };
-
-    // Analytics tracking
-    ucfhbAssignTrackingListener(linkMyucf, 'click', linkMyucf.getAttribute('href'), ucfhbTrackingActionSignon, 'MyUCF');
-    ucfhbAssignTrackingListener(linkKnightsmail, 'click', linkKnightsmail.getAttribute('href'), ucfhbTrackingActionSignon, 'Knightsmail');
-    ucfhbAssignTrackingListener(linkWebcourses, 'click', linkWebcourses.getAttribute('href'), ucfhbTrackingActionSignon, 'Webcourses');
-    ucfhbAssignTrackingListener(ucfLogoLink, 'click', ucfLogoLink.getAttribute('href'), ucfhbTrackingActionLogoClick, 'UCF Logo');
-
-    const handleSearchSubmit = function (e) {
-      e.preventDefault();
-      const searchURL = searchForm.getAttribute('data-action-url') + encodeURIComponent(searchField.value);
-      ucfhbTrackAction(searchURL, ucfhbTrackingActionSearch, searchField.value);
-    };
-
-    searchForm.addEventListener('submit', handleSearchSubmit, false);
   }
 
 

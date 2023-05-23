@@ -1,5 +1,7 @@
-const _gaq = _gaq || [];
-
+window.dataLayer = window.dataLayer || [];
+function gtag() {
+  window.dataLayer.push(arguments);
+}
 
 (function () {
 
@@ -61,7 +63,7 @@ const _gaq = _gaq || [];
   function ucfhbTrackAction(link, action, label) {
     // Only track actions w/valid values
     if (UCFHB_GA_ACCOUNT && action !== null && label !== null) {
-      _gaq.push(['ucfhb._trackEvent', 'Header', action, label]);
+      gtag(['ucfhb._trackEvent', 'Header', action, label]);
       window.setTimeout(() => {
         document.location = link;
       }, 200);
@@ -167,14 +169,13 @@ const _gaq = _gaq || [];
 
     // Append analytics code
     if (UCFHB_GA_ACCOUNT) {
-      _gaq.push(['ucfhb._setAccount', UCFHB_GA_ACCOUNT]);
-      _gaq.push(['ucfhb._setDomainName', 'none']);
-      _gaq.push(['ucfhb._trackPageview']);
+      gtag('js', new Date());
+      gtag('config', UCFHB_GA_ACCOUNT);
       (function () {
         const ga = document.createElement('script');
         ga.type = 'text/javascript';
         ga.async = true;
-        ga.src = `${document.location.protocol === 'https:' ? 'https://ssl' : 'http://www'}.google-analytics.com/ga.js`;
+        ga.src = `https://www.googletagmanager.com/gtag/js?id=${UCFHB_GA_ACCOUNT}`;
         const s = document.getElementsByTagName('script')[0];
         s.parentNode.insertBefore(ga, s);
       }());

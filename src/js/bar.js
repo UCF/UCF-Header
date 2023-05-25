@@ -162,7 +162,6 @@ function gtag() {
     const ucfhbBar        = document.getElementById('ucfhb');
     const mobileToggle    = document.getElementById('ucfhb-mobile-toggle');
     const ucfLogo         = document.getElementById('ucfhb-logo');
-    const ucfLogoLink     = ucfLogo.firstElementChild || ucfLogo.firstChild;
     const barRight        = document.getElementById('ucfhb-right');
     const myUCFBtn        = document.getElementById('ucfhb-signon-logo');
     const searchbar       = document.getElementById('ucfhb-search');
@@ -170,12 +169,17 @@ function gtag() {
     const searchField     = document.getElementById('ucfhb-search-field');
     const searchBtn       = document.getElementById('ucfhb-search-submit');
     const searchMinimal   = document.getElementById('ucfhb-search-minimal');
-    const linkMyucf       = document.getElementById('ucfhb-myucf');
-    const linkKnightsmail = document.getElementById('ucfhb-knightsmail');
-    const linkWebcourses  = document.getElementById('ucfhb-webcourses');
 
     const shiftLeftElems    = [myUCFBtn, searchbar, searchMinimal];
     const mobileToggleElems = [ucfhbBar, mobileToggle, ucfLogo, barRight];
+
+    const handleSearchSubmit = function (e) {
+      e.preventDefault();
+      const searchURL = searchForm.getAttribute('data-action-url') + encodeURIComponent(searchField.value);
+      document.location = searchURL;
+    };
+
+    searchForm.addEventListener('submit', handleSearchSubmit, false);
 
     // Function to toggle classes on an array of elements
     const toggleClasses = function (elems, newClassName) {

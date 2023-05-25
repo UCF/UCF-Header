@@ -127,7 +127,6 @@ function gtag() {
     var ucfhbBar = document.getElementById('ucfhb');
     var mobileToggle = document.getElementById('ucfhb-mobile-toggle');
     var ucfLogo = document.getElementById('ucfhb-logo');
-    var ucfLogoLink = ucfLogo.firstElementChild || ucfLogo.firstChild;
     var barRight = document.getElementById('ucfhb-right');
     var myUCFBtn = document.getElementById('ucfhb-signon-logo');
     var searchbar = document.getElementById('ucfhb-search');
@@ -135,11 +134,16 @@ function gtag() {
     var searchField = document.getElementById('ucfhb-search-field');
     var searchBtn = document.getElementById('ucfhb-search-submit');
     var searchMinimal = document.getElementById('ucfhb-search-minimal');
-    var linkMyucf = document.getElementById('ucfhb-myucf');
-    var linkKnightsmail = document.getElementById('ucfhb-knightsmail');
-    var linkWebcourses = document.getElementById('ucfhb-webcourses');
     var shiftLeftElems = [myUCFBtn, searchbar, searchMinimal];
-    var mobileToggleElems = [ucfhbBar, mobileToggle, ucfLogo, barRight]; // Function to toggle classes on an array of elements
+    var mobileToggleElems = [ucfhbBar, mobileToggle, ucfLogo, barRight];
+
+    var handleSearchSubmit = function handleSearchSubmit(e) {
+      e.preventDefault();
+      var searchURL = searchForm.getAttribute('data-action-url') + encodeURIComponent(searchField.value);
+      document.location = searchURL;
+    };
+
+    searchForm.addEventListener('submit', handleSearchSubmit, false); // Function to toggle classes on an array of elements
 
     var toggleClasses = function toggleClasses(elems, newClassName) {
       var length = elems.length;

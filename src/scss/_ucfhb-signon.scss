@@ -95,6 +95,7 @@
   > div {
     display: block;
     opacity: 0;
+    margin: 0 4px;
     transition: all 0s linear 0s;
     visibility: hidden;
 
@@ -132,10 +133,10 @@
   .ucfhb-service {
     display: block;
     float: left;
-    margin: 11px 0;
+    margin: 11px 0 11px 10px;
 
     @media (max-width: 640px) {
-      margin: 6px 0;
+      margin: 6px 0 6px 10px;
     }
   }
 
@@ -167,6 +168,15 @@
     @include focus-styles();
     background-position: -148px -4px;
     height: 25px;
-    width: 64px;
+    width: 70px;
+    margin: 11px 0 11px 24px;
+
+    @media (max-width: 1200px) {
+      margin: 11px 0;
+    }
+
+    @media (max-width: 640px) {
+      margin: 6px 0 6px 24px;
+    }
   }
 }

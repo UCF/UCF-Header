@@ -116,7 +116,7 @@ function gtag() {
         <div>
           <a id="ucfhb-workday" class="ucfhb-service" href="https://workday.ucf.edu/" aria-label="Workday"></a>
           <a id="ucfhb-myucf" class="ucfhb-service" href="https://my.ucf.edu/psp/IHPROD/EMPLOYEE/EMPL/?cmd=login" aria-label="myUCF"></a>
-          <a id="ucfhb-knightsmail" class="ucfhb-service" href="http://knightsemail.ucf.edu" aria-label="KnightsMail"></a>
+          <a id="ucfhb-knightsmail" class="ucfhb-service" href="https://webmail.ucf.edu" aria-label="WebMail"></a>
           <a id="ucfhb-webcourses" class="ucfhb-service" href="https://webcourses.ucf.edu" aria-label="Webcourses"></a>
         </div>
       </div>

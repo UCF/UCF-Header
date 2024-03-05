@@ -146,11 +146,15 @@
             </div>
 
             <div class="alert alert-info my-4">
-              <h3 class="h4 alert-heading">Setting Options for WordPress Sites</h3>
+              <h3 id="wordpress-lt-63" class="h4 alert-heading">Setting Options for WordPress Sites (WordPress Version &lt; 6.3)</h3>
               <p>
                 Parameter-based options such as <code>use-1200-breakpoint</code> and <code>use-bootstrap-overrides</code> require that the <code>&lt;script&gt;</code> tag has an ID of <code>ucfhb-script</code>.
-                If your site runs on WordPress, uses <code><a href="http://codex.wordpress.org/Function_Reference/wp_enqueue_script">wp_enqueue_script()</a></code> to enqueue scripts, and requires these overrides, enqueue the University Header script with <code>wp_enqueue_script()</code> using the parameter(s) above, and add the following snippet to your theme's functions.php file:
+                If your site runs on WordPress and requires these overrides, enqueue the University Header script with <code><a href="http://codex.wordpress.org/Function_Reference/wp_enqueue_script">wp_enqueue_script()</a></code> using the parameter(s) above, and add the following snippet to your theme's functions.php file:
               </p>
+              <div class="alert alert-warning my-2">
+                <h4 class="h5 alert-heading">Deprecation Warning</h4>
+                <p>The following method is only valid for WordPress installations older than 6.3.0. For newer installations, see the <a href="#wordpress-ge-63">instructions on how to set the ID on a script tag on WordPress 6.3+</a>.</p>
+              </div>
               <div class="card mb-4">
                 <div class="card-block">
                   <pre class="mb-0">/**
@@ -163,7 +167,28 @@
     }
     return $url;
   }
-  add_filter( 'clean_url', 'add_id_to_ucfhb', 10, 3 );
+  add_filter( 'clean_url', 'add_id_to_ucfhb', 10, 1 );
+  </pre>
+                </div>
+              </div>
+            </div>
+
+            <div class="alert alert-info my-4">
+              <h3 id="wordpress-ge-63" class="h4 alert-heading">Setting Options for WordPress Sites (WordPress Version &ge; 6.3)</h3>
+              <p>The following code snippet should be used for overriding the ID of the UCF Header Bar script tag on WordPress version 6.3 or higher.</p>
+              <div class="card mb-4">
+                <div class="card-block">
+                  <pre class="mb-0">/**
+  * Add ID attribute to registered University Header script.
+  **/
+  function ucfhb_script_handle( $tag, $handle, $src ) {
+    if ( false !== strpos( $src, 'universityheader.ucf.edu' ) ) {
+      $tag = str_replace( "{$handle}-js", 'ucfhb-script', $tag );
+    }
+
+    return $tag;
+  }
+  add_filter( 'script_loader_tag', 'ucfhb_script_handle', 10, 3 );
   </pre>
                 </div>
               </div>

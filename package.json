@@ -1,6 +1,6 @@
 {
   "name": "ucf-header",
-  "version": "3.2.3",
+  "version": "3.2.4",
   "private": true,
   "devDependencies": {
     "@babel/cli": "^7.17.3",

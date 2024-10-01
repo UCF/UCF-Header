@@ -2,6 +2,10 @@
   "name": "ucf-header",
   "version": "3.2.4",
   "private": true,
+  "scripts": {
+    "prebuild": "npm install",
+    "build": "gulp default"
+  },
   "devDependencies": {
     "@babel/cli": "^7.17.3",
     "@babel/core": "^7.17.5",

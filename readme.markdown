@@ -31,5 +31,10 @@
 4. Run `gulp watch` to continuously watch changes to scss and js files.  If you enabled BrowserSync in `gulp-config.json`, it will also reload your browser when scss or js files change.  `gulp watch` will also run `src/compile.sh` for convenience.
 5. Review your changes against `index.html`.
 
+### CI Instructions
+1. Set environment variables found in the `config.templ.conf` file. For a GitHub workflow, these can be added as repository variables, and then added to the `env` variable of the workflow.
+2. The `prebuild` and `build` scripts need to be run to build the project. These are dependent and can be run in series, `npm run prebuild && npm run build`.
+3. The output of the build will write to the `bar/` directory. This is the directory is what can be deployed.
+
 ## Contributing
 Want to submit a bug report or feature request?  Check out our [contributing guidelines](https://github.com/UCF/UCF-Header/blob/master/CONTRIBUTING.md) for more information.  We'd love to hear from you!

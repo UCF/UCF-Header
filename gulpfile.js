@@ -182,7 +182,7 @@ gulp.task('js-inject-vars', (done) => {
 gulp.task('js', gulp.series('es-lint', 'js-build-header', 'js-build-header-full', 'js-inject-vars'));
 
 gulp.task('move-homepage', () => {
-  return gulp.src('./index.html')
+  return gulp.src(['./index.html', './robots.txt'])
     .pipe(gulp.dest(config.dist.deployPath));
 });
 

@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "prebuild": "npm install",
-    "build": "gulp default"
+    "build": "gulp default && gulp move-deploy"
   },
   "devDependencies": {
     "@babel/cli": "^7.17.3",

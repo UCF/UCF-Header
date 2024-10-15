@@ -14,6 +14,10 @@ jobs:
     if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed')
     runs-on: ubuntu-latest
     name: Build and Deploy Job
+    env:
+        GA: ${{ vars.GA_ID_TEST }}
+        ROOT_URL: ${{ vars.ROOT_URL_TEST }}
+        SEARCH_SERVICE: ${{ vars.SEARCH_SERVICE_URL_TEST }}
     steps:
       - uses: actions/checkout@v3
         with:

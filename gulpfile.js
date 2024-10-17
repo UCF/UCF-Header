@@ -23,7 +23,8 @@ let config = {
   },
   dist: {
     cssPath: './bar/css',
-    jsPath: './bar/js'
+    jsPath: './bar/js',
+    deployPath: './dist',
   },
   compilerPath: './src',
   packagesPath: './node_modules',
@@ -180,6 +181,17 @@ gulp.task('js-inject-vars', (done) => {
 // All js-related tasks
 gulp.task('js', gulp.series('es-lint', 'js-build-header', 'js-build-header-full', 'js-inject-vars'));
 
+gulp.task('move-homepage', () => {
+  return gulp.src(['./index.html', './robots.txt'])
+    .pipe(gulp.dest(config.dist.deployPath));
+});
+
+gulp.task('move-assets', () => {
+  return gulp.src('./bar/**/*')
+    .pipe(gulp.dest(`${config.dist.deployPath}/bar`));
+});
+
+gulp.task('move-deploy', gulp.series('move-homepage', 'move-assets'));
 
 //
 // Rerun tasks when files change

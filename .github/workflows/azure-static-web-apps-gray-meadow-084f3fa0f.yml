@@ -1,4 +1,4 @@
-name: Azure Static Web Apps CI/CD PROD
+name: Azure Static Web Apps CI/CD LIVE
 
 on:
   workflow_dispatch:
@@ -14,9 +14,9 @@ jobs:
     runs-on: ubuntu-latest
     name: Build and Deploy Job
     env:
-        GA: ${{ vars.GA_ID_PROD }}
-        ROOT_URL: ${{ vars.ROOT_URL_PROD }}
-        SEARCH_SERVICE: ${{ vars.SEARCH_SERVICE_URL_PROD }}
+        GA: ${{ vars.GA_ID_LIVE }}
+        ROOT_URL: ${{ vars.ROOT_URL_LIVE }}
+        SEARCH_SERVICE: ${{ vars.SEARCH_SERVICE_URL_LIVE }}
     steps:
       - uses: actions/checkout@v3
         with:

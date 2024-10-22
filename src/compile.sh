@@ -3,7 +3,9 @@
 set -o nounset
 set -x
 cd "$(dirname "$0")"
-source ../config.conf
+if [ -f  ../config.conf ]; then
+    source ../config.conf
+fi
 NOW=$(date +"%s")
 
 # Create temp files:

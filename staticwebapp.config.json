@@ -1,0 +1,5 @@
+{
+  "globalHeaders": {
+    "Cache-Control": "max-age=14400, public"
+  }
+}

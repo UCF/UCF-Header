@@ -28,9 +28,13 @@ function gtag() {
   // Locations of external CSS files.
   // These resources should be protocol-agnostic and link to
   // an absolute URL.
-  const ucfhbStylesheet       = `${window.location.protocol}//${UCFHB_ROOT_URL}/bar/css/bar.css?${UCFHB_VERSION}`;
-  const ucfhbBsStylesheet     = `${window.location.protocol}//${UCFHB_ROOT_URL}/bar/css/bar-bootstrap.css?${UCFHB_VERSION}`;
-  const ucfhb1200BpStylesheet = `${window.location.protocol}//${UCFHB_ROOT_URL}/bar/css/1200-breakpoint.css?${UCFHB_VERSION}`;
+  // const ucfhbStylesheet       = `${window.location.protocol}//${UCFHB_ROOT_URL}/bar/css/bar.css?${UCFHB_VERSION}`;
+  // const ucfhbBsStylesheet     = `${window.location.protocol}//${UCFHB_ROOT_URL}/bar/css/bar-bootstrap.css?${UCFHB_VERSION}`;
+  // const ucfhb1200BpStylesheet = `${window.location.protocol}//${UCFHB_ROOT_URL}/bar/css/1200-breakpoint.css?${UCFHB_VERSION}`;
+  const ucfhbStylesheet       = 'http://localhost/header/bar/css/bar.css';
+  const ucfhbBsStylesheet     = 'http://localhost/header/bar/css/bar-bootstrap.css';
+  const ucfhb1200BpStylesheet = 'http://localhost/header/bar/css/1200-breakpoint.css';
+
 
   // Check if data-bootstrap-override has been passed to the
   // university header script. Requires that the script tag

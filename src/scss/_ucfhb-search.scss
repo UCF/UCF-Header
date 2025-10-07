@@ -97,7 +97,7 @@
     #ucfhb-search-submit {
       @include focus-styles();
       @include sprite();
-      background-color: #ffc904;
+      background-color: #4c9bd2;
       background-position: -107px -2px;
       border: 0;
       border-radius: 0 4px 4px 0;
@@ -117,7 +117,7 @@
       }
 
       &:hover {
-        background-color: #ffeba4;
+        background-color: #4c9bd2;
         cursor: pointer;
       }
     }
@@ -175,7 +175,7 @@
 #ucfhb-search-minimal {
   @include focus-styles();
   @include sprite();
-  background-color: #ffc904;
+  background-color: #4c9bd2;
   background-position: -111px -2px;
   border: 0;
   border-radius: 4px;
@@ -195,7 +195,7 @@
   }
 
   &:hover {
-    background-color: #ffeba4;
+    background-color: #4c9bd2;
     cursor: pointer;
   }
 

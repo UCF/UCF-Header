@@ -32,6 +32,7 @@ function gtag() {
   const ucfhbBsStylesheet     = `${window.location.protocol}//${UCFHB_ROOT_URL}/bar/css/bar-bootstrap.css?${UCFHB_VERSION}`;
   const ucfhb1200BpStylesheet = `${window.location.protocol}//${UCFHB_ROOT_URL}/bar/css/1200-breakpoint.css?${UCFHB_VERSION}`;
 
+
   // Check if data-bootstrap-override has been passed to the
   // university header script. Requires that the script tag
   // has an ID of 'ucfhb-script'

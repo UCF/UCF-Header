@@ -123,9 +123,9 @@ function gtag() {
       </div>
     </div>
     <div id="ucfhb-search">
-      <form action="//search.ucf.edu/" data-action-url="//search.ucf.edu#?q=" method="get" name="ucfhb-search-form" id="ucfhb-search-form">
+      <form action="//search.ucf.edu/" data-action-url="//search.ucf.edu/?q=" method="get" name="ucfhb-search-form" id="ucfhb-search-form">
         <label for="ucfhb-search-field" id="ucfhb-search-field-label">Search UCF</label>
-        <input type="text" name="#q" id="ucfhb-search-field" placeholder="Search UCF" />
+        <input type="text" name="q" id="ucfhb-search-field" placeholder="Search UCF" />
         <button type="submit" value="Search" id="ucfhb-search-submit" aria-label="Submit"></button>
       </form>
       <button id="ucfhb-search-minimal" aria-controls="ucfhb-search" aria-expanded="true" aria-label="Search"></button>

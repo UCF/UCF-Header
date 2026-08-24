@@ -31,6 +31,7 @@ function gtag() {
   const ucfhbStylesheet       = `${window.location.protocol}//${UCFHB_ROOT_URL}/bar/css/bar.css?${UCFHB_VERSION}`;
   const ucfhbBsStylesheet     = `${window.location.protocol}//${UCFHB_ROOT_URL}/bar/css/bar-bootstrap.css?${UCFHB_VERSION}`;
   const ucfhb1200BpStylesheet = `${window.location.protocol}//${UCFHB_ROOT_URL}/bar/css/1200-breakpoint.css?${UCFHB_VERSION}`;
+  const ucfhbFullWidthStylesheet = `${window.location.protocol}//${UCFHB_ROOT_URL}/bar/css/full-width.css?${UCFHB_VERSION}`;
 
 
   // Check if data-bootstrap-override has been passed to the
@@ -39,6 +40,7 @@ function gtag() {
   let ucfhbScript       = null;
   let use1200Breakpoint = false;
   let useBsOverride     = false;
+  let useFullWidth      = false;
 
   if (document.getElementById('ucfhb-script')) {
     ucfhbScript = document.getElementById('ucfhb-script');
@@ -48,6 +50,10 @@ function gtag() {
 
     if (ucfhbScript.getAttribute('src').indexOf('use-1200-breakpoint=1') > -1) {
       use1200Breakpoint = true;
+    }
+
+    if (ucfhbScript.getAttribute('src').indexOf('use-full-width=1') > -1) {
+      useFullWidth = true;
     }
   }
 
@@ -73,13 +79,23 @@ function gtag() {
       head.appendChild(bsStylesheet);
     }
 
-    // Append 1200 breakpoint stylesheet to head
-    if (use1200Breakpoint === true) {
+    // Append 1200 breakpoint stylesheet to head. Skipped when the full width
+    // stylesheet is in use, since it already contains these styles.
+    if (use1200Breakpoint === true && useFullWidth === false) {
       const bp1200Stylesheet = document.createElement('link');
       bp1200Stylesheet.setAttribute('href', ucfhb1200BpStylesheet);
       bp1200Stylesheet.setAttribute('rel', 'stylesheet');
       bp1200Stylesheet.setAttribute('type', 'text/css');
       head.appendChild(bp1200Stylesheet);
+    }
+
+    // Append full width stylesheet to head
+    if (useFullWidth === true) {
+      const fullWidthStylesheet = document.createElement('link');
+      fullWidthStylesheet.setAttribute('href', ucfhbFullWidthStylesheet);
+      fullWidthStylesheet.setAttribute('rel', 'stylesheet');
+      fullWidthStylesheet.setAttribute('type', 'text/css');
+      head.appendChild(fullWidthStylesheet);
     }
 
     // Create the outermost bar div, if necessary

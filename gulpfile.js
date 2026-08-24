@@ -145,8 +145,13 @@ gulp.task('scss-build-1200bp', () => {
   return buildCSS(`${config.src.scssPath}/1200-breakpoint.scss`);
 });
 
+// Compile full width stylesheet
+gulp.task('scss-build-full-width', () => {
+  return buildCSS(`${config.src.scssPath}/full-width.scss`);
+});
+
 // All theme css-related tasks
-gulp.task('css', gulp.series('scss-lint', 'scss-build-bar', 'scss-build-bootstrap2', 'scss-build-1200bp'));
+gulp.task('css', gulp.series('scss-lint', 'scss-build-bar', 'scss-build-bootstrap2', 'scss-build-1200bp', 'scss-build-full-width'));
 
 
 //

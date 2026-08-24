@@ -53,6 +53,20 @@
                 </div>
               </div>
 
+              <h3 class="h4 mt-4 mt-sm-5">Full Width Version</h3>
+              <p>
+                For sites with full-width layouts, a <code>use-full-width</code> parameter can be added to span the header across the entire width of the browser window.
+                The UCF wordmark is aligned to the left edge and the sign in services and search are aligned to the right edge, each with 15px of padding:
+              </p>
+              <div class="card mb-4">
+                <div class="card-block">
+                  <pre class="mb-0">&lt;script type="text/javascript" id="ucfhb-script" src="//universityheader.ucf.edu/bar/js/university-header.js?use-full-width=1"&gt;&lt;/script&gt;</pre>
+                </div>
+              </div>
+              <p>
+                This option includes the wider wordmark and search field used by the <code>use-1200-breakpoint</code> option, so the two do not need to be combined.
+              </p>
+
               <p>
                 See the <a href="#options">Options section</a> for more available configuration options.
               </p>
@@ -148,7 +162,7 @@
             <div class="alert alert-info my-4">
               <h3 id="wordpress-lt-63" class="h4 alert-heading">Setting Options for WordPress Sites (WordPress Version &lt; 6.3)</h3>
               <p>
-                Parameter-based options such as <code>use-1200-breakpoint</code> and <code>use-bootstrap-overrides</code> require that the <code>&lt;script&gt;</code> tag has an ID of <code>ucfhb-script</code>.
+                Parameter-based options such as <code>use-1200-breakpoint</code>, <code>use-full-width</code> and <code>use-bootstrap-overrides</code> require that the <code>&lt;script&gt;</code> tag has an ID of <code>ucfhb-script</code>.
                 If your site runs on WordPress and requires these overrides, enqueue the University Header script with <code><a href="http://codex.wordpress.org/Function_Reference/wp_enqueue_script">wp_enqueue_script()</a></code> using the parameter(s) above, and add the following snippet to your theme's functions.php file:
               </p>
               <div class="alert alert-warning my-2">

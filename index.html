@@ -5,7 +5,34 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="utf-8">
     <link rel="stylesheet" href="https://cdn.ucf.edu/athena-framework/latest/css/framework.min.css">
-    <script type="text/javascript" id="ucfhb-script" src="bar/js/university-header.js"></script>
+    <script type="text/javascript">
+      // Loads the University Header, forwarding any of its supported options
+      // that were passed to this page, so that they can be previewed here.
+      // e.g. index.html?use-full-width=1 loads the header with that option on.
+      //
+      // Options are matched against a known list and only accept a value of
+      // "1", so that nothing arbitrary can be written into the script's src.
+      (function () {
+        var supportedOptions = [
+          'use-1200-breakpoint',
+          'use-full-width',
+          'use-bootstrap-overrides'
+        ];
+        var pageParams = new URLSearchParams(window.location.search);
+        var enabledOptions = supportedOptions.filter(function (option) {
+          return pageParams.get(option) === '1';
+        });
+        var query = enabledOptions.map(function (option) {
+          return option + '=1';
+        }).join('&');
+
+        var ucfhbScript = document.createElement('script');
+        ucfhbScript.type = 'text/javascript';
+        ucfhbScript.id = 'ucfhb-script';
+        ucfhbScript.src = 'bar/js/university-header.js' + (query ? '?' + query : '');
+        document.head.appendChild(ucfhbScript);
+      }());
+    </script>
   </head>
   <body>
     <main>
@@ -42,16 +69,22 @@
                   <pre class="mb-0">&lt;script type="text/javascript" id="ucfhb-script" src="//universityheader.ucf.edu/bar/js/university-header.js"&gt;&lt;/script&gt;</pre>
                 </div>
               </div>
+              <p class="mt-2">
+                <a href="./">Preview the default header on this page</a>
+              </p>
 
               <h3 class="h4 mt-4 mt-sm-5">Wide Version (Recommended)</h3>
               <p>
-                The header shown on this page is the standard, default width provided. A <code>use-1200-breakpoint</code> parameter can be added to display a wider version of the header:
+                By default, the header shown on this page is the standard width provided. A <code>use-1200-breakpoint</code> parameter can be added to display a wider version of the header:
               </p>
               <div class="card mb-4">
                 <div class="card-block">
                   <pre class="mb-0">&lt;script type="text/javascript" id="ucfhb-script" src="//universityheader.ucf.edu/bar/js/university-header.js?use-1200-breakpoint=1"&gt;&lt;/script&gt;</pre>
                 </div>
               </div>
+              <p class="mt-2">
+                <a href="?use-1200-breakpoint=1">Preview the wide header on this page</a>
+              </p>
 
               <h3 class="h4 mt-4 mt-sm-5">Full Width Version</h3>
               <p>
@@ -65,6 +98,9 @@
               </div>
               <p>
                 This option includes the wider wordmark and search field used by the <code>use-1200-breakpoint</code> option, so the two do not need to be combined.
+              </p>
+              <p class="mt-2">
+                <a href="?use-full-width=1">Preview the full width header on this page</a>
               </p>
 
               <p>

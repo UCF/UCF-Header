@@ -54,8 +54,12 @@ export function mount(
   host.setAttribute('aria-label', 'University of Central Florida navbar');
 
   const root = host.attachShadow({ mode: 'open' });
-  adopt(root, doc);
+  // Markup first: the fallback path appends a <style> child, and assigning
+  // innerHTML afterwards would wipe it — leaving the bar completely unstyled on
+  // browsers without adoptedStyleSheets (Safari 16.0–16.3). No paint happens
+  // between these two statements, so there is no flash either way.
   root.innerHTML = barMarkup(cfg, session);
+  adopt(root, doc);
 
   return root;
 }

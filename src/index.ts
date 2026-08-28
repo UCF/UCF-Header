@@ -6,7 +6,7 @@
  * not "make the header appear" is scheduled after first paint.
  */
 
-import { readConfig } from './config';
+import { readConfig, rootUrlFor } from './config';
 import { initAnalytics } from './features/analytics';
 import { initSearch } from './features/search';
 import { mount } from './render';
@@ -37,7 +37,7 @@ function start(): void {
 
     if (__UCFHB_SESSION__) {
       const { createSessionProvider, SESSION_TIMEOUT_MS } = await import('./features/session');
-      const provider = createSessionProvider(`${cfg.rootUrl}/api/session`);
+      const provider = createSessionProvider(rootUrlFor(cfg, 'api/session'));
       const session = await provider.get(AbortSignal.timeout(SESSION_TIMEOUT_MS));
       if (session.signedIn) {
         // Phase 2: swap the reserved right-hand slot's contents. The slot is

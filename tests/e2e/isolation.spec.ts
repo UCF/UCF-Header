@@ -126,3 +126,50 @@ test.describe('theming API', () => {
     expect(parts).toEqual(expect.arrayContaining(['bar', 'logo', 'search', 'myucf']));
   });
 });
+
+/**
+ * Safari 16.0–16.3 has shadow DOM but not adoptedStyleSheets, so the bar falls
+ * back to appending a <style> into the shadow root. That branch is invisible to
+ * every browser the suite otherwise runs, which is how it shipped broken once:
+ * innerHTML was assigned after the <style> was appended and wiped it out.
+ */
+test.describe('stylesheet fallback (no adoptedStyleSheets)', () => {
+  test.beforeEach(async ({ page }) => {
+    await page.addInitScript(() => {
+      delete (ShadowRoot.prototype as unknown as Record<string, unknown>).adoptedStyleSheets;
+      (window as unknown as Record<string, unknown>).CSSStyleSheet = () => {
+        throw new Error('not constructable');
+      };
+    });
+  });
+
+  test('the bar is still fully styled', async ({ page }) => {
+    await page.setViewportSize({ width: 1280, height: 700 });
+    await page.goto('/fixtures/bare.html');
+
+    const r = await page.evaluate(() => {
+      const root = document.getElementById('ucfhb')?.shadowRoot;
+      const bar = root?.querySelector('.bar');
+      return {
+        styleTags: root?.querySelectorAll('style').length ?? 0,
+        adopted: root?.adoptedStyleSheets?.length ?? 0,
+        height: bar ? Math.round(bar.getBoundingClientRect().height) : null,
+        background: bar ? getComputedStyle(bar).backgroundColor : null,
+      };
+    });
+
+    expect(r.adopted).toBe(0); // fallback really is the path under test
+    expect(r.styleTags).toBe(1); // …and the <style> survived innerHTML
+    expect(r.height).toBe(72);
+    expect(r.background).toBe('rgb(0, 0, 0)');
+  });
+
+  test('search still works on the fallback path', async ({ page }) => {
+    await page.goto('/fixtures/bare.html');
+    await page.locator('#ucfhb').locator('.search-toggle').click();
+    await expect(page.locator('#ucfhb').locator('.search-toggle')).toHaveAttribute(
+      'aria-expanded',
+      'true',
+    );
+  });
+});

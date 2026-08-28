@@ -25,6 +25,23 @@ export interface HeaderConfig {
 
 const SCRIPT_ID = 'ucfhb-script';
 
+/**
+ * Absolute URL for a resource served from the header's own origin.
+ *
+ * `rootUrl` is a bare host by contract ("no protocol or endslash"), so it
+ * cannot be handed to fetch() as-is — that would resolve relative to the host
+ * page and hit the wrong origin entirely. The protocol comes from the current
+ * page so the header never mixes content.
+ */
+export function rootUrlFor(
+  cfg: HeaderConfig,
+  path: string,
+  loc: Location = window.location,
+): string {
+  const host = cfg.rootUrl.replace(/^[a-z][a-z0-9+.-]*:\/\//i, '').replace(/\/+$/, '');
+  return `${loc.protocol}//${host}/${path.replace(/^\/+/, '')}`;
+}
+
 /** True when `flag=1` appears anywhere in the script's src. Matches v3 semantics. */
 function hasFlag(src: string, flag: string): boolean {
   return src.indexOf(`${flag}=1`) > -1;

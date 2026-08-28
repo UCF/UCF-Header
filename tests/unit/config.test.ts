@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it } from 'vitest';
-import { readConfig } from '../../src/config';
+import { readConfig, rootUrlFor } from '../../src/config';
 
 function withScript(src: string | null): Document {
   document.head.innerHTML = '';
@@ -69,5 +69,43 @@ describe('readConfig', () => {
     expect(cfg.version).toBe('4.0.0-test');
     expect(cfg.searchUrl).toBe('https://search.ucf.edu/');
     expect(cfg.gaId).toBeNull();
+  });
+});
+
+describe('rootUrlFor', () => {
+  const cfg = readConfig(withScript(BASE));
+  const loc = (protocol: string) => ({ protocol }) as Location;
+
+  // rootUrl is a bare host by contract. Handing it to fetch() unchanged would
+  // resolve against the host page and hit the wrong origin entirely.
+  it('produces an absolute URL, not a page-relative one', () => {
+    const url = rootUrlFor(
+      { ...cfg, rootUrl: 'universityheader.ucf.edu' },
+      'api/session',
+      loc('https:'),
+    );
+    expect(url).toBe('https://universityheader.ucf.edu/api/session');
+    expect(new URL(url).hostname).toBe('universityheader.ucf.edu');
+  });
+
+  it('inherits the page protocol so the header never mixes content', () => {
+    const c = { ...cfg, rootUrl: 'universityheader.ucf.edu' };
+    expect(rootUrlFor(c, 'api/session', loc('http:'))).toBe(
+      'http://universityheader.ucf.edu/api/session',
+    );
+  });
+
+  it.each([
+    ['universityheader.ucf.edu', 'https://universityheader.ucf.edu/api/session'],
+    ['universityheader.ucf.edu/', 'https://universityheader.ucf.edu/api/session'],
+    ['https://universityheader.ucf.edu', 'https://universityheader.ucf.edu/api/session'],
+    ['localhost:4321', 'https://localhost:4321/api/session'],
+  ])('normalizes %s', (rootUrl, expected) => {
+    expect(rootUrlFor({ ...cfg, rootUrl }, 'api/session', loc('https:'))).toBe(expected);
+  });
+
+  it('tolerates a leading slash on the path', () => {
+    const c = { ...cfg, rootUrl: 'example.test' };
+    expect(rootUrlFor(c, '/api/session', loc('https:'))).toBe('https://example.test/api/session');
   });
 });

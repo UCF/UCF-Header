@@ -1,0 +1,407 @@
+/*
+ * The bar's entire stylesheet. Adopted into a shadow root, so it needs no
+ * defensive specificity: host page CSS cannot reach in and these rules cannot
+ * leak out. The only place `!important` appears is on the shadow host itself
+ * (see below), which is the one element the host document can still style.
+ */
+
+/* ---------------------------------------------------------------- tokens */
+
+:host {
+  /* Public theming API. Custom properties pierce the shadow boundary, so a
+     host page can set these on #ucfhb and they will apply. This is the
+     supported way to restyle the bar now that CSS overrides cannot reach in. */
+  --ucfhb-height: 72px;
+  --ucfhb-bg: #000;
+  --ucfhb-fg: #fff;
+  --ucfhb-accent: #edb80c;
+  --ucfhb-accent-hover: #ffd140;
+  --ucfhb-rule: #3a3a3a;
+  --ucfhb-muted: #9a9a9a;
+  --ucfhb-font:
+    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --ucfhb-z: 10000;
+
+  /* The mark is a knockout lockup: its "body" colour is the background showing
+     through, which is what makes it work reversed on the dark bar. Tying it to
+     --ucfhb-bg means a re-themed bar keeps a correct logo for free. */
+  --ucfhb-logo-outline: #fff;
+  --ucfhb-logo-body: var(--ucfhb-bg);
+  --ucfhb-logo-accent: var(--ucfhb-accent);
+
+  /* Structural declarations are !important because the host document still
+     styles the host element, and for the host element important declarations
+     from the shadow tree win. Six of these replaces ~40 in v3. */
+  display: block !important;
+  position: relative !important;
+  width: 100% !important;
+  height: var(--ucfhb-height) !important;
+  margin: 0 !important;
+  padding: 0 !important;
+
+  background: var(--ucfhb-bg);
+  z-index: var(--ucfhb-z);
+  text-align: left;
+}
+
+:host([hidden]) {
+  display: none !important;
+}
+
+@media print {
+  :host {
+    display: none !important;
+  }
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* ------------------------------------------------------------------- bar */
+
+.bar {
+  height: 100%;
+  background: var(--ucfhb-bg);
+  border-bottom: 3px solid var(--ucfhb-accent);
+
+  /* Inherited properties are the one thing a shadow root does NOT block: they
+     pass straight through :host from the host page's <body>. Everything
+     inheritable that could move the layout is pinned here, once. */
+  color: var(--ucfhb-fg);
+  direction: ltr;
+  font-family: var(--ucfhb-font);
+  font-size: 16px;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: 400;
+  letter-spacing: normal;
+  line-height: 1.2;
+  text-align: left;
+  text-indent: 0;
+  text-transform: none;
+  white-space: normal;
+  word-spacing: normal;
+}
+
+.inner {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  height: 100%;
+  width: 940px;
+  margin: 0 auto;
+}
+
+.bar.is-wide .inner {
+  width: 940px;
+}
+.bar.is-full .inner {
+  width: auto;
+  padding: 0 15px;
+}
+
+@media (min-width: 1200px) {
+  .bar.is-wide .inner {
+    width: 1140px;
+  }
+  .bar.is-full .inner {
+    width: auto;
+  }
+}
+
+@media (max-width: 979px) {
+  .inner,
+  .bar.is-wide .inner {
+    width: 720px;
+  }
+  .bar.is-full .inner {
+    width: auto;
+  }
+}
+
+@media (max-width: 767px) {
+  .inner,
+  .bar.is-wide .inner,
+  .bar.is-full .inner {
+    width: auto;
+    padding: 0 15px;
+  }
+}
+
+/* ------------------------------------------------------------------ logo */
+
+.home {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  height: 100%;
+  color: var(--ucfhb-fg);
+  text-decoration: none;
+  flex: none;
+}
+
+.mark {
+  display: block;
+  height: 44px;
+  width: auto;
+  flex: none;
+}
+
+.lg-o {
+  fill: var(--ucfhb-logo-outline);
+}
+.lg-b {
+  fill: var(--ucfhb-logo-body);
+}
+.lg-a {
+  fill: var(--ucfhb-logo-accent);
+}
+
+.wordmark {
+  display: flex;
+  flex-direction: column;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.18;
+  letter-spacing: 0.075em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.home:hover .wordmark,
+.home:focus-visible .wordmark {
+  color: var(--ucfhb-accent);
+}
+
+/* --------------------------------------------------------------- actions */
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-left: auto;
+  flex: none;
+}
+
+/*
+ * The swappable right-hand slot. Phase 2 replaces its contents with the avatar
+ * and launcher; nothing outside it changes. No speculative width is reserved —
+ * see the note in notes/phase-1-plan.md about what that means for CLS later.
+ */
+.zone {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* ---------------------------------------------------------------- search */
+
+.search {
+  display: flex;
+  align-items: center;
+}
+
+.search-form {
+  max-width: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition:
+    max-width 0.2s ease,
+    opacity 0.2s ease;
+}
+
+.search.is-open .search-form {
+  max-width: 300px;
+  opacity: 1;
+  margin-right: 8px;
+}
+
+.search-input {
+  width: 300px;
+  height: 38px;
+  padding: 0 12px;
+  background: transparent;
+  border: 1px solid var(--ucfhb-rule);
+  border-radius: 0;
+  color: var(--ucfhb-fg);
+  font-family: inherit;
+  font-size: 14px;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.search-input::placeholder {
+  color: var(--ucfhb-muted);
+  opacity: 1;
+}
+.search-input::-webkit-search-cancel-button {
+  -webkit-appearance: none;
+  appearance: none;
+}
+.search-input:focus {
+  border-color: var(--ucfhb-accent);
+  outline: none;
+}
+
+.search-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  padding: 0;
+  background: none;
+  border: 0;
+  color: var(--ucfhb-fg);
+  cursor: pointer;
+  flex: none;
+}
+
+.search-toggle:hover {
+  color: var(--ucfhb-accent);
+}
+.search-toggle svg {
+  display: block;
+  width: 17px;
+  height: 17px;
+}
+
+.i-close {
+  display: none;
+}
+.search.is-open .i-search {
+  display: none;
+}
+.search.is-open .i-close {
+  display: block;
+}
+
+/* ----------------------------------------------------------------- myucf */
+
+.myucf {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 38px;
+  padding: 0 16px;
+  background: var(--ucfhb-accent);
+  color: #000;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  text-decoration: none;
+  white-space: nowrap;
+  flex: none;
+}
+
+.myucf:hover {
+  background: var(--ucfhb-accent-hover);
+}
+.myucf svg {
+  display: block;
+  width: 15px;
+  height: 15px;
+}
+
+/* ------------------------------------------------------------ a11y + fx */
+
+/* Double ring: legible against the black bar, the white wordmark, and the gold
+   MyUCF button alike, without relying on any one of them for contrast. */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible {
+  outline: none;
+  box-shadow:
+    0 0 0 2px var(--ucfhb-bg),
+    0 0 0 5px var(--ucfhb-fg);
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+    animation: none !important;
+  }
+}
+
+/* ---------------------------------------------------------------- mobile */
+
+@media (max-width: 767px) {
+  :host {
+    --ucfhb-height: 60px;
+  }
+
+  .mark {
+    height: 36px;
+  }
+
+  /* Clipped rather than display:none — the link keeps its accessible name and
+     its crawler-visible anchor text at every width. */
+  .wordmark {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    clip-path: inset(50%);
+  }
+
+  /* The open field fills the row rather than animating to a fixed width.
+     Every ancestor needs min-width:0, or the input's 300px basis stops the
+     whole chain from shrinking and pushes MyUCF off the right edge. */
+  .actions {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .zone {
+    flex: none;
+  }
+
+  .search {
+    min-width: 0;
+  }
+
+  .search.is-open {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .search-form {
+    min-width: 0;
+  }
+
+  .search.is-open .search-form {
+    max-width: none;
+    flex: 1;
+    transition: opacity 0.2s ease;
+  }
+
+  .search-input {
+    width: 100%;
+    min-width: 0;
+  }
+}
+
+@media (max-width: 419px) {
+  .myucf {
+    padding: 0 12px;
+  }
+}

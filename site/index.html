@@ -1,0 +1,338 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>UCF University Header</title>
+<meta name="description" content="The universal header bar embedded across UCF web properties. Installation, options, and theming.">
+<script>
+  // Loads the header, forwarding any of its supported options passed to this
+  // page so they can be previewed here — e.g. ?use-full-width=1
+  //
+  // Options are matched against a known list and only accept a value of "1",
+  // so nothing arbitrary can be written into the script's src.
+  (function () {
+    var supported = ['use-1200-breakpoint', 'use-full-width', 'use-bootstrap-overrides'];
+    var params = new URLSearchParams(window.location.search);
+    var query = supported.filter(function (o) { return params.get(o) === '1'; })
+                         .map(function (o) { return o + '=1'; }).join('&');
+
+    var s = document.createElement('script');
+    s.id = 'ucfhb-script';
+    s.src = 'bar/js/university-header.js' + (query ? '?' + query : '');
+    document.head.appendChild(s);
+  }());
+</script>
+<style>
+  :root {
+    --black: #000;
+    --ink: #14140f;
+    --ink-2: #55554c;
+    --ink-3: #86867c;
+    --paper: #fbfaf7;
+    --surface: #fff;
+    --rule: #e2ded4;
+    --gold: #edb80c;
+    --gold-deep: #7d6100;
+    --code-bg: #16160f;
+    --code-fg: #f2efe4;
+    --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--font);
+    font-size: 17px;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .wrap { max-width: 860px; margin: 0 auto; padding: 0 24px; }
+
+  /* ------------------------------------------------------------ masthead */
+
+  .hero { border-bottom: 1px solid var(--rule); background: var(--surface); }
+  .hero .wrap { padding-top: 72px; padding-bottom: 56px; }
+
+  .eyebrow {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--gold-deep);
+    margin: 0 0 14px;
+  }
+
+  h1 {
+    font-size: clamp(2.2rem, 6vw, 3.2rem);
+    line-height: 1.05;
+    letter-spacing: -0.025em;
+    margin: 0 0 18px;
+    text-wrap: balance;
+  }
+
+  .lede { font-size: 1.2rem; color: var(--ink-2); margin: 0; max-width: 58ch; }
+
+  .version {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 26px;
+    padding: 5px 12px;
+    background: var(--black);
+    color: var(--gold);
+    font-family: var(--mono);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+  }
+
+  /* ------------------------------------------------------------- content */
+
+  section { padding: 52px 0; border-bottom: 1px solid var(--rule); }
+  section:last-of-type { border-bottom: 0; }
+
+  h2 {
+    font-size: 1.7rem;
+    letter-spacing: -0.02em;
+    margin: 0 0 8px;
+    text-wrap: balance;
+  }
+
+  h3 {
+    font-size: 1.05rem;
+    margin: 34px 0 6px;
+    letter-spacing: -0.005em;
+  }
+
+  p { margin: 0 0 16px; max-width: 68ch; }
+  p:last-child { margin-bottom: 0; }
+
+  ul { max-width: 68ch; padding-left: 20px; }
+  li { margin-bottom: 8px; }
+
+  a { color: var(--gold-deep); text-underline-offset: 2px; }
+  a:focus-visible, button:focus-visible {
+    outline: 3px solid var(--gold);
+    outline-offset: 2px;
+  }
+
+  pre {
+    background: var(--code-bg);
+    color: var(--code-fg);
+    font-family: var(--mono);
+    font-size: 13px;
+    line-height: 1.6;
+    padding: 16px 18px;
+    overflow-x: auto;
+    margin: 0 0 16px;
+    border-left: 3px solid var(--gold);
+  }
+
+  code { font-family: var(--mono); font-size: 0.88em; }
+  p code, li code, td code {
+    background: #efece2;
+    padding: 0.12em 0.38em;
+    color: var(--ink);
+  }
+
+  .tbl { overflow-x: auto; border: 1px solid var(--rule); background: var(--surface); margin-bottom: 16px; }
+  table { border-collapse: collapse; width: 100%; font-size: 15px; }
+  th, td { text-align: left; padding: 11px 14px; border-bottom: 1px solid var(--rule); vertical-align: top; }
+  th { font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-3); white-space: nowrap; }
+  tbody tr:last-child td { border-bottom: 0; }
+
+  .note {
+    background: var(--surface);
+    border: 1px solid var(--rule);
+    border-left: 3px solid var(--gold);
+    padding: 16px 18px;
+    margin: 0 0 16px;
+  }
+  .note p { margin: 0 0 8px; }
+  .note p:last-child { margin-bottom: 0; }
+  .note strong { display: block; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-3); margin-bottom: 6px; }
+
+  .previews { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px; }
+  .previews a {
+    display: inline-block;
+    padding: 7px 14px;
+    background: var(--surface);
+    border: 1px solid var(--rule);
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    color: var(--ink);
+  }
+  .previews a:hover { border-color: var(--black); }
+  .previews a[aria-current="true"] { background: var(--black); color: var(--gold); border-color: var(--black); }
+
+  footer { padding: 40px 0 72px; color: var(--ink-3); font-size: 14px; }
+  footer a { color: var(--ink-2); }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <p class="eyebrow">University of Central Florida</p>
+    <h1>The University Header</h1>
+    <p class="lede">One script tag puts the UCF bar at the top of your site. It is the shared piece of chrome that marks a page as part of the university.</p>
+    <p class="version">v4.0.0</p>
+  </div>
+</header>
+
+<main>
+
+<section>
+  <div class="wrap">
+    <h2>Installation</h2>
+    <p>Paste this immediately after your opening <code>&lt;body&gt;</code> tag. Nothing else is required — no stylesheet, no markup, no configuration.</p>
+    <pre><code>&lt;script id="ucfhb-script" src="//universityheader.ucf.edu/bar/js/university-header.js"&gt;&lt;/script&gt;</code></pre>
+    <p>The bar inserts itself as the first element in the body. If you need it somewhere specific instead, put an empty <code>&lt;div id="ucfhb"&gt;&lt;/div&gt;</code> where you want it and the script will use that.</p>
+
+    <div class="note">
+      <strong>Already embedded?</strong>
+      <p>Then you have nothing to do. v4 is served from the same URL as v3, so every site that already has the snippet gets the new bar automatically.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>Options</h2>
+    <p>Flags are passed as query parameters on the script's <code>src</code>. They require the tag to keep its <code>id="ucfhb-script"</code>.</p>
+
+    <div class="tbl">
+      <table>
+        <thead><tr><th>Option</th><th>Effect</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><code>use-1200-breakpoint</code></td>
+            <td>Widens the bar's container to 1140px on screens 1200px and up, to line up with a wider grid.</td>
+          </tr>
+          <tr>
+            <td><code>use-full-width</code></td>
+            <td>Runs the bar edge to edge with a 15px gutter, for full-width layouts. Includes the wider breakpoint, so the two never need combining.</td>
+          </tr>
+          <tr>
+            <td><code>use-bootstrap-overrides</code></td>
+            <td><strong style="display:inline">Retained but inert.</strong> Bootstrap&nbsp;2.x support was dropped in 4.0.0. The flag is still accepted so existing embeds keep working; it no longer does anything.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <pre><code>&lt;script id="ucfhb-script" src="//universityheader.ucf.edu/bar/js/university-header.js?use-full-width=1"&gt;&lt;/script&gt;</code></pre>
+
+    <h3>Preview them on this page</h3>
+    <div class="previews" id="previews">
+      <a href="?">Default</a>
+      <a href="?use-1200-breakpoint=1">Wide breakpoint</a>
+      <a href="?use-full-width=1">Full width</a>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>What changed in 4.0.0</h2>
+    <p>This is a full rebuild. Visually it is the new university brand: the stacked UCF mark, a taller bar, inline SVG icons, a pop-out search, and a single MyUCF button in place of the old sign-in tray.</p>
+    <p>Underneath, the bar now renders inside a <a href="https://developer.mozilla.org/en-US/docs/Web/API/Web_components/Using_shadow_DOM">shadow root</a>. That is the change most likely to affect you, and it cuts both ways: your site's CSS can no longer accidentally break the header, and it can no longer deliberately restyle it either.</p>
+
+    <div class="note">
+      <strong>If you were overriding header styles</strong>
+      <p>CSS rules targeting the bar's internals — <code>#ucfhb-search-field</code>, <code>#ucfhb-signon</code>, and the rest — no longer apply, and the same goes for JavaScript that reaches in with <code>document.querySelector</code>. Use the theming API below instead, or <a href="#rollback">pin to v3</a> while you migrate.</p>
+    </div>
+
+    <h3>Also worth knowing</h3>
+    <ul>
+      <li>The bar is <strong>72px tall</strong> on desktop and 60px on narrow screens, up from 50px. Your content sits 22px lower than it used to.</li>
+      <li>There is <strong>no mobile menu toggle</strong> any more. With only search and MyUCF to show, everything fits on one row at every width.</li>
+      <li>The header is now a <strong>single file</strong>. It no longer requests <code>bar/css/bar.css</code> — the styles are inlined. The old CSS files are still served this release and will be removed in 4.1.0.</li>
+      <li><code>university-header-full.js</code> is gone. A source map is published next to the minified file instead.</li>
+    </ul>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>Theming</h2>
+    <p>Custom properties cross the shadow boundary, so setting them on <code>#ucfhb</code> from your own stylesheet works by design. This is the supported way to adjust the bar.</p>
+    <pre><code>#ucfhb {
+  --ucfhb-bg: #1a1a1a;
+  --ucfhb-accent: #7ab8ff;
+}</code></pre>
+
+    <div class="tbl">
+      <table>
+        <thead><tr><th>Property</th><th>Default</th><th></th></tr></thead>
+        <tbody>
+          <tr><td><code>--ucfhb-height</code></td><td><code>72px</code></td><td>Bar height (60px under 768px)</td></tr>
+          <tr><td><code>--ucfhb-bg</code></td><td><code>#000</code></td><td>Bar background</td></tr>
+          <tr><td><code>--ucfhb-fg</code></td><td><code>#fff</code></td><td>Text and icons</td></tr>
+          <tr><td><code>--ucfhb-accent</code></td><td><code>#edb80c</code></td><td>Gold — the rule, the MyUCF button, hover states</td></tr>
+          <tr><td><code>--ucfhb-rule</code></td><td><code>#3a3a3a</code></td><td>The search field's border</td></tr>
+          <tr><td><code>--ucfhb-font</code></td><td>system stack</td><td>Typeface for the bar's text</td></tr>
+          <tr><td><code>--ucfhb-z</code></td><td><code>10000</code></td><td>Stacking order</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>The logo's colours follow the bar automatically. The mark is a knockout lockup, so its interior takes <code>--ucfhb-bg</code> — re-theme the background and the logo stays correct without further work.</p>
+
+    <h3>Styling parts directly</h3>
+    <p>For anything the custom properties do not reach, four elements are exposed via <code>::part()</code>.</p>
+    <pre><code>#ucfhb::part(myucf) { text-transform: none; }</code></pre>
+    <p>Available parts: <code>bar</code>, <code>logo</code>, <code>search</code>, <code>myucf</code>.</p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>Accessibility</h2>
+    <ul>
+      <li>The bar is a labelled <code>complementary</code> landmark, deliberately not a second <code>banner</code> competing with your page's own.</li>
+      <li>Search opens by click or keyboard, <kbd>Escape</kbd> closes it, and focus returns to the trigger.</li>
+      <li>Focus indicators use a double ring that stays visible against the black bar, white text, and the gold button alike.</li>
+      <li>All transitions are disabled under <code>prefers-reduced-motion</code>.</li>
+      <li>The link home carries real text — "University of Central Florida" — at every width, including where it is visually hidden.</li>
+    </ul>
+    <p>The bar is tested against WCAG 2.2 AA with axe on every build, across Chromium, Firefox, and WebKit.</p>
+  </div>
+</section>
+
+<section id="rollback">
+  <div class="wrap">
+    <h2>Rolling back to v3</h2>
+    <p>If v4 breaks something on your site and you need time, v3 stays available at a permanent URL. Change the one line:</p>
+    <pre><code>&lt;script id="ucfhb-script" src="//universityheader.ucf.edu/bar/js/university-header-v3.js"&gt;&lt;/script&gt;</code></pre>
+    <p>This is a stopgap, not a supported long-term configuration — v3 will not receive further updates. Please <a href="https://github.com/UCF/UCF-Header/issues">open an issue</a> so the problem can be fixed in v4.</p>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <p>Maintained by UCF Web Communications · <a href="https://github.com/UCF/UCF-Header">Source on GitHub</a></p>
+  </div>
+</footer>
+
+</main>
+
+<script>
+  // Mark the active preview so the current option is obvious.
+  (function () {
+    var here = window.location.search || '?';
+    document.querySelectorAll('#previews a').forEach(function (a) {
+      if (a.getAttribute('href') === here) a.setAttribute('aria-current', 'true');
+    });
+  }());
+</script>
+
+</body>
+</html>

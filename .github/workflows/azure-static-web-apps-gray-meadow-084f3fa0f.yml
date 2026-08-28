@@ -16,13 +16,19 @@ jobs:
     env:
         GA: ${{ vars.GA_ID_LIVE }}
         ROOT_URL: ${{ vars.ROOT_URL_LIVE }}
-        SEARCH_SERVICE: ${{ vars.SEARCH_SERVICE_URL_LIVE }}
+        SEARCH_URL: ${{ vars.SEARCH_URL_LIVE }}
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v5
         with:
           submodules: true
           lfs: false
           ref: "${{ github.event.inputs.manual_ref }}"
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 20
+          cache: npm
+      - name: Build
+        run: npm ci && npm run build
       - name: Build And Deploy
         id: builddeploy
         uses: Azure/static-web-apps-deploy@v1
@@ -32,7 +38,11 @@ jobs:
           action: "upload"
           ###### Repository/Build Configurations - These values can be configured to match your app requirements. ######
           # For more information regarding Static Web App workflow configurations, please visit: https://aka.ms/swaworkflowconfig
-          app_location: "/" # App source code path
+          # With skip_app_build, app_location IS the build output directory and
+          # output_location must be empty. See:
+          # https://learn.microsoft.com/en-us/azure/static-web-apps/build-configuration
+          app_location: "dist" # Built above by `npm run build`
           api_location: "" # Api source code path - optional
-          output_location: "/dist" # Built app content directory - optional
+          output_location: "" # Must be empty when skip_app_build is true
+          skip_app_build: true
           ###### End of Repository/Build Configurations ######

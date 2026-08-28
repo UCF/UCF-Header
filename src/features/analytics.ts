@@ -5,6 +5,13 @@
  * triggers off the dataLayer events) and the header's own GA4 property, which
  * gives the central team a census of usage without depending on every
  * department configuring analytics correctly.
+ *
+ * All of this is deferred until after first paint, so loading GA never blocks
+ * the bar from rendering. That costs a little page-view fidelity at the very
+ * fast tail — a visitor who leaves before the idle callback fires is never
+ * recorded — which understates traffic and bounce rate slightly rather than
+ * overstating them. Measured at ~17ms after DOMContentLoaded on a quiet page
+ * and ~700ms on a busy one, capped by the 2s idle timeout in index.ts.
  */
 
 import type { HeaderConfig } from '../config';
@@ -56,9 +63,15 @@ function loadGa(gaId: string, doc: Document): void {
   doc.head.appendChild(s);
 
   (gtag as (...a: unknown[]) => void)('js', new Date());
-  // send_page_view is off: the header reports its own interactions and must not
-  // duplicate whatever page-view tracking the host site already does.
-  (gtag as (...a: unknown[]) => void)('config', gaId, { send_page_view: false });
+  // Page views are on, matching v3. This is what makes the header's own
+  // property a census of where the bar actually runs: with page views off, a
+  // pageview where nobody touches the header reports nothing at all, and the
+  // stream degrades to "pages where someone clicked the bar".
+  //
+  // It does mean the header counts a page view on sites that also run their own
+  // GA4. That is a known duplication, accepted for the MVP pending the wider
+  // analytics strategy.
+  (gtag as (...a: unknown[]) => void)('config', gaId);
 }
 
 export function initAnalytics(root: ShadowRoot, cfg: HeaderConfig, doc: Document = document): void {

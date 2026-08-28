@@ -1,17 +1,19 @@
-*~
-._*
+node_modules/
+dist/
+.env
+
+# Playwright
+test-results/
+playwright-report/
+blob-report/
+
+# OS / editor cruft
 .DS_Store
 Thumbs.db
-.fuse_*
-.Python
-*.pyc
-*.tmp-e
+._*
+*~
 
-dist/
-test/
-
-node_modules
-npm-debug.log
-gulp-config.json
-config.conf
-dist
+# Visual baselines are authoritative only from the pinned Playwright container
+# (npm run test:visual:docker). Locally-generated macOS ones are smoke-test
+# scratch — CI never reads them.
+tests/**/*-darwin.png

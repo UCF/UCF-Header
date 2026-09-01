@@ -2,11 +2,11 @@
  * Deferred layer. Nothing here runs until after first paint.
  *
  * Two audiences: whatever GTM/GA4 the host site already runs (which can build
- * triggers off the dataLayer events) and the header's own GA4 property, which
- * gives the central team a census of usage without depending on every
- * department configuring analytics correctly.
+ * triggers off the dataLayer events) and the header's own Tag Manager
+ * container, which gives the central team a census of usage without depending
+ * on every department configuring analytics correctly.
  *
- * All of this is deferred until after first paint, so loading GA never blocks
+ * All of this is deferred until after first paint, so loading GTM never blocks
  * the bar from rendering. That costs a little page-view fidelity at the very
  * fast tail — a visitor who leaves before the idle callback fires is never
  * recorded — which understates traffic and bounce rate slightly rather than
@@ -46,36 +46,30 @@ export function track(cfg: HeaderConfig, action: string, target: string | null =
   dataLayer().push(payload);
 }
 
-function loadGa(gaId: string, doc: Document): void {
-  const dl = dataLayer();
-
-  // gtag.js distinguishes a real `arguments` object from an array when it reads
-  // the queue, so this has to stay a function declaration pushing `arguments` —
-  // the documented snippet, not a stylistic choice.
-  function gtag() {
-    // biome-ignore lint/complexity/noArguments: required by gtag's queue contract.
-    dl.push(arguments);
-  }
+/**
+ * The standard Tag Manager bootstrap, minus two things it normally carries.
+ *
+ * There is no `<noscript>` iframe fallback: the bar is built entirely in JS, so
+ * a visitor without it has no header to report on in the first place.
+ *
+ * And there is no `config` call. Under gtag the header set its own page-view
+ * behaviour in code; under GTM that is a property of the container — a GA4
+ * Configuration tag on the All Pages trigger, which the `gtm.js` event pushed
+ * here is what fires. Page views are therefore still on, but they are on
+ * because the container says so, and turning them off no longer shows up as a
+ * change to this file.
+ */
+function loadGtm(gtmId: string, doc: Document): void {
+  dataLayer().push({ 'gtm.start': Date.now(), event: 'gtm.js' });
 
   const s = doc.createElement('script');
   s.async = true;
-  s.src = `https://www.googletagmanager.com/gtag/js?id=${gaId}`;
+  s.src = `https://www.googletagmanager.com/gtm.js?id=${gtmId}`;
   doc.head.appendChild(s);
-
-  (gtag as (...a: unknown[]) => void)('js', new Date());
-  // Page views are on, matching v3. This is what makes the header's own
-  // property a census of where the bar actually runs: with page views off, a
-  // pageview where nobody touches the header reports nothing at all, and the
-  // stream degrades to "pages where someone clicked the bar".
-  //
-  // It does mean the header counts a page view on sites that also run their own
-  // GA4. That is a known duplication, accepted for the MVP pending the wider
-  // analytics strategy.
-  (gtag as (...a: unknown[]) => void)('config', gaId);
 }
 
 export function initAnalytics(root: ShadowRoot, cfg: HeaderConfig, doc: Document = document): void {
-  if (cfg.gaId) loadGa(cfg.gaId, doc);
+  if (cfg.gtmId) loadGtm(cfg.gtmId, doc);
 
   root.addEventListener('click', (e) => {
     const path = e.composedPath();

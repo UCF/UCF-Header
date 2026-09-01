@@ -70,7 +70,7 @@ a local `.env`:
 
 | Variable | Default | Purpose |
 |---|---|---|
-| `GA` | *(empty)* | GA4 measurement ID. Empty means analytics never loads. |
+| `GTM` | *(empty)* | GTM container ID. Empty means analytics never loads. |
 | `ROOT_URL` | `universityheader.ucf.edu` | Serving origin. Reserved for the Phase 2 session endpoint. |
 | `SEARCH_URL` | `https://search.ucf.edu/` | Where the search form submits. |
 | `UCFHB_SESSION` | `0` | Set to `1` to compile in the Phase 2 signed-in seam. |
@@ -92,10 +92,15 @@ computed geometry and by comparing every fixture against one shared screenshot.
 `npm run bench` measures this branch against the **live production v3 header**
 and reports the distribution across 20 uncached loads per variant.
 
+This is a tool for answering a question, not a gate. It is deliberately **not
+part of CI**: it takes minutes and it reports numbers to read rather than a
+threshold to trip. `npm run size` is the CI performance gate.
+
 ```bash
 npm run bench                                  # 20 loads, none/4g/3g profiles
 npm run bench -- --runs=50 --profiles=3g       # one profile, more samples
-npm run bench -- --flags= --analytics          # bare embed, analytics as shipped
+npm run bench -- --gtm=GTM-XXXXXXX             # build v4 with a real container
+npm run bench -- --flags= --refresh            # bare embed, re-fetch v3
 ```
 
 v3 is downloaded from `universityheader.ucf.edu` (cached under `.bench/`; use
@@ -116,12 +121,15 @@ a wrong conclusion:
 - **Network throttling is the point.** On loopback a round trip is free, so v3
   and v4 finish within a millisecond of each other. The `none` profile is
   reported as a floor, not as the result.
-- **Analytics is off on both by default.** v3 injects gtag from
-  googletagmanager.com; leaving a third-party request in a 20-run comparison
-  swamps the signal. `--analytics` measures them as shipped.
-- **Resource totals are collected at network idle, not at `load`.** v3 discovers
-  its spritesheet only after `bar.css` parses, so on a slow link that request is
-  still in flight when `load` fires.
+- **Analytics is not measured.** v3's gtag injection is always stripped, and v4
+  builds with no container unless `--gtm` says otherwise. The header defers its
+  own tags behind `requestIdleCallback`, so they cannot affect anything a
+  visitor waits for; leaving a third-party request in a 20-run comparison only
+  imports network variance.
+- **Measurement stops when the header's assets go quiet**, not at network idle,
+  so a container loading in the background never holds up or distorts a sample.
+  Nor does it stop at `load`: v3 discovers its spritesheet only after `bar.css`
+  parses, and on a slow link that request is still in flight when `load` fires.
 - **Variants are interleaved and rotated** each iteration, so machine drift
   during the run cannot land on one version.
 - **Every load is a fresh context** with the HTTP cache disabled and `no-store`
@@ -129,8 +137,16 @@ a wrong conclusion:
   cached across `ucf.edu` subdomains, so it is the worst case for both versions
   — and the case the extra round trips actually hit.
 
+`--gtm=GTM-XXXXXXX` builds v4 with a real container, so a run can confirm what
+GTM costs the initial page load. On current measurements the answer is
+**nothing**: `load` fires at 168 ms without a container and 171 ms with one,
+because `initAnalytics` runs inside `requestIdleCallback` and the container is
+not fetched until after the load event has already gone. That is the flag's
+purpose — to verify that claim rather than assume it. What the container does
+afterwards is out of scope; the run has stopped measuring by then.
+
 Raw per-run JSON lands in `.bench/results/`. Note that the run leaves `dist/`
-holding the benchmark build (GA compiled out); `npm run build` restores it.
+holding the benchmark build; `npm run build` restores it.
 
 ### Visual baselines
 
@@ -144,14 +160,20 @@ npm run test:visual:docker                      # run against committed baseline
 npm run test:visual:docker -- --update-snapshots  # re-baseline after a design change
 ```
 
-Per the Phase 1 plan, baselines stay loose while the design iterates and get
-locked once the look is signed off.
+Baselines stay loose while the design iterates, and get tightened once the look
+is signed off.
 
 ## Deploying
 
 Pushes to `develop` and `test` deploy to the corresponding Azure Static Web App.
 Live is a manual `workflow_dispatch` against a tag. Each workflow runs
 `npm ci && npm run build` explicitly and uploads `dist/`.
+
+> **Repository variables must be renamed alongside the GTM swap.** The workflows
+> now read `GTM_ID_DEV`, `GTM_ID_TEST` and `GTM_ID_LIVE` where they previously
+> read `GA_ID_*`. An unset variable is not a build error — it compiles the
+> analytics seam out entirely — so a deploy that ships with no analytics at all
+> looks exactly like a successful one.
 
 ## Project layout
 
@@ -167,7 +189,7 @@ src/
 site/                 the universityheader.ucf.edu documentation page
 tests/                unit · e2e · visual · a11y · host-page fixtures
 scripts/              build, size gate, static server, containerized visuals
-notes/                the Phase 1 plan and its source requirements
+scripts/bench/        v3-vs-v4 load benchmark
 ```
 
 ## Contributing

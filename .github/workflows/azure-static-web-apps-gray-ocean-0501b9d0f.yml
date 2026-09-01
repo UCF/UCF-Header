@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     name: Build and Deploy Job
     env:
-        GA: ${{ vars.GA_ID_TEST }}
+        GTM: ${{ vars.GTM_ID_TEST }}
         ROOT_URL: ${{ vars.ROOT_URL_TEST }}
         SEARCH_URL: ${{ vars.SEARCH_URL_TEST }}
     steps:

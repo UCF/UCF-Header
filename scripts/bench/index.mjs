@@ -6,6 +6,10 @@
  * under emulated network conditions — and reports the distribution rather than
  * a single number.
  *
+ * This is a tool for answering a question, not a gate. It is deliberately not
+ * wired into CI: it takes minutes, and it reports numbers to read rather than a
+ * threshold to trip. The payload budget in `npm run size` is the CI gate.
+ *
  * The headline metric is `headerPainted`: the first animation frame in which
  * `#ucfhb` has non-zero layout height. That is version-neutral by construction.
  * For v3 it cannot happen until `bar.css` has arrived, because the bar's markup
@@ -16,10 +20,9 @@
  * Fairness rules, all deliberate:
  *  - Both versions are served from the same process, over the same connection,
  *    with gzip, so only the header's architecture differs.
- *  - Analytics is disabled on both by default. v3 injects gtag from
- *    googletagmanager.com and v4 defers its own behind requestIdleCallback;
- *    leaving either on would import third-party network variance into a
- *    twenty-run comparison. Use `--analytics` to measure them as shipped.
+ *  - v3's gtag injection is always stripped. It is not part of what is being
+ *    compared, and a third-party request would add network variance to a
+ *    twenty-run measurement.
  *  - Variants are interleaved and rotated so that machine drift during the run
  *    cannot land on one version.
  *  - Every load gets a fresh browser context with the HTTP cache disabled, and
@@ -27,10 +30,18 @@
  *    the header is cached across ucf.edu subdomains, so this is the worst case
  *    for both, and the case the extra round trips actually hit.
  *
+ * `--gtm` builds v4 with a real container, so a run can confirm what GTM costs
+ * the initial page load. Measured, it costs nothing: `initAnalytics` runs inside
+ * requestIdleCallback, and the container is not fetched until after the load
+ * event has already fired. The flag exists to verify that rather than assume it.
+ * What the container does afterwards is out of scope — the run stops measuring
+ * once the header's own assets are quiet.
+ *
  * Usage:
  *   npm run bench
  *   npm run bench -- --runs=20 --profiles=none,4g,3g
- *   npm run bench -- --flags= --analytics --refresh
+ *   npm run bench -- --gtm=GTM-XXXXXXX
+ *   npm run bench -- --flags= --refresh
  */
 import { spawn } from 'node:child_process';
 import { cp, mkdir, writeFile } from 'node:fs/promises';
@@ -59,7 +70,9 @@ const options = {
   flags: opt('flags', DEFAULTS.flags),
   profiles: opt('profiles', DEFAULTS.profiles.join(',')).split(',').filter(Boolean),
   variants: opt('variants', Object.keys(VARIANTS).join(',')).split(',').filter(Boolean),
-  analytics: flag('analytics'),
+  // Container ID for the v4 build. Absent means the analytics seam compiles out
+  // entirely, which is the right default for comparing the two headers.
+  gtm: opt('gtm', null),
   refresh: flag('refresh'),
 };
 
@@ -111,9 +124,9 @@ function collect() {
   const paint = performance.getEntriesByType('paint');
   const fcp = paint.find((e) => e.name === 'first-contentful-paint');
 
-  const header = performance
-    .getEntriesByType('resource')
-    .filter((r) => r.name.includes('/legacy/') || r.name.includes('/v4/'));
+  // Both header trees are served under a `/bar/` path segment, which is also
+  // what the byte counter and the settle wait key on.
+  const header = performance.getEntriesByType('resource').filter((r) => r.name.includes('/bar/'));
 
   return {
     ttfb: nav.responseStart,
@@ -124,18 +137,15 @@ function collect() {
     headerPainted: window.__bench.headerPainted,
     headerHeight: window.__bench.headerHeight,
     headerRequests: header.length,
-    // transferSize is wire bytes including response headers, which is what the
-    // throttled bandwidth is actually spending.
-    headerBytes: header.reduce((n, r) => n + r.transferSize, 0),
     headerSettled: header.reduce((t, r) => Math.max(t, r.responseEnd), 0),
   };
 }
 
 // -------------------------------------------------------------------- setup
 
-function run(command, args, env) {
+function run(command, args, { env, cwd = ROOT } = {}) {
   return new Promise((ok, fail) => {
-    const child = spawn(command, args, { cwd: ROOT, stdio: 'inherit', env });
+    const child = spawn(command, args, { cwd, stdio: 'inherit', env });
     child.on('error', fail);
     child.on('exit', (code) =>
       code === 0 ? ok() : fail(new Error(`${command} ${args.join(' ')} exited ${code}`)),
@@ -144,10 +154,10 @@ function run(command, args, env) {
 }
 
 async function buildV4() {
-  // GA is forced empty unless --analytics, so the deferred analytics seam is
-  // compiled out and v4 is measured on the same terms as the neutered v3.
-  const env = { ...process.env, ...(options.analytics ? {} : { GA: '' }) };
-  await run(process.execPath, [resolve(ROOT, 'scripts/build.mjs')], env);
+  // A blank GTM compiles the analytics seam out, so the default run measures
+  // the header and nothing else.
+  const env = { ...process.env, GTM: options.gtm ?? '' };
+  await run(process.execPath, [resolve(ROOT, 'scripts/build.mjs')], { env });
 
   const out = resolve(WWW_DIR, 'v4/bar/js/university-header.js');
   await mkdir(dirname(out), { recursive: true });
@@ -175,6 +185,24 @@ function summarize(values) {
 
 // ------------------------------------------------------------------ measure
 
+/**
+ * One sample, with retries. A single stalled load should cost one retry, not
+ * every sample collected so far.
+ */
+async function attempt(browser, url, profile, tries = 3) {
+  for (let i = 1; i <= tries; i++) {
+    try {
+      return await measure(browser, url, profile);
+    } catch (error) {
+      if (i === tries) {
+        console.log(`\n  dropped a load of ${url}: ${error.message.split('\n')[0]}`);
+        return null;
+      }
+    }
+  }
+  return null;
+}
+
 async function measure(browser, url, profile) {
   // A fresh context per load is the real cache guarantee — contexts do not
   // share storage — with CDP and `no-store` closing the remaining gaps.
@@ -191,6 +219,29 @@ async function measure(browser, url, profile) {
       await cdp.send('Network.emulateNetworkConditions', { offline: false, ...profile });
     }
 
+    /*
+     * Header requests are tracked over CDP for two things at once: their wire
+     * bytes (`encodedDataLength` is the transport's own count, with none of
+     * Resource Timing's estimated header overhead) and when they go quiet.
+     */
+    const inFlight = new Set();
+    let bytes = 0;
+    let lastActivity = Date.now();
+
+    cdp.on('Network.requestWillBeSent', (e) => {
+      if (!e.request.url.includes('/bar/')) return;
+      inFlight.add(e.requestId);
+      lastActivity = Date.now();
+    });
+    const finish = (e, encoded = 0) => {
+      if (!inFlight.has(e.requestId)) return;
+      inFlight.delete(e.requestId);
+      bytes += encoded;
+      lastActivity = Date.now();
+    };
+    cdp.on('Network.loadingFinished', (e) => finish(e, e.encodedDataLength));
+    cdp.on('Network.loadingFailed', (e) => finish(e));
+
     await page.addInitScript(probe);
     await page.goto(url, { waitUntil: 'load', timeout: 60_000 });
 
@@ -199,19 +250,27 @@ async function measure(browser, url, profile) {
         timeout: 30_000,
       });
     }
-    // Collect at network idle, not at `load`. v3 discovers its spritesheet only
-    // after bar.css parses, so on a slow link that request is still in flight
-    // when `load` fires — collecting there silently undercounts v3's requests
-    // and bytes. The timing metrics are read from the page's own timeline and
-    // are unaffected by waiting longer; only the resource totals need this.
-    await page.waitForLoadState('networkidle', { timeout: 30_000 }).catch(() => {
-      // A stuck request should not void an otherwise good sample; the resource
-      // totals for that run are simply reported as of this moment.
-    });
+
+    /*
+     * Wait for the header's own assets to settle — not for network idle, which
+     * would also wait out the deferred tag chain that this benchmark does not
+     * measure.
+     *
+     * "Nothing in flight" alone is not enough: v3 discovers its assets in three
+     * stages (JS, then the stylesheets it injects, then the spritesheet the CSS
+     * references), so there are real gaps mid-chain. The quiet window is what
+     * distinguishes a gap from the end.
+     */
+    const deadline = Date.now() + 20_000;
+    while (Date.now() < deadline) {
+      if (inFlight.size === 0 && Date.now() - lastActivity > 400) break;
+      await page.waitForTimeout(50);
+    }
+
     // Let the last paint and LCP entries settle before reading the timeline.
     await page.waitForTimeout(200);
 
-    return await page.evaluate(collect);
+    return { ...(await page.evaluate(collect)), headerBytes: bytes };
   } finally {
     await context.close();
   }
@@ -280,17 +339,14 @@ async function main() {
   console.log(`\n  UCF header benchmark — ${options.runs} uncached loads per variant`);
   console.log(`  variants: ${options.variants.join(', ')}`);
   console.log(`  flags:    ${options.flags || '(none)'}`);
-  console.log(`  analytics: ${options.analytics ? 'as shipped' : 'disabled on both'}\n`);
+  console.log(`  GTM:      ${options.gtm ?? 'not loaded'}\n`);
 
   const host = `localhost:${options.port}`;
   console.log('  building v4…');
   await buildV4();
+
   console.log('  vendoring v3 from production…');
-  const { bytes } = await vendorLegacy({
-    host,
-    analytics: options.analytics,
-    refresh: options.refresh,
-  });
+  const { bytes } = await vendorLegacy({ host, refresh: options.refresh });
   const urls = await writePages(options.flags);
 
   const server = await startServer(WWW_DIR, options.port);
@@ -302,11 +358,15 @@ async function main() {
       const profile = PROFILES[profileName];
       const samples = Object.fromEntries(options.variants.map((n) => [n, []]));
 
+      // Warmups go through the same retry path as real samples — a warmup is
+      // the least valuable load in the run to abort the whole thing on.
       for (const name of options.variants) {
         for (let i = 0; i < options.warmup; i++) {
-          await measure(browser, `${server.origin}${urls[name]}`, profile);
+          await attempt(browser, `${server.origin}${urls[name]}`, profile);
         }
       }
+
+      const dropped = Object.fromEntries(options.variants.map((n) => [n, 0]));
 
       for (let i = 0; i < options.runs; i++) {
         // Rotate the order every iteration so a machine that slows down partway
@@ -315,11 +375,20 @@ async function main() {
           (_, k) => options.variants[(k + i) % options.variants.length],
         );
         for (const name of order) {
-          samples[name].push(await measure(browser, `${server.origin}${urls[name]}`, profile));
+          const sample = await attempt(browser, `${server.origin}${urls[name]}`, profile);
+          if (sample) samples[name].push(sample);
+          else dropped[name]++;
         }
         process.stdout.write(`\r  ${profileName}: ${i + 1}/${options.runs} runs`);
       }
       process.stdout.write('\n');
+
+      // Reported rather than swallowed: a variant that lost samples has a
+      // thinner distribution than the others, and the reader needs to know
+      // before comparing percentiles across columns.
+      for (const [name, n] of Object.entries(dropped)) {
+        if (n) console.log(`  ${name}: ${n} load(s) dropped after repeated failures`);
+      }
 
       results[profileName] = Object.fromEntries(
         Object.entries(samples).map(([name, runs]) => [

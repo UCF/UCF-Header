@@ -1,7 +1,7 @@
 // Build-time constants, injected by esbuild `define` (see scripts/build.mjs).
 declare const __UCFHB_VERSION__: string;
 declare const __UCFHB_ROOT_URL__: string;
-declare const __UCFHB_GA__: string;
+declare const __UCFHB_GTM__: string;
 declare const __UCFHB_SEARCH_URL__: string;
 declare const __UCFHB_SESSION__: boolean;
 

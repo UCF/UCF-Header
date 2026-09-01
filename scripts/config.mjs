@@ -26,8 +26,8 @@ export function buildEnv() {
     version: pkg.version,
     // Origin the header is served from. Reserved for the Phase 2 session endpoint.
     rootUrl: env.ROOT_URL || 'universityheader.ucf.edu',
-    // GA4 measurement ID. Empty is valid — analytics simply does not load.
-    ga: env.GA || '',
+    // GTM container ID. Empty is valid — analytics simply does not load.
+    gtm: env.GTM || '',
     // Where the search form submits. Note this is search.ucf.edu, the Google
     // Custom Search page — NOT search.cm.ucf.edu, the data API hub.
     searchUrl: env.SEARCH_URL || 'https://search.ucf.edu/',
@@ -40,7 +40,7 @@ export function defines(env) {
   return {
     __UCFHB_VERSION__: JSON.stringify(env.version),
     __UCFHB_ROOT_URL__: JSON.stringify(env.rootUrl),
-    __UCFHB_GA__: JSON.stringify(env.ga),
+    __UCFHB_GTM__: JSON.stringify(env.gtm),
     __UCFHB_SEARCH_URL__: JSON.stringify(env.searchUrl),
     __UCFHB_SESSION__: String(env.session),
   };

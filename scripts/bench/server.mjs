@@ -62,7 +62,22 @@ export async function startServer(root, port) {
     // Strip the query string — v3 cache-busts its stylesheets with one, and
     // the host pages carry the flags on the header src.
     const path = (req.url || '/').split('?')[0];
-    const file = files.get(decodeURIComponent(path));
+
+    /*
+     * decodeURIComponent throws a URIError on a malformed escape (a bare `%`
+     * is enough). Thrown from a request handler that would take the process
+     * down with it, ending a benchmark run mid-flight over a request that
+     * merely deserved a 400.
+     */
+    let decoded;
+    try {
+      decoded = decodeURIComponent(path);
+    } catch {
+      res.writeHead(400, { 'Cache-Control': 'no-store' }).end('Bad request');
+      return;
+    }
+
+    const file = files.get(decoded);
 
     if (!file) {
       res.writeHead(404, { 'Cache-Control': 'no-store' }).end('Not found');

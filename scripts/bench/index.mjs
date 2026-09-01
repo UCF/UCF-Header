@@ -76,12 +76,44 @@ const options = {
   refresh: flag('refresh'),
 };
 
+/*
+ * Every option is validated up front. A bad `--variants` name would otherwise
+ * surface as a navigation to `undefined`, and a non-numeric `--runs` as a loop
+ * that never executes and a table of empty cells — both a long way from the
+ * typo that caused them.
+ */
+function fail(message) {
+  console.error(`  ${message}`);
+  process.exit(1);
+}
+
 for (const p of options.profiles) {
   if (!(p in PROFILES)) {
-    console.error(`  unknown profile "${p}" — expected one of ${Object.keys(PROFILES).join(', ')}`);
-    process.exit(1);
+    fail(`unknown profile "${p}" — expected one of ${Object.keys(PROFILES).join(', ')}`);
   }
 }
+
+for (const v of options.variants) {
+  if (!(v in VARIANTS)) {
+    fail(`unknown variant "${v}" — expected one of ${Object.keys(VARIANTS).join(', ')}`);
+  }
+}
+
+if (!options.variants.length) fail('no variants selected');
+if (!options.profiles.length) fail('no profiles selected');
+
+// `runs` must be positive; `warmup` may legitimately be zero.
+for (const [name, value, min] of [
+  ['runs', options.runs, 1],
+  ['warmup', options.warmup, 0],
+  ['port', options.port, 1],
+]) {
+  if (!Number.isInteger(value) || value < min) {
+    fail(`--${name} must be an integer >= ${min}, got "${opt(name, '')}"`);
+  }
+}
+
+if (options.port > 65535) fail(`--port must be <= 65535, got ${options.port}`);
 
 // ------------------------------------------------------------------- probe
 
@@ -186,6 +218,16 @@ function summarize(values) {
 // ------------------------------------------------------------------ measure
 
 /**
+ * First line of whatever was thrown.
+ *
+ * Not everything that reaches a catch block is an Error — a bare string or a
+ * rejected object both land here — and reading `.message` off one of those and
+ * calling `.split` on the result throws a second time, burying the original
+ * failure behind a TypeError.
+ */
+const firstLine = (error) => String(error?.message ?? error).split('\n')[0];
+
+/**
  * One sample, with retries. A single stalled load should cost one retry, not
  * every sample collected so far.
  */
@@ -195,7 +237,7 @@ async function attempt(browser, url, profile, tries = 3) {
       return await measure(browser, url, profile);
     } catch (error) {
       if (i === tries) {
-        console.log(`\n  dropped a load of ${url}: ${error.message.split('\n')[0]}`);
+        console.log(`\n  dropped a load of ${url}: ${firstLine(error)}`);
         return null;
       }
     }
@@ -416,6 +458,9 @@ async function main() {
 }
 
 main().catch((error) => {
-  console.error(`\n  benchmark failed: ${error.message}\n`);
+  console.error(`\n  benchmark failed: ${firstLine(error)}\n`);
+  // The stack is what actually locates a harness bug, and it is lost by the
+  // time the message alone reaches the terminal.
+  if (error instanceof Error && error.stack) console.error(`${error.stack}\n`);
   process.exit(1);
 });

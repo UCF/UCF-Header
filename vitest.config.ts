@@ -22,7 +22,7 @@ export default defineConfig({
   define: {
     __UCFHB_VERSION__: '"4.0.0-test"',
     __UCFHB_ROOT_URL__: '"universityheader.test"',
-    __UCFHB_GA__: '""',
+    __UCFHB_GTM__: '""',
     __UCFHB_SEARCH_URL__: '"https://search.ucf.edu/"',
     __UCFHB_SESSION__: 'false',
   },

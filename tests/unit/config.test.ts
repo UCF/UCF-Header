@@ -68,7 +68,7 @@ describe('readConfig', () => {
     const cfg = readConfig(withScript(BASE));
     expect(cfg.version).toBe('4.0.0-test');
     expect(cfg.searchUrl).toBe('https://search.ucf.edu/');
-    expect(cfg.gaId).toBeNull();
+    expect(cfg.gtmId).toBeNull();
   });
 });
 

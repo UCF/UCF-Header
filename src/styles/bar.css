@@ -188,8 +188,9 @@
 
 /*
  * The swappable right-hand slot. Phase 2 replaces its contents with the avatar
- * and launcher; nothing outside it changes. No speculative width is reserved —
- * see the note in notes/phase-1-plan.md about what that means for CLS later.
+ * and launcher; nothing outside it changes. No speculative width is reserved,
+ * which keeps the signed-out bar honest at the cost of a layout shift inside
+ * this slot when Phase 2 swaps it — a deliberate trade to revisit then.
  */
 .zone {
   display: flex;

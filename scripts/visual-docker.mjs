@@ -39,8 +39,9 @@ console.log(`  running visual suite in ${image}\n`);
 const res = spawnSync('docker', args, { stdio: 'inherit' });
 
 if (res.error?.code === 'ENOENT') {
-  console.error('\n  Docker is not available. Baselines must be generated in the container —');
-  console.error('  see notes/phase-1-plan.md §7 for why.\n');
+  console.error('\n  Docker is not available. Baselines must be generated in the container:');
+  console.error('  font rasterization differs between macOS and Linux CI, so locally');
+  console.error('  generated baselines diff against CI forever.\n');
   process.exit(1);
 }
 process.exit(res.status ?? 1);

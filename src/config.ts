@@ -13,8 +13,8 @@ export interface HeaderConfig {
   version: string;
   /** Origin the header is served from. Reserved for the Phase 2 session endpoint. */
   rootUrl: string;
-  /** GA4 measurement ID, or null when none was injected. */
-  gaId: string | null;
+  /** GTM container ID, or null when none was injected. */
+  gtmId: string | null;
   /** Destination page for the search form's native GET submit. */
   searchUrl: string;
   /** Legacy `use-1200-breakpoint`: widen the container at >=1200px. */
@@ -56,7 +56,7 @@ export function readConfig(doc: Document = document): HeaderConfig {
   return {
     version: __UCFHB_VERSION__,
     rootUrl: __UCFHB_ROOT_URL__,
-    gaId: __UCFHB_GA__ || null,
+    gtmId: __UCFHB_GTM__ || null,
     searchUrl: __UCFHB_SEARCH_URL__,
     // Full width has always implied the wider breakpoint: in v3 full-width.scss
     // imported 1200-breakpoint.scss outright, so the two never had to be combined.

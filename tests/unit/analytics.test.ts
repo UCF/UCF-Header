@@ -6,24 +6,18 @@ import { mount } from '../../src/render';
 const cfg: HeaderConfig = {
   version: '4.0.0-test',
   rootUrl: 'universityheader.test',
-  gaId: 'G-TEST12345',
+  gtmId: 'GTM-TEST123',
   searchUrl: 'https://search.ucf.edu/',
   wideBreakpoint: false,
   fullWidth: false,
 };
 
 /*
- * dataLayer holds two different shapes: gtag pushes real `arguments` objects,
- * while track() pushes plain event objects. Flattening both through Array.from
- * silently destroys the plain ones, so they are read apart.
+ * Everything on the dataLayer is now a plain object — the GTM bootstrap event
+ * and the header's own interaction events alike. Under gtag the queue also held
+ * real `arguments` objects, which needed reading apart; that shape is gone.
  */
-const isArrayLike = (e: unknown): e is ArrayLike<unknown> =>
-  typeof (e as ArrayLike<unknown>)?.length === 'number';
-
-const gtagCalls = () => (window.dataLayer ?? []).filter(isArrayLike).map((e) => Array.from(e));
-const findCall = (name: string) => gtagCalls().find((c) => c[0] === name);
-const events = () =>
-  (window.dataLayer ?? []).filter((e) => !isArrayLike(e)) as Record<string, unknown>[];
+const events = () => (window.dataLayer ?? []) as Record<string, unknown>[];
 const findEvent = (action: string) => events().find((e) => e.ucf_action === action);
 
 function setup(overrides: Partial<HeaderConfig> = {}) {
@@ -44,33 +38,33 @@ describe('initAnalytics', () => {
     window.dataLayer = [];
   });
 
-  it('loads gtag.js for the configured measurement ID', () => {
+  it('loads gtm.js for the configured container ID', () => {
     setup();
     const script = document.querySelector<HTMLScriptElement>('script[src*="googletagmanager"]');
-    expect(script?.src).toContain('id=G-TEST12345');
+    expect(script?.src).toContain('/gtm.js?id=GTM-TEST123');
     // async, so it never blocks parsing or the bar's render.
     expect(script?.async).toBe(true);
   });
 
   /*
-   * Page views are deliberately ON. With send_page_view disabled, a pageview
-   * where nobody touches the header reports nothing at all, and the header's
-   * property stops being a census of where the bar runs. Locked in a test
-   * because it is a one-word change that silently guts the data.
+   * The `gtm.js` event is what fires the container's All Pages trigger, and so
+   * what makes the GA4 Configuration tag inside it send a page view. Page views
+   * are still deliberately ON, but the switch now lives in the container rather
+   * than in this repo — all the header can guarantee is that the trigger fires.
+   * Without this push the container loads and does nothing at all, which is a
+   * silent, total loss of data rather than a visible break.
    */
-  it('leaves page view tracking enabled', () => {
+  it('pushes the gtm.js start event that fires the All Pages trigger', () => {
     setup();
-    const config = findCall('config');
-    expect(config?.[1]).toBe('G-TEST12345');
-
-    const opts = config?.[2] as Record<string, unknown> | undefined;
-    expect(opts?.send_page_view).not.toBe(false);
+    const start = events().find((e) => e.event === 'gtm.js');
+    expect(start).toBeDefined();
+    expect(typeof start?.['gtm.start']).toBe('number');
   });
 
-  it('does not load analytics when no measurement ID is configured', () => {
-    setup({ gaId: null });
+  it('does not load analytics when no container ID is configured', () => {
+    setup({ gtmId: null });
     expect(document.querySelector('script[src*="googletagmanager"]')).toBeNull();
-    expect(findCall('config')).toBeUndefined();
+    expect(events().some((e) => e.event === 'gtm.js')).toBe(false);
   });
 
   it('reuses an existing dataLayer rather than replacing it', () => {

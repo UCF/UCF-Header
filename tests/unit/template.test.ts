@@ -5,7 +5,7 @@ import { barMarkup, HOME_URL, MYUCF_URL, searchDestination } from '../../src/tem
 const cfg: HeaderConfig = {
   version: '4.0.0-test',
   rootUrl: 'universityheader.test',
-  gaId: null,
+  gtmId: null,
   searchUrl: 'https://search.ucf.edu/',
   wideBreakpoint: false,
   fullWidth: false,

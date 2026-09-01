@@ -17,3 +17,6 @@ Thumbs.db
 # (npm run test:visual:docker). Locally-generated macOS ones are smoke-test
 # scratch — CI never reads them.
 tests/**/*-darwin.png
+
+# Benchmark: vendored v3 assets, generated host pages, raw results
+.bench/

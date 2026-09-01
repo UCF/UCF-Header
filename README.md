@@ -28,6 +28,7 @@ supported option passed to the page so you can preview it — e.g.
 | `npm run dev` | Watch build + local server |
 | `npm run build` | Production bundle to `dist/` |
 | `npm run size` | Payload budget gate — fails over 9 KB gzip |
+| `npm run bench` | v3-vs-v4 load benchmark, 20 uncached loads per variant |
 | `npm run lint` / `lint:fix` | Biome (lint + format) |
 | `npm run typecheck` | `tsc --noEmit` |
 | `npm test` | Vitest units |
@@ -85,6 +86,51 @@ page carrying global CSS chosen to break a light-DOM header — `a { color: red
 !important }`, `button { all: unset }`, Foundation's `content-box` reset — and
 the bar must render identically on all of them. That is asserted both by
 computed geometry and by comparing every fixture against one shared screenshot.
+
+### Performance benchmarking
+
+`npm run bench` measures this branch against the **live production v3 header**
+and reports the distribution across 20 uncached loads per variant.
+
+```bash
+npm run bench                                  # 20 loads, none/4g/3g profiles
+npm run bench -- --runs=50 --profiles=3g       # one profile, more samples
+npm run bench -- --flags= --analytics          # bare embed, analytics as shipped
+```
+
+v3 is downloaded from `universityheader.ucf.edu` (cached under `.bench/`; use
+`--refresh` to re-fetch), its hardcoded origin rewritten to the local server,
+and served from the same in-memory gzip origin as v4. Three host pages —
+`control` with no header, `legacy`, and `v4` — are byte-identical apart from the
+one script tag, and the page itself costs exactly one request.
+
+The headline metric is **header painted**: the first animation frame in which
+`#ucfhb` has non-zero layout height. It is version-neutral by construction. v3
+cannot reach it until `bar.css` arrives, because the bar is inserted with
+`#ucfhb-inner` set to `display:none` and only the stylesheet reveals it; v4
+reaches it when the shadow root mounts. Neither version instruments itself.
+
+Things the harness does deliberately, because each one would otherwise turn into
+a wrong conclusion:
+
+- **Network throttling is the point.** On loopback a round trip is free, so v3
+  and v4 finish within a millisecond of each other. The `none` profile is
+  reported as a floor, not as the result.
+- **Analytics is off on both by default.** v3 injects gtag from
+  googletagmanager.com; leaving a third-party request in a 20-run comparison
+  swamps the signal. `--analytics` measures them as shipped.
+- **Resource totals are collected at network idle, not at `load`.** v3 discovers
+  its spritesheet only after `bar.css` parses, so on a slow link that request is
+  still in flight when `load` fires.
+- **Variants are interleaved and rotated** each iteration, so machine drift
+  during the run cannot land on one version.
+- **Every load is a fresh context** with the HTTP cache disabled and `no-store`
+  from the server. This is the first-visit case. In production the header is
+  cached across `ucf.edu` subdomains, so it is the worst case for both versions
+  — and the case the extra round trips actually hit.
+
+Raw per-run JSON lands in `.bench/results/`. Note that the run leaves `dist/`
+holding the benchmark build (GA compiled out); `npm run build` restores it.
 
 ### Visual baselines
 

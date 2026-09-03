@@ -1,4 +1,4 @@
-import { expect, test } from '@playwright/test';
+import { expect, type Locator, type Page, test } from '@playwright/test';
 
 /**
  * iOS Safari hazards that a screenshot cannot show.
@@ -13,8 +13,8 @@ import { expect, test } from '@playwright/test';
  * Runs under the `e2e-ios` project (iPhone 14: 390px, isMobile, touch, DPR 3).
  */
 
-const shadow = (page: import('@playwright/test').Page) =>
-  page.locator('#ucfhb').locator('.search-input');
+/** Matches tests/e2e/header.spec.ts — everything lives inside the shadow root. */
+const inShadow = (p: Page, sel: string): Locator => p.locator('#ucfhb').locator(sel);
 
 test.describe('iOS Safari', () => {
   /*
@@ -31,9 +31,9 @@ test.describe('iOS Safari', () => {
    */
   test('the search input is at least 16px, so focus does not zoom the page', async ({ page }) => {
     await page.goto('/fixtures/bare.html');
-    await page.locator('#ucfhb').locator('.search-toggle').tap();
+    await inShadow(page, '.search-toggle').tap();
 
-    const px = await shadow(page).evaluate((el) =>
+    const px = await inShadow(page, '.search-input').evaluate((el) =>
       Number.parseFloat(getComputedStyle(el).fontSize),
     );
 
@@ -42,7 +42,7 @@ test.describe('iOS Safari', () => {
 
   test('opening search does not overflow the viewport', async ({ page }) => {
     await page.goto('/fixtures/bare.html');
-    await page.locator('#ucfhb').locator('.search-toggle').tap();
+    await inShadow(page, '.search-toggle').tap();
     await page.waitForTimeout(250);
 
     const { docWidth, viewport } = await page.evaluate(() => ({
@@ -55,14 +55,14 @@ test.describe('iOS Safari', () => {
 
   test('the whole right-hand zone stays on screen with search open', async ({ page }) => {
     await page.goto('/fixtures/bare.html');
-    await page.locator('#ucfhb').locator('.search-toggle').tap();
+    await inShadow(page, '.search-toggle').tap();
     await page.waitForTimeout(250);
 
     const viewport = page.viewportSize()?.width ?? 0;
     expect(viewport).toBeGreaterThan(0);
 
     for (const sel of ['.search-toggle', '.myucf']) {
-      const box = await page.locator('#ucfhb').locator(sel).boundingBox();
+      const box = await inShadow(page, sel).boundingBox();
       if (!box) throw new Error(`${sel} is not laid out`);
 
       // Sub-pixel tolerance: a fractional edge is rounding, not clipping.
@@ -88,13 +88,13 @@ test.describe('iOS Safari', () => {
   test('opening search collapses the wordmark and gives the field real width', async ({ page }) => {
     await page.goto('/fixtures/bare.html');
 
-    const wordmark = page.locator('#ucfhb').locator('.wordmark');
-    const input = page.locator('#ucfhb').locator('.search-input');
+    const wordmark = inShadow(page, '.wordmark');
+    const input = inShadow(page, '.search-input');
 
     // Precondition: at 390px the wordmark is visible before search opens.
     expect((await wordmark.boundingBox())?.width ?? 0).toBeGreaterThan(0);
 
-    await page.locator('#ucfhb').locator('.search-toggle').tap();
+    await inShadow(page, '.search-toggle').tap();
     await page.waitForTimeout(400);
 
     expect((await wordmark.boundingBox())?.width ?? -1, 'wordmark collapsed').toBe(0);
@@ -105,12 +105,12 @@ test.describe('iOS Safari', () => {
 
   test('the state class is mirrored onto .inner, not derived with :has()', async ({ page }) => {
     await page.goto('/fixtures/bare.html');
-    const inner = page.locator('#ucfhb').locator('.inner');
+    const inner = inShadow(page, '.inner');
 
     await expect(inner).not.toHaveClass(/is-searching/);
-    await page.locator('#ucfhb').locator('.search-toggle').tap();
+    await inShadow(page, '.search-toggle').tap();
     await expect(inner).toHaveClass(/is-searching/);
-    await page.locator('#ucfhb').locator('.search-toggle').tap();
+    await inShadow(page, '.search-toggle').tap();
     await expect(inner).not.toHaveClass(/is-searching/);
   });
 
@@ -123,11 +123,32 @@ test.describe('iOS Safari', () => {
     await page.goto('/fixtures/bare.html');
 
     for (const sel of ['.search-toggle', '.myucf']) {
-      const box = await page.locator('#ucfhb').locator(sel).boundingBox();
+      const box = await inShadow(page, sel).boundingBox();
       if (!box) throw new Error(`${sel} is not laid out`);
 
       expect(box.height, `${sel} height`).toBeGreaterThanOrEqual(44);
       expect(box.width, `${sel} width`).toBeGreaterThanOrEqual(44);
     }
+  });
+
+  /*
+   * The field is sized in the same mobile rule as the two controls beside it,
+   * and for two reasons at once: it is a tap target in its own right, and a
+   * 38px field between 44px controls reads as a misalignment. Only the height
+   * is asserted — the width is driven by whatever space the collapsed wordmark
+   * frees up, which the collapse test above already covers.
+   *
+   * This has to run with search OPEN: the field is collapsed to zero width
+   * while closed, so a closed-state box says nothing about its height.
+   */
+  test('the open field matches the 44px height of the controls beside it', async ({ page }) => {
+    await page.goto('/fixtures/bare.html');
+    await inShadow(page, '.search-toggle').tap();
+    await page.waitForTimeout(250);
+
+    const box = await inShadow(page, '.search-input').boundingBox();
+    if (!box) throw new Error('.search-input is not laid out');
+
+    expect(box.height, '.search-input height').toBeGreaterThanOrEqual(44);
   });
 });

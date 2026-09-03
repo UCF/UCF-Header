@@ -32,7 +32,7 @@ supported option passed to the page so you can preview it — e.g.
 | `npm run lint` / `lint:fix` | Biome (lint + format) |
 | `npm run typecheck` | `tsc --noEmit` |
 | `npm test` | Vitest units |
-| `npm run test:e2e` | Playwright, Chromium + Firefox + WebKit |
+| `npm run test:e2e` | Playwright, Chromium + Firefox + WebKit + mobile WebKit |
 | `npm run test:visual` | Visual regression (see caveat below) |
 | `npm run test:visual:docker` | Visual regression in the pinned container |
 | `npm run test:a11y` | axe-core against every host fixture |
@@ -162,6 +162,38 @@ npm run test:visual:docker -- --update-snapshots  # re-baseline after a design c
 
 Baselines stay loose while the design iterates, and get tightened once the look
 is signed off.
+
+### Desktop and iOS
+
+Visual regression runs as six projects. Three are desktop engines driven by
+explicit `setViewportSize` across six widths (`tests/visual/bar.spec.ts`). Three
+are iOS device descriptors — WebKit plus a mobile user agent, `isMobile`, touch,
+and a 3x device pixel ratio — which supply their own viewport, so
+`tests/visual/mobile.spec.ts` never sets one. Their widths bracket the 390px
+wordmark breakpoint:
+
+| Project | Device | Width | Wordmark |
+|---|---|---|---|
+| `visual-ios-se` | iPhone SE (3rd gen) | 375px | clipped |
+| `visual-ios-14` | iPhone 14 | 390px | visible |
+| `visual-ios-max` | iPhone 14 Pro Max | 430px | visible |
+
+**This is emulation, not a device.** Playwright's WebKit is the same engine as
+Safari but not the same product, so it will catch CSS and layout regressions
+while missing anything that depends on real iOS: native form-control chrome,
+momentum scrolling, the keyboard resizing the viewport, and focus zoom. Those
+last ones are driven by values we can read directly, so they are asserted as
+computed style and geometry in `tests/e2e/ios.spec.ts` (project `e2e-ios`)
+rather than by pixel diff — the check then fails with a number instead of a
+blurry image. **Anything that genuinely needs real iOS Safari needs a device
+cloud or a physical device; nothing in this repo covers it.**
+
+The trap that assertion exists for: iOS Safari zooms the page when a text field
+under 16px receives focus, and does not zoom back out on blur. `.search-input`
+is therefore 16px at mobile widths. Do not "fix" a recurrence with
+`maximum-scale=1` — the viewport meta belongs to the host page, and disabling
+pinch-zoom across every UCF site to tidy up one input is an accessibility
+regression.
 
 ## Deploying
 

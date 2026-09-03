@@ -396,9 +396,31 @@ input:focus-visible {
     transition: opacity 0.2s ease;
   }
 
+  /* 16px is the threshold below which iOS Safari zooms the page on focus —
+     and it does not zoom back out on blur, leaving the bar wider than the
+     visual viewport with MyUCF stranded off the right edge. Fixing it here
+     rather than with `maximum-scale=1` on the host page's viewport meta: that
+     tag is not ours to set, and suppressing pinch-zoom to fix our own input
+     would be an accessibility regression imposed on every host site. */
   .search-input {
     width: 100%;
     min-width: 0;
+    font-size: 16px;
+    height: 44px;
+  }
+
+  /* 44px is the Apple HIG minimum and the WCAG 2.5.5 (Target Size) bar. The
+     mobile bar is 60px tall, so both controls grow into existing headroom
+     rather than changing the height of anything. The input matches so the
+     three sit on one line — a 38px field between 44px controls reads as a
+     mistake. Desktop keeps 38px: it is a pointer target, not a thumb one. */
+  .search-toggle {
+    width: 44px;
+    height: 44px;
+  }
+
+  .myucf {
+    height: 44px;
   }
 }
 

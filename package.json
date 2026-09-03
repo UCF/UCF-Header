@@ -3,7 +3,7 @@
   "version": "4.0.0",
   "private": true,
   "type": "module",
-  "description": "The UCF universal header \u2014 a single-file, drop-in bar embedded across the UCF web infrastructure.",
+  "description": "The UCF universal header — a single-file, drop-in bar embedded across the UCF web infrastructure.",
   "engines": {
     "node": ">=20"
   },

@@ -446,13 +446,28 @@ input:focus-visible {
       max-width 0.2s ease;
   }
 
-  .inner:has(.search.is-open) .home {
+  /* `.is-searching` is mirrored onto `.inner` by initSearch rather than being
+     derived with `.inner:has(.search.is-open)`. iOS Safari does not reliably
+     re-evaluate a `:has()` ancestor when script changes a descendant's class
+     inside a shadow root: the wordmark kept its width and starved the input
+     down to a bare caret. A descendant selector has no such failure mode. */
+  /* `flex: 0 1 auto` is belt and braces: if the collapse below ever fails to
+     apply, `.home` yields its space rather than the field being squeezed to
+     nothing. */
+  .inner.is-searching .home {
     gap: 0;
+    min-width: 0;
+    flex: 0 1 auto;
   }
 
-  .inner:has(.search.is-open) .wordmark {
+  /* min-width:0 is load-bearing. `.wordmark` is a flex item of `.home`, so its
+     default min-width:auto is content-based and would win over max-width:0 —
+     `overflow:hidden` alone resolves it to zero on current engines, but saying
+     it outright means the collapse does not depend on that interaction. */
+  .inner.is-searching .wordmark {
     opacity: 0;
     max-width: 0;
+    min-width: 0;
     overflow: hidden;
     pointer-events: none;
   }

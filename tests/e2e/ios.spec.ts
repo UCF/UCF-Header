@@ -72,6 +72,49 @@ test.describe('iOS Safari', () => {
   });
 
   /*
+   * The regression that emulation missed and a real iPhone caught.
+   *
+   * Opening search at a mobile width must collapse the wordmark to give the
+   * field room. That used to be expressed as `.inner:has(.search.is-open)`,
+   * which iOS Safari stopped re-evaluating once script mutated the descendant
+   * class inside the shadow root — the wordmark kept its full width and the
+   * input was squeezed down to a bare caret.
+   *
+   * Asserting BOTH halves matters: a wordmark at zero width is only meaningful
+   * if the field actually claimed the space, and a wide field is only correct
+   * if the wordmark yielded it. Checking one alone would have passed all the
+   * way through the broken build.
+   */
+  test('opening search collapses the wordmark and gives the field real width', async ({ page }) => {
+    await page.goto('/fixtures/bare.html');
+
+    const wordmark = page.locator('#ucfhb').locator('.wordmark');
+    const input = page.locator('#ucfhb').locator('.search-input');
+
+    // Precondition: at 390px the wordmark is visible before search opens.
+    expect((await wordmark.boundingBox())?.width ?? 0).toBeGreaterThan(0);
+
+    await page.locator('#ucfhb').locator('.search-toggle').tap();
+    await page.waitForTimeout(400);
+
+    expect((await wordmark.boundingBox())?.width ?? -1, 'wordmark collapsed').toBe(0);
+    // 120px is comfortably more than the ~26px the broken layout left, and
+    // comfortably less than the ~142px a correct one produces at 390px.
+    expect((await input.boundingBox())?.width ?? 0, 'field width').toBeGreaterThan(120);
+  });
+
+  test('the state class is mirrored onto .inner, not derived with :has()', async ({ page }) => {
+    await page.goto('/fixtures/bare.html');
+    const inner = page.locator('#ucfhb').locator('.inner');
+
+    await expect(inner).not.toHaveClass(/is-searching/);
+    await page.locator('#ucfhb').locator('.search-toggle').tap();
+    await expect(inner).toHaveClass(/is-searching/);
+    await page.locator('#ucfhb').locator('.search-toggle').tap();
+    await expect(inner).not.toHaveClass(/is-searching/);
+  });
+
+  /*
    * 44x44 CSS px is the Apple HIG minimum and the WCAG 2.5.5 bar. The mobile
    * bar is 60px tall, so this is headroom the design already has; the test is
    * here to stop a future padding or height trim from silently reclaiming it.

@@ -188,12 +188,26 @@ rather than by pixel diff — the check then fails with a number instead of a
 blurry image. **Anything that genuinely needs real iOS Safari needs a device
 cloud or a physical device; nothing in this repo covers it.**
 
-The trap that assertion exists for: iOS Safari zooms the page when a text field
-under 16px receives focus, and does not zoom back out on blur. `.search-input`
-is therefore 16px at mobile widths. Do not "fix" a recurrence with
-`maximum-scale=1` — the viewport meta belongs to the host page, and disabling
-pinch-zoom across every UCF site to tidy up one input is an accessibility
-regression.
+Two traps those assertions exist for, both found on real iPhones and neither
+reproducible in emulation:
+
+**Focus zoom.** iOS Safari zooms the page when a text field under 16px receives
+focus, and does not zoom back out on blur. `.search-input` is therefore 16px at
+mobile widths. Do not "fix" a recurrence with `maximum-scale=1` — the viewport
+meta belongs to the host page, and disabling pinch-zoom across every UCF site
+to tidy up one input is an accessibility regression.
+
+**Do not use `:has()` for state that script toggles.** The mobile layout has to
+shrink the wordmark to make room for the open field, which means styling an
+ancestor of `.search` from `.search`'s state. `.inner:has(.search.is-open)`
+expresses that exactly and works in every engine the test suite can drive — but
+iOS Safari does not reliably re-invalidate a `:has()` ancestor when script
+mutates a descendant's class inside a shadow root. It matched on first paint,
+went stale on toggle, and the wordmark kept its width and squeezed the field
+down to a bare caret. `initSearch` therefore mirrors the state onto `.inner` as
+`.is-searching`, and the rules are plain descendant selectors. If you find
+yourself reaching for `:has()` against a scripted class again, mirror the class
+instead.
 
 ## Deploying
 

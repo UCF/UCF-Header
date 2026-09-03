@@ -22,12 +22,28 @@ export function initSearch(root: ShadowRoot, doc: Document = document): SearchCo
   const wrap = wrapEl;
   const toggle = toggleEl;
   const input = inputEl;
+  /*
+   * The mobile layout has to shrink the wordmark to give the open field room,
+   * which means styling an ANCESTOR of `.search` from `.search`'s state. That
+   * is what `:has()` is for, and `.inner:has(.search.is-open)` is what this
+   * used to rely on — but iOS Safari does not reliably re-evaluate a `:has()`
+   * ancestor when script mutates a descendant's class list inside a shadow
+   * root. The selector matched on first paint and then went stale, so the
+   * wordmark kept its width and squeezed the input down to the caret.
+   *
+   * Mirroring the state onto `.inner` costs one classList call and turns every
+   * dependent rule into a plain descendant selector, with no invalidation
+   * subtlety on any engine. `.inner` may be absent in a unit-test stub, so it
+   * is optional throughout.
+   */
+  const inner = root.querySelector<HTMLElement>('.inner');
 
   const isOpen = () => wrap.classList.contains('is-open');
 
   const open = (): void => {
     if (isOpen()) return;
     wrap.classList.add('is-open');
+    inner?.classList.add('is-searching');
     toggle.setAttribute('aria-expanded', 'true');
     toggle.setAttribute('aria-label', 'Close search');
     // Only tabbable while visible.
@@ -38,6 +54,7 @@ export function initSearch(root: ShadowRoot, doc: Document = document): SearchCo
   const close = (returnFocus = false): void => {
     if (!isOpen()) return;
     wrap.classList.remove('is-open');
+    inner?.classList.remove('is-searching');
     toggle.setAttribute('aria-expanded', 'false');
     toggle.setAttribute('aria-label', 'Open search');
     input.setAttribute('tabindex', '-1');

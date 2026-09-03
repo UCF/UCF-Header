@@ -407,3 +407,31 @@ input:focus-visible {
     padding: 0 12px;
   }
 }
+
+@media (min-width: 390px) and (max-width: 767px) {
+  .wordmark {
+    position: static;
+    width: auto;
+    height: auto;
+    margin: 0;
+    overflow: visible;
+    clip: auto;
+    clip-path: none;
+    opacity: 1;
+    max-width: 220px;
+    transition:
+      opacity 0.2s ease,
+      max-width 0.2s ease;
+  }
+
+  .inner:has(.search.is-open) .home {
+    gap: 0;
+  }
+
+  .inner:has(.search.is-open) .wordmark {
+    opacity: 0;
+    max-width: 0;
+    overflow: hidden;
+    pointer-events: none;
+  }
+}

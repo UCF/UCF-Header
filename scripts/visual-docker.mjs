@@ -14,6 +14,18 @@ const pkg = JSON.parse(readFileSync(new URL('../package.json', import.meta.url),
 const version = pkg.devDependencies['@playwright/test'].replace(/^[^0-9]*/, '');
 const image = `mcr.microsoft.com/playwright:v${version}-noble`;
 
+// Every project whose baselines are committed. The iOS ones are WebKit plus a
+// device descriptor (viewport, DPR 3, mobile UA, touch), so they rasterize in
+// the container for the same reason the desktop ones do.
+const PROJECTS = [
+  'visual-chromium',
+  'visual-firefox',
+  'visual-webkit',
+  'visual-ios-se',
+  'visual-ios-14',
+  'visual-ios-max',
+];
+
 const passthrough = process.argv.slice(2);
 
 const args = [
@@ -32,7 +44,7 @@ const args = [
   image,
   'sh',
   '-c',
-  `npm ci --no-audit --no-fund && npx playwright test --project=visual-chromium --project=visual-firefox --project=visual-webkit ${passthrough.join(' ')}`,
+  `npm ci --no-audit --no-fund && npx playwright test ${PROJECTS.map((p) => `--project=${p}`).join(' ')} ${passthrough.join(' ')}`,
 ];
 
 console.log(`  running visual suite in ${image}\n`);

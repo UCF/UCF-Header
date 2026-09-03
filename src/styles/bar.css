@@ -370,6 +370,7 @@ input:focus-visible {
   .actions {
     flex: 1;
     min-width: 0;
+    justify-content: flex-end;
   }
 
   .zone {
@@ -395,14 +396,79 @@ input:focus-visible {
     transition: opacity 0.2s ease;
   }
 
+  /* 16px is the threshold below which iOS Safari zooms the page on focus —
+     and it does not zoom back out on blur, leaving the bar wider than the
+     visual viewport with MyUCF stranded off the right edge. Fixing it here
+     rather than with `maximum-scale=1` on the host page's viewport meta: that
+     tag is not ours to set, and suppressing pinch-zoom to fix our own input
+     would be an accessibility regression imposed on every host site. */
   .search-input {
     width: 100%;
     min-width: 0;
+    font-size: 16px;
+    height: 44px;
+  }
+
+  /* 44px is the Apple HIG minimum and the WCAG 2.5.5 (Target Size) bar. The
+     mobile bar is 60px tall, so both controls grow into existing headroom
+     rather than changing the height of anything. The input matches so the
+     three sit on one line — a 38px field between 44px controls reads as a
+     mistake. Desktop keeps 38px: it is a pointer target, not a thumb one. */
+  .search-toggle {
+    width: 44px;
+    height: 44px;
+  }
+
+  .myucf {
+    height: 44px;
   }
 }
 
 @media (max-width: 419px) {
   .myucf {
     padding: 0 12px;
+  }
+}
+
+@media (min-width: 390px) and (max-width: 767px) {
+  .wordmark {
+    position: static;
+    width: auto;
+    height: auto;
+    margin: 0;
+    overflow: visible;
+    clip: auto;
+    clip-path: none;
+    opacity: 1;
+    max-width: 220px;
+    transition:
+      opacity 0.2s ease,
+      max-width 0.2s ease;
+  }
+
+  /* `.is-searching` is mirrored onto `.inner` by initSearch rather than being
+     derived with `.inner:has(.search.is-open)`. iOS Safari does not reliably
+     re-evaluate a `:has()` ancestor when script changes a descendant's class
+     inside a shadow root: the wordmark kept its width and starved the input
+     down to a bare caret. A descendant selector has no such failure mode. */
+  /* `flex: 0 1 auto` is belt and braces: if the collapse below ever fails to
+     apply, `.home` yields its space rather than the field being squeezed to
+     nothing. */
+  .inner.is-searching .home {
+    gap: 0;
+    min-width: 0;
+    flex: 0 1 auto;
+  }
+
+  /* min-width:0 is load-bearing. `.wordmark` is a flex item of `.home`, so its
+     default min-width:auto is content-based and would win over max-width:0 —
+     `overflow:hidden` alone resolves it to zero on current engines, but saying
+     it outright means the collapse does not depend on that interaction. */
+  .inner.is-searching .wordmark {
+    opacity: 0;
+    max-width: 0;
+    min-width: 0;
+    overflow: hidden;
+    pointer-events: none;
   }
 }

@@ -370,6 +370,7 @@ input:focus-visible {
   .actions {
     flex: 1;
     min-width: 0;
+    justify-content: flex-end;
   }
 
   .zone {

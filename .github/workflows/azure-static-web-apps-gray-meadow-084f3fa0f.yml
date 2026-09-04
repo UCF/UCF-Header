@@ -17,6 +17,7 @@ jobs:
         GTM: ${{ vars.GTM_ID_LIVE }}
         ROOT_URL: ${{ vars.ROOT_URL_LIVE }}
         SEARCH_URL: ${{ vars.SEARCH_URL_LIVE }}
+        UCFHB_SESSION: ${{ vars.UCFHB_SESSION_LIVE }}
     steps:
       - uses: actions/checkout@v5
         with:
@@ -42,7 +43,15 @@ jobs:
           # output_location must be empty. See:
           # https://learn.microsoft.com/en-us/azure/static-web-apps/build-configuration
           app_location: "dist" # Built above by `npm run build`
-          api_location: "" # Api source code path - optional
+          # The managed Functions app in `api/`. Static Web Apps builds it
+          # itself (npm install + npm run build) — `skip_app_build` above only
+          # covers the static side, which we prebuild.
+          #
+          # Runtime settings for it (ALLOWED_ORIGIN_SUFFIXES, AUTH_VERIFIER,
+          # SESSION_TTL...) are NOT set here. They are Static Web App
+          # application settings, applied by scripts/api-settings.sh, because a
+          # deploy should not be able to silently widen the CORS allowlist.
+          api_location: "api"
           output_location: "" # Must be empty when skip_app_build is true
           skip_app_build: true
           ###### End of Repository/Build Configurations ######

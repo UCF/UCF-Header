@@ -1,7 +1,7 @@
 import type { HeaderConfig } from './config';
 import type { Session } from './features/session';
 import css from './styles/bar.css';
-import { barMarkup } from './template';
+import { actions, barMarkup } from './template';
 
 export const HOST_ID = 'ucfhb';
 
@@ -62,4 +62,20 @@ export function mount(
   adopt(root, doc);
 
   return root;
+}
+
+/**
+ * Swaps the right-hand zone once a session resolves.
+ *
+ * Only `.zone` is replaced, so nothing outside it re-renders and the search
+ * controller's listeners — bound to elements this never touches — survive.
+ * Returns false when there is no zone to swap, which is the case in a unit-test
+ * stub and on a page where the bar failed to mount.
+ */
+export function renderActions(root: ShadowRoot, cfg: HeaderConfig, session: Session): boolean {
+  const zone = root.querySelector('.zone');
+  if (!zone) return false;
+
+  zone.outerHTML = actions(cfg, session);
+  return true;
 }

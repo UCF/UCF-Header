@@ -1,0 +1,27 @@
+{
+  "IsEncrypted": false,
+  "Values": {
+    "FUNCTIONS_WORKER_RUNTIME": "node",
+    "AzureWebJobsStorage": "",
+    "//": "--- CORS allowlist ---",
+    "ALLOWED_ORIGIN_SUFFIXES": ".ucf.edu",
+    "ALLOWED_ORIGINS": "",
+    "ALLOW_LOCALHOST": "1",
+    "//auth": "--- Auth: mock | jwks ---",
+    "AUTH_VERIFIER": "mock",
+    "JWKS_URI": "",
+    "JWT_ISSUER": "",
+    "JWT_AUDIENCE": "",
+    "//cache": "--- Cache tuning (seconds) ---",
+    "SESSION_TTL": "3600",
+    "HTTP_MAX_AGE": "300",
+    "//dev": "--- Dev-only mock login endpoint ---",
+    "ENABLE_DEV_LOGIN": "1",
+    "COOKIE_DOMAIN": ""
+  },
+  "Host": {
+    "//": "The SWA CLI spawns `func start --cors \"*\"`, which this cannot override \u2014 scripts/dev-all.mjs starts func itself without that flag instead. Kept at empty so a bare `npm --prefix api run dev:func` also leaves CORS to the function, where the origin allowlist lives.",
+    "CORS": "",
+    "CORSCredentials": false
+  }
+}

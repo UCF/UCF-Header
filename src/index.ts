@@ -9,7 +9,7 @@
 import { readConfig, rootUrlFor } from './config';
 import { initAnalytics } from './features/analytics';
 import { initSearch } from './features/search';
-import { mount } from './render';
+import { mount, renderActions } from './render';
 
 /** Runs `fn` once the document is parsed and the browser is otherwise idle. */
 function defer(fn: () => void): void {
@@ -39,10 +39,10 @@ function start(): void {
       const { createSessionProvider, SESSION_TIMEOUT_MS } = await import('./features/session');
       const provider = createSessionProvider(rootUrlFor(cfg, 'api/session'));
       const session = await provider.get(AbortSignal.timeout(SESSION_TIMEOUT_MS));
-      if (session.signedIn) {
-        // Phase 2: swap the reserved right-hand slot's contents. The slot is
-        // already sized for it, so nothing else in the bar moves.
-      }
+      // Only the signed-in case is worth a DOM write: the bar already rendered
+      // the signed-out zone, and re-rendering it identically would throw away
+      // the Login anchor the user may already be clicking.
+      if (session.signedIn) renderActions(root, cfg, session);
     }
   });
 }

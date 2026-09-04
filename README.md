@@ -71,13 +71,53 @@ a local `.env`:
 | Variable | Default | Purpose |
 |---|---|---|
 | `GTM` | *(empty)* | GTM container ID. Empty means analytics never loads. |
-| `ROOT_URL` | `universityheader.ucf.edu` | Serving origin. Reserved for the Phase 2 session endpoint. |
+| `ROOT_URL` | `universityheader.ucf.edu` | Serving origin. The session endpoint is `ROOT_URL/api/session`. |
 | `SEARCH_URL` | `https://search.ucf.edu/` | Where the search form submits. |
-| `UCFHB_SESSION` | `0` | Set to `1` to compile in the Phase 2 signed-in seam. |
+| `UCFHB_SESSION` | `0` | Set to `1` to compile in the signed-in seam. Costs ~1 KB gzipped. |
 
 > `SEARCH_URL` replaced `SEARCH_SERVICE`, which was defined in the deploy
 > workflows but never used — and named something else entirely
 > (`search.cm.ucf.edu`, the data API hub, not the search destination).
+
+The API in `api/` has its own runtime settings, which are Static Web App
+application settings rather than build-time values — see
+[api/README.md](api/README.md).
+
+## Signed-in state
+
+`api/` is a mock-up of the session endpoint the header calls after first paint:
+an Azure Functions app deployed as the managed API of the same Static Web App,
+so it answers on the origin the header is already served from.
+
+Two things shape it, and both are explained in [api/README.md](api/README.md):
+
+- **Hundreds of embedding domains.** Credentialed CORS forbids a wildcard, so
+  the allowlist is a suffix rule (`.ucf.edu`, anchored to the dot so
+  `evil-ucf.edu` does not match) and the response echoes one specific origin.
+  Because every embedder shares the `ucf.edu` registrable domain, the session
+  cookie is same-site rather than third-party — Safari's ITP does not touch it.
+- **Speed.** The login flow sets a small readable `ucfhb_h` cookie on
+  `.ucf.edu`. No cookie means signed out with *no request at all*, which is the
+  common case on a public page. When it is present it keys an hour-long
+  `localStorage` cache, and because its value changes when the session does,
+  signing out invalidates every site's cached copy at once. The request itself
+  carries only CORS-safelisted headers, so it skips the preflight round trip.
+
+With the seam compiled in (`UCFHB_SESSION=1`) the right-hand slot renders a
+**Login** button in place of MyUCF. It is an ordinary anchor with a real href,
+so login works before any deferred script has run; the API redirects back to the
+page you were on, and the header then renders `Hi, {name}` — defaulting to
+**Lulu** for a verified session no profile source has a record of. The signed-out
+build is untouched: the MyUCF branch is what ships and what the visual baselines
+assert.
+
+```bash
+npm run api:test      # CORS, endpoint behaviour, open-redirect guard
+npm run dev:all       # watcher on 4321 + API emulator on 4280; open 4280
+```
+
+The Functions runtime and the Static Web Apps emulator are devDependencies of
+`api/` — nothing is installed globally.
 
 ## Testing
 
@@ -231,7 +271,11 @@ src/
   template.ts         markup, state-driven right-hand zone
   styles/bar.css      the whole stylesheet, inlined at build
   icons/  brand/      inlined SVG
-  features/           search (critical), analytics (deferred), session (Phase 2)
+  features/           search (critical), analytics (deferred), session
+api/                  session endpoint: Functions app, SWA-managed
+  src/auth/           Verifier seam — mock, and a JWKS implementation
+  src/profile/        ProfileSource seam — mock, Pathify goes here
+  src/lib/            CORS allowlist, cache policy, hint cookie
 site/                 the universityheader.ucf.edu documentation page
 tests/                unit · e2e · visual · a11y · host-page fixtures
 scripts/              build, size gate, static server, containerized visuals

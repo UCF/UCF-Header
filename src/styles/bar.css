@@ -280,9 +280,10 @@
   display: block;
 }
 
-/* ----------------------------------------------------------------- myucf */
+/* --------------------------------------------------------- myucf / login */
 
-.myucf {
+.myucf,
+.login {
   display: flex;
   align-items: center;
   gap: 8px;
@@ -299,13 +300,31 @@
   flex: none;
 }
 
-.myucf:hover {
+.myucf:hover,
+.login:hover {
   background: var(--ucfhb-accent-hover);
 }
-.myucf svg {
+.myucf svg,
+.login svg {
   display: block;
   width: 15px;
   height: 15px;
+}
+
+/*
+ * Signed-in state. Plain text rather than a control, because there is nothing
+ * to click yet — the account menu replaces this. It sits at the button's height
+ * so the swap does not change the row's box, only its contents.
+ */
+.greeting {
+  display: flex;
+  align-items: center;
+  height: 38px;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 700;
+  white-space: nowrap;
+  flex: none;
 }
 
 /* ------------------------------------------------------------ a11y + fx */
@@ -419,13 +438,16 @@ input:focus-visible {
     height: 44px;
   }
 
-  .myucf {
+  .myucf,
+  .login,
+  .greeting {
     height: 44px;
   }
 }
 
 @media (max-width: 419px) {
-  .myucf {
+  .myucf,
+  .login {
     padding: 0 12px;
   }
 }

@@ -9,6 +9,7 @@
   },
   "scripts": {
     "dev": "node scripts/build.mjs --watch --serve",
+    "dev:all": "node scripts/dev-all.mjs",
     "build": "node scripts/build.mjs",
     "size": "node scripts/size.mjs",
     "bench": "node scripts/bench/index.mjs",
@@ -23,7 +24,11 @@
     "test:visual:update": "npm run test:visual -- --update-snapshots",
     "test:visual:docker": "node scripts/visual-docker.mjs",
     "test:a11y": "playwright test --project=a11y",
-    "verify": "npm run lint && npm run typecheck && npm run test && npm run build && npm run size"
+    "verify": "npm run lint && npm run typecheck && npm run test && npm run build && npm run size",
+    "api:build": "npm --prefix api run build",
+    "api:test": "npm --prefix api test",
+    "api:verify": "npm --prefix api run typecheck && npm --prefix api test && npm --prefix api run build",
+    "dev:api": "node scripts/dev-all.mjs --no-watch"
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.10.1",

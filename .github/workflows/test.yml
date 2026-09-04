@@ -24,6 +24,30 @@ jobs:
       - run: npm run typecheck
       - run: npm run test
 
+  api:
+    name: API lint, types, units
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: api
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: api/package-lock.json
+      # --ignore-scripts skips azure-functions-core-tools' postinstall, which
+      # pulls a 1.5 GB platform binary from a CDN that npm's cache never sees.
+      # That binary is the local `func` runtime; nothing in this job runs it.
+      # 4s and 224 MB instead of a multi-minute download on every run.
+      - run: npm ci --ignore-scripts
+      - run: npm run typecheck
+      - run: npm test
+      # Static Web Apps runs this build itself on deploy. Running it here means
+      # a type error fails the pull request rather than the production deploy.
+      - run: npm run build
+
   budget:
     name: Payload budget
     runs-on: ubuntu-latest

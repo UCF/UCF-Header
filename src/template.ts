@@ -1,5 +1,5 @@
 import mark from './brand/ucf-stacked.svg';
-import type { HeaderConfig } from './config';
+import { type HeaderConfig, rootUrlFor } from './config';
 import type { Session } from './features/session';
 import closeIcon from './icons/close.svg';
 import searchIcon from './icons/search.svg';
@@ -8,23 +8,63 @@ import userIcon from './icons/user.svg';
 export const HOME_URL = 'https://www.ucf.edu';
 export const MYUCF_URL = 'https://my.ucf.edu';
 
+/** Mock SSO endpoints. Real ones replace these without changing the markup. */
+export const LOGIN_PATH = 'api/dev/login';
+
 /**
- * The signed-out right-hand zone.
+ * Escapes text interpolated into the markup string.
  *
- * Phase 2 adds a signed-in branch here. It renders into the same fixed-width
- * slot so that resolving a session swaps the slot's contents without moving
- * anything else in the bar.
+ * `firstName` arrives from the network. Every other value in this file is a
+ * build-time constant or a URL that has already been through `new URL()`, so
+ * this is the one place untrusted text reaches innerHTML — and the bar renders
+ * inside hundreds of host pages, where an injection would be ours, not theirs.
  */
-function actions(session: Session): string {
-  // Phase 2 branches here on session.signedIn, replacing the button with the
-  // avatar and launcher. `.zone` is the slot that gets swapped; nothing outside
-  // it needs to change.
+function esc(text: string): string {
+  return text
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+/**
+ * Where the Login button sends the browser.
+ *
+ * `return` brings the user back to the page they were on. The API validates it
+ * against the same allowlist that gates CORS before honouring it — a login
+ * endpoint that redirects wherever it is told is an open redirect.
+ */
+export function loginUrl(cfg: HeaderConfig, loc: Location = window.location): string {
+  return `${rootUrlFor(cfg, LOGIN_PATH, loc)}?return=${encodeURIComponent(loc.href)}`;
+}
+
+/**
+ * The swappable right-hand zone.
+ *
+ * Three states, and which two are reachable depends on the build. With the
+ * session seam compiled out there is only the MyUCF button, exactly as in
+ * 4.0.0 — that branch is what the visual baselines and e2e suite assert, and
+ * esbuild eliminates the rest.
+ *
+ * Signed out is an ordinary anchor carrying a real href, not a button with a
+ * click handler. Same reasoning as the search form: the browser performs the
+ * navigation itself, so login works before any deferred script has run.
+ */
+export function actions(cfg: HeaderConfig, session: Session): string {
   const state = session.signedIn ? 'in' : 'out';
-  return (
-    `<div class="zone" data-state="${state}">` +
-    `<a class="myucf" part="myucf" href="${MYUCF_URL}">${userIcon}<span>MyUCF</span></a>` +
-    '</div>'
-  );
+
+  let inner: string;
+  if (!__UCFHB_SESSION__) {
+    inner = `<a class="myucf" part="myucf" href="${MYUCF_URL}">${userIcon}<span>MyUCF</span></a>`;
+  } else if (session.signedIn) {
+    // Mock-up: the eventual account menu lives here. For now it is the proof
+    // that the cookie round-tripped and the session verified.
+    inner = `<span class="greeting" part="greeting">Hi, ${esc(session.firstName)}</span>`;
+  } else {
+    inner = `<a class="login" part="login" href="${loginUrl(cfg)}">${userIcon}<span>Login</span></a>`;
+  }
+
+  return `<div class="zone" data-state="${state}">${inner}</div>`;
 }
 
 export function barMarkup(cfg: HeaderConfig, session: Session = { signedIn: false }): string {
@@ -55,7 +95,7 @@ export function barMarkup(cfg: HeaderConfig, session: Session = { signedIn: fals
     `<span class="i-search">${searchIcon}</span><span class="i-close">${closeIcon}</span>` +
     '</button>' +
     '</div>' +
-    actions(session) +
+    actions(cfg, session) +
     '</div>' +
     '</div>' +
     '</div>'

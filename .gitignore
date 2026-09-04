@@ -20,3 +20,7 @@ tests/**/*-darwin.png
 
 # Benchmark: vendored v3 assets, generated host pages, raw results
 .bench/
+
+# Azure Functions
+api/dist/
+api/local.settings.json

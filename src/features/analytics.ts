@@ -75,9 +75,17 @@ export function initAnalytics(root: ShadowRoot, cfg: HeaderConfig, doc: Document
     const path = e.composedPath();
     const hit = (sel: string) => path.some((n) => n instanceof Element && n.matches(sel));
 
-    if (hit('.myucf')) track(cfg, 'myucf_click');
-    else if (hit('.home')) track(cfg, 'home_click');
-    else if (hit('.search-toggle')) {
+    if (hit('.home')) track(cfg, 'home_click');
+    // The service links are the reason the tray exists, so which one was taken
+    // matters more than that the tray was opened. Reported by hostname, which
+    // is stable across the redirect chains these all sit behind.
+    else if (hit('.service')) {
+      const link = path.find((n): n is HTMLAnchorElement => n instanceof HTMLAnchorElement);
+      track(cfg, 'service_click', link ? new URL(link.href).hostname : null);
+    } else if (hit('.signin')) {
+      const open = root.querySelector('.zone')?.classList.contains('is-open');
+      track(cfg, open ? 'signin_open' : 'signin_close');
+    } else if (hit('.search-toggle')) {
       const open = root.querySelector('.search')?.classList.contains('is-open');
       track(cfg, open ? 'search_open' : 'search_close');
     }

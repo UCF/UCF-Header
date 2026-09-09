@@ -21,7 +21,7 @@ test.describe('iOS Safari', () => {
    * The one that bites hardest. iOS Safari zooms the whole page when a text
    * field smaller than 16px receives focus, and it does not zoom back out on
    * blur. The bar then sits wider than the visual viewport with its right-hand
-   * side — search toggle and MyUCF — pushed off screen.
+   * side — the sign-in button and the search toggle — pushed off screen.
    *
    * The fix is a >=16px font-size on the input at mobile widths, NOT a
    * `maximum-scale=1` viewport meta: that would suppress the zoom by disabling
@@ -61,7 +61,7 @@ test.describe('iOS Safari', () => {
     const viewport = page.viewportSize()?.width ?? 0;
     expect(viewport).toBeGreaterThan(0);
 
-    for (const sel of ['.search-toggle', '.myucf']) {
+    for (const sel of ['.search-toggle', '.signin']) {
       const box = await inShadow(page, sel).boundingBox();
       if (!box) throw new Error(`${sel} is not laid out`);
 
@@ -122,7 +122,7 @@ test.describe('iOS Safari', () => {
   test('tap targets meet the 44px minimum', async ({ page }) => {
     await page.goto('/fixtures/bare.html');
 
-    for (const sel of ['.search-toggle', '.myucf']) {
+    for (const sel of ['.search-toggle', '.signin']) {
       const box = await inShadow(page, sel).boundingBox();
       if (!box) throw new Error(`${sel} is not laid out`);
 

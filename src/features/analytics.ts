@@ -20,6 +20,8 @@ interface HeaderEvent {
   event: 'ucf_header_interaction';
   ucf_action: string;
   ucf_target?: string | null;
+  /** Which corpus a search was aimed at. Omitted for everything else. */
+  ucf_scope?: string;
   ucf_host: string;
   ucf_version: string;
 }
@@ -35,7 +37,12 @@ function dataLayer(): unknown[] {
   return window.dataLayer;
 }
 
-export function track(cfg: HeaderConfig, action: string, target: string | null = null): void {
+export function track(
+  cfg: HeaderConfig,
+  action: string,
+  target: string | null = null,
+  scope: string | null = null,
+): void {
   const payload: HeaderEvent = {
     event: 'ucf_header_interaction',
     ucf_action: action,
@@ -43,6 +50,7 @@ export function track(cfg: HeaderConfig, action: string, target: string | null =
     ucf_host: window.location.hostname,
     ucf_version: cfg.version,
   };
+  if (scope) payload.ucf_scope = scope;
   dataLayer().push(payload);
 }
 
@@ -71,12 +79,17 @@ function loadGtm(gtmId: string, doc: Document): void {
 export function initAnalytics(root: ShadowRoot, cfg: HeaderConfig, doc: Document = document): void {
   if (cfg.gtmId) loadGtm(cfg.gtmId, doc);
 
+  // Read from the DOM at event time rather than held in a variable here: the
+  // search feature owns the state, and this listener runs after its own.
+  const scope = () => root.querySelector<HTMLElement>('.search')?.dataset.scope ?? null;
+
   root.addEventListener('click', (e) => {
     const path = e.composedPath();
     const hit = (sel: string) => path.some((n) => n instanceof Element && n.matches(sel));
 
     if (hit('.myucf')) track(cfg, 'myucf_click');
     else if (hit('.home')) track(cfg, 'home_click');
+    else if (hit('.scope-opt')) track(cfg, 'search_scope', null, scope());
     else if (hit('.search-toggle')) {
       const open = root.querySelector('.search')?.classList.contains('is-open');
       track(cfg, open ? 'search_open' : 'search_close');
@@ -85,7 +98,9 @@ export function initAnalytics(root: ShadowRoot, cfg: HeaderConfig, doc: Document
 
   root.addEventListener('submit', (e) => {
     const input = (e.target as HTMLFormElement).querySelector<HTMLInputElement>('.search-input');
-    // Presence only. The raw query text never leaves the page.
-    track(cfg, 'search_submit', input?.value.trim() ? 'has_query' : 'empty_query');
+    // Presence only. The raw query text never leaves the page — which is also
+    // why the scope is reported as a flag rather than as the `site:` operator
+    // that is by then sitting in the field.
+    track(cfg, 'search_submit', input?.value.trim() ? 'has_query' : 'empty_query', scope());
   });
 }

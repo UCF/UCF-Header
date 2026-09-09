@@ -1,6 +1,7 @@
 import { beforeEach, describe, expect, it } from 'vitest';
 import type { HeaderConfig } from '../../src/config';
 import { initAnalytics } from '../../src/features/analytics';
+import { initSearch } from '../../src/features/search';
 import { mount } from '../../src/render';
 
 const cfg: HeaderConfig = {
@@ -10,6 +11,7 @@ const cfg: HeaderConfig = {
   searchUrl: 'https://search.ucf.edu/',
   wideBreakpoint: false,
   fullWidth: false,
+  siteScopeDefault: false,
 };
 
 /*
@@ -29,6 +31,8 @@ function setup(overrides: Partial<HeaderConfig> = {}) {
   document.body.appendChild(host);
   const root = mount({ ...cfg, ...overrides }, document);
   if (!root) throw new Error('mount failed');
+  // Same order as index.ts: search owns the scope state, analytics reads it.
+  initSearch(root, document);
   initAnalytics(root, { ...cfg, ...overrides }, document);
   return root;
 }
@@ -101,6 +105,26 @@ describe('interaction events', () => {
 
     const hit = findEvent('search_submit');
     expect(hit?.ucf_target).toBe('has_query');
+    expect(JSON.stringify(hit)).not.toContain('my private search');
+  });
+
+  it('records which scope a search was aimed at, still without the query', () => {
+    const root = setup();
+    const input = root.querySelector<HTMLInputElement>('.search-input');
+    if (input) input.value = 'my private search';
+
+    root.querySelector<HTMLButtonElement>('.scope-opt[data-scope="site"]')?.click();
+    const form = root.querySelector('form');
+    form?.addEventListener('submit', (e) => e.preventDefault());
+    form?.dispatchEvent(new Event('submit', { bubbles: true, composed: true, cancelable: true }));
+
+    expect(findEvent('search_scope')?.ucf_scope).toBe('site');
+
+    const hit = findEvent('search_submit');
+    expect(hit?.ucf_scope).toBe('site');
+    expect(hit?.ucf_target).toBe('has_query');
+    // The `site:` operator is in the field by now. It must not ride along.
+    expect(JSON.stringify(hit)).not.toContain('site:');
     expect(JSON.stringify(hit)).not.toContain('my private search');
   });
 

@@ -9,7 +9,10 @@ const cfg: HeaderConfig = {
   searchUrl: 'https://search.ucf.edu/',
   wideBreakpoint: false,
   fullWidth: false,
+  siteScopeDefault: false,
 };
+
+const DOMAIN = 'cah.ucf.edu';
 
 function parse(html: string): Element {
   const el = document.createElement('div');
@@ -67,13 +70,75 @@ describe('barMarkup', () => {
 
   it('exposes part= hooks for host-page styling', () => {
     const el = parse(barMarkup(cfg));
-    for (const part of ['bar', 'logo', 'search', 'myucf']) {
+    for (const part of ['bar', 'logo', 'search', 'search-scope', 'myucf']) {
       expect(el.querySelector(`[part="${part}"]`)).not.toBeNull();
     }
   });
 
   it('renders the signed-out zone by default', () => {
     expect(parse(barMarkup(cfg)).querySelector('.zone')?.getAttribute('data-state')).toBe('out');
+  });
+
+  it('offers both search scopes as a labelled radiogroup', () => {
+    const el = parse(barMarkup(cfg, { signedIn: false }, DOMAIN));
+    const group = el.querySelector('.scope');
+
+    expect(group?.getAttribute('role')).toBe('radiogroup');
+    expect(group?.getAttribute('aria-label')).toBeTruthy();
+    expect([...el.querySelectorAll('.scope-opt')].map((o) => o.textContent)).toEqual([
+      'UCF',
+      'Site',
+    ]);
+  });
+
+  /*
+   * A radio needs a `name` to group with its sibling, and any named control in
+   * this form is sent to search.ucf.edu as a stray parameter. Buttons carry no
+   * form data, so `q` stays the only thing the search engine receives.
+   */
+  it('builds the picker from buttons, so nothing but q is submitted', () => {
+    const el = parse(barMarkup(cfg, { signedIn: false }, DOMAIN));
+    for (const o of el.querySelectorAll('.scope-opt')) {
+      expect(o.tagName).toBe('BUTTON');
+      expect(o.getAttribute('type')).toBe('button');
+    }
+    expect([...el.querySelectorAll('[name]')].map((n) => n.getAttribute('name'))).toEqual(['q']);
+  });
+
+  it('starts on UCF, with the picker out of the tab order', () => {
+    const el = parse(barMarkup(cfg, { signedIn: false }, DOMAIN));
+    expect(el.querySelector('.search')?.getAttribute('data-scope')).toBe('ucf');
+    expect(el.querySelector('.scope-opt[data-scope="ucf"]')?.getAttribute('aria-checked')).toBe(
+      'true',
+    );
+    for (const o of el.querySelectorAll('.scope-opt')) {
+      expect(o.getAttribute('tabindex')).toBe('-1');
+    }
+  });
+
+  it('opens on Site when use-site-search-default is set', () => {
+    const el = parse(barMarkup({ ...cfg, siteScopeDefault: true }, { signedIn: false }, DOMAIN));
+    expect(el.querySelector('.search')?.getAttribute('data-scope')).toBe('site');
+    expect(el.querySelector('.scope-opt[data-scope="site"]')?.getAttribute('aria-checked')).toBe(
+      'true',
+    );
+    // The field is named after what pressing Enter will actually do.
+    expect(el.querySelector('.search-input')?.getAttribute('placeholder')).toBe(
+      'Search cah.ucf.edu',
+    );
+    expect(el.querySelector('label')?.textContent).toBe('Search cah.ucf.edu');
+  });
+
+  it('omits the picker entirely when there is no domain to scope to', () => {
+    const el = parse(barMarkup(cfg, { signedIn: false }, null));
+    expect(el.querySelector('.scope')).toBeNull();
+    expect(el.querySelector('.search-input')?.getAttribute('placeholder')).toBe('Search UCF');
+  });
+
+  // Site scope cannot be forced on when there is nothing to scope to.
+  it('falls back to UCF scope when the flag is set but no domain is available', () => {
+    const el = parse(barMarkup({ ...cfg, siteScopeDefault: true }, { signedIn: false }, null));
+    expect(el.querySelector('.search')?.getAttribute('data-scope')).toBe('ucf');
   });
 
   it('inlines the mark rather than referencing a file', () => {
@@ -87,6 +152,12 @@ describe('barMarkup', () => {
 describe('searchDestination', () => {
   it('builds the query URL', () => {
     expect(searchDestination(cfg, 'financial aid')).toBe('https://search.ucf.edu/?q=financial+aid');
+  });
+
+  it('carries the site operator when the search is scoped', () => {
+    const url = new URL(searchDestination(cfg, 'financial aid', DOMAIN, 'site'));
+    expect(url.searchParams.get('q')).toBe('site:cah.ucf.edu financial aid');
+    expect(url.origin).toBe('https://search.ucf.edu');
   });
 
   it.each(['a&b', 'a#b', 'café', '100% online', 'a?b=c'])('encodes %s safely', (q) => {

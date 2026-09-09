@@ -88,13 +88,116 @@ test.describe('search', () => {
   });
 });
 
+/*
+ * Scoped search. The fixtures are served from localhost, so the operator these
+ * assert on is `site:localhost` — the mechanism is what is under test, and the
+ * hostname it uses is deliberately whatever the page was actually loaded from.
+ */
+test.describe('search scope', () => {
+  const host = (page: Page) => new URL(page.url()).hostname;
+
+  test('offers UCF and Site, starting on UCF', async ({ page }) => {
+    await inShadow(page, '.search-toggle').click();
+    await expect(inShadow(page, '.scope-opt[data-scope="ucf"]')).toHaveAttribute(
+      'aria-checked',
+      'true',
+    );
+    await expect(inShadow(page, '.scope-opt[data-scope="site"]')).toHaveAttribute(
+      'aria-checked',
+      'false',
+    );
+  });
+
+  test('renames the field after the domain when scoped to the site', async ({ page }) => {
+    const domain = host(page);
+    await inShadow(page, '.search-toggle').click();
+    await inShadow(page, '.scope-opt[data-scope="site"]').click();
+
+    await expect(inShadow(page, '.search-input')).toHaveAttribute(
+      'placeholder',
+      `Search ${domain}`,
+    );
+  });
+
+  test('submits the site operator for the page it is embedded on', async ({ page }) => {
+    const domain = host(page);
+    await inShadow(page, '.search-toggle').click();
+    await inShadow(page, '.scope-opt[data-scope="site"]').click();
+    await inShadow(page, '.search-input').fill('financial aid');
+
+    await Promise.all([
+      page.waitForURL(/search\.ucf\.edu/),
+      inShadow(page, '.search-input').press('Enter'),
+    ]);
+
+    expect(new URL(page.url()).searchParams.get('q')).toBe(`site:${domain} financial aid`);
+  });
+
+  test('sends nothing extra beyond q', async ({ page }) => {
+    await inShadow(page, '.search-toggle').click();
+    await inShadow(page, '.scope-opt[data-scope="site"]').click();
+    await inShadow(page, '.search-input').fill('financial aid');
+
+    await Promise.all([
+      page.waitForURL(/search\.ucf\.edu/),
+      inShadow(page, '.search-input').press('Enter'),
+    ]);
+
+    expect([...new URL(page.url()).searchParams.keys()]).toEqual(['q']);
+  });
+
+  test('switching back to UCF submits the query unchanged', async ({ page }) => {
+    await inShadow(page, '.search-toggle').click();
+    await inShadow(page, '.scope-opt[data-scope="site"]').click();
+    await inShadow(page, '.scope-opt[data-scope="ucf"]').click();
+    await inShadow(page, '.search-input').fill('financial aid');
+
+    await Promise.all([
+      page.waitForURL(/search\.ucf\.edu/),
+      inShadow(page, '.search-input').press('Enter'),
+    ]);
+
+    expect(new URL(page.url()).searchParams.get('q')).toBe('financial aid');
+  });
+
+  test('use-site-search-default opens already scoped to the site', async ({ page }) => {
+    await page.goto('/fixtures/bare-site.html');
+    await expect(bar(page)).toBeVisible();
+    await inShadow(page, '.search-toggle').click();
+
+    await expect(inShadow(page, '.scope-opt[data-scope="site"]')).toHaveAttribute(
+      'aria-checked',
+      'true',
+    );
+  });
+
+  // Arrow keys move and select; the group is a single tab stop either way.
+  test('arrow keys move between the scopes', async ({ page }) => {
+    await inShadow(page, '.search-toggle').click();
+    await inShadow(page, '.scope-opt[data-scope="ucf"]').focus();
+    await page.keyboard.press('ArrowRight');
+
+    await expect(inShadow(page, '.scope-opt[data-scope="site"]')).toHaveAttribute(
+      'aria-checked',
+      'true',
+    );
+    await expect(inShadow(page, '.scope-opt[data-scope="site"]')).toBeFocused();
+  });
+
+  test('choosing a scope does not close the panel', async ({ page }) => {
+    await inShadow(page, '.search-toggle').click();
+    await inShadow(page, '.scope-opt[data-scope="site"]').click();
+    await expect(inShadow(page, '.search-toggle')).toHaveAttribute('aria-expanded', 'true');
+  });
+});
+
 test.describe('keyboard', () => {
   // DOM order is what determines focus order, and it is the same in every
   // browser — so this is the assertion that actually protects the behaviour.
   test('focusable controls are in DOM order matching visual order', async ({ page }) => {
     const order = await page.evaluate(() => {
       const root = document.getElementById('ucfhb')?.shadowRoot;
-      const sel = 'a[href], button, input:not([tabindex="-1"])';
+      const sel = 'a[href], button:not([tabindex="-1"]), input:not([tabindex="-1"])';
       return [...(root?.querySelectorAll(sel) ?? [])].map((e) => e.className);
     });
     expect(order[0]).toContain('home');

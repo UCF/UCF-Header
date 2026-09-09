@@ -87,6 +87,8 @@ const MODES = {
   '-full': '?use-full-width=1',
   // Still passed by real sites. Must be accepted and ignored.
   '-bs': '?use-bootstrap-overrides=1',
+  // Opens with the scope picker already on Site.
+  '-site': '?use-site-search-default=1',
 };
 
 export async function build(outDir = resolve(HERE, '../../dist/fixtures')) {

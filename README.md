@@ -56,6 +56,45 @@ signed-in view — is deferred behind `requestIdleCallback` after
 `DOMContentLoaded`. The critical path is: read flags, mount, wire the search
 toggle. Nothing else.
 
+### Searching the current site
+
+The pop-out search carries a UCF / Site switch. The interesting part is not the
+switch itself but what it has to avoid doing: the form's whole reason for
+working without JavaScript is that it has a real `action` and one input named
+`q`, and the scope must not cost us that.
+
+So the picker is two `<button role="radio">` elements rather than real radios.
+A radio needs a `name` to group with its sibling, and any named control inside
+this form is sent to `search.ucf.edu` as a stray parameter. Buttons carry no
+form data, which is asserted directly — `q` is the only key on the destination
+URL. When scripting is unavailable the picker never gets wired up and the field
+submits unscoped, which is the pre-existing behaviour rather than a broken one.
+
+The scope is applied at submit time by rewriting the field's value to
+`site:<hostname> <query>` and restoring it on the next tick. The browser builds
+the form's entry list synchronously while the submit handler's task is still
+running, so the scoped query is what goes out while the visitor is left looking
+at what they actually typed — which matters on a bfcache restore. The
+alternative, a hidden second field kept in sync, gives two sources of truth for
+one value and a class of bug where they disagree.
+
+The hostname is used **verbatim, with no `www.` stripping**. `site:` is a prefix
+match, so trimming `www.ucf.edu` to `ucf.edu` would widen the search to every
+subdomain of the university — the exact thing the visitor just narrowed away
+from. A query that already contains its own `site:` operator is left alone.
+
+`use-site-search-default=1` starts the switch on Site. It changes which option
+is selected, nothing else; the picker is always present when there is a hostname
+to scope to.
+
+**The cost is horizontal space, and it is paid on phones.** A picker, a typeable
+field and a labelled MyUCF button do not fit on one 390px row, so opening search
+now collapses the MyUCF label to its icon for as long as the panel is open — the
+same trade the wordmark already makes, clipped the same way so the link keeps
+its accessible name. That leaves the field at 123px at 390px and 93px at 360px.
+Usable, not generous. If this needs more room the next thing to give up is the
+picker's own labels.
+
 ### Known limitation
 
 A host page that pads its `<body>` insets the header, because the shadow host's
@@ -74,6 +113,11 @@ a local `.env`:
 | `ROOT_URL` | `universityheader.ucf.edu` | Serving origin. Reserved for the Phase 2 session endpoint. |
 | `SEARCH_URL` | `https://search.ucf.edu/` | Where the search form submits. |
 | `UCFHB_SESSION` | `0` | Set to `1` to compile in the Phase 2 signed-in seam. |
+
+Runtime flags on the script tag are a separate contract, documented on
+<https://universityheader.ucf.edu>. `4.0.0` adds one:
+`use-site-search-default=1`, which opens the search already scoped to the host
+site rather than to UCF.
 
 > `SEARCH_URL` replaced `SEARCH_SERVICE`, which was defined in the deploy
 > workflows but never used — and named something else entirely

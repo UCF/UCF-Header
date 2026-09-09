@@ -21,6 +21,8 @@ export interface HeaderConfig {
   wideBreakpoint: boolean;
   /** Legacy `use-full-width`: run the bar edge to edge with gutters. */
   fullWidth: boolean;
+  /** `use-site-search-default`: open the search already scoped to this site. */
+  siteScopeDefault: boolean;
 }
 
 const SCRIPT_ID = 'ucfhb-script';
@@ -62,6 +64,10 @@ export function readConfig(doc: Document = document): HeaderConfig {
     // imported 1200-breakpoint.scss outright, so the two never had to be combined.
     wideBreakpoint: fullWidth || hasFlag(src, 'use-1200-breakpoint'),
     fullWidth,
+    // The scope picker itself is unconditional. This flag only decides which
+    // of its two options is selected when the panel opens, for a departmental
+    // site whose visitors are almost always looking for that site.
+    siteScopeDefault: hasFlag(src, 'use-site-search-default'),
     // `use-bootstrap-overrides` is accepted and ignored. Bootstrap 2.x support
     // was dropped for 4.0.0, so sites still passing the flag keep working —
     // it just no longer does anything.

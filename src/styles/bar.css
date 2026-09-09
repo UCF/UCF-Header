@@ -205,7 +205,12 @@
   align-items: center;
 }
 
+/* Children are `flex: none` throughout, so the panel opens by being unclipped
+   rather than by its contents unsqueezing. A shrinkable input would animate
+   from a caret outwards, which is not the same gesture at all. */
 .search-form {
+  display: flex;
+  align-items: center;
   max-width: 0;
   overflow: hidden;
   opacity: 0;
@@ -214,10 +219,63 @@
     opacity 0.2s ease;
 }
 
+/* Comfortably wider than the picker plus the field, so the cap never becomes
+   the thing that decides the panel's width. */
 .search.is-open .search-form {
-  max-width: 300px;
+  max-width: 460px;
   opacity: 1;
   margin-right: 8px;
+}
+
+/* ----------------------------------------------------------- search scope */
+
+/* A track with a thumb inside it, which is the shape people already read as
+   "one of these two". The track carries the border and the rounding; the
+   options carry none of their own, so the selected pill sits inside the frame
+   rather than replacing part of it. That makes the picker a control in its own
+   right, set apart from the field rather than sharing an edge with it. */
+.scope {
+  display: flex;
+  align-items: center;
+  flex: none;
+  padding: 2px;
+  margin-right: 8px;
+  border: 1px solid var(--ucfhb-rule);
+  border-radius: 999px;
+}
+
+.scope-opt {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 32px;
+  padding: 0 12px;
+  background: transparent;
+  border: 0;
+  border-radius: 999px;
+  color: var(--ucfhb-muted);
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  cursor: pointer;
+  flex: none;
+  transition:
+    background-color 0.15s ease,
+    color 0.15s ease;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.scope-opt:hover {
+  color: var(--ucfhb-fg);
+}
+
+.scope-opt[aria-checked="true"] {
+  background: var(--ucfhb-accent);
+  color: #000;
 }
 
 .search-input {
@@ -230,6 +288,7 @@
   color: var(--ucfhb-fg);
   font-family: inherit;
   font-size: 14px;
+  flex: none;
   -webkit-appearance: none;
   appearance: none;
 }
@@ -245,6 +304,15 @@
 .search-input:focus {
   border-color: var(--ucfhb-accent);
   outline: none;
+}
+
+/* 720px of container between 768 and 979px is the tightest desktop case: the
+   wordmark is still at full width there and the picker has to come out of the
+   field rather than out of the bar. */
+@media (max-width: 979px) {
+  .search-input {
+    width: 200px;
+  }
 }
 
 .search-toggle {
@@ -396,6 +464,21 @@ input:focus-visible {
     transition: opacity 0.2s ease;
   }
 
+  /* The picker keeps its intrinsic width and the field takes what is left —
+     the reverse of desktop, where the field is fixed and the panel is capped.
+     The thumb is what gets sized: 38 + 4 padding + 2 border puts the track at
+     the same 44px touch height as the toggle and MyUCF beside it. Horizontal
+     padding is trimmed at every step down, because every pixel the track keeps
+     is one the field does not get. */
+  .scope {
+    margin-right: 6px;
+  }
+
+  .scope-opt {
+    height: 38px;
+    padding: 0 9px;
+  }
+
   /* 16px is the threshold below which iOS Safari zooms the page on focus —
      and it does not zoom back out on blur, leaving the bar wider than the
      visual viewport with MyUCF stranded off the right edge. Fixing it here
@@ -403,8 +486,9 @@ input:focus-visible {
      tag is not ours to set, and suppressing pinch-zoom to fix our own input
      would be an accessibility regression imposed on every host site. */
   .search-input {
-    width: 100%;
+    width: auto;
     min-width: 0;
+    flex: 1;
     font-size: 16px;
     height: 44px;
   }
@@ -422,11 +506,47 @@ input:focus-visible {
   .myucf {
     height: 44px;
   }
+
+  /*
+   * The scope picker has to come out of the row, and on a phone the row has
+   * nothing spare. MyUCF gives up its label for as long as the panel is open,
+   * the same trade the wordmark makes and for the same reason — the button is
+   * still recognisably MyUCF from its icon, whereas a search field squeezed
+   * under ~100px stops being usable at all.
+   *
+   * Clipped rather than display:none, so the link keeps its accessible name.
+   * Scoped to the whole mobile range on purpose: doing it only at the narrowest
+   * widths made 430px a WORSE case than 390px, because the label came back
+   * while the picker was still there.
+   */
+  .inner.is-searching .myucf {
+    gap: 0;
+  }
+
+  .inner.is-searching .myucf span {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    clip-path: inset(50%);
+  }
 }
 
 @media (max-width: 419px) {
   .myucf {
     padding: 0 12px;
+  }
+
+  .scope {
+    margin-right: 4px;
+  }
+
+  .scope-opt {
+    padding: 0 7px;
+    font-size: 10px;
+    letter-spacing: 0.04em;
   }
 }
 

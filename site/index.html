@@ -20,7 +20,8 @@
   // Options are matched against a known list and only accept a value of "1",
   // so nothing arbitrary can be written into the script's src.
   (function () {
-    var supported = ['use-1200-breakpoint', 'use-full-width', 'use-bootstrap-overrides'];
+    var supported = ['use-1200-breakpoint', 'use-full-width', 'use-bootstrap-overrides',
+                     'use-site-search-default'];
     var params = new URLSearchParams(window.location.search);
     var query = supported.filter(function (o) { return params.get(o) === '1'; })
                          .map(function (o) { return o + '=1'; }).join('&');
@@ -229,6 +230,10 @@
             <td>Runs the bar edge to edge with a 15px gutter, for full-width layouts. Includes the wider breakpoint, so the two never need combining.</td>
           </tr>
           <tr>
+            <td><code>use-site-search-default</code></td>
+            <td>Opens the search already set to <strong style="display:inline">Site</strong> rather than UCF, for a site whose visitors are usually looking for that site. The visitor can still switch to a UCF-wide search; this only chooses which option starts selected.</td>
+          </tr>
+          <tr>
             <td><code>use-bootstrap-overrides</code></td>
             <td><strong style="display:inline">Retained but inert.</strong> Bootstrap&nbsp;2.x support was dropped in 4.0.0. The flag is still accepted so existing embeds keep working; it no longer does anything.</td>
           </tr>
@@ -243,6 +248,7 @@
       <a href="?">Default</a>
       <a href="?use-1200-breakpoint=1">Wide breakpoint</a>
       <a href="?use-full-width=1">Full width</a>
+      <a href="?use-site-search-default=1">Site search by default</a>
     </div>
   </div>
 </section>
@@ -257,6 +263,10 @@
       <strong>If you were overriding header styles</strong>
       <p>CSS rules targeting the bar's internals — <code>#ucfhb-search-field</code>, <code>#ucfhb-signon</code>, and the rest — no longer apply, and the same goes for JavaScript that reaches in with <code>document.querySelector</code>. Use the theming API below instead, or <a href="#rollback">pin to v3</a> while you migrate.</p>
     </div>
+
+    <h3>Searching your own site</h3>
+    <p>The pop-out search now opens with a <strong style="display:inline">UCF / Site</strong> switch. Left on UCF it does what it has always done. Switched to Site, it searches only the domain the header is loaded on — <code>site:your.ucf.edu</code> is prepended to whatever the visitor typed, and nothing else about the search changes. It is the same search engine and the same results page.</p>
+    <p>Nothing is required of you to get this: the domain comes from the page itself. If your visitors are usually looking for your site rather than the university, add <code>use-site-search-default=1</code> and the switch will start on Site instead.</p>
 
     <h3>Also worth knowing</h3>
     <ul>
@@ -297,7 +307,7 @@
     <h3>Styling parts directly</h3>
     <p>For anything the custom properties do not reach, four elements are exposed via <code>::part()</code>.</p>
     <pre><code>#ucfhb::part(myucf) { text-transform: none; }</code></pre>
-    <p>Available parts: <code>bar</code>, <code>logo</code>, <code>search</code>, <code>myucf</code>.</p>
+    <p>Available parts: <code>bar</code>, <code>logo</code>, <code>search</code>, <code>search-scope</code>, <code>myucf</code>.</p>
   </div>
 </section>
 

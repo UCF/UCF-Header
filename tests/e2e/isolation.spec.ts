@@ -123,7 +123,9 @@ test.describe('theming API', () => {
       const root = document.getElementById('ucfhb')?.shadowRoot;
       return [...(root?.querySelectorAll('[part]') ?? [])].map((e) => e.getAttribute('part'));
     });
-    expect(parts).toEqual(expect.arrayContaining(['bar', 'logo', 'search', 'myucf']));
+    expect(parts).toEqual(
+      expect.arrayContaining(['bar', 'logo', 'search', 'search-scope', 'myucf']),
+    );
   });
 });
 

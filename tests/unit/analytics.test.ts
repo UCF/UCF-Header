@@ -85,7 +85,7 @@ describe('interaction events', () => {
       .querySelector<HTMLAnchorElement>('.service[href*="my.ucf.edu"]')
       ?.dispatchEvent(new MouseEvent('click', { bubbles: true, composed: true }));
 
-    expect(findEvent('service_click')?.ucf_target).toBe('my.ucf.edu');
+    expect(findEvent('click_service')?.ucf_target).toBe('my.ucf.edu');
   });
 
   // Query text must never leave the page — presence only.
@@ -99,7 +99,7 @@ describe('interaction events', () => {
     form?.addEventListener('submit', (e) => e.preventDefault());
     form?.dispatchEvent(new Event('submit', { bubbles: true, composed: true, cancelable: true }));
 
-    const hit = findEvent('search_submit');
+    const hit = findEvent('submit_search');
     expect(hit?.ucf_target).toBe('has_query');
     expect(JSON.stringify(hit)).not.toContain('my private search');
   });
@@ -110,6 +110,6 @@ describe('interaction events', () => {
     form?.addEventListener('submit', (e) => e.preventDefault());
     form?.dispatchEvent(new Event('submit', { bubbles: true, composed: true, cancelable: true }));
 
-    expect(findEvent('search_submit')?.ucf_target).toBe('empty_query');
+    expect(findEvent('submit_search')?.ucf_target).toBe('empty_query');
   });
 });

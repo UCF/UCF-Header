@@ -615,7 +615,15 @@ input:focus-visible {
       visibility 0s linear 0.28s;
   }
 
+  /* `max-width` has to be cleared here as well as on the closed panel above.
+     The desktop open state caps the tray at 460px, which is the width it slides
+     out to inside the row; down here the shelf spans the bar instead, and left/
+     right:0 cannot beat a max-width that is still in force. It only showed
+     between 461px and 767px — every phone width is under the cap, so the shelf
+     looked correct on the devices it was checked against and stopped 24px short
+     on a tablet. */
   .zone.is-open .services {
+    max-width: none;
     max-height: 56px;
     transition:
       max-height 0.28s ease,

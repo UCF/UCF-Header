@@ -1,7 +1,7 @@
 import { expect, test } from '@playwright/test';
 
 /**
- * The visual regression matrix: 6 widths x 3 container modes x 3 panel states.
+ * The visual regression matrix: 7 widths x 3 container modes x 3 panel states.
  *
  * Baselines are generated inside the pinned Playwright container (see
  * `npm run test:visual:docker`) — font rasterization differs enough between
@@ -10,7 +10,15 @@ import { expect, test } from '@playwright/test';
  * once the look is signed off.
  */
 
-const WIDTHS = [360, 390, 768, 980, 1200, 1440];
+/*
+ * 600 covers the band between the widest phone and the 768px breakpoint —
+ * tablets in portrait, and a browser window dragged narrow. It is here because
+ * nothing was: the mobile shelf is only a shelf below 768px, and every other
+ * width in this list that renders one (360, 390, and the iOS descriptors at
+ * 375-430) is under 460px. A stale `max-width: 460px` on the open tray therefore
+ * capped the shelf on tablets while every screenshot in the matrix stayed green.
+ */
+const WIDTHS = [360, 390, 600, 768, 980, 1200, 1440];
 const MODES = [
   { name: 'default', fixture: 'bare' },
   { name: 'wide', fixture: 'bare-wide' },

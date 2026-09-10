@@ -1,6 +1,8 @@
 import { beforeEach, describe, expect, it } from 'vitest';
 import type { HeaderConfig } from '../../src/config';
 import { initAnalytics } from '../../src/features/analytics';
+import { initSearch } from '../../src/features/search';
+import { initSignin } from '../../src/features/signin';
 import { mount } from '../../src/render';
 
 const cfg: HeaderConfig = {
@@ -32,6 +34,25 @@ function setup(overrides: Partial<HeaderConfig> = {}) {
   initAnalytics(root, { ...cfg, ...overrides }, document);
   return root;
 }
+
+/**
+ * Wires the two panel controllers, as index.ts does.
+ *
+ * The open/close actions are named after the class the controller has just set,
+ * so what analytics reports is a consequence of listener order: each controller
+ * listens on its own button and analytics listens on the root, and a target
+ * fires before its ancestors. The class is therefore always already toggled by
+ * the time the action name is chosen — which is the behaviour worth asserting,
+ * rather than setting `is-open` by hand and testing the assertion itself.
+ */
+function withPanels(root: ShadowRoot): ShadowRoot {
+  initSearch(root);
+  initSignin(root);
+  return root;
+}
+
+const click = (el: Element | null) =>
+  el?.dispatchEvent(new MouseEvent('click', { bubbles: true, composed: true }));
 
 describe('initAnalytics', () => {
   beforeEach(() => {
@@ -111,5 +132,40 @@ describe('interaction events', () => {
     form?.dispatchEvent(new Event('submit', { bubbles: true, composed: true, cancelable: true }));
 
     expect(findEvent('submit_search')?.ucf_target).toBe('empty_query');
+  });
+
+  /*
+   * The five actions below carry no `ucf_target`, so the string is the whole
+   * event — there is nothing else to assert and nothing else that would look
+   * wrong if it drifted. The `Action` type catches a noun-first name, but
+   * `click_hom` satisfies `${verb}_${string}` just as happily as `click_home`
+   * does, and a container keyed to the real name would simply go quiet. These
+   * pin the exact wire values.
+   */
+  it('records a click on the link home', () => {
+    click(setup().querySelector('.home'));
+    expect(findEvent('click_home')).toBeDefined();
+  });
+
+  it('names the tray action for the state the click lands in', () => {
+    const signin = withPanels(setup()).querySelector('.signin');
+
+    click(signin);
+    expect(findEvent('open_signin'), 'first click opens').toBeDefined();
+    expect(findEvent('close_signin')).toBeUndefined();
+
+    click(signin);
+    expect(findEvent('close_signin'), 'second click closes').toBeDefined();
+  });
+
+  it('names the search action for the state the click lands in', () => {
+    const toggle = withPanels(setup()).querySelector('.search-toggle');
+
+    click(toggle);
+    expect(findEvent('open_search'), 'first click opens').toBeDefined();
+    expect(findEvent('close_search')).toBeUndefined();
+
+    click(toggle);
+    expect(findEvent('close_search'), 'second click closes').toBeDefined();
   });
 });

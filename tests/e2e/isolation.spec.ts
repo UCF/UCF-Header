@@ -40,7 +40,7 @@ async function fingerprint(page: import('@playwright/test').Page) {
       mark: pick('.mark'),
       wordmark: pick('.wordmark'),
       toggle: pick('.search-toggle'),
-      myucf: pick('.myucf'),
+      signin: pick('.signin'),
     };
   });
 }
@@ -107,14 +107,17 @@ test.describe('theming API', () => {
     const styles = await page.evaluate(() => {
       const root = document.getElementById('ucfhb')?.shadowRoot;
       const bar = root?.querySelector('.bar');
-      const myucf = root?.querySelector('.myucf');
+      const toggle = root?.querySelector('.search-toggle');
+      const signin = root?.querySelector('.signin');
       return {
         bar: bar ? getComputedStyle(bar).backgroundColor : null,
-        myucf: myucf ? getComputedStyle(myucf).backgroundColor : null,
+        toggle: toggle ? getComputedStyle(toggle).backgroundColor : null,
+        signin: signin ? getComputedStyle(signin).color : null,
       };
     });
     expect(styles.bar).toBe('rgb(26, 26, 26)');
-    expect(styles.myucf).toBe('rgb(122, 184, 255)');
+    expect(styles.toggle).toBe('rgb(122, 184, 255)');
+    expect(styles.signin).toBe('rgb(122, 184, 255)');
   });
 
   test('part= hooks are exposed for host-page styling', async ({ page }) => {
@@ -123,7 +126,7 @@ test.describe('theming API', () => {
       const root = document.getElementById('ucfhb')?.shadowRoot;
       return [...(root?.querySelectorAll('[part]') ?? [])].map((e) => e.getAttribute('part'));
     });
-    expect(parts).toEqual(expect.arrayContaining(['bar', 'logo', 'search', 'myucf']));
+    expect(parts).toEqual(expect.arrayContaining(['bar', 'logo', 'search', 'signin', 'services']));
   });
 });
 

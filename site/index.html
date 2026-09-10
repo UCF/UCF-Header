@@ -250,7 +250,8 @@
 <section>
   <div class="wrap">
     <h2>What changed in 4.0.0</h2>
-    <p>This is a full rebuild. Visually it is the new university brand: the stacked UCF mark, a taller bar, inline SVG icons, a pop-out search, and a single MyUCF button in place of the old sign-in tray.</p>
+    <p>This is a full rebuild. Visually it is the new university brand: the stacked UCF mark, a taller bar, and inline SVG icons throughout. The right-hand side keeps the sign-in tray you know — <strong>UCF SIGN IN</strong> opening onto workday, myUCF, Email and webcourses — but the search beside it now starts collapsed behind its gold button and opens leftward when you click it.</p>
+    <p>The spritesheet is gone. Every label in the bar, the two-tone <strong>myUCF</strong> and <strong>webcourses</strong> lockups included, is now real text, and every icon is inline SVG. That means the tray's links are selectable, translatable, readable by a screen reader and crawler alike, and sharp at any zoom or pixel density — none of which a PNG slice could be.</p>
     <p>Underneath, the bar now renders inside a <a href="https://developer.mozilla.org/en-US/docs/Web/API/Web_components/Using_shadow_DOM">shadow root</a>. That is the change most likely to affect you, and it cuts both ways: your site's CSS can no longer accidentally break the header, and it can no longer deliberately restyle it either.</p>
 
     <div class="note">
@@ -261,7 +262,8 @@
     <h3>Also worth knowing</h3>
     <ul>
       <li>The bar is <strong>72px tall</strong> on desktop and 60px on narrow screens, up from 50px. Your content sits 22px lower than it used to.</li>
-      <li>There is <strong>no mobile menu toggle</strong> any more. With only search and MyUCF to show, everything fits on one row at every width.</li>
+      <li>There is <strong>no mobile menu toggle</strong> any more. Below 768px the sign-in tray drops beneath the bar as a full-width row when you open it, overlaying the top of your page rather than pushing it down — the bar itself stays 60px.</li>
+      <li><strong>Only one panel opens at a time.</strong> Opening the tray closes the search and vice versa; there is not room in a 940px bar for both.</li>
       <li>The header is now a <strong>single file</strong>. It no longer requests <code>bar/css/bar.css</code> — the styles are inlined. The old CSS files are still served this release and will be removed in 4.1.0.</li>
       <li><code>university-header-full.js</code> is gone. A source map is published next to the minified file instead.</li>
     </ul>
@@ -284,8 +286,9 @@
           <tr><td><code>--ucfhb-height</code></td><td><code>72px</code></td><td>Bar height (60px under 768px)</td></tr>
           <tr><td><code>--ucfhb-bg</code></td><td><code>#000</code></td><td>Bar background</td></tr>
           <tr><td><code>--ucfhb-fg</code></td><td><code>#fff</code></td><td>Text and icons</td></tr>
-          <tr><td><code>--ucfhb-accent</code></td><td><code>#edb80c</code></td><td>Gold — the rule, the MyUCF button, hover states</td></tr>
-          <tr><td><code>--ucfhb-rule</code></td><td><code>#3a3a3a</code></td><td>The search field's border</td></tr>
+          <tr><td><code>--ucfhb-accent</code></td><td><code>#edb80c</code></td><td>Gold — the rule, the sign-in label, the search button, hover states</td></tr>
+          <tr><td><code>--ucfhb-rule</code></td><td><code>#3a3a3a</code></td><td>The divider between the tray and the search</td></tr>
+          <tr><td><code>--ucfhb-muted</code></td><td><code>#9a9a9a</code></td><td>The lock icon at rest</td></tr>
           <tr><td><code>--ucfhb-font</code></td><td>system stack</td><td>Typeface for the bar's text</td></tr>
           <tr><td><code>--ucfhb-z</code></td><td><code>10000</code></td><td>Stacking order</td></tr>
         </tbody>
@@ -295,9 +298,9 @@
     <p>The logo's colours follow the bar automatically. The mark is a knockout lockup, so its interior takes <code>--ucfhb-bg</code> — re-theme the background and the logo stays correct without further work.</p>
 
     <h3>Styling parts directly</h3>
-    <p>For anything the custom properties do not reach, four elements are exposed via <code>::part()</code>.</p>
-    <pre><code>#ucfhb::part(myucf) { text-transform: none; }</code></pre>
-    <p>Available parts: <code>bar</code>, <code>logo</code>, <code>search</code>, <code>myucf</code>.</p>
+    <p>For anything the custom properties do not reach, five elements are exposed via <code>::part()</code>.</p>
+    <pre><code>#ucfhb::part(signin) { text-transform: none; }</code></pre>
+    <p>Available parts: <code>bar</code>, <code>logo</code>, <code>search</code>, <code>signin</code>, <code>services</code>.</p>
   </div>
 </section>
 
@@ -306,7 +309,8 @@
     <h2>Accessibility</h2>
     <ul>
       <li>The bar is a labelled <code>complementary</code> landmark, deliberately not a second <code>banner</code> competing with your page's own.</li>
-      <li>Search opens by click or keyboard, <kbd>Escape</kbd> closes it, and focus returns to the trigger.</li>
+      <li>Both panels open by click or keyboard, <kbd>Escape</kbd> closes either one, and focus returns to the trigger.</li>
+      <li>The tray's four links are genuinely hidden while it is closed — they are not in the tab order and not in the accessibility tree until you open it.</li>
       <li>Focus indicators use a double ring that stays visible against the black bar, white text, and the gold button alike.</li>
       <li>All transitions are disabled under <code>prefers-reduced-motion</code>.</li>
       <li>The link home carries real text — "University of Central Florida" — at every width, including where it is visually hidden.</li>

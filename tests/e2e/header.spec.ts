@@ -28,8 +28,60 @@ test.describe('contract', () => {
     await expect(home).toContainText('University of');
   });
 
-  test('MyUCF is a plain link to my.ucf.edu', async ({ page }) => {
-    await expect(inShadow(page, '.myucf')).toHaveAttribute('href', 'https://my.ucf.edu');
+  test('the tray holds the four campus services as plain links', async ({ page }) => {
+    await inShadow(page, '.signin').click();
+    await expect(inShadow(page, '.service')).toHaveCount(4);
+    await expect(inShadow(page, '.service')).toHaveText([
+      'workday',
+      'myUCF',
+      'Email',
+      'webcourses',
+    ]);
+    await expect(inShadow(page, '.service').nth(1)).toHaveAttribute('href', 'https://my.ucf.edu');
+  });
+});
+
+test.describe('sign-in tray', () => {
+  test('is closed to begin with, with its links out of the tab order', async ({ page }) => {
+    await expect(inShadow(page, '.signin')).toHaveAttribute('aria-expanded', 'false');
+    // `visibility: hidden` is what removes them — max-width alone would leave
+    // four invisible links catching Tab.
+    await expect(inShadow(page, '.service').first()).toBeHidden();
+  });
+
+  test('opens on click and reveals the links', async ({ page }) => {
+    await inShadow(page, '.signin').click();
+    await expect(inShadow(page, '.signin')).toHaveAttribute('aria-expanded', 'true');
+    await expect(inShadow(page, '.service').first()).toBeVisible();
+  });
+
+  test('Escape closes it and returns focus to the trigger', async ({ page }) => {
+    await inShadow(page, '.signin').click();
+    await page.keyboard.press('Escape');
+    await expect(inShadow(page, '.signin')).toHaveAttribute('aria-expanded', 'false');
+    await expect(inShadow(page, '.signin')).toBeFocused();
+  });
+
+  test('clicking outside closes it', async ({ page }) => {
+    await inShadow(page, '.signin').click();
+    await page.locator('.host-content h1').click();
+    await expect(inShadow(page, '.signin')).toHaveAttribute('aria-expanded', 'false');
+  });
+
+  /*
+   * The two panels want the same strip of bar and there is only room for one.
+   * This is the assertion that keeps them from ever being open together —
+   * which at 940px would push the search button off the right edge.
+   */
+  test('opening either panel closes the other', async ({ page }) => {
+    await inShadow(page, '.signin').click();
+    await inShadow(page, '.search-toggle').click();
+    await expect(inShadow(page, '.signin')).toHaveAttribute('aria-expanded', 'false');
+    await expect(inShadow(page, '.search-toggle')).toHaveAttribute('aria-expanded', 'true');
+
+    await inShadow(page, '.signin').click();
+    await expect(inShadow(page, '.search-toggle')).toHaveAttribute('aria-expanded', 'false');
+    await expect(inShadow(page, '.signin')).toHaveAttribute('aria-expanded', 'true');
   });
 });
 
@@ -97,9 +149,18 @@ test.describe('keyboard', () => {
       const sel = 'a[href], button, input:not([tabindex="-1"])';
       return [...(root?.querySelectorAll(sel) ?? [])].map((e) => e.className);
     });
-    expect(order[0]).toContain('home');
-    expect(order[1]).toContain('search-toggle');
-    expect(order[2]).toContain('myucf');
+    // The tray's four links sit between the button that opens them and the
+    // search toggle, which is what puts them in reading order the moment they
+    // become focusable. Until then `visibility: hidden` keeps Tab off them.
+    expect(order).toEqual([
+      'home',
+      'signin',
+      'service',
+      'service',
+      'service',
+      'service',
+      'search-toggle',
+    ]);
   });
 
   /*
@@ -123,8 +184,8 @@ test.describe('keyboard', () => {
       );
     }
     expect(seen[0]).toContain('home');
-    expect(seen[1]).toContain('search-toggle');
-    expect(seen[2]).toContain('myucf');
+    expect(seen[1]).toContain('signin');
+    expect(seen[2]).toContain('search-toggle');
   });
 
   test('the search toggle activates from the keyboard', async ({ page }) => {
@@ -158,12 +219,18 @@ test.describe('layout', () => {
       await page.goto('/fixtures/bare.html');
       await expect(bar(page)).toBeVisible();
 
-      // With the search panel open too — the widest the bar ever gets.
+      const overflow = () =>
+        page.evaluate(
+          () => document.documentElement.scrollWidth - document.documentElement.clientWidth,
+        );
+
+      // Each panel in turn — either one open is wider than the closed bar, and
+      // the tray is the wider of the two.
       await inShadow(page, '.search-toggle').click();
-      const overflow = await page.evaluate(
-        () => document.documentElement.scrollWidth - document.documentElement.clientWidth,
-      );
-      expect(overflow).toBeLessThanOrEqual(0);
+      expect(await overflow(), 'search open').toBeLessThanOrEqual(0);
+
+      await inShadow(page, '.signin').click();
+      expect(await overflow(), 'tray open').toBeLessThanOrEqual(0);
     });
   }
 

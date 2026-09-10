@@ -1,14 +1,15 @@
 /**
  * UCF universal header — entry point.
  *
- * Critical path, in order: read flags, mount the shadow root, wire the search
- * toggle. No network calls, no measurement, nothing else. Everything that is
- * not "make the header appear" is scheduled after first paint.
+ * Critical path, in order: read flags, mount the shadow root, wire the two
+ * expanding panels. No network calls, no measurement, nothing else. Everything
+ * that is not "make the header appear" is scheduled after first paint.
  */
 
 import { readConfig, rootUrlFor } from './config';
 import { initAnalytics } from './features/analytics';
 import { initSearch } from './features/search';
+import { initSignin } from './features/signin';
 import { mount } from './render';
 
 /** Runs `fn` once the document is parsed and the browser is otherwise idle. */
@@ -30,7 +31,14 @@ function start(): void {
   const root = mount(cfg, document);
   if (!root) return;
 
-  initSearch(root);
+  // The tray and the open search field want the same strip of the bar, and at
+  // 940px there is only room for one of them. Rather than let them fight for it
+  // — or reserve space for both and leave the closed bar looking gappy —
+  // opening either one closes the other.
+  const search = initSearch(root);
+  const signin = initSignin(root);
+  search?.onOpen(() => signin?.close());
+  signin?.onOpen(() => search?.close());
 
   defer(async () => {
     initAnalytics(root, cfg);

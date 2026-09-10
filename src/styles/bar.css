@@ -163,12 +163,16 @@
 .wordmark {
   display: flex;
   flex-direction: column;
+  max-width: 240px;
   font-size: 13px;
   font-weight: 700;
   line-height: 1.18;
   letter-spacing: 0.075em;
   text-transform: uppercase;
   white-space: nowrap;
+  transition:
+    opacity 0.2s ease,
+    max-width 0.2s ease;
 }
 
 .home:hover .wordmark,
@@ -178,56 +182,217 @@
 
 /* --------------------------------------------------------------- actions */
 
+/*
+ * Two panels share the right-hand side, and they expand in opposite
+ * directions: the sign-in tray opens rightward out of its button, the search
+ * field opens leftward out of its. Both are right-anchored flex items, so the
+ * one that grows pushes the cluster along and the reveal reads as coming out
+ * of the control that was clicked.
+ *
+ * They cannot both be open — see the comment in index.ts.
+ */
 .actions {
   display: flex;
   align-items: center;
-  gap: 10px;
   margin-left: auto;
   flex: none;
 }
 
 /*
- * The swappable right-hand slot. Phase 2 replaces its contents with the avatar
- * and launcher; nothing outside it changes. No speculative width is reserved,
- * which keeps the signed-out bar honest at the cost of a layout shift inside
- * this slot when Phase 2 swaps it — a deliberate trade to revisit then.
+ * The swappable right-hand slot: the sign-in button plus the tray it opens.
+ * Phase 2 replaces its contents with the avatar and the session's own quick
+ * links; nothing outside it changes. No speculative width is reserved, which
+ * keeps the signed-out bar honest at the cost of a layout shift inside this
+ * slot when Phase 2 swaps it — a deliberate trade to revisit then.
  */
 .zone {
   display: flex;
   align-items: center;
-  gap: 10px;
+}
+
+/* ---------------------------------------------------------------- sign in */
+
+.signin {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  height: 34px;
+  padding: 0 6px;
+  background: none;
+  border: 0;
+  color: var(--ucfhb-accent);
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 15px;
+  line-height: 1;
+  white-space: nowrap;
+  flex: none;
+}
+
+.signin-label {
+  display: flex;
+  gap: 0.36em;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+/* Weight only. Colour is the parent's business: gold-on-gold in the sign-in
+   label, gold-on-white in a service link.
+
+   These are the two halves of a lockup — "myUCF", "webcourses", "UCF SIGN IN".
+   A label with no second half wears neither class and inherits the bar's own
+   400 from `.bar`. */
+.t-light {
+  font-weight: 300;
+}
+.t-bold {
+  font-weight: 700;
+}
+
+.signin svg {
+  display: block;
+  width: 16px;
+  height: 16px;
+}
+
+/* The lock sits back in grey until the control is engaged, exactly as the v3
+   sprite drew it — it reads as a status glyph, not as a second button. */
+.i-lock {
+  display: block;
+  color: var(--ucfhb-muted);
+}
+
+.signin:hover {
+  color: var(--ucfhb-accent-hover);
+}
+.signin:hover .i-lock,
+.zone.is-open .i-lock {
+  color: inherit;
+}
+
+/* The "+" is the disclosure affordance, so it becomes the "×" that closes the
+   tray rather than being swapped for a second icon. */
+.i-plus {
+  display: block;
+  transition: transform 0.28s ease;
+}
+.i-plus svg {
+  width: 13px;
+  height: 13px;
+}
+.zone.is-open .i-plus {
+  transform: rotate(45deg);
+}
+
+/* --------------------------------------------------------------- services */
+
+/*
+ * `visibility` is what takes the closed tray out of the tab order and the
+ * accessibility tree — `max-width: 0` with `overflow: hidden` hides it to the
+ * eye but leaves four focusable links behind it. It flips instantly on open and
+ * waits out the slide on close, which is why it carries its own delay.
+ *
+ * The height is not decoration: `overflow: hidden` would otherwise clip the
+ * focus ring of every link against a box only as tall as the text.
+ */
+.services {
+  display: flex;
+  align-items: center;
+  height: 34px;
+  max-width: 0;
+  min-width: 0;
+  overflow: hidden;
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    max-width 0.28s ease,
+    opacity 0.18s ease,
+    visibility 0s linear 0.28s;
+}
+
+.zone.is-open .services {
+  max-width: 460px;
+  opacity: 1;
+  visibility: visible;
+  transition:
+    max-width 0.28s ease,
+    opacity 0.18s ease 0.08s,
+    visibility 0s;
+}
+
+.service {
+  display: block;
+  padding: 0 12px;
+  color: var(--ucfhb-fg);
+  font-size: 15px;
+  line-height: 1;
+  text-decoration: none;
+  white-space: nowrap;
+  flex: none;
+}
+
+.services > :first-child {
+  margin-left: 10px;
+}
+.services > :last-child {
+  margin-right: 10px;
+}
+
+.service .t-bold {
+  color: var(--ucfhb-accent);
+}
+
+/* v3 dimmed the whole group on hover and lit only the link under the pointer.
+   That does not survive the tray sliding out from under the cursor — the
+   pointer lands mid-tray the moment it opens and every link greys out before
+   the visitor has moved a muscle. Lighting the hovered link instead says the
+   same thing and only ever fires on a deliberate hover.
+
+   Set on the link, not on a weight class inside it: "workday" and "Email" are
+   bare text with no span of their own, and the gold half of a lockup carries
+   its own colour and keeps it either way. */
+.service:hover {
+  color: var(--ucfhb-accent);
 }
 
 /* ---------------------------------------------------------------- search */
 
+/* The rule is the only thing separating two right-aligned clusters that would
+   otherwise read as one run of links. */
 .search {
   display: flex;
   align-items: center;
+  margin-left: 16px;
+  padding-left: 16px;
+  border-left: 1px solid var(--ucfhb-rule);
 }
 
 .search-form {
   max-width: 0;
+  min-width: 0;
   overflow: hidden;
   opacity: 0;
   transition:
-    max-width 0.2s ease,
-    opacity 0.2s ease;
+    max-width 0.28s ease,
+    opacity 0.18s ease;
 }
 
 .search.is-open .search-form {
-  max-width: 300px;
+  max-width: 260px;
   opacity: 1;
-  margin-right: 8px;
 }
 
+/* White field against the gold button, meeting flush to make one pill — the v3
+   shape, minus its 1px border and its separate submit control. Enter submits;
+   the button beside it is the open/close toggle, not a second way to search. */
 .search-input {
-  width: 300px;
-  height: 38px;
+  width: 260px;
+  height: 34px;
   padding: 0 12px;
-  background: transparent;
-  border: 1px solid var(--ucfhb-rule);
-  border-radius: 0;
-  color: var(--ucfhb-fg);
+  background: #fff;
+  border: 0;
+  border-radius: 3px 0 0 3px;
+  color: #000;
   font-family: inherit;
   font-size: 14px;
   -webkit-appearance: none;
@@ -235,39 +400,50 @@
 }
 
 .search-input::placeholder {
-  color: var(--ucfhb-muted);
+  color: #666;
   opacity: 1;
 }
 .search-input::-webkit-search-cancel-button {
   -webkit-appearance: none;
   appearance: none;
 }
-.search-input:focus {
-  border-color: var(--ucfhb-accent);
+
+/* Inset, unlike every other control: the field sits inside an `overflow:
+   hidden` wrapper that would clip an outer ring away to nothing. Gold rather
+   than the double ring, so the focused field reads as part of the same control
+   as the gold button it is attached to. */
+.search-input:focus-visible {
   outline: none;
+  box-shadow: inset 0 0 0 2px var(--ucfhb-accent);
 }
 
 .search-toggle {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 38px;
-  height: 38px;
+  width: 34px;
+  height: 34px;
   padding: 0;
-  background: none;
+  background: var(--ucfhb-accent);
   border: 0;
-  color: var(--ucfhb-fg);
+  border-radius: 3px;
+  color: #000;
   cursor: pointer;
   flex: none;
+  transition: border-radius 0.28s ease;
+}
+
+.search.is-open .search-toggle {
+  border-radius: 0 3px 3px 0;
 }
 
 .search-toggle:hover {
-  color: var(--ucfhb-accent);
+  background: var(--ucfhb-accent-hover);
 }
 .search-toggle svg {
   display: block;
-  width: 17px;
-  height: 17px;
+  width: 16px;
+  height: 16px;
 }
 
 .i-close {
@@ -280,38 +456,10 @@
   display: block;
 }
 
-/* ----------------------------------------------------------------- myucf */
-
-.myucf {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  height: 38px;
-  padding: 0 16px;
-  background: var(--ucfhb-accent);
-  color: #000;
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  text-decoration: none;
-  white-space: nowrap;
-  flex: none;
-}
-
-.myucf:hover {
-  background: var(--ucfhb-accent-hover);
-}
-.myucf svg {
-  display: block;
-  width: 15px;
-  height: 15px;
-}
-
 /* ------------------------------------------------------------ a11y + fx */
 
 /* Double ring: legible against the black bar, the white wordmark, and the gold
-   MyUCF button alike, without relying on any one of them for contrast. */
+   search button alike, without relying on any one of them for contrast. */
 a:focus-visible,
 button:focus-visible,
 input:focus-visible {
@@ -364,19 +512,17 @@ input:focus-visible {
     clip-path: inset(50%);
   }
 
-  /* The open field fills the row rather than animating to a fixed width.
-     Every ancestor needs min-width:0, or the input's 300px basis stops the
-     whole chain from shrinking and pushes MyUCF off the right edge. */
+  /* The open field fills the row rather than animating to a fixed width. Every
+     ancestor needs min-width:0, or the input's 260px basis stops the whole
+     chain from shrinking and pushes the bar off the right edge. The tray needs
+     none of this — below 768px it leaves the row entirely. */
   .actions {
     flex: 1;
     min-width: 0;
     justify-content: flex-end;
   }
 
-  .zone {
-    flex: none;
-  }
-
+  .zone,
   .search {
     min-width: 0;
   }
@@ -384,6 +530,11 @@ input:focus-visible {
   .search.is-open {
     flex: 1;
     min-width: 0;
+  }
+
+  .search {
+    margin-left: 10px;
+    padding-left: 10px;
   }
 
   .search-form {
@@ -398,7 +549,7 @@ input:focus-visible {
 
   /* 16px is the threshold below which iOS Safari zooms the page on focus —
      and it does not zoom back out on blur, leaving the bar wider than the
-     visual viewport with MyUCF stranded off the right edge. Fixing it here
+     visual viewport with the toggle stranded off the right edge. Fixing it here
      rather than with `maximum-scale=1` on the host page's viewport meta: that
      tag is not ours to set, and suppressing pinch-zoom to fix our own input
      would be an accessibility regression imposed on every host site. */
@@ -412,21 +563,110 @@ input:focus-visible {
   /* 44px is the Apple HIG minimum and the WCAG 2.5.5 (Target Size) bar. The
      mobile bar is 60px tall, so both controls grow into existing headroom
      rather than changing the height of anything. The input matches so the
-     three sit on one line — a 38px field between 44px controls reads as a
-     mistake. Desktop keeps 38px: it is a pointer target, not a thumb one. */
+     three sit on one line — a 34px field between 44px controls reads as a
+     mistake. Desktop keeps 34px: it is a pointer target, not a thumb one. */
+  .search-toggle,
+  .signin {
+    height: 44px;
+  }
   .search-toggle {
     width: 44px;
-    height: 44px;
   }
 
-  .myucf {
-    height: 44px;
+  /*
+   * On a phone the tray drops below the bar instead of sharing the row with it.
+   * Four labels need 344px and the row has 179px, and the two ways to fix that
+   * in place are both bad: scrolling hides half the links behind a gesture
+   * nothing announces, and clipping hides them behind nothing at all. A second
+   * row fits all four at a thumb-sized target and is what v3 did here too.
+   *
+   * It is positioned rather than in flow, so the bar stays 60px and the host
+   * page never reflows when the tray opens — the panel overlays the top of the
+   * page the way a menu should.
+   *
+   * The scroll container this replaces had a second cost worth recording:
+   * `overflow-x: auto` promoted the tray to its own composited layer, and
+   * macOS Chromium then rasterized the label text differently on each run,
+   * moving ~120 pixels a time and making the visual baseline permanently flaky.
+   */
+  .bar {
+    position: relative;
   }
-}
 
-@media (max-width: 419px) {
-  .myucf {
-    padding: 0 12px;
+  .services {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    left: 0;
+    z-index: 1;
+    height: auto;
+    max-width: none;
+    max-height: 0;
+    padding: 0 15px;
+    background: var(--ucfhb-bg);
+    justify-content: space-between;
+    /* Inset, so it draws nothing at all while the panel is collapsed and stays
+       glued to the bottom edge on the way down. A real border-bottom would sit
+       under the bar as a permanent 3px gold line. */
+    box-shadow: inset 0 -3px 0 var(--ucfhb-accent);
+    transition:
+      max-height 0.28s ease,
+      opacity 0.18s ease,
+      visibility 0s linear 0.28s;
+  }
+
+  /* `max-width` has to be cleared here as well as on the closed panel above.
+     The desktop open state caps the tray at 460px, which is the width it slides
+     out to inside the row; down here the shelf spans the bar instead, and left/
+     right:0 cannot beat a max-width that is still in force. It only showed
+     between 461px and 767px — every phone width is under the cap, so the shelf
+     looked correct on the devices it was checked against and stopped 24px short
+     on a tablet. */
+  .zone.is-open .services {
+    max-width: none;
+    max-height: 56px;
+    transition:
+      max-height 0.28s ease,
+      opacity 0.18s ease 0.06s,
+      visibility 0s;
+  }
+
+  /* Room for a thumb, and the reason the panel is 56px rather than the 34px it
+     is on the desktop row. */
+  .service {
+    padding: 16px 4px;
+  }
+
+  .services > :first-child {
+    margin-left: 0;
+  }
+  .services > :last-child {
+    margin-right: 0;
+  }
+
+  /*
+   * "UCF SIGN IN" and the wordmark cannot both have the row: at 390px the two
+   * together overrun the search button by some 70px. The wordmark wins, because
+   * the lock is the more self-explanatory of the two things left holding a
+   * meaning — v3 collapsed this control to exactly the same glyph.
+   *
+   * Clipped, not `display: none`, so the button keeps "UCF SIGN IN" as its
+   * accessible name at every width and never needs an aria-label to be read
+   * correctly.
+   */
+  .signin-label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    clip-path: inset(50%);
+  }
+
+  .signin {
+    gap: 6px;
+    padding: 0 10px;
   }
 }
 
@@ -440,17 +680,22 @@ input:focus-visible {
     clip: auto;
     clip-path: none;
     opacity: 1;
-    max-width: 220px;
-    transition:
-      opacity 0.2s ease,
-      max-width 0.2s ease;
   }
+}
 
-  /* `.is-searching` is mirrored onto `.inner` by initSearch rather than being
-     derived with `.inner:has(.search.is-open)`. iOS Safari does not reliably
-     re-evaluate a `:has()` ancestor when script changes a descendant's class
-     inside a shadow root: the wordmark kept its width and starved the input
-     down to a bare caret. A descendant selector has no such failure mode. */
+/*
+ * Below 980px the container is 720px, and an open panel wants more of it than
+ * is left over once the wordmark has had its say — at 768px the tray was
+ * pushing the search button clean off the right edge. So opening a panel spends
+ * the wordmark on it. Above 980px there is room for both and this never fires.
+ *
+ * The flag is mirrored onto `.inner` by whichever panel opened, rather than
+ * being derived with `.inner:has(.is-open)`. iOS Safari does not reliably
+ * re-evaluate a `:has()` ancestor when script changes a descendant's class
+ * inside a shadow root: the wordmark kept its width and starved the search
+ * input down to a bare caret. A descendant selector has no such failure mode.
+ */
+@media (max-width: 979px) {
   /* `flex: 0 1 auto` is belt and braces: if the collapse below ever fails to
      apply, `.home` yields its space rather than the field being squeezed to
      nothing. */
@@ -465,6 +710,24 @@ input:focus-visible {
      `overflow:hidden` alone resolves it to zero on current engines, but saying
      it outright means the collapse does not depend on that interaction. */
   .inner.is-searching .wordmark {
+    opacity: 0;
+    max-width: 0;
+    min-width: 0;
+    overflow: hidden;
+    pointer-events: none;
+  }
+}
+
+/* The tray only competes for the row where it is still IN the row. Below 768px
+   it drops beneath the bar, so the wordmark can stay exactly where it is. */
+@media (min-width: 768px) and (max-width: 979px) {
+  .inner.is-tray .home {
+    gap: 0;
+    min-width: 0;
+    flex: 0 1 auto;
+  }
+
+  .inner.is-tray .wordmark {
     opacity: 0;
     max-width: 0;
     min-width: 0;

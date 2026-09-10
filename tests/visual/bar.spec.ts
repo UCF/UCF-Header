@@ -1,7 +1,7 @@
 import { expect, test } from '@playwright/test';
 
 /**
- * The visual regression matrix: 6 widths x 3 container modes x 2 search states.
+ * The visual regression matrix: 7 widths x 3 container modes x 3 panel states.
  *
  * Baselines are generated inside the pinned Playwright container (see
  * `npm run test:visual:docker`) — font rasterization differs enough between
@@ -10,7 +10,15 @@ import { expect, test } from '@playwright/test';
  * once the look is signed off.
  */
 
-const WIDTHS = [360, 390, 768, 980, 1200, 1440];
+/*
+ * 600 covers the band between the widest phone and the 768px breakpoint —
+ * tablets in portrait, and a browser window dragged narrow. It is here because
+ * nothing was: the mobile shelf is only a shelf below 768px, and every other
+ * width in this list that renders one (360, 390, and the iOS descriptors at
+ * 375-430) is under 460px. A stale `max-width: 460px` on the open tray therefore
+ * capped the shelf on tablets while every screenshot in the matrix stayed green.
+ */
+const WIDTHS = [360, 390, 600, 768, 980, 1200, 1440];
 const MODES = [
   { name: 'default', fixture: 'bare' },
   { name: 'wide', fixture: 'bare-wide' },
@@ -30,8 +38,22 @@ for (const { name, fixture } of MODES) {
       await page.goto(`/fixtures/${fixture}.html`);
       await page.locator('#ucfhb').locator('.search-toggle').click();
       // Let the pop-out settle; the assertion itself disables animations.
-      await page.waitForTimeout(250);
+      await page.waitForTimeout(300);
       await expect(page.locator('#ucfhb')).toHaveScreenshot(`${name}-${width}-open.png`);
+    });
+
+    /*
+     * The tray is the wider of the two panels and the one that runs out of room
+     * first — below 980px it has to spend the wordmark to fit, and on a phone it
+     * scrolls. That is exactly the kind of thing a screenshot catches and a
+     * geometry assertion talks itself out of.
+     */
+    test(`${name} @ ${width} — sign-in tray open`, async ({ page }) => {
+      await page.setViewportSize({ width, height: 400 });
+      await page.goto(`/fixtures/${fixture}.html`);
+      await page.locator('#ucfhb').locator('.signin').click();
+      await page.waitForTimeout(300);
+      await expect(page.locator('#ucfhb')).toHaveScreenshot(`${name}-${width}-tray.png`);
     });
   }
 }

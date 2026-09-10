@@ -1,18 +1,15 @@
 /**
- * The pop-out search. This is the only interactive behaviour on the critical
- * path — everything else waits until after first paint.
+ * The pop-out search. This and the sign-in tray are the only interactive
+ * behaviour on the critical path — everything else waits until after first
+ * paint.
  *
  * Submission itself needs no JavaScript: the form carries a real action and a
  * `name="q"` input, so the browser performs the GET natively.
  */
 
-export interface SearchController {
-  open(): void;
-  close(): void;
-  destroy(): void;
-}
+import type { Disclosure } from './disclosure';
 
-export function initSearch(root: ShadowRoot, doc: Document = document): SearchController | null {
+export function initSearch(root: ShadowRoot, doc: Document = document): Disclosure | null {
   const wrapEl = root.querySelector<HTMLElement>('.search');
   const toggleEl = root.querySelector<HTMLButtonElement>('.search-toggle');
   const inputEl = root.querySelector<HTMLInputElement>('.search-input');
@@ -38,10 +35,13 @@ export function initSearch(root: ShadowRoot, doc: Document = document): SearchCo
    */
   const inner = root.querySelector<HTMLElement>('.inner');
 
+  let before: (() => void) | null = null;
+
   const isOpen = () => wrap.classList.contains('is-open');
 
   const open = (): void => {
     if (isOpen()) return;
+    before?.();
     wrap.classList.add('is-open');
     inner?.classList.add('is-searching');
     toggle.setAttribute('aria-expanded', 'true');
@@ -80,6 +80,9 @@ export function initSearch(root: ShadowRoot, doc: Document = document): SearchCo
   return {
     open,
     close: () => close(),
+    onOpen(fn) {
+      before = fn;
+    },
     destroy() {
       toggle.removeEventListener('click', onToggle);
       root.removeEventListener('keydown', onKeydown);

@@ -17,6 +17,15 @@ async function openSearch(page: Page): Promise<void> {
   });
 }
 
+/** Opens the sign-in tray and waits for its links to reach full opacity. */
+async function openTray(page: Page): Promise<void> {
+  await page.locator('#ucfhb').locator('.signin').click();
+  await page.waitForFunction(() => {
+    const tray = document.getElementById('ucfhb')?.shadowRoot?.querySelector('.services');
+    return !!tray && getComputedStyle(tray).opacity === '1';
+  });
+}
+
 for (const fixture of FIXTURES) {
   test(`${fixture}: no accessibility violations, search closed`, async ({ page }) => {
     await page.goto(`/fixtures/${fixture}.html`);
@@ -33,6 +42,18 @@ for (const fixture of FIXTURES) {
   test(`${fixture}: no accessibility violations, search open`, async ({ page }) => {
     await page.goto(`/fixtures/${fixture}.html`);
     await openSearch(page);
+
+    const { violations } = await new AxeBuilder({ page })
+      .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa'])
+      .include('#ucfhb')
+      .analyze();
+
+    expect(violations.map((v) => `${v.id}: ${v.help}`)).toEqual([]);
+  });
+
+  test(`${fixture}: no accessibility violations, sign-in tray open`, async ({ page }) => {
+    await page.goto(`/fixtures/${fixture}.html`);
+    await openTray(page);
 
     const { violations } = await new AxeBuilder({ page })
       .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa'])

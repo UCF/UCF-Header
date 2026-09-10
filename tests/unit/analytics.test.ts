@@ -79,13 +79,13 @@ describe('interaction events', () => {
     window.dataLayer = [];
   });
 
-  it('records a MyUCF click', () => {
+  it('records which service was taken, by hostname', () => {
     const root = setup();
     root
-      .querySelector<HTMLAnchorElement>('.myucf')
+      .querySelector<HTMLAnchorElement>('.service[href*="my.ucf.edu"]')
       ?.dispatchEvent(new MouseEvent('click', { bubbles: true, composed: true }));
 
-    expect(findEvent('myucf_click')).toBeDefined();
+    expect(findEvent('service_click')?.ucf_target).toBe('my.ucf.edu');
   });
 
   // Query text must never leave the page — presence only.

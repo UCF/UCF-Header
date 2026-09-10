@@ -26,6 +26,15 @@ test('search open', async ({ page }) => {
   await page.goto('/fixtures/bare.html');
   await page.locator('#ucfhb').locator('.search-toggle').tap();
   // Let the pop-out settle; the assertion itself disables animations.
-  await page.waitForTimeout(250);
+  await page.waitForTimeout(300);
   await expect(page.locator('#ucfhb')).toHaveScreenshot('ios-open.png');
+});
+
+// Where the tray has least room and most to prove: the label clips away to the
+// lock, and the four links scroll under a fade at the trailing edge.
+test('sign-in tray open', async ({ page }) => {
+  await page.goto('/fixtures/bare.html');
+  await page.locator('#ucfhb').locator('.signin').tap();
+  await page.waitForTimeout(300);
+  await expect(page.locator('#ucfhb')).toHaveScreenshot('ios-tray.png');
 });

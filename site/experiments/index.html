@@ -1,0 +1,436 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Header Experiments</title>
+<meta name="description" content="A live sandbox for open questions about the UCF header bar.">
+<!-- Internal working page. It is not linked from the docs and should not be indexed. -->
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" href="../favicon.ico" sizes="any">
+<link rel="icon" href="../icon.svg" type="image/svg+xml">
+<script>
+  // Loads the real header, forwarding any of its supported options passed to
+  // this page — e.g. /experiments/?use-full-width=1 — so an experiment can be
+  // viewed against any of the shipped layouts.
+  //
+  // Options are matched against a known list and only accept a value of "1",
+  // so nothing arbitrary can be written into the script's src.
+  (function () {
+    var supported = ['use-1200-breakpoint', 'use-full-width', 'use-bootstrap-overrides'];
+    var params = new URLSearchParams(window.location.search);
+    var query = supported.filter(function (o) { return params.get(o) === '1'; })
+                         .map(function (o) { return o + '=1'; }).join('&');
+
+    var s = document.createElement('script');
+    s.id = 'ucfhb-script';
+    s.src = '../bar/js/university-header.js' + (query ? '?' + query : '');
+    document.head.appendChild(s);
+  }());
+</script>
+<style>
+  :root {
+    --black: #000;
+    --ink: #14140f;
+    --ink-2: #55554c;
+    /* Darker than the docs page's equivalent tone: here it carries body copy
+       and the console's help text, which need 4.5:1. This clears it on both
+       the paper and the surface backgrounds (4.86 and 5.07). */
+    --ink-3: #6f6f66;
+    --paper: #fbfaf7;
+    --surface: #fff;
+    --rule: #e2ded4;
+    --gold: #edb80c;
+    --gold-deep: #7d6100;
+    --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--font);
+    font-size: 17px;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .wrap { max-width: 860px; margin: 0 auto; padding: 0 24px; }
+
+  header.hero { border-bottom: 1px solid var(--rule); background: var(--surface); }
+  header.hero .wrap { padding-top: 48px; padding-bottom: 40px; }
+
+  .eyebrow {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--gold-deep);
+    margin: 0 0 14px;
+  }
+
+  h1 {
+    font-size: clamp(2rem, 5vw, 2.8rem);
+    line-height: 1.05;
+    letter-spacing: -0.025em;
+    margin: 0 0 18px;
+    text-wrap: balance;
+  }
+
+  .lede { font-size: 1.15rem; color: var(--ink-2); margin: 0; max-width: 58ch; }
+
+  section { padding: 44px 0; border-bottom: 1px solid var(--rule); }
+  section:last-of-type { border-bottom: 0; }
+
+  h2 { font-size: 1.6rem; letter-spacing: -0.02em; margin: 0 0 10px; text-wrap: balance; }
+  h3 { font-size: 1.02rem; margin: 30px 0 6px; }
+
+  p { margin: 0 0 16px; max-width: 68ch; }
+  p:last-child { margin-bottom: 0; }
+
+  ul { max-width: 68ch; padding-left: 20px; }
+  li { margin-bottom: 8px; }
+
+  a { color: var(--gold-deep); text-underline-offset: 2px; }
+  a:focus-visible, button:focus-visible {
+    outline: 3px solid var(--gold);
+    outline-offset: 2px;
+  }
+
+  code { font-family: var(--mono); font-size: 0.88em; }
+  p code, li code {
+    background: #efece2;
+    padding: 0.12em 0.38em;
+    color: var(--ink);
+  }
+
+  /* ------------------------------------------------------------- controls */
+
+  /*
+   * The control sits directly under the bar it changes, so the switch and its
+   * effect are in view together — the whole point of the page is flicking
+   * between the two states without scrolling to find the toggle again.
+   */
+  .console {
+    background: var(--surface);
+    border: 1px solid var(--rule);
+    border-left: 3px solid var(--gold);
+    padding: 18px 20px;
+    margin: 0 0 26px;
+  }
+
+  .control { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+
+  .control-text { flex: 1 1 320px; min-width: 0; }
+  .control-text .name { font-weight: 700; display: block; }
+  .control-text .why { color: var(--ink-2); font-size: 15px; }
+
+  .switch {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 0;
+    background: none;
+    border: 0;
+    color: var(--ink);
+    font: inherit;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    cursor: pointer;
+    flex: none;
+  }
+
+  .switch .track {
+    width: 56px;
+    height: 30px;
+    padding: 3px;
+    background: var(--black);
+    border-radius: 999px;
+    transition: background 0.15s ease;
+  }
+
+  .switch .thumb {
+    display: block;
+    width: 24px;
+    height: 24px;
+    background: var(--gold);
+    border-radius: 50%;
+    transform: translateX(26px);
+    transition: transform 0.15s ease;
+  }
+
+  .switch[aria-checked="false"] .track { background: #c9c4b6; }
+  .switch[aria-checked="false"] .thumb { transform: translateX(0); background: var(--surface); }
+
+  .state { min-width: 4ch; }
+
+  .console-note {
+    margin: 14px 0 0;
+    padding-top: 12px;
+    border-top: 1px solid var(--rule);
+    color: var(--ink-3);
+    font-size: 14px;
+    line-height: 1.5;
+  }
+
+  .console[hidden] { display: none; }
+
+  .fallback {
+    background: var(--surface);
+    border: 1px solid var(--rule);
+    border-left: 3px solid #b00;
+    padding: 18px 20px;
+    margin: 0 0 26px;
+    font-size: 15px;
+  }
+
+  /* Filler so the page scrolls and the bar can be judged over real content. */
+  .filler { color: var(--ink-3); }
+
+  footer { padding: 36px 0 64px; color: var(--ink-3); font-size: 14px; }
+  footer a { color: var(--ink-2); }
+
+  @media (prefers-reduced-motion: reduce) {
+    .switch .track, .switch .thumb { transition: none; }
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <p class="eyebrow">UCF Web Communications</p>
+    <h1>Header Experiments</h1>
+    <p class="lede">A live sandbox for open questions about the bar — the ones that are quicker to answer by looking than by describing. The header above this page is the real one, running the shipped code.</p>
+  </div>
+</header>
+
+<main>
+
+<section>
+  <div class="wrap">
+    <h2>The wordmark</h2>
+    <p>The question is not whether &ldquo;University of Central Florida&rdquo; belongs beside the mark. It is what the bar actually looks like once the text is gone, and whether anything else in the row moves when it goes. Flip the switch and the bar at the top of this page changes in place — no reload, nothing else on the page touched.</p>
+
+    <noscript>
+      <div class="fallback">This page needs JavaScript to change the bar.</div>
+    </noscript>
+
+    <div class="console" id="console" hidden>
+      <div class="control">
+        <span class="control-text">
+          <span class="name" id="wordmark-name">Wordmark beside the mark</span>
+          <span class="why">&ldquo;University of Central Florida&rdquo;, stacked on two lines</span>
+        </span>
+        <button class="switch" type="button" role="switch" aria-checked="true"
+                aria-labelledby="wordmark-name" data-experiment="wordmark">
+          <span class="track" aria-hidden="true"><span class="thumb"></span></span>
+          <span class="state" id="wordmark-state">On</span>
+        </button>
+      </div>
+      <p class="console-note">Press <code>W</code> to flick between the two. The switch is written into this page&rsquo;s address, so the link you copy opens in the state you were looking at.</p>
+    </div>
+
+    <h3>What actually changes</h3>
+    <p>Turning the wordmark off <strong>clips the text rather than deleting it</strong> — it stays in the accessibility tree and in the page&rsquo;s anchor text, so the link home keeps its name for a screen reader and its description for a crawler. That is the same technique the bar already uses on phones under 390px, so this is a preview of something we could ship, not an approximation of it.</p>
+    <p>Nothing else in the row needs adjusting, which is worth stating plainly because it is the thing most likely to have gone wrong. The mark and the wordmark sit inside one flex link with a 12px gap between them; a clipped wordmark leaves the flow entirely, so the gap goes with it rather than being left behind as a dent. Measured at 1440px, 980px, 768px and 390px, <strong>the mark stays at exactly the same position, the sign-in tray and search keep the same right edge, and the bar keeps its height</strong>. The only thing that changes is the text.</p>
+
+    <h3>Worth watching at narrow widths</h3>
+    <ul>
+      <li><strong>Under 980px the bar already spends the wordmark</strong> when a panel opens, because the tray and the open search field need the room. With the wordmark off, opening either one no longer shifts the logo.</li>
+      <li><strong>Under 390px the wordmark is hidden either way.</strong> On a small phone the two states are identical, which is itself an argument worth having: the compact bar is already the one most visitors see.</li>
+      <li>The three shipped layout options work here too — add <code>?use-full-width=1</code> or <code>?use-1200-breakpoint=1</code> to the address to judge the change against a wider container.</li>
+    </ul>
+
+    <p>Nothing on this page changes the header any site is embedding. If we decide the bar reads better without the text, it becomes a one-line change in <code>bar.css</code> and a set of new visual baselines.</p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>Adding the next one</h2>
+    <p>This page is built to take more than one question. The experiment above is a single rule keyed off a <code>data-x-*</code> attribute on the header&rsquo;s host element, held in one stylesheet appended after the bar&rsquo;s own — so with no attribute set, the bar renders exactly as it ships. A second experiment is another attribute, another rule, and another switch; see the comments in this file.</p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2 class="filler">Page content</h2>
+    <p class="filler">Ordinary body copy, here only so the bar is judged sitting above something rather than above nothing. Scroll it under the header, resize the window, open the sign-in tray and the search.</p>
+    <p class="filler">The bar does not follow the page down — it scrolls away with the content, as it always has.</p>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <p>Maintained by UCF Web Communications · <a href="../">Header documentation</a></p>
+  </div>
+</footer>
+
+<script>
+/*
+ * Experiment harness.
+ *
+ * The bar renders inside a shadow root, which is exactly the isolation we want
+ * in production and the one thing standing in the way here: page CSS cannot
+ * reach the wordmark. So each experiment is a rule inside the shadow root's own
+ * cascade, in a stylesheet this page appends after the bar's — and every rule
+ * is keyed off a `data-x-*` attribute on the host element, so an experiment
+ * that is switched off contributes nothing at all.
+ *
+ * To add an experiment: add an entry to EXPERIMENTS with its CSS, drop a switch
+ * into the console markup above with a matching `data-experiment`, and that is
+ * the whole job. Nothing below needs editing.
+ */
+(function () {
+  'use strict';
+
+  var HOST_ID = 'ucfhb';
+
+  var EXPERIMENTS = {
+    /*
+     * Clipped rather than `display: none`, so the link home keeps its
+     * accessible name and its crawler-visible anchor text — the same treatment
+     * bar.css already gives the wordmark below 390px.
+     *
+     * `:host([...])` outweighs the plain `.wordmark` selectors in bar.css, so
+     * this holds at every breakpoint regardless of stylesheet order.
+     */
+    wordmark: {
+      // `on` is the bar as it ships, so the attribute is only ever set to "off".
+      off: ':host([data-x-wordmark="off"]) .wordmark {' +
+           'position: absolute;' +
+           'width: 1px;' +
+           'height: 1px;' +
+           'margin: -1px;' +
+           'overflow: hidden;' +
+           'clip: rect(0 0 0 0);' +
+           'clip-path: inset(50%);' +
+           '}',
+      // Keyboard shortcut for flicking between states while comparing.
+      key: 'w',
+    },
+  };
+
+  var css = Object.keys(EXPERIMENTS).map(function (name) {
+    return EXPERIMENTS[name].off;
+  }).join('\n');
+
+  /**
+   * Appends the experiment styles to the bar's shadow root.
+   *
+   * `adoptedStyleSheets` is appended to rather than replaced: the bar's own
+   * sheet is already in there, and pushing onto the end puts these rules last
+   * in the cascade. A `<style>` element is the fallback for Safari 16.0–16.3,
+   * which is the same browser range the bar itself falls back for.
+   */
+  function addStyles(root) {
+    try {
+      if ('adoptedStyleSheets' in root && typeof CSSStyleSheet === 'function') {
+        var sheet = new CSSStyleSheet();
+        sheet.replaceSync(css);
+        root.adoptedStyleSheets = root.adoptedStyleSheets.concat(sheet);
+        return;
+      }
+    } catch (e) {
+      // Fall through to the <style> element.
+    }
+
+    var style = document.createElement('style');
+    style.textContent = css;
+    root.appendChild(style);
+  }
+
+  /**
+   * Waits for the header to mount. The bundle is a plain script appended to
+   * <head>, so it may run before or after this page is parsed — polling a few
+   * frames is simpler than racing it, and gives up rather than spinning if the
+   * bundle never arrives.
+   */
+  function whenMounted(done) {
+    var tries = 0;
+
+    (function look() {
+      var host = document.getElementById(HOST_ID);
+      if (host && host.shadowRoot) return done(host);
+      if (++tries > 180) return done(null); // ~3s at 60fps
+      requestAnimationFrame(look);
+    }());
+  }
+
+  whenMounted(function (host) {
+    var consoleEl = document.getElementById('console');
+
+    if (!host) {
+      consoleEl.insertAdjacentHTML('beforebegin',
+        '<div class="fallback">The header did not load, so there is nothing to experiment on. ' +
+        'Check that <code>bar/js/university-header.js</code> is being served.</div>');
+      return;
+    }
+
+    addStyles(host.shadowRoot);
+    consoleEl.hidden = false;
+
+    var params = new URLSearchParams(window.location.search);
+    var switches = consoleEl.querySelectorAll('[data-experiment]');
+
+    Array.prototype.forEach.call(switches, function (btn) {
+      var name = btn.getAttribute('data-experiment');
+      var stateEl = document.getElementById(name + '-state');
+
+      function set(on, pushToUrl) {
+        btn.setAttribute('aria-checked', String(on));
+        if (stateEl) stateEl.textContent = on ? 'On' : 'Off';
+
+        if (on) host.removeAttribute('data-x-' + name);
+        else host.setAttribute('data-x-' + name, 'off');
+
+        if (!pushToUrl) return;
+        // replaceState, not pushState: flicking back and forth to compare
+        // should not bury the page you arrived from under twenty entries.
+        var q = new URLSearchParams(window.location.search);
+        if (on) q.delete(name);
+        else q.set(name, 'off');
+        var s = q.toString();
+        history.replaceState(null, '', window.location.pathname + (s ? '?' + s : ''));
+      }
+
+      function toggle() {
+        set(btn.getAttribute('aria-checked') !== 'true', true);
+      }
+
+      // The address bar is the source of truth on load, so a copied link opens
+      // in the state it was copied from.
+      set(params.get(name) !== 'off', false);
+      btn.addEventListener('click', toggle);
+
+      var key = (EXPERIMENTS[name] || {}).key;
+      if (!key) return;
+
+      document.addEventListener('keydown', function (e) {
+        if (e.key.toLowerCase() !== key) return;
+        if (e.metaKey || e.ctrlKey || e.altKey) return;
+
+        // Typing in the bar's own search field retargets to the host element,
+        // so the shortcut has to stand down for it as well as for this page's
+        // own fields.
+        var t = e.target;
+        if (t === host || (t && (t.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName)))) return;
+
+        e.preventDefault();
+        toggle();
+      });
+    });
+  });
+}());
+</script>
+
+</body>
+</html>

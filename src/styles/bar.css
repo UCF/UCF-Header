@@ -237,7 +237,11 @@
 }
 
 /* Weight only. Colour is the parent's business: gold-on-gold in the sign-in
-   label, gold-on-white in a service link. */
+   label, gold-on-white in a service link.
+
+   These are the two halves of a lockup — "myUCF", "webcourses", "UCF SIGN IN".
+   A label with no second half wears neither class and inherits the bar's own
+   400 from `.bar`. */
 .t-light {
   font-weight: 300;
 }
@@ -342,8 +346,12 @@
    That does not survive the tray sliding out from under the cursor — the
    pointer lands mid-tray the moment it opens and every link greys out before
    the visitor has moved a muscle. Lighting the hovered link instead says the
-   same thing and only ever fires on a deliberate hover. */
-.service:hover .t-light {
+   same thing and only ever fires on a deliberate hover.
+
+   Set on the link, not on a weight class inside it: "workday" and "Email" are
+   bare text with no span of their own, and the gold half of a lockup carries
+   its own colour and keeps it either way. */
+.service:hover {
   color: var(--ucfhb-accent);
 }
 

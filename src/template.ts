@@ -15,9 +15,10 @@ export const MYUCF_URL = 'https://my.ucf.edu';
  *
  * v3 drew each label as a slice of a spritesheet, which is why the two-tone
  * lockups — gold "UCF" against light "my", gold "web" against light "courses" —
- * were baked into a PNG. Here they are two spans, so the labels are real anchor
- * text: selectable, translatable, scalable, and readable by a crawler. `bold`
- * marks the gold half, and its position in `parts` is the position on screen.
+ * were baked into a PNG. Here a lockup is two spans and a single-part label is
+ * bare text; either way it is real anchor text, so the labels are selectable,
+ * translatable, scalable, and readable by a crawler. `bold` marks the gold
+ * half, and its position in `parts` is the position on screen.
  */
 interface Service {
   href: string;
@@ -35,10 +36,18 @@ const SERVICES: Service[] = [
 ];
 
 function service(s: Service): string {
-  // No aria-label: the spans concatenate to exactly the right accessible name
+  // The weight split is what makes a lockup a lockup: light only reads as
+  // deliberate opposite a bold half. "workday" and "Email" have no second half,
+  // so they are plain labels at the bar's own weight rather than the light half
+  // of a two-tone pair that is not there.
+  const lockup = s.parts.length > 1;
+
+  // No aria-label: the parts concatenate to exactly the right accessible name
   // ("myUCF", "webcourses"), so adding one would only risk drifting from it.
   const label = s.parts
-    .map((p) => `<span class="${p.bold ? 't-bold' : 't-light'}">${p.text}</span>`)
+    .map((p) =>
+      lockup ? `<span class="${p.bold ? 't-bold' : 't-light'}">${p.text}</span>` : p.text,
+    )
     .join('');
 
   return `<a class="service" href="${s.href}">${label}</a>`;

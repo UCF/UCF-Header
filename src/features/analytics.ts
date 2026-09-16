@@ -16,9 +16,19 @@
 
 import type { HeaderConfig } from '../config';
 
+/**
+ * Every action reads `{type}_{name}` — the verb first, so a report groups by
+ * what was done rather than scattering the same gesture across four names.
+ *
+ * The template literal type is what keeps that true after this file stops being
+ * the only one anybody reads: `tray_click` is a type error, `click_tray` is not.
+ */
+type Interaction = 'click' | 'open' | 'close' | 'submit';
+type Action = `${Interaction}_${string}`;
+
 interface HeaderEvent {
   event: 'ucf_header_interaction';
-  ucf_action: string;
+  ucf_action: Action;
   ucf_target?: string | null;
   ucf_host: string;
   ucf_version: string;
@@ -35,7 +45,7 @@ function dataLayer(): unknown[] {
   return window.dataLayer;
 }
 
-export function track(cfg: HeaderConfig, action: string, target: string | null = null): void {
+export function track(cfg: HeaderConfig, action: Action, target: string | null = null): void {
   const payload: HeaderEvent = {
     event: 'ucf_header_interaction',
     ucf_action: action,
@@ -75,25 +85,25 @@ export function initAnalytics(root: ShadowRoot, cfg: HeaderConfig, doc: Document
     const path = e.composedPath();
     const hit = (sel: string) => path.some((n) => n instanceof Element && n.matches(sel));
 
-    if (hit('.home')) track(cfg, 'home_click');
+    if (hit('.home')) track(cfg, 'click_home');
     // The service links are the reason the tray exists, so which one was taken
     // matters more than that the tray was opened. Reported by hostname, which
     // is stable across the redirect chains these all sit behind.
     else if (hit('.service')) {
       const link = path.find((n): n is HTMLAnchorElement => n instanceof HTMLAnchorElement);
-      track(cfg, 'service_click', link ? new URL(link.href).hostname : null);
+      track(cfg, 'click_service', link ? new URL(link.href).hostname : null);
     } else if (hit('.signin')) {
       const open = root.querySelector('.zone')?.classList.contains('is-open');
-      track(cfg, open ? 'signin_open' : 'signin_close');
+      track(cfg, open ? 'open_signin' : 'close_signin');
     } else if (hit('.search-toggle')) {
       const open = root.querySelector('.search')?.classList.contains('is-open');
-      track(cfg, open ? 'search_open' : 'search_close');
+      track(cfg, open ? 'open_search' : 'close_search');
     }
   });
 
   root.addEventListener('submit', (e) => {
     const input = (e.target as HTMLFormElement).querySelector<HTMLInputElement>('.search-input');
     // Presence only. The raw query text never leaves the page.
-    track(cfg, 'search_submit', input?.value.trim() ? 'has_query' : 'empty_query');
+    track(cfg, 'submit_search', input?.value.trim() ? 'has_query' : 'empty_query');
   });
 }

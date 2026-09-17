@@ -168,8 +168,8 @@ export function initSearch(
   /*
    * Scoping happens at submit time rather than by keeping a second hidden field
    * in sync, so there is exactly one source of truth for what gets sent — and
-   * any named control in this form would reach search.ucf.edu as a stray
-   * parameter.
+   * any named control in this form reaches search.ucf.edu as a parameter,
+   * where the only two meant to arrive are `q` and `src`.
    *
    * The browser builds the form's entry list synchronously while this handler's
    * task is still running, so restoring the field on the next tick still

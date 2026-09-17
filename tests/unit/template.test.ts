@@ -1,12 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import type { HeaderConfig } from '../../src/config';
-import {
-  barMarkup,
-  HOME_URL,
-  MYUCF_URL,
-  SEARCH_SOURCE,
-  searchDestination,
-} from '../../src/template';
+import { barMarkup, HOME_URL, MYUCF_URL, searchDestination } from '../../src/template';
 
 const cfg: HeaderConfig = {
   version: '4.0.0-test',
@@ -84,14 +78,6 @@ describe('barMarkup', () => {
     expect(el.querySelector('.search-input')?.getAttribute('tabindex')).toBe('-1');
   });
 
-  // Lets the results side tell a header search from a site's own search box.
-  it('marks every search as coming from the header', () => {
-    const marker = parse(barMarkup(cfg)).querySelector('form input[name="src"]');
-    expect(marker?.getAttribute('type')).toBe('hidden');
-    expect(marker?.getAttribute('value')).toBe(SEARCH_SOURCE);
-    expect(SEARCH_SOURCE).toBe('ucfhb');
-  });
-
   it('labels the search input', () => {
     const el = parse(barMarkup(cfg));
     const input = el.querySelector('.search-input');
@@ -142,19 +128,16 @@ describe('barMarkup', () => {
 
   /*
    * A radio needs a `name` to group with its sibling, and any named control in
-   * this form is sent to search.ucf.edu as a parameter. Buttons carry no form
-   * data, so the query and the header's source marker are all that arrive.
+   * this form is sent to search.ucf.edu as a stray parameter. Buttons carry no
+   * form data, so `q` stays the only thing the search engine receives.
    */
-  it('builds the picker from buttons, so nothing but q and src is submitted', () => {
+  it('builds the picker from buttons, so nothing but q is submitted', () => {
     const el = parse(barMarkup(cfg, { signedIn: false }, DOMAIN));
     for (const o of el.querySelectorAll('.scope-opt')) {
       expect(o.tagName).toBe('BUTTON');
       expect(o.getAttribute('type')).toBe('button');
     }
-    expect([...el.querySelectorAll('[name]')].map((n) => n.getAttribute('name'))).toEqual([
-      'q',
-      'src',
-    ]);
+    expect([...el.querySelectorAll('[name]')].map((n) => n.getAttribute('name'))).toEqual(['q']);
   });
 
   it('starts on UCF, with a single tab stop on the checked option', () => {
@@ -202,9 +185,7 @@ describe('barMarkup', () => {
 
 describe('searchDestination', () => {
   it('builds the query URL', () => {
-    expect(searchDestination(cfg, 'financial aid')).toBe(
-      'https://search.ucf.edu/?q=financial+aid&src=ucfhb',
-    );
+    expect(searchDestination(cfg, 'financial aid')).toBe('https://search.ucf.edu/?q=financial+aid');
   });
 
   it('carries the site operator when the search is scoped', () => {

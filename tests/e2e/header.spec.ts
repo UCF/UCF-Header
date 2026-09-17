@@ -127,10 +127,6 @@ test.describe('search', () => {
     const url = new URL(page.url());
     expect(url.hostname).toBe('search.ucf.edu');
     expect(url.searchParams.get('q')).toBe('financial aid');
-    // The marker that tells the results side this search came from the header,
-    // and nothing else alongside it.
-    expect(url.searchParams.get('src')).toBe('ucfhb');
-    expect([...url.searchParams.keys()]).toEqual(['q', 'src']);
   });
 
   test('encodes awkward queries correctly', async ({ page }) => {
@@ -193,7 +189,7 @@ test.describe('search scope', () => {
     const params = await submit(page, 'financial aid');
 
     expect(params.get('q')).toBe(`site:${domain} financial aid`);
-    expect([...params.keys()]).toEqual(['q', 'src']);
+    expect([...params.keys()]).toEqual(['q']);
   });
 
   test('switching back to UCF submits the query unchanged', async ({ page }) => {
@@ -256,7 +252,7 @@ test.describe('keyboard', () => {
   test('focusable controls are in DOM order matching visual order', async ({ page }) => {
     const order = await page.evaluate(() => {
       const root = document.getElementById('ucfhb')?.shadowRoot;
-      const sel = 'a[href], button, input:not([tabindex="-1"]):not([type="hidden"])';
+      const sel = 'a[href], button, input:not([tabindex="-1"])';
       return [...(root?.querySelectorAll(sel) ?? [])].map((e) => e.className);
     });
     // The tray's four links sit between the button that opens them and the

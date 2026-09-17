@@ -11,18 +11,6 @@ export const HOME_URL = 'https://www.ucf.edu';
 export const MYUCF_URL = 'https://my.ucf.edu';
 
 /**
- * Sent as `src` with every search, so the results side can tell a search that
- * started in the header from one typed into a site's own search box. The
- * referrer cannot do this: cross-origin, browsers send only the origin, which
- * is the same for both.
- *
- * Deliberately not a UTM parameter. GA4 treats UTM values on a link between
- * our own properties as a new campaign, which restarts the visitor's session
- * and overwrites where they actually came from.
- */
-export const SEARCH_SOURCE = 'ucfhb';
-
-/**
  * The four campus services behind the sign-in tray, in the order v3 showed
  * them.
  *
@@ -102,8 +90,7 @@ function actions(session: Session): string {
  *
  * Buttons in a radiogroup rather than `<input type="radio">`: a radio needs a
  * `name` to group with its sibling, and any named control inside this form is
- * sent to search.ucf.edu as a query parameter. The form sends exactly `q` and
- * the `src` marker, and nothing else.
+ * sent to search.ucf.edu as a stray query parameter.
  *
  * Nothing is rendered when there is no usable domain to scope to.
  */
@@ -158,8 +145,6 @@ export function barMarkup(
     scopePicker(domain, scope) +
     '<input class="search-input" id="ucfhb-q" name="q" type="search"' +
     ` placeholder="${fieldLabel}" autocomplete="off" tabindex="-1">` +
-    // After the field, so `q` stays the first parameter and the first input.
-    `<input type="hidden" name="src" value="${SEARCH_SOURCE}">` +
     '</form>' +
     '<button class="search-toggle" type="button" aria-expanded="false"' +
     ' aria-controls="ucfhb-q" aria-label="Open search">' +
@@ -182,6 +167,5 @@ export function searchDestination(
 ): string {
   const url = new URL(cfg.searchUrl, HOME_URL);
   url.searchParams.set('q', scopedQuery(query, domain, scope));
-  url.searchParams.set('src', SEARCH_SOURCE);
   return url.toString();
 }

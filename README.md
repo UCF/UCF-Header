@@ -67,17 +67,11 @@ a shelf under the bar, positioned like the sign-in tray, and the field keeps
 the whole row. The shelf is absolutely positioned, so the bar keeps its height
 and the host page never reflows.
 
-The form still works without JavaScript because it has a real `action` and an
+The form still works without JavaScript because it has a real `action` and one
 input named `q`, and the scope must not cost us that. The options are
 `<button role="radio">` rather than real radios, because a radio needs a `name`
-and any named control in the form is sent to `search.ucf.edu` as a parameter.
-
-The form sends exactly two parameters: `q`, and a hidden `src=ucfhb` so the
-results side can tell a header search from a site's own search box. The
-referrer cannot make that distinction, because cross-origin it carries only the
-origin. It is deliberately not a UTM parameter: GA4 treats UTM values on links
-between our own properties as a new campaign, which restarts the session and
-overwrites the visitor's real source. The scope is applied at submit time by rewriting the field to
+and any named control in the form is sent to `search.ucf.edu` as a stray
+parameter. The scope is applied at submit time by rewriting the field to
 `site:<hostname> <query>` and restoring it on the next tick. The browser builds
 the form's entry list synchronously, so the scoped query is what gets sent,
 while the visitor still sees what they typed.

@@ -1,5 +1,6 @@
 import mark from './brand/ucf-stacked.svg';
 import type { HeaderConfig } from './config';
+import { type SearchScope, scopedQuery, siteDomain } from './features/search';
 import type { Session } from './features/session';
 import closeIcon from './icons/close.svg';
 import lockIcon from './icons/lock.svg';
@@ -82,8 +83,44 @@ function actions(session: Session): string {
   );
 }
 
-export function barMarkup(cfg: HeaderConfig, session: Session = { signedIn: false }): string {
+/**
+ * The UCF / Site toggle. On desktop it sits in the row, left of the field; on a
+ * phone the row has no room for it and CSS moves it onto a shelf below the bar.
+ * It only exists visually while the search is open.
+ *
+ * Buttons in a radiogroup rather than `<input type="radio">`: a radio needs a
+ * `name` to group with its sibling, and any named control inside this form is
+ * sent to search.ucf.edu as a stray query parameter.
+ *
+ * Nothing is rendered when there is no usable domain to scope to.
+ */
+function scopePicker(domain: string | null, scope: SearchScope): string {
+  if (!domain) return '';
+
+  const option = (value: SearchScope, text: string) =>
+    `<button class="scope-opt" type="button" role="radio" data-scope="${value}"` +
+    ` aria-checked="${value === scope}" tabindex="${value === scope ? 0 : -1}">${text}</button>`;
+
+  return (
+    // `.scope` is the positioning box — the shelf on a phone — and `.scope-track`
+    // is the switch itself, so the control looks the same wherever it sits.
+    '<div class="scope" part="search-scope" role="radiogroup" aria-label="Search scope">' +
+    '<div class="scope-track">' +
+    option('ucf', 'UCF') +
+    option('site', 'Site') +
+    '</div></div>'
+  );
+}
+
+export function barMarkup(
+  cfg: HeaderConfig,
+  session: Session = { signedIn: false },
+  domain: string | null = siteDomain(),
+): string {
   const mode = `${cfg.wideBreakpoint ? ' is-wide' : ''}${cfg.fullWidth ? ' is-full' : ''}`;
+  const scope: SearchScope = cfg.siteScopeDefault && domain ? 'site' : 'ucf';
+  // Named after what pressing Enter will actually do. Kept in sync by initSearch.
+  const fieldLabel = scope === 'site' ? `Search ${domain}` : 'Search UCF';
 
   return (
     `<div class="bar${mode}" part="bar">` +
@@ -97,14 +134,17 @@ export function barMarkup(cfg: HeaderConfig, session: Session = { signedIn: fals
     '</a>' +
     '<div class="actions">' +
     actions(session) +
-    '<div class="search" part="search">' +
+    `<div class="search" part="search" data-scope="${scope}">` +
     // A real action + name="q" means the browser performs the GET itself.
-    // No submit handler is needed for the search to work at all — the
-    // deferred analytics layer only listens in to record the event.
+    // No submit handler is needed for the search to work at all — the site
+    // scope rewrites `q` on the way out, and the deferred analytics layer
+    // only listens in to record the event.
     `<form class="search-form" role="search" action="${cfg.searchUrl}" method="get">` +
-    '<label class="visually-hidden" for="ucfhb-q">Search UCF</label>' +
+    `<label class="visually-hidden" for="ucfhb-q">${fieldLabel}</label>` +
+    // Before the input, so DOM order matches the desktop row it sits in.
+    scopePicker(domain, scope) +
     '<input class="search-input" id="ucfhb-q" name="q" type="search"' +
-    ' placeholder="Search UCF" autocomplete="off" tabindex="-1">' +
+    ` placeholder="${fieldLabel}" autocomplete="off" tabindex="-1">` +
     '</form>' +
     '<button class="search-toggle" type="button" aria-expanded="false"' +
     ' aria-controls="ucfhb-q" aria-label="Open search">' +
@@ -117,8 +157,15 @@ export function barMarkup(cfg: HeaderConfig, session: Session = { signedIn: fals
   );
 }
 
-export function searchDestination(cfg: HeaderConfig, query: string): string {
+/** Where a submitted search lands. The browser builds this itself; this is the
+ * same URL expressed in one place so it can be asserted directly. */
+export function searchDestination(
+  cfg: HeaderConfig,
+  query: string,
+  domain: string | null = null,
+  scope: SearchScope = 'ucf',
+): string {
   const url = new URL(cfg.searchUrl, HOME_URL);
-  url.searchParams.set('q', query);
+  url.searchParams.set('q', scopedQuery(query, domain, scope));
   return url.toString();
 }

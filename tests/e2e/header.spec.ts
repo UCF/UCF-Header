@@ -140,6 +140,112 @@ test.describe('search', () => {
   });
 });
 
+/*
+ * Scoped search. The fixtures are served from localhost, so the operator these
+ * assert on is `site:localhost` — the mechanism is what is under test, and the
+ * hostname it uses is deliberately whatever the page was actually loaded from.
+ */
+test.describe('search scope', () => {
+  const host = (page: Page) => new URL(page.url()).hostname;
+  const option = (page: Page, scope: string) => inShadow(page, `.scope-opt[data-scope="${scope}"]`);
+
+  const submit = async (page: Page, query: string) => {
+    await inShadow(page, '.search-input').fill(query);
+    await Promise.all([
+      page.waitForURL(/search\.ucf\.edu/),
+      inShadow(page, '.search-input').press('Enter'),
+    ]);
+    return new URL(page.url()).searchParams;
+  };
+
+  test('is hidden until search opens, and offered on UCF', async ({ page }) => {
+    await expect(inShadow(page, '.scope')).toBeHidden();
+    await inShadow(page, '.search-toggle').click();
+    await expect(inShadow(page, '.scope')).toBeVisible();
+    await expect(option(page, 'ucf')).toHaveAttribute('aria-checked', 'true');
+  });
+
+  test('hides again when search closes', async ({ page }) => {
+    await inShadow(page, '.search-toggle').click();
+    await inShadow(page, '.search-toggle').click();
+    await expect(inShadow(page, '.scope')).toBeHidden();
+  });
+
+  test('choosing Site keeps the panel open and the field focused', async ({ page }) => {
+    await inShadow(page, '.search-toggle').click();
+    await option(page, 'site').click();
+    await expect(inShadow(page, '.search-toggle')).toHaveAttribute('aria-expanded', 'true');
+    await expect(inShadow(page, '.search-input')).toBeFocused();
+    await expect(inShadow(page, '.search-input')).toHaveAttribute(
+      'placeholder',
+      `Search ${host(page)}`,
+    );
+  });
+
+  test('submits the site operator for the page it is embedded on', async ({ page }) => {
+    const domain = host(page);
+    await inShadow(page, '.search-toggle').click();
+    await option(page, 'site').click();
+    const params = await submit(page, 'financial aid');
+
+    expect(params.get('q')).toBe(`site:${domain} financial aid`);
+    expect([...params.keys()]).toEqual(['q']);
+  });
+
+  test('switching back to UCF submits the query unchanged', async ({ page }) => {
+    await inShadow(page, '.search-toggle').click();
+    await option(page, 'site').click();
+    await option(page, 'ucf').click();
+    expect((await submit(page, 'financial aid')).get('q')).toBe('financial aid');
+  });
+
+  test('use-site-search-default opens already scoped to the site', async ({ page }) => {
+    await page.goto('/fixtures/bare-site.html');
+    const domain = host(page);
+    await inShadow(page, '.search-toggle').click();
+    await expect(option(page, 'site')).toHaveAttribute('aria-checked', 'true');
+    expect((await submit(page, 'financial aid')).get('q')).toBe(`site:${domain} financial aid`);
+  });
+
+  test('arrow keys move between the scopes', async ({ page }) => {
+    await inShadow(page, '.search-toggle').click();
+    await option(page, 'ucf').focus();
+    await page.keyboard.press('ArrowRight');
+    await expect(option(page, 'site')).toHaveAttribute('aria-checked', 'true');
+    await expect(option(page, 'site')).toBeFocused();
+  });
+
+  /*
+   * In the row wherever the row has room for it, and on a shelf below the bar
+   * where it does not. Either way the bar keeps its height and nothing is
+   * pushed off the right edge.
+   */
+  for (const [width, placement] of [
+    [390, 'shelf'],
+    [768, 'row'],
+    [1200, 'row'],
+  ] as const) {
+    test(`sits in the ${placement} at ${width}px without changing the bar`, async ({ page }) => {
+      await page.setViewportSize({ width, height: 700 });
+      await page.goto('/fixtures/bare.html');
+      const before = await bar(page).boundingBox();
+      await inShadow(page, '.search-toggle').click();
+      await expect(inShadow(page, '.scope')).toBeVisible();
+
+      const after = await bar(page).boundingBox();
+      const track = await inShadow(page, '.scope-track').boundingBox();
+      const toggle = await inShadow(page, '.search-toggle').boundingBox();
+      if (!before || !after || !track || !toggle) throw new Error('not laid out');
+
+      expect(after.height).toBe(before.height);
+      expect(toggle.x + toggle.width).toBeLessThanOrEqual(width);
+      const barBottom = after.y + after.height;
+      if (placement === 'row') expect(track.y + track.height).toBeLessThanOrEqual(barBottom);
+      else expect(track.y).toBeGreaterThanOrEqual(barBottom);
+    });
+  }
+});
+
 test.describe('keyboard', () => {
   // DOM order is what determines focus order, and it is the same in every
   // browser — so this is the assertion that actually protects the behaviour.
@@ -152,6 +258,8 @@ test.describe('keyboard', () => {
     // The tray's four links sit between the button that opens them and the
     // search toggle, which is what puts them in reading order the moment they
     // become focusable. Until then `visibility: hidden` keeps Tab off them.
+    // The scope toggle sits just left of the field on desktop, and is held off
+    // Tab the same way until search opens.
     expect(order).toEqual([
       'home',
       'signin',
@@ -159,6 +267,8 @@ test.describe('keyboard', () => {
       'service',
       'service',
       'service',
+      'scope-opt',
+      'scope-opt',
       'search-toggle',
     ]);
   });

@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import { withOverhang } from './overhang';
 
 /**
  * The iOS visual matrix.
@@ -27,7 +28,15 @@ test('search open', async ({ page }) => {
   await page.locator('#ucfhb').locator('.search-toggle').tap();
   // Let the pop-out settle; the assertion itself disables animations.
   await page.waitForTimeout(300);
-  await expect(page.locator('#ucfhb')).toHaveScreenshot('ios-open.png');
+  await expect(page).toHaveScreenshot('ios-open.png', await withOverhang(page));
+});
+
+// The scope toggle's selected state, on the shelf where a phone puts it.
+test('search open, scoped to Site', async ({ page }) => {
+  await page.goto('/fixtures/bare-site.html');
+  await page.locator('#ucfhb').locator('.search-toggle').tap();
+  await page.waitForTimeout(300);
+  await expect(page).toHaveScreenshot('ios-open-site.png', await withOverhang(page));
 });
 
 // Where the tray has least room and most to prove: the label clips away to the
@@ -36,5 +45,5 @@ test('sign-in tray open', async ({ page }) => {
   await page.goto('/fixtures/bare.html');
   await page.locator('#ucfhb').locator('.signin').tap();
   await page.waitForTimeout(300);
-  await expect(page.locator('#ucfhb')).toHaveScreenshot('ios-tray.png');
+  await expect(page).toHaveScreenshot('ios-tray.png', await withOverhang(page));
 });

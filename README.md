@@ -56,6 +56,34 @@ signed-in view — is deferred behind `requestIdleCallback` after
 `DOMContentLoaded`. The critical path is: read flags, mount, wire the search
 toggle. Nothing else.
 
+### Searching the current site
+
+The search carries a UCF / Site switch. The hard part was not the logic. It
+was finding room for it. From 768px up the switch sits in the row, left of the
+field, and fits because opening search already spends the wordmark below
+980px. On a phone it does not fit: next to the lock and the search button it
+would squeeze the field under 100px. So below 768px the same switch moves onto
+a shelf under the bar, positioned like the sign-in tray, and the field keeps
+the whole row. The shelf is absolutely positioned, so the bar keeps its height
+and the host page never reflows.
+
+The form still works without JavaScript because it has a real `action` and one
+input named `q`, and the scope must not cost us that. The options are
+`<button role="radio">` rather than real radios, because a radio needs a `name`
+and any named control in the form is sent to `search.ucf.edu` as a stray
+parameter. The scope is applied at submit time by rewriting the field to
+`site:<hostname> <query>` and restoring it on the next tick. The browser builds
+the form's entry list synchronously, so the scoped query is what gets sent,
+while the visitor still sees what they typed.
+
+The hostname is used **verbatim, with no `www.` stripping**. `site:` is a prefix
+match, so trimming `www.ucf.edu` to `ucf.edu` would widen the search to every
+subdomain. A query that already contains its own `site:` operator is left alone.
+
+Analytics reports a scope change as `click_scope` with the new scope as
+`ucf_target`, and adds `ucf_scope` to `submit_search`. A GTM container needs a
+Data Layer Variable for `ucf_scope` before it can use that value.
+
 ### Known limitation
 
 A host page that pads its `<body>` insets the header, because the shadow host's
@@ -74,6 +102,11 @@ a local `.env`:
 | `ROOT_URL` | `universityheader.ucf.edu` | Serving origin. Reserved for the Phase 2 session endpoint. |
 | `SEARCH_URL` | `https://search.ucf.edu/` | Where the search form submits. |
 | `UCFHB_SESSION` | `0` | Set to `1` to compile in the Phase 2 signed-in seam. |
+
+Runtime flags on the script tag are a separate contract, documented on
+<https://universityheader.ucf.edu>. `4.0.0` adds one:
+`use-site-search-default=1`, which opens the search already scoped to the host
+site rather than to all of UCF.
 
 > `SEARCH_URL` replaced `SEARCH_SERVICE`, which was defined in the deploy
 > workflows but never used — and named something else entirely

@@ -12,6 +12,7 @@ const cfg: HeaderConfig = {
   searchUrl: 'https://search.ucf.edu/',
   wideBreakpoint: false,
   fullWidth: false,
+  siteScopeDefault: false,
 };
 
 /*
@@ -122,6 +123,30 @@ describe('interaction events', () => {
 
     const hit = findEvent('submit_search');
     expect(hit?.ucf_target).toBe('has_query');
+    expect(JSON.stringify(hit)).not.toContain('my private search');
+  });
+
+  /*
+   * By the time analytics sees the submit, the search feature has already put
+   * `site:<domain>` into the field. The scope goes out as its own value; the
+   * operator and the query text do not go out at all.
+   */
+  it('records which scope a search was aimed at, still without the query', () => {
+    const root = withPanels(setup());
+    const input = root.querySelector<HTMLInputElement>('.search-input');
+    if (input) input.value = 'my private search';
+
+    click(root.querySelector('.scope-opt[data-scope="site"]'));
+    expect(findEvent('click_scope')?.ucf_target).toBe('site');
+
+    const form = root.querySelector('form');
+    form?.addEventListener('submit', (e) => e.preventDefault());
+    form?.dispatchEvent(new Event('submit', { bubbles: true, composed: true, cancelable: true }));
+
+    const hit = findEvent('submit_search');
+    expect(hit?.ucf_scope).toBe('site');
+    expect(hit?.ucf_target).toBe('has_query');
+    expect(JSON.stringify(hit)).not.toContain('site:');
     expect(JSON.stringify(hit)).not.toContain('my private search');
   });
 

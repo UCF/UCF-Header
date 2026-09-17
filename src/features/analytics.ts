@@ -119,6 +119,6 @@ export function initAnalytics(root: ShadowRoot, cfg: HeaderConfig, doc: Document
     // Presence only. The raw query text never leaves the page — which is also
     // why the scope is reported as its own field rather than as the `site:`
     // operator that is sitting in the input by now.
-    track(cfg, 'submit_search', input?.value.trim() || 'empty_query', scope());
+    track(cfg, 'submit_search', input?.value.trim() ? 'has_query' : 'empty_query', scope());
   });
 }

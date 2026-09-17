@@ -12,8 +12,12 @@ const FIXTURES = ['bare', 'aggressive-reset', 'padded-body', 'foundation'];
 async function openSearch(page: Page): Promise<void> {
   await page.locator('#ucfhb').locator('.search-toggle').click();
   await page.waitForFunction(() => {
-    const form = document.getElementById('ucfhb')?.shadowRoot?.querySelector('.search-form');
-    return !!form && getComputedStyle(form).opacity === '1';
+    const root = document.getElementById('ucfhb')?.shadowRoot;
+    // On a phone the scope shelf fades in on a short delay behind the field.
+    return ['.search-form', '.scope'].every((sel) => {
+      const el = root?.querySelector(sel);
+      return !!el && getComputedStyle(el).opacity === '1';
+    });
   });
 }
 

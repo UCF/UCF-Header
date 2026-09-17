@@ -43,6 +43,11 @@ describe('readConfig', () => {
     expect(readConfig(withScript(`${BASE}?use-full-width=1`)).wideBreakpoint).toBe(true);
   });
 
+  it('reads use-site-search-default', () => {
+    expect(readConfig(withScript(BASE)).siteScopeDefault).toBe(false);
+    expect(readConfig(withScript(`${BASE}?use-site-search-default=1`)).siteScopeDefault).toBe(true);
+  });
+
   // Bootstrap 2.x support was dropped for 4.0.0. Sites still passing the flag
   // must keep working; it simply does nothing now.
   it('accepts and ignores use-bootstrap-overrides', () => {

@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import { withOverhang } from './overhang';
 
 /**
  * The visual regression matrix: 7 widths x 3 container modes x 3 panel states.
@@ -39,7 +40,7 @@ for (const { name, fixture } of MODES) {
       await page.locator('#ucfhb').locator('.search-toggle').click();
       // Let the pop-out settle; the assertion itself disables animations.
       await page.waitForTimeout(300);
-      await expect(page.locator('#ucfhb')).toHaveScreenshot(`${name}-${width}-open.png`);
+      await expect(page).toHaveScreenshot(`${name}-${width}-open.png`, await withOverhang(page));
     });
 
     /*
@@ -53,9 +54,24 @@ for (const { name, fixture } of MODES) {
       await page.goto(`/fixtures/${fixture}.html`);
       await page.locator('#ucfhb').locator('.signin').click();
       await page.waitForTimeout(300);
-      await expect(page.locator('#ucfhb')).toHaveScreenshot(`${name}-${width}-tray.png`);
+      await expect(page).toHaveScreenshot(`${name}-${width}-tray.png`, await withOverhang(page));
     });
   }
+}
+
+/*
+ * The selected state of the scope toggle, which every screenshot above leaves on
+ * UCF. One width where it sits in the row, one where it sits on the shelf, and
+ * the 768px edge where the row is tightest.
+ */
+for (const width of [390, 768, 1200]) {
+  test(`scope set to Site @ ${width}`, async ({ page }) => {
+    await page.setViewportSize({ width, height: 400 });
+    await page.goto('/fixtures/bare-site.html');
+    await page.locator('#ucfhb').locator('.search-toggle').click();
+    await page.waitForTimeout(300);
+    await expect(page).toHaveScreenshot(`site-scope-${width}.png`, await withOverhang(page));
+  });
 }
 
 test('respects prefers-reduced-motion', async ({ page }) => {

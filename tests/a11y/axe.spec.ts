@@ -13,11 +13,12 @@ async function openSearch(page: Page): Promise<void> {
   await page.locator('#ucfhb').locator('.search-toggle').click();
   await page.waitForFunction(() => {
     const root = document.getElementById('ucfhb')?.shadowRoot;
+    const settled = (el: Element | null | undefined) =>
+      !!el && getComputedStyle(el).opacity === '1';
     // On a phone the scope shelf fades in on a short delay behind the field.
-    return ['.search-form', '.scope'].every((sel) => {
-      const el = root?.querySelector(sel);
-      return !!el && getComputedStyle(el).opacity === '1';
-    });
+    // It is absent altogether while SITE_SEARCH is off.
+    const scope = root?.querySelector('.scope');
+    return settled(root?.querySelector('.search-form')) && (!scope || settled(scope));
   });
 }
 

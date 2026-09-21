@@ -1,7 +1,7 @@
 import mark from './brand/ucf-stacked.svg';
 import wordmark from './brand/ucf-wordmark.svg';
 import type { HeaderConfig } from './config';
-import { type SearchScope, scopedQuery, siteDomain } from './features/search';
+import { type SearchScope, scopeDomain, scopedQuery } from './features/search';
 import type { Session } from './features/session';
 import closeIcon from './icons/close.svg';
 import lockIcon from './icons/lock.svg';
@@ -93,7 +93,8 @@ function actions(session: Session): string {
  * `name` to group with its sibling, and any named control inside this form is
  * sent to search.ucf.edu as a stray query parameter.
  *
- * Nothing is rendered when there is no usable domain to scope to.
+ * Nothing is rendered when there is no usable domain to scope to, which is
+ * also how SITE_SEARCH switches the picker off.
  */
 function scopePicker(domain: string | null, scope: SearchScope): string {
   if (!domain) return '';
@@ -116,7 +117,7 @@ function scopePicker(domain: string | null, scope: SearchScope): string {
 export function barMarkup(
   cfg: HeaderConfig,
   session: Session = { signedIn: false },
-  domain: string | null = siteDomain(),
+  domain: string | null = scopeDomain(),
 ): string {
   const mode = `${cfg.wideBreakpoint ? ' is-wide' : ''}${cfg.fullWidth ? ' is-full' : ''}`;
   const scope: SearchScope = cfg.siteScopeDefault && domain ? 'site' : 'ucf';

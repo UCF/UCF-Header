@@ -171,7 +171,7 @@
 }
 
 /*
- * The wordmark is one 338px line of paths, and it is shown whole or not at
+ * The wordmark is one 303px line of paths, and it is shown whole or not at
  * all — never clipped mid-word. A zero-width strut (::before) holds the first
  * flex line, so when the row cannot give the paths their full width they wrap
  * onto a second line, which the fixed height and overflow cut away. The paths
@@ -181,8 +181,8 @@
 .wordmark {
   display: flex;
   flex-wrap: wrap;
-  height: 9.5px;
-  max-width: 338.2px;
+  height: 8.5px;
+  max-width: 302.6px;
   min-width: 0;
   overflow: hidden;
   color: var(--ucfhb-accent);
@@ -203,9 +203,9 @@
 .wordmark-type {
   display: block;
   flex: none;
-  /* The artwork's 534 x 15 viewBox, scaled to a 9.5px cap line. */
-  width: 338.2px;
-  height: 9.5px;
+  /* The artwork's 534 x 15 viewBox, scaled to an 8.5px cap line. */
+  width: 302.6px;
+  height: 8.5px;
   pointer-events: auto;
 }
 
@@ -257,7 +257,7 @@
   color: var(--ucfhb-accent);
   cursor: pointer;
   font-family: inherit;
-  font-size: 15px;
+  font-size: 13px;
   line-height: 1;
   white-space: nowrap;
   flex: none;
@@ -423,8 +423,10 @@
   opacity: 1;
 }
 
-/* White field against the gold button, meeting flush to make one pill — the v3
-   shape, minus its 1px border and its separate submit control. Enter submits;
+/* White field against the gold button, meeting flush to make one square-cornered
+   control — the v3 shape, minus its 1px border and its separate submit
+   control. `border-radius: 0` is explicit because Safari rounds search inputs
+   by default. Enter submits;
    the button beside it is the open/close toggle, not a second way to search. */
 .search-input {
   width: 260px;
@@ -433,7 +435,7 @@
   padding: 0 12px;
   background: #fff;
   border: 0;
-  border-radius: 3px 0 0 3px;
+  border-radius: 0;
   color: #000;
   font-family: inherit;
   font-size: 14px;
@@ -468,15 +470,10 @@
   padding: 0;
   background: var(--ucfhb-accent);
   border: 0;
-  border-radius: 3px;
+  border-radius: 0;
   color: #000;
   cursor: pointer;
   flex: none;
-  transition: border-radius 0.28s ease;
-}
-
-.search.is-open .search-toggle {
-  border-radius: 0 3px 3px 0;
 }
 
 .search-toggle:hover {

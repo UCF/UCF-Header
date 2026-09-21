@@ -11,6 +11,18 @@
 
 import type { Disclosure } from './disclosure';
 
+/**
+ * The UCF / Site scope picker, switched off for now at leadership's request.
+ * Flip to `true` to bring it back — nothing else needs to change.
+ *
+ * Off, scopeDomain() reports no domain, which is the same path a `file://`
+ * page already takes: no picker is rendered, the scope stays on UCF, the field
+ * reads "Search UCF", `use-site-search-default` has nothing to act on, and
+ * every query is sent exactly as typed. The scoping logic below is untouched
+ * and stays under unit test either way; only its input is withheld.
+ */
+export const SITE_SEARCH = false;
+
 /** Which corpus the visitor is searching. */
 export type SearchScope = 'ucf' | 'site';
 
@@ -32,6 +44,15 @@ export function siteDomain(loc: Pick<Location, 'hostname'> = window.location): s
 }
 
 /**
+ * The domain the search may be scoped to, or null when site search is off.
+ * This is the single gate: everything downstream already treats a null domain
+ * as "offer UCF only".
+ */
+export function scopeDomain(loc: Pick<Location, 'hostname'> = window.location): string | null {
+  return SITE_SEARCH ? siteDomain(loc) : null;
+}
+
+/**
  * The string actually sent as `q`.
  *
  * A query that already carries a `site:` operator is left alone: the visitor
@@ -47,7 +68,7 @@ export function scopedQuery(query: string, domain: string | null, scope: SearchS
 export function initSearch(
   root: ShadowRoot,
   doc: Document = document,
-  domain: string | null = siteDomain(),
+  domain: string | null = scopeDomain(),
 ): SearchController | null {
   const wrapEl = root.querySelector<HTMLElement>('.search');
   const toggleEl = root.querySelector<HTMLButtonElement>('.search-toggle');
@@ -76,7 +97,7 @@ export function initSearch(
 
   const form = root.querySelector<HTMLFormElement>('.search-form');
   const label = root.querySelector<HTMLElement>(`label[for="${input.id}"]`);
-  // Absent by design when there is no usable domain — see siteDomain().
+  // Absent by design when there is no usable domain — see scopeDomain().
   const group = root.querySelector<HTMLElement>('.scope');
   const options = [...root.querySelectorAll<HTMLButtonElement>('.scope-opt')];
 

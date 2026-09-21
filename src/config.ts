@@ -64,9 +64,10 @@ export function readConfig(doc: Document = document): HeaderConfig {
     // imported 1200-breakpoint.scss outright, so the two never had to be combined.
     wideBreakpoint: fullWidth || hasFlag(src, 'use-1200-breakpoint'),
     fullWidth,
-    // The scope picker itself is unconditional. This flag only decides which
-    // option is selected to begin with, for a departmental site whose visitors
-    // are almost always looking for that site.
+    // This flag only decides which option the scope picker starts on, for a
+    // departmental site whose visitors are almost always looking for that
+    // site. Whether the picker exists at all is SITE_SEARCH, in search.ts;
+    // while that is off, this is read but has nothing to act on.
     siteScopeDefault: hasFlag(src, 'use-site-search-default'),
     // `use-bootstrap-overrides` is accepted and ignored. Bootstrap 2.x support
     // was dropped for 4.0.0, so sites still passing the flag keep working —

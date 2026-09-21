@@ -1,4 +1,5 @@
 import { expect, type Locator, type Page, test } from '@playwright/test';
+import { SITE_SEARCH } from '../../src/features/search';
 
 /** Everything lives inside the shadow root; Playwright pierces it by default. */
 const bar = (p: Page) => p.locator('#ucfhb');
@@ -146,6 +147,8 @@ test.describe('search', () => {
  * hostname it uses is deliberately whatever the page was actually loaded from.
  */
 test.describe('search scope', () => {
+  test.skip(!SITE_SEARCH, 'site search is switched off (SITE_SEARCH in search.ts)');
+
   const host = (page: Page) => new URL(page.url()).hostname;
   const option = (page: Page, scope: string) => inShadow(page, `.scope-opt[data-scope="${scope}"]`);
 
@@ -246,6 +249,27 @@ test.describe('search scope', () => {
   }
 });
 
+// The switched-off state, as a real page sees it. Skipped once SITE_SEARCH is on.
+test.describe('search scope, switched off', () => {
+  test.skip(SITE_SEARCH, 'site search is switched on');
+
+  test('offers no picker, and sends the query as typed even under use-site-search-default', async ({
+    page,
+  }) => {
+    await page.goto('/fixtures/bare-site.html');
+    await inShadow(page, '.search-toggle').click();
+    await expect(inShadow(page, '.scope')).toHaveCount(0);
+    await expect(inShadow(page, '.search-input')).toHaveAttribute('placeholder', 'Search UCF');
+
+    await inShadow(page, '.search-input').fill('financial aid');
+    await Promise.all([
+      page.waitForURL(/search\.ucf\.edu/),
+      inShadow(page, '.search-input').press('Enter'),
+    ]);
+    expect(new URL(page.url()).searchParams.get('q')).toBe('financial aid');
+  });
+});
+
 test.describe('keyboard', () => {
   // DOM order is what determines focus order, and it is the same in every
   // browser — so this is the assertion that actually protects the behaviour.
@@ -267,8 +291,7 @@ test.describe('keyboard', () => {
       'service',
       'service',
       'service',
-      'scope-opt',
-      'scope-opt',
+      ...(SITE_SEARCH ? ['scope-opt', 'scope-opt'] : []),
       'search-toggle',
     ]);
   });

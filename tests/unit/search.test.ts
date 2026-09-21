@@ -1,6 +1,12 @@
 import { beforeEach, describe, expect, it } from 'vitest';
 import type { HeaderConfig } from '../../src/config';
-import { initSearch, scopedQuery, siteDomain } from '../../src/features/search';
+import {
+  initSearch,
+  SITE_SEARCH,
+  scopeDomain,
+  scopedQuery,
+  siteDomain,
+} from '../../src/features/search';
 import { barMarkup } from '../../src/template';
 
 const cfg: HeaderConfig = {
@@ -50,6 +56,21 @@ describe('siteDomain', () => {
 
   it('reports nothing when there is no hostname to scope to', () => {
     expect(siteDomain({ hostname: '' })).toBeNull();
+  });
+});
+
+/*
+ * SITE_SEARCH is the one switch for the whole feature. Everything else in this
+ * file passes a domain in directly, so the scoping logic stays covered while
+ * the switch is off; these two cover the switch itself.
+ */
+describe('scopeDomain', () => {
+  it.runIf(SITE_SEARCH)('passes the page hostname through while site search is on', () => {
+    expect(scopeDomain({ hostname: 'cah.ucf.edu' })).toBe('cah.ucf.edu');
+  });
+
+  it.runIf(!SITE_SEARCH)('withholds the domain while site search is off', () => {
+    expect(scopeDomain({ hostname: 'cah.ucf.edu' })).toBeNull();
   });
 });
 

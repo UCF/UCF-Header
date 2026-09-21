@@ -1,4 +1,5 @@
 import mark from './brand/ucf-stacked.svg';
+import wordmark from './brand/ucf-wordmark.svg';
 import type { HeaderConfig } from './config';
 import { type SearchScope, scopedQuery, siteDomain } from './features/search';
 import type { Session } from './features/session';
@@ -127,10 +128,14 @@ export function barMarkup(
     '<div class="inner">' +
     `<a class="home" part="logo" href="${HOME_URL}">` +
     mark +
-    // Real anchor text, not an aria-label: it is the descriptive link back
-    // to ucf.edu that crawlers read. Hidden visually on narrow screens via
-    // clipping rather than `display:none`, so it stays in the a11y tree.
-    '<span class="wordmark"><span>University of</span><span>Central Florida</span></span>' +
+    // The visible wordmark is drawn as paths so it gets the brand face and
+    // spacing without a webfont. Real anchor text still sits beside it, not an
+    // aria-label: it is the descriptive link back to ucf.edu that crawlers
+    // read, and it stays in the a11y tree whether or not the paths fit.
+    '<span class="wordmark">' +
+    wordmark +
+    '<span class="visually-hidden">University of Central Florida</span>' +
+    '</span>' +
     '</a>' +
     '<div class="actions">' +
     actions(session) +

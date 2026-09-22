@@ -17,6 +17,14 @@
  * it. For v4 it happens as soon as the shadow root is mounted. Neither version
  * is asked to report on itself.
  *
+ * Alongside it, each profile gets the Core Web Vitals a lab run can produce, in
+ * the form Google judges them: LCP, CLS, and TBT standing in for INP (which
+ * needs a real visitor's input), at the 75th percentile, rated against Google's
+ * thresholds, with each header's cost taken against the no-header page. The
+ * `mobile` profile reproduces PageSpeed Insights' mobile conditions and is the
+ * one to quote. None of this is the field data Google actually ranks on; it is
+ * the best lab indication of which way that data will move.
+ *
  * Fairness rules, all deliberate:
  *  - Both versions are served from the same process, over the same connection,
  *    with gzip, so only the header's architecture differs.
@@ -39,7 +47,7 @@
  *
  * Usage:
  *   npm run bench
- *   npm run bench -- --runs=20 --profiles=none,4g,3g
+ *   npm run bench -- --runs=20 --profiles=mobile,4g
  *   npm run bench -- --gtm=GTM-XXXXXXX
  *   npm run bench -- --flags= --refresh
  */
@@ -48,7 +56,7 @@ import { cp, mkdir, writeFile } from 'node:fs/promises';
 import { dirname, resolve } from 'node:path';
 import { chromium } from '@playwright/test';
 import { BUNDLE, ROOT } from '../config.mjs';
-import { DEFAULTS, PROFILES, RESULTS_DIR, WWW_DIR } from './config.mjs';
+import { DEFAULTS, PROFILES, RESULTS_DIR, THRESHOLDS, WWW_DIR } from './config.mjs';
 import { VARIANTS, writePages } from './pages.mjs';
 import { startServer } from './server.mjs';
 import { vendorLegacy } from './vendor.mjs';
@@ -122,7 +130,7 @@ if (options.port > 65535) fail(`--port must be <= 65535, got ${options.port}`);
  * page's own performance timeline, so the numbers are the browser's, not ours.
  */
 function probe() {
-  const bench = { lcp: null, headerPainted: null, headerHeight: 0 };
+  const bench = { lcp: null, cls: 0, longTasks: [], headerPainted: null, headerHeight: 0 };
   window.__bench = bench;
 
   try {
@@ -132,6 +140,46 @@ function probe() {
     }).observe({ type: 'largest-contentful-paint', buffered: true });
   } catch {
     // Firefox and WebKit lack LCP. The run still yields every other metric.
+  }
+
+  /*
+   * CLS as Google defines it: shifts are grouped into session windows (a gap
+   * of under 1 s between shifts, 5 s at most per window), and the score is the
+   * largest window, not the running total. Shifts within 500 ms of input do
+   * not count, though a benchmark load has no input.
+   *
+   * This is where v3 and v4 differ most in kind. v3's bar has no height until
+   * its stylesheet arrives, after the page has painted; v4 reserves its height
+   * when it mounts.
+   */
+  try {
+    let session = 0;
+    let first = 0;
+    let last = 0;
+    new PerformanceObserver((list) => {
+      for (const e of list.getEntries()) {
+        if (e.hadRecentInput) continue;
+        if (session && e.startTime - last < 1000 && e.startTime - first < 5000) {
+          session += e.value;
+        } else {
+          session = e.value;
+          first = e.startTime;
+        }
+        last = e.startTime;
+        bench.cls = Math.max(bench.cls, session);
+      }
+    }).observe({ type: 'layout-shift', buffered: true });
+  } catch {
+    bench.cls = null;
+  }
+
+  // Raw long tasks; collect() turns them into TBT once FCP is known.
+  try {
+    new PerformanceObserver((list) => {
+      for (const e of list.getEntries()) bench.longTasks.push([e.startTime, e.duration]);
+    }).observe({ type: 'longtask', buffered: true });
+  } catch {
+    bench.longTasks = null;
   }
 
   // rAF callbacks run after layout and before the paint of that same frame, so
@@ -160,12 +208,28 @@ function collect() {
   // what the byte counter and the settle wait key on.
   const header = performance.getEntriesByType('resource').filter((r) => r.name.includes('/bar/'));
 
+  /*
+   * Total Blocking Time, as Lighthouse counts it: every main-thread task after
+   * FCP contributes whatever it ran past 50 ms, with a task that straddles FCP
+   * clipped to the part after it. Lighthouse stops at Time to Interactive;
+   * this stops when the header's assets go quiet, which on these one-request
+   * pages is the same point in practice.
+   */
+  const fcpAt = fcp ? fcp.startTime : 0;
+  const tbt = window.__bench.longTasks?.reduce((total, [start, duration]) => {
+    const end = start + duration;
+    if (end <= fcpAt) return total;
+    return total + Math.max(0, end - Math.max(start, fcpAt) - 50);
+  }, 0);
+
   return {
     ttfb: nav.responseStart,
     dcl: nav.domContentLoadedEventEnd,
     load: nav.loadEventEnd,
     fcp: fcp ? fcp.startTime : null,
     lcp: window.__bench.lcp,
+    cls: window.__bench.cls,
+    tbt: tbt ?? null,
     headerPainted: window.__bench.headerPainted,
     headerHeight: window.__bench.headerHeight,
     headerRequests: header.length,
@@ -209,6 +273,8 @@ function summarize(values) {
     n: sorted.length,
     min: sorted[0],
     p50: percentile(sorted, 0.5),
+    // Google judges Core Web Vitals at the 75th percentile of page loads.
+    p75: percentile(sorted, 0.75),
     p90: percentile(sorted, 0.9),
     max: sorted[sorted.length - 1],
     mean: clean.reduce((a, b) => a + b, 0) / clean.length,
@@ -248,17 +314,19 @@ async function attempt(browser, url, profile, tries = 3) {
 async function measure(browser, url, profile) {
   // A fresh context per load is the real cache guarantee — contexts do not
   // share storage — with CDP and `no-store` closing the remaining gaps.
-  const context = await browser.newContext({
-    viewport: DEFAULTS.viewport,
-    deviceScaleFactor: 1,
-  });
+  const context = await browser.newContext(
+    profile.device ?? { viewport: DEFAULTS.viewport, deviceScaleFactor: 1 },
+  );
   try {
     const page = await context.newPage();
     const cdp = await context.newCDPSession(page);
     await cdp.send('Network.enable');
     await cdp.send('Network.setCacheDisabled', { cacheDisabled: true });
-    if (profile) {
-      await cdp.send('Network.emulateNetworkConditions', { offline: false, ...profile });
+    if (profile.network) {
+      await cdp.send('Network.emulateNetworkConditions', { offline: false, ...profile.network });
+    }
+    if (profile.cpu) {
+      await cdp.send('Emulation.setCPUThrottlingRate', { rate: profile.cpu });
     }
 
     /*
@@ -322,11 +390,14 @@ async function measure(browser, url, profile) {
 
 const ms = (v) => (v === null || v === undefined ? '—' : `${v.toFixed(0)} ms`);
 const kb = (v) => (v === null || v === undefined ? '—' : `${(v / 1024).toFixed(1)} KB`);
+const score = (v) => (v === null || v === undefined ? '—' : v.toFixed(3));
 
 const METRICS = [
   ['headerPainted', 'header painted', ms],
   ['fcp', 'first contentful paint', ms],
   ['lcp', 'largest contentful paint', ms],
+  ['cls', 'cumulative layout shift', score],
+  ['tbt', 'total blocking time', ms],
   ['dcl', 'DOMContentLoaded', ms],
   ['load', 'load event', ms],
   ['headerSettled', 'header assets done', ms],
@@ -356,7 +427,14 @@ function table(profileName, byVariant) {
     const v3 = byVariant.legacy?.[key]?.p50;
     const v4 = byVariant.v4?.[key]?.p50;
     let delta = '—';
-    if (typeof v3 === 'number' && typeof v4 === 'number' && v3 !== 0) {
+    if (key === 'cls' || key === 'tbt') {
+      // Usually zero on one side, where a percentage says nothing. The
+      // difference itself is what matters against a threshold.
+      if (typeof v3 === 'number' && typeof v4 === 'number') {
+        const d = v4 - v3;
+        delta = `${d > 0 ? '+' : d < 0 ? '−' : '±'}${format(Math.abs(d))}`;
+      }
+    } else if (typeof v3 === 'number' && typeof v4 === 'number' && v3 !== 0) {
       const pct = ((v4 - v3) / v3) * 100;
       const sign = v4 <= v3 ? '' : '+';
       delta = `${sign}${pct.toFixed(0)}%`;
@@ -372,6 +450,66 @@ function table(profileName, byVariant) {
     console.log(
       `  ${`  ${n}`.padEnd(width)}${[s.min, s.p50, s.p90, s.max].map((v) => ms(v).padStart(col / 2 + 3)).join('')}`,
     );
+  }
+}
+
+/*
+ * The same numbers, read the way Google reads them: the 75th percentile of
+ * loads, rated against the Core Web Vitals thresholds, with each header's cost
+ * taken against the no-header control page. The cost column is the one to
+ * quote. Real pages differ from this one, so the absolute ratings describe
+ * this host page; what a header adds on top of it carries over to any page.
+ */
+const VITALS = [
+  ['lcp', 'LCP', ms],
+  ['cls', 'CLS', score],
+  ['tbt', 'TBT (lab proxy for INP)', ms],
+];
+
+function rating(key, v) {
+  const t = THRESHOLDS[key];
+  if (typeof v !== 'number') return '';
+  if (v <= t.good) return 'good';
+  if (v <= t.poor) return 'needs work';
+  return 'poor';
+}
+
+function vitals(byVariant) {
+  const names = options.variants;
+  const width = 26;
+  const col = 22;
+  const hasControl = names.includes('control');
+  const costed = names.filter((n) => n !== 'control');
+
+  console.log(`\n  core web vitals, p75 — cost is against the no-header page\n`);
+  console.log(
+    `  ${'metric'.padEnd(width)}${names.map((n) => n.padStart(col)).join('')}${
+      hasControl ? costed.map((n) => `${n} cost`.padStart(col)).join('') : ''
+    }`,
+  );
+  console.log(`  ${'-'.repeat(width + col * (names.length + (hasControl ? costed.length : 0)))}`);
+
+  for (const [key, label, format] of VITALS) {
+    const p75 = (n) => byVariant[n]?.[key]?.p75;
+    const cells = names.map((n) => {
+      const v = p75(n);
+      return (typeof v === 'number' ? `${format(v)} ${rating(key, v)}` : '—').padStart(col);
+    });
+
+    // The share of the "good" threshold a header spends is the most portable
+    // number here: it holds on any host page, where the absolute value does not.
+    const costs = hasControl
+      ? costed.map((n) => {
+          const v = p75(n);
+          const base = p75('control');
+          if (typeof v !== 'number' || typeof base !== 'number') return '—'.padStart(col);
+          const d = v - base;
+          const share = ((d / THRESHOLDS[key].good) * 100).toFixed(0);
+          return `${d < 0 ? '−' : '+'}${format(Math.abs(d))} (${share}%)`.padStart(col);
+        })
+      : [];
+
+    console.log(`  ${label.padEnd(width)}${cells.join('')}${costs.join('')}`);
   }
 }
 
@@ -440,6 +578,7 @@ async function main() {
       );
 
       table(profileName, results[profileName]);
+      vitals(results[profileName]);
     }
   } finally {
     await browser.close();
@@ -453,6 +592,9 @@ async function main() {
     `${JSON.stringify({ options, legacyAssetBytes: bytes, results }, null, 2)}\n`,
   );
 
+  console.log('\n  These are lab numbers from one Chromium on one host page. Google ranks on');
+  console.log('  field data from real Chrome users (CrUX), so read them for direction and for');
+  console.log("  each header's cost, not as the score a site will get. Quote `mobile`.");
   console.log(`\n  raw results → ${file.replace(`${ROOT}/`, '')}`);
   console.log('  note: dist/ now holds the benchmark build; run `npm run build` to restore it.\n');
 }

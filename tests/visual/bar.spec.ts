@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import { SITE_SEARCH } from '../../src/features/search';
 import { withOverhang } from './overhang';
 
 /**
@@ -66,6 +67,7 @@ for (const { name, fixture } of MODES) {
  */
 for (const width of [390, 768, 1200]) {
   test(`scope set to Site @ ${width}`, async ({ page }) => {
+    test.skip(!SITE_SEARCH, 'site search is switched off (SITE_SEARCH in search.ts)');
     await page.setViewportSize({ width, height: 400 });
     await page.goto('/fixtures/bare-site.html');
     await page.locator('#ucfhb').locator('.search-toggle').click();

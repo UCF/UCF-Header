@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import type { HeaderConfig } from '../../src/config';
+import { SITE_SEARCH } from '../../src/features/search';
 import { barMarkup, HOME_URL, MYUCF_URL, searchDestination } from '../../src/template';
 
 const cfg: HeaderConfig = {
@@ -96,7 +97,8 @@ describe('barMarkup', () => {
   });
 
   it('exposes part= hooks for host-page styling', () => {
-    const el = parse(barMarkup(cfg));
+    // An explicit domain, so `search-scope` is rendered whatever SITE_SEARCH says.
+    const el = parse(barMarkup(cfg, { signedIn: false }, DOMAIN));
     for (const part of ['bar', 'logo', 'search', 'search-scope', 'signin', 'services']) {
       expect(el.querySelector(`[part="${part}"]`)).not.toBeNull();
     }
@@ -166,6 +168,15 @@ describe('barMarkup', () => {
   it('omits the picker entirely when there is no domain to scope to', () => {
     const el = parse(barMarkup(cfg, { signedIn: false }, null));
     expect(el.querySelector('.scope')).toBeNull();
+    expect(el.querySelector('.search-input')?.getAttribute('placeholder')).toBe('Search UCF');
+  });
+
+  // The default domain is what SITE_SEARCH gates, so this is the switch as a
+  // real page sees it: no picker, and use-site-search-default has no effect.
+  it.runIf(!SITE_SEARCH)('offers no picker while site search is switched off', () => {
+    const el = parse(barMarkup({ ...cfg, siteScopeDefault: true }));
+    expect(el.querySelector('.scope')).toBeNull();
+    expect(el.querySelector('.search')?.getAttribute('data-scope')).toBe('ucf');
     expect(el.querySelector('.search-input')?.getAttribute('placeholder')).toBe('Search UCF');
   });
 

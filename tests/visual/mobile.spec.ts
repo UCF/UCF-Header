@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import { SITE_SEARCH } from '../../src/features/search';
 import { withOverhang } from './overhang';
 
 /**
@@ -33,6 +34,7 @@ test('search open', async ({ page }) => {
 
 // The scope toggle's selected state, on the shelf where a phone puts it.
 test('search open, scoped to Site', async ({ page }) => {
+  test.skip(!SITE_SEARCH, 'site search is switched off (SITE_SEARCH in search.ts)');
   await page.goto('/fixtures/bare-site.html');
   await page.locator('#ucfhb').locator('.search-toggle').tap();
   await page.waitForTimeout(300);

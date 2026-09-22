@@ -136,11 +136,20 @@
 .home {
   display: flex;
   align-items: center;
-  gap: 12px;
+  /* px, not rem: rem resolves against the host page's <html>, which the
+     shadow root does not isolate, so a 62.5% root would make it 10px. */
+  gap: 20px;
   height: 100%;
   color: var(--ucfhb-fg);
   text-decoration: none;
-  flex: none;
+  /* Shrinkable, so the wordmark rather than the actions gives way when the row
+     runs short. See `.wordmark`. */
+  flex: 0 1 auto;
+  min-width: 0;
+  /* Once the wordmark has dropped out, `.home` still spans whatever the row
+     left it. Only the drawn parts take the pointer, so that empty stretch does
+     not become an invisible link. Hover and click still resolve to the anchor. */
+  pointer-events: none;
 }
 
 .mark {
@@ -148,6 +157,7 @@
   height: 44px;
   width: auto;
   flex: none;
+  pointer-events: auto;
 }
 
 .lg-o {
@@ -160,24 +170,48 @@
   fill: var(--ucfhb-logo-accent);
 }
 
+/*
+ * The wordmark is one 303px line of paths, and it is shown whole or not at
+ * all — never clipped mid-word. A zero-width strut (::before) holds the first
+ * flex line, so when the row cannot give the paths their full width they wrap
+ * onto a second line, which the fixed height and overflow cut away. The paths
+ * stay visible at every width they fit, with no breakpoint to keep in sync with
+ * the actions' width, which changes with session state and open panels.
+ */
 .wordmark {
   display: flex;
-  flex-direction: column;
-  max-width: 240px;
-  font-size: 13px;
-  font-weight: 700;
-  line-height: 1.18;
-  letter-spacing: 0.075em;
-  text-transform: uppercase;
-  white-space: nowrap;
+  flex-wrap: wrap;
+  height: 8.5px;
+  max-width: 302.6px;
+  min-width: 0;
+  overflow: hidden;
+  color: var(--ucfhb-accent);
+  /* No max-width transition: the paths drop out whole the moment they no
+     longer fit, so easing the width shows nothing and only holds the row
+     hostage — `.home` keeps its full basis mid-animation and shoves the
+     controls off the edge while a panel opens. */
   transition:
-    opacity 0.2s ease,
-    max-width 0.2s ease;
+    color 0.2s ease,
+    opacity 0.2s ease;
+}
+
+.wordmark::before {
+  content: "";
+  height: 100%;
+}
+
+.wordmark-type {
+  display: block;
+  flex: none;
+  /* The artwork's 534 x 15 viewBox, scaled to an 8.5px cap line. */
+  width: 302.6px;
+  height: 8.5px;
+  pointer-events: auto;
 }
 
 .home:hover .wordmark,
 .home:focus-visible .wordmark {
-  color: var(--ucfhb-accent);
+  color: var(--ucfhb-fg);
 }
 
 /* --------------------------------------------------------------- actions */
@@ -223,7 +257,7 @@
   color: var(--ucfhb-accent);
   cursor: pointer;
   font-family: inherit;
-  font-size: 15px;
+  font-size: 13px;
   line-height: 1;
   white-space: nowrap;
   flex: none;
@@ -389,8 +423,10 @@
   opacity: 1;
 }
 
-/* White field against the gold button, meeting flush to make one pill — the v3
-   shape, minus its 1px border and its separate submit control. Enter submits;
+/* White field against the gold button, meeting flush to make one square-cornered
+   control — the v3 shape, minus its 1px border and its separate submit
+   control. `border-radius: 0` is explicit because Safari rounds search inputs
+   by default. Enter submits;
    the button beside it is the open/close toggle, not a second way to search. */
 .search-input {
   width: 260px;
@@ -399,7 +435,7 @@
   padding: 0 12px;
   background: #fff;
   border: 0;
-  border-radius: 3px 0 0 3px;
+  border-radius: 0;
   color: #000;
   font-family: inherit;
   font-size: 14px;
@@ -434,15 +470,10 @@
   padding: 0;
   background: var(--ucfhb-accent);
   border: 0;
-  border-radius: 3px;
+  border-radius: 0;
   color: #000;
   cursor: pointer;
   flex: none;
-  transition: border-radius 0.28s ease;
-}
-
-.search.is-open .search-toggle {
-  border-radius: 0 3px 3px 0;
 }
 
 .search-toggle:hover {
@@ -593,18 +624,6 @@ input:focus-visible {
     height: 36px;
   }
 
-  /* Clipped rather than display:none — the link keeps its accessible name and
-     its crawler-visible anchor text at every width. */
-  .wordmark {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    margin: -1px;
-    overflow: hidden;
-    clip: rect(0 0 0 0);
-    clip-path: inset(50%);
-  }
-
   /* The open field fills the row rather than animating to a fixed width. Every
      ancestor needs min-width:0, or the input's 260px basis stops the whole
      chain from shrinking and pushes the bar off the right edge. The tray needs
@@ -613,6 +632,13 @@ input:focus-visible {
     flex: 1;
     min-width: 0;
     justify-content: flex-end;
+  }
+
+  /* A zero basis would let `.home` keep the full-width wordmark and push the
+     controls off the edge. While search is closed there is no field to fill
+     the row, so the controls hold their content width and `.home` yields. */
+  .inner:not(.is-searching) .actions {
+    flex: 1 0 auto;
   }
 
   .zone,
@@ -806,19 +832,6 @@ input:focus-visible {
   .signin {
     gap: 6px;
     padding: 0 10px;
-  }
-}
-
-@media (min-width: 390px) and (max-width: 767px) {
-  .wordmark {
-    position: static;
-    width: auto;
-    height: auto;
-    margin: 0;
-    overflow: visible;
-    clip: auto;
-    clip-path: none;
-    opacity: 1;
   }
 }
 

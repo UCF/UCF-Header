@@ -214,13 +214,19 @@ function collect() {
    * clipped to the part after it. Lighthouse stops at Time to Interactive;
    * this stops when the header's assets go quiet, which on these one-request
    * pages is the same point in practice.
+   *
+   * No FCP means no starting point, so no TBT: counting from zero instead would
+   * charge the run for tasks before the page had painted at all.
    */
-  const fcpAt = fcp ? fcp.startTime : 0;
-  const tbt = window.__bench.longTasks?.reduce((total, [start, duration]) => {
-    const end = start + duration;
-    if (end <= fcpAt) return total;
-    return total + Math.max(0, end - Math.max(start, fcpAt) - 50);
-  }, 0);
+  const fcpAt = fcp ? fcp.startTime : null;
+  const tbt =
+    fcpAt === null
+      ? null
+      : window.__bench.longTasks?.reduce((total, [start, duration]) => {
+          const end = start + duration;
+          if (end <= fcpAt) return total;
+          return total + Math.max(0, end - Math.max(start, fcpAt) - 50);
+        }, 0);
 
   return {
     ttfb: nav.responseStart,
@@ -481,7 +487,9 @@ function vitals(byVariant) {
   const hasControl = names.includes('control');
   const costed = names.filter((n) => n !== 'control');
 
-  console.log(`\n  core web vitals, p75 — cost is against the no-header page\n`);
+  console.log(
+    `\n  core web vitals, p75${hasControl ? ' — cost is against the no-header page' : ''}\n`,
+  );
   console.log(
     `  ${'metric'.padEnd(width)}${names.map((n) => n.padStart(col)).join('')}${
       hasControl ? costed.map((n) => `${n} cost`.padStart(col)).join('') : ''
@@ -504,7 +512,8 @@ function vitals(byVariant) {
           const base = p75('control');
           if (typeof v !== 'number' || typeof base !== 'number') return '—'.padStart(col);
           const d = v - base;
-          const share = ((d / THRESHOLDS[key].good) * 100).toFixed(0);
+          // Unsigned: the sign is already on the delta beside it.
+          const share = ((Math.abs(d) / THRESHOLDS[key].good) * 100).toFixed(0);
           return `${d < 0 ? '−' : '+'}${format(Math.abs(d))} (${share}%)`.padStart(col);
         })
       : [];

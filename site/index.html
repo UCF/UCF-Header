@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>UCF University Header</title>
-<meta name="description" content="The universal header bar embedded across UCF web properties. Installation, options, and theming.">
+<meta name="description" content="The universal header bar embedded across UCF web properties. Installation and options.">
 <!--
   Favicon for this documentation page only — nothing here is injected into host
   sites. icon.svg adapts to the tab strip's colour scheme; favicon.ico is the
@@ -256,7 +256,7 @@
 
     <div class="note">
       <strong>If you were overriding header styles</strong>
-      <p>CSS rules targeting the bar's internals — <code>#ucfhb-search-field</code>, <code>#ucfhb-signon</code>, and the rest — no longer apply, and the same goes for JavaScript that reaches in with <code>document.querySelector</code>. Use the theming API below instead, or <a href="#rollback">pin to v3</a> while you migrate.</p>
+      <p>CSS rules targeting the bar's internals — <code>#ucfhb-search-field</code>, <code>#ucfhb-signon</code>, and the rest — no longer apply, and the same goes for JavaScript that reaches in with <code>document.querySelector</code>. The header is a locked brand asset and is not meant to be restyled. If an override was working around a real problem, <a href="https://github.com/UCF/UCF-Header/issues">open an issue</a>, or <a href="#rollback">pin to v3</a> while it is fixed.</p>
     </div>
 
     <h3>Also worth knowing</h3>
@@ -267,40 +267,6 @@
       <li>The header is now a <strong>single file</strong>. It no longer requests <code>bar/css/bar.css</code> — the styles are inlined. The old CSS files are still served this release and will be removed in 4.1.0.</li>
       <li><code>university-header-full.js</code> is gone. A source map is published next to the minified file instead.</li>
     </ul>
-  </div>
-</section>
-
-<section>
-  <div class="wrap">
-    <h2>Theming</h2>
-    <p>Custom properties cross the shadow boundary, so setting them on <code>#ucfhb</code> from your own stylesheet works by design. This is the supported way to adjust the bar.</p>
-    <pre><code>#ucfhb {
-  --ucfhb-bg: #1a1a1a;
-  --ucfhb-accent: #7ab8ff;
-}</code></pre>
-
-    <div class="tbl">
-      <table>
-        <thead><tr><th>Property</th><th>Default</th><th></th></tr></thead>
-        <tbody>
-          <tr><td><code>--ucfhb-height</code></td><td><code>72px</code></td><td>Bar height (60px under 768px)</td></tr>
-          <tr><td><code>--ucfhb-bg</code></td><td><code>#000</code></td><td>Bar background</td></tr>
-          <tr><td><code>--ucfhb-fg</code></td><td><code>#fff</code></td><td>Text and icons</td></tr>
-          <tr><td><code>--ucfhb-accent</code></td><td><code>#edb80c</code></td><td>Gold — the rule, the sign-in label, the search button, hover states</td></tr>
-          <tr><td><code>--ucfhb-rule</code></td><td><code>#3a3a3a</code></td><td>The divider between the tray and the search</td></tr>
-          <tr><td><code>--ucfhb-muted</code></td><td><code>#9a9a9a</code></td><td>The lock icon at rest</td></tr>
-          <tr><td><code>--ucfhb-font</code></td><td>system stack</td><td>Typeface for the bar's text</td></tr>
-          <tr><td><code>--ucfhb-z</code></td><td><code>10000</code></td><td>Stacking order</td></tr>
-        </tbody>
-      </table>
-    </div>
-
-    <p>The logo's colours follow the bar automatically. The mark is a knockout lockup, so its interior takes <code>--ucfhb-bg</code> — re-theme the background and the logo stays correct without further work.</p>
-
-    <h3>Styling parts directly</h3>
-    <p>For anything the custom properties do not reach, five elements are exposed via <code>::part()</code>.</p>
-    <pre><code>#ucfhb::part(signin) { text-transform: none; }</code></pre>
-    <p>Available parts: <code>bar</code>, <code>logo</code>, <code>search</code>, <code>signin</code>, <code>services</code>.</p>
   </div>
 </section>
 

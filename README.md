@@ -294,6 +294,13 @@ scripts/              build, size gate, static server, containerized visuals
 scripts/bench/        v3-vs-v4 load benchmark
 ```
 
+> **The experiments page has been retired for launch.** `site/experiments/` was
+> an unlinked, `noindex` sandbox for previewing proposed changes against the
+> live bar — each experiment a `data-x-*` attribute on the host element, a rule
+> in a stylesheet appended after the bar's own, and a switch on the page. Its
+> last experiment was the wordmark toggle. To bring it back, restore it from
+> history with `git checkout 44e99d5 -- site/experiments`.
+
 ## Contributing
 
 See [CONTRIBUTING.md](CONTRIBUTING.md).

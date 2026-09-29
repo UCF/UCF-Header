@@ -130,7 +130,7 @@ part of CI**: it takes minutes and it reports numbers to read rather than a
 threshold to trip. `npm run size` is the CI performance gate.
 
 ```bash
-npm run bench                                  # 20 loads, none/4g/3g profiles
+npm run bench                                  # 20 loads, mobile/none/4g/3g profiles
 npm run bench -- --runs=50 --profiles=3g       # one profile, more samples
 npm run bench -- --gtm=GTM-XXXXXXX             # build v4 with a real container
 npm run bench -- --flags= --refresh            # bare embed, re-fetch v3
@@ -148,12 +148,35 @@ cannot reach it until `bar.css` arrives, because the bar is inserted with
 `#ucfhb-inner` set to `display:none` and only the stylesheet reveals it; v4
 reaches it when the shadow root mounts. Neither version instruments itself.
 
+Each profile also reports the **Core Web Vitals** a lab run can measure, read
+the way Google reads them: the 75th percentile of loads, rated good / needs work
+/ poor against Google's thresholds.
+
+- **LCP** — largest contentful paint (good ≤ 2.5 s).
+- **CLS** — cumulative layout shift, using Google's session-window definition
+  (good ≤ 0.1). This is where the two versions differ in kind: v3's bar has no
+  height until its stylesheet arrives after the page has painted, so the page
+  jumps; v4 reserves its height when it mounts.
+- **TBT** — total blocking time, counted as Lighthouse counts it (good ≤ 200 ms).
+  INP needs a real visitor's input and cannot be measured in a lab; TBT is the
+  proxy Lighthouse uses in its place.
+
+The column to quote is each header's **cost** — its p75 minus the no-header
+control page's — shown with the share of the "good" threshold it spends. The
+host page is deliberately minimal, so absolute ratings describe it; what a
+header adds on top carries over to any page. The **`mobile` profile** is the one
+to quote: it reproduces PageSpeed Insights' mobile run (Lighthouse's slow 4G, a
+4x CPU slowdown, a 412px Moto G Power screen). All of this is lab data from one
+Chromium. Google ranks on field data from real Chrome users (CrUX), so these
+numbers indicate which way that data should move, not the score a site will get.
+
 Things the harness does deliberately, because each one would otherwise turn into
 a wrong conclusion:
 
-- **Network throttling is the point.** On loopback a round trip is free, so v3
-  and v4 finish within a millisecond of each other. The `none` profile is
-  reported as a floor, not as the result.
+- **Throttling is the point.** On loopback a round trip is free, so v3 and v4
+  finish within a millisecond of each other. The `none` profile is reported as
+  a floor, not as the result. Only `mobile` also slows the CPU and changes the
+  screen; the others are network throttling on the 1440px desktop viewport.
 - **Analytics is not measured.** v3's gtag injection is always stripped, and v4
   builds with no container unless `--gtm` says otherwise. The header defers its
   own tags behind `requestIdleCallback`, so they cannot affect anything a

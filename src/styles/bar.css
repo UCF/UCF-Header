@@ -209,6 +209,31 @@
   pointer-events: auto;
 }
 
+/*
+ * Grid alignment for 1x screens. At 44px the mark's outline and inlines are
+ * 0.8-1.2px wide, and on a 1x display every engine snaps the <svg> box to a
+ * whole pixel and then lets the artwork's own coordinates fall where they may —
+ * which smears those lines across two pixels as grey. These offsets were found
+ * by rendering every 1/8px position in Chromium, Firefox and WebKit and keeping
+ * the one with the fewest blended pixels; the same offset won in all three, and
+ * holds for the 36px mobile mark within a percent.
+ *
+ * Position only: the official artwork is untouched. Scoped to exactly 1dppx
+ * because the same shift measurably worsens 1.25x and 1.5x, where the grid
+ * lands differently, and 2x needs no help.
+ */
+@media (resolution: 1dppx) {
+  .mark {
+    translate: 0.625px 0.75px;
+  }
+
+  /* Up, not down: `.wordmark` clips at 8.5px and the caps sit 0.14px below
+     its top edge, so this is the direction with room. */
+  .wordmark-type {
+    translate: -0.125px -0.125px;
+  }
+}
+
 .home:hover .wordmark,
 .home:focus-visible .wordmark {
   color: var(--ucfhb-fg);

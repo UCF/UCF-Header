@@ -14,8 +14,9 @@
   --ucfhb-height: 72px;
   --ucfhb-bg: #000;
   --ucfhb-fg: #fff;
-  --ucfhb-accent: #edb80c;
-  --ucfhb-accent-hover: #ffd140;
+  /* Space Week: Canaveral Blue in place of UCF Gold (#edb80c / #ffd140). */
+  --ucfhb-accent: #4c9bd2;
+  --ucfhb-accent-hover: #7db8e2;
   --ucfhb-rule: #3a3a3a;
   --ucfhb-muted: #9a9a9a;
   --ucfhb-font:
@@ -181,7 +182,7 @@
 .wordmark {
   display: flex;
   flex-wrap: wrap;
-  height: 8.5px;
+  height: 8px;
   max-width: 302.6px;
   min-width: 0;
   overflow: hidden;

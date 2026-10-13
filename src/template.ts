@@ -1,4 +1,4 @@
-import mark from './brand/ucf-stacked.svg';
+import mark from './brand/space-week-logo.svg';
 import wordmark from './brand/ucf-wordmark.svg';
 import type { HeaderConfig } from './config';
 import { type SearchScope, scopeDomain, scopedQuery } from './features/search';
